@@ -1,7 +1,6 @@
 /*
- * AiiACo After Upgrade Section — Corporate Institutional
- * "Your Operating Model, Rebuilt."
- * Before/after table — clinical, precise, no fluff
+ * AiiACo After Upgrade Section — Upgraded Design
+ * Bold before/after table, vivid section background, large headline
  */
 import { motion } from "framer-motion";
 
@@ -39,60 +38,117 @@ export default function AfterUpgradeSection() {
     document.querySelector("#models")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <section className="py-16">
+    <section
+      className="py-24"
+      style={{
+        background: "linear-gradient(180deg, #050C1A 0%, #091325 100%)",
+      }}
+    >
       <div className="container">
         {/* Header */}
-        <div className="flex items-end justify-between gap-6 mb-8 flex-wrap">
-          <div>
-            <div className="corp-pill mb-4">After Upgrade</div>
-            <h2
-              className="text-white m-0"
-              style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "clamp(22px, 3vw, 36px)",
-                letterSpacing: "-0.5px",
-              }}
-            >
-              Your Operating Model, Rebuilt.
-            </h2>
-          </div>
-          <p
-            className="text-base leading-relaxed max-w-[52ch] m-0"
-            style={{ color: "rgba(197,204,214,0.80)", fontFamily: "'DM Sans', sans-serif" }}
-          >
-            You do not need to learn AI. You need to integrate it. The advantage comes
-            from structure, not novelty.
-          </p>
-        </div>
-
-        {/* Before/After table */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="mb-14 flex flex-col gap-5"
+        >
+          <div className="section-pill w-fit">After Upgrade</div>
+          <h2 className="section-headline" style={{ maxWidth: "18ch" }}>
+            Your Operating Model,{" "}
+            <span className="accent">Rebuilt.</span>
+          </h2>
+          <p className="section-subhead">
+            You do not need to learn AI. You need to integrate it. The advantage comes
+            from structure, not novelty.
+          </p>
+        </motion.div>
+
+        {/* Before/After table */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
         >
           <table className="corp-table">
             <thead>
               <tr>
-                <th style={{ width: "50%" }}>Legacy Operation</th>
-                <th style={{ width: "50%" }}>Upgraded Operation</th>
+                <th
+                  style={{
+                    width: "50%",
+                    borderRight: "1px solid rgba(200,212,224,0.10)",
+                  }}
+                >
+                  Legacy Operation
+                </th>
+                <th style={{ width: "50%" }}>
+                  <span style={{ color: "#D4A843" }}>↑</span> Upgraded Operation
+                </th>
               </tr>
             </thead>
             <tbody>
               {rows.map((row, i) => (
                 <tr key={i}>
-                  <td style={{ color: "rgba(197,204,214,0.75)", fontFamily: "'DM Sans', sans-serif" }}>
-                    <span className="font-semibold" style={{ color: "rgba(197,204,214,0.85)" }}>
+                  <td
+                    style={{
+                      borderRight: "1px solid rgba(200,212,224,0.08)",
+                      background: i % 2 === 0 ? "rgba(9,19,37,0.50)" : "transparent",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontWeight: 700,
+                        fontSize: "14px",
+                        color: "rgba(200,212,224,0.80)",
+                        display: "block",
+                        marginBottom: "4px",
+                      }}
+                    >
                       {row.legacy}
                     </span>
-                    <span>{row.legacySub}</span>
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: "13px",
+                        color: "rgba(200,212,224,0.55)",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {row.legacySub}
+                    </span>
                   </td>
-                  <td style={{ color: "rgba(255,255,255,0.90)", fontFamily: "'DM Sans', sans-serif" }}>
-                    <span className="font-semibold" style={{ color: "#B89C4A" }}>
+                  <td
+                    style={{
+                      background: i % 2 === 0
+                        ? "rgba(212,168,67,0.05)"
+                        : "rgba(212,168,67,0.03)",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontWeight: 700,
+                        fontSize: "14px",
+                        color: "#D4A843",
+                        display: "block",
+                        marginBottom: "4px",
+                      }}
+                    >
                       {row.upgraded}
                     </span>
-                    <span style={{ color: "rgba(197,204,214,0.80)" }}>{row.upgradedSub}</span>
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: "13px",
+                        color: "rgba(200,212,224,0.75)",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {row.upgradedSub}
+                    </span>
                   </td>
                 </tr>
               ))}
@@ -101,11 +157,11 @@ export default function AfterUpgradeSection() {
         </motion.div>
 
         {/* CTAs */}
-        <div className="flex flex-wrap gap-3 mt-5">
-          <button onClick={scrollToUpgrade} className="btn-primary">
+        <div className="flex flex-wrap gap-4">
+          <button onClick={scrollToUpgrade} className="btn-gold">
             Initiate Upgrade
           </button>
-          <button onClick={scrollToModels} className="btn-ghost">
+          <button onClick={scrollToModels} className="btn-outline">
             View Engagement Models
           </button>
         </div>

@@ -1,132 +1,191 @@
 /*
- * AiiACo — Built for the Corporate Age Section
- * Replaces team section entirely. No founders. No bios.
- * "We are building credibility through execution."
+ * AiiACo Built For Corporate Age — Upgraded Design
+ * Vendasta-inspired: vivid gradient section, large quote, bold stats
  */
 import { motion } from "framer-motion";
 
 const pillars = [
-  {
-    label: "Strategic Architecture",
-    desc: "We design AI integration systems aligned to your business model, competitive position, and growth objectives.",
-  },
-  {
-    label: "Deployment Engineering",
-    desc: "We build and configure the AI infrastructure — tools, agents, automations — and integrate them into your operations.",
-  },
-  {
-    label: "Operational Management",
-    desc: "We run the system. Monitoring, optimization, reporting, and scaling — managed continuously.",
-  },
+  { num: "1", title: "Hire One. Deploy Many.", desc: "Instead of sourcing, onboarding, and managing multiple AI vendors, you engage AiiAco. We architect the entire AI workforce and manage it on your behalf." },
+  { num: "2", title: "No Learning Curve.", desc: "You do not need to become an AI expert. We translate your business goals into operational systems. You receive outcomes, not complexity." },
+  { num: "3", title: "Aligned Incentives.", desc: "In our Performance Partnership model, our compensation is tied to your results. We build for outcomes because that is how we are measured." },
+];
+
+const stats = [
+  { num: "20+", label: "Industries" },
+  { num: "5", label: "Deployment Phases" },
+  { num: "3", label: "Engagement Models" },
+  { num: "0", label: "Internal Overload" },
 ];
 
 export default function BuiltForCorporateAge() {
+  const scrollToContact = () =>
+    document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+
   return (
-    <section className="py-16">
-      <div className="container">
+    <section
+      id="about"
+      className="py-24"
+      style={{
+        background: "linear-gradient(160deg, #0D2050 0%, #091325 40%, #1A1200 100%)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Background glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(800px 500px at 50% 0%, rgba(212,168,67,0.10) 0%, transparent 60%)",
+        }}
+      />
+
+      <div className="container relative z-10">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="corp-card p-10 md:p-14"
+          className="mb-14 flex flex-col gap-5 items-center text-center"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
-            {/* Left: Statement */}
-            <div>
-              <div className="corp-pill mb-5">About AiiAco</div>
-              <h2
-                className="text-white m-0 mb-5"
+          <div className="section-pill">Built for the Corporate Age</div>
+          <h2 className="section-headline" style={{ maxWidth: "22ch", textAlign: "center" }}>
+            One Engagement.{" "}
+            <span className="accent">Your Entire AI Infrastructure.</span>
+          </h2>
+          <p className="section-subhead" style={{ textAlign: "center", maxWidth: "60ch", margin: "0 auto" }}>
+            AiiAco is not a software subscription. It is not a consulting report. It is the
+            operating layer that transforms your business into an AI-powered enterprise.
+          </p>
+        </motion.div>
+
+        {/* Stats row */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-px mb-14"
+          style={{
+            background: "rgba(200,212,224,0.10)",
+            borderRadius: "18px",
+            overflow: "hidden",
+            border: "1px solid rgba(200,212,224,0.12)",
+          }}
+        >
+          {stats.map((s, i) => (
+            <div
+              key={s.label}
+              className="flex flex-col items-center justify-center py-8 gap-1"
+              style={{
+                background: i % 2 === 0 ? "rgba(9,19,37,0.75)" : "rgba(13,30,56,0.65)",
+              }}
+            >
+              <span className="stat-number">{s.num}</span>
+              <span className="stat-label">{s.label}</span>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Three pillars */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
+          {pillars.map((p, i) => (
+            <motion.div
+              key={p.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.12, duration: 0.5 }}
+              className="card-base p-7 flex flex-col gap-4"
+            >
+              <div
+                className="w-10 h-10 rounded-[12px] flex items-center justify-center flex-shrink-0"
+                style={{
+                  background: "linear-gradient(135deg, rgba(212,168,67,0.20), rgba(212,168,67,0.06))",
+                  border: "1px solid rgba(212,168,67,0.30)",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontWeight: 900,
+                    fontSize: "16px",
+                    color: "#D4A843",
+                  }}
+                >
+                  {p.num}
+                </span>
+              </div>
+              <h4
                 style={{
                   fontFamily: "'Playfair Display', Georgia, serif",
-                  fontSize: "clamp(24px, 3vw, 38px)",
-                  letterSpacing: "-0.5px",
-                  lineHeight: 1.1,
+                  fontSize: "clamp(17px, 2vw, 21px)",
+                  fontWeight: 800,
+                  color: "rgba(255,255,255,0.95)",
+                  letterSpacing: "-0.3px",
+                  margin: 0,
                 }}
               >
-                Built for the Corporate Age.
-              </h2>
+                {p.title}
+              </h4>
               <p
-                className="text-base leading-relaxed mb-4"
-                style={{ color: "rgba(197,204,214,0.85)", fontFamily: "'DM Sans', sans-serif", margin: "0 0 16px" }}
-              >
-                AiiAco operates as an AI Integration Authority — combining strategic
-                architecture, deployment engineering, and operational management into
-                one unified system.
-              </p>
-              <p
-                className="text-base leading-relaxed mb-6"
-                style={{ color: "rgba(197,204,214,0.85)", fontFamily: "'DM Sans', sans-serif", margin: "0 0 24px" }}
-              >
-                We are not building credibility through biography.
-                <br />
-                <span
-                  className="font-semibold"
-                  style={{ color: "rgba(255,255,255,0.92)" }}
-                >
-                  We are building it through execution.
-                </span>
-              </p>
-
-              {/* Core principle */}
-              <div
-                className="rounded-xl p-5"
                 style={{
-                  background: "rgba(184,156,74,0.08)",
-                  border: "1px solid rgba(184,156,74,0.25)",
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "14.5px",
+                  lineHeight: 1.65,
+                  color: "rgba(200,212,224,0.82)",
+                  margin: 0,
                 }}
               >
-                <p
-                  className="m-0 text-sm leading-relaxed italic"
-                  style={{ color: "rgba(255,255,255,0.88)", fontFamily: "'Playfair Display', Georgia, serif" }}
-                >
-                  "Most companies think they need AI tools. What they need is operational
-                  restructuring. AiiAco does not give clients what they ask for. We give
-                  them what creates leverage."
-                </p>
-              </div>
-            </div>
+                {p.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
 
-            {/* Right: Three pillars */}
-            <div className="flex flex-col gap-4">
-              {pillars.map((p, i) => (
-                <motion.div
-                  key={p.label}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.12, duration: 0.5 }}
-                  className="flex gap-4 items-start"
-                >
-                  <div
-                    className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black"
-                    style={{
-                      background: "rgba(184,156,74,0.12)",
-                      border: "1px solid rgba(184,156,74,0.28)",
-                      color: "#B89C4A",
-                      fontFamily: "'DM Sans', sans-serif",
-                    }}
-                  >
-                    0{i + 1}
-                  </div>
-                  <div>
-                    <h4
-                      className="m-0 mb-1 font-bold text-sm"
-                      style={{ color: "rgba(255,255,255,0.90)", fontFamily: "'DM Sans', sans-serif" }}
-                    >
-                      {p.label}
-                    </h4>
-                    <p
-                      className="m-0 text-sm leading-relaxed"
-                      style={{ color: "rgba(197,204,214,0.75)", fontFamily: "'DM Sans', sans-serif" }}
-                    >
-                      {p.desc}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+        {/* Central quote + CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="rounded-[24px] p-10 md:p-14 flex flex-col items-center gap-8 text-center"
+          style={{
+            background: "linear-gradient(135deg, rgba(212,168,67,0.10) 0%, rgba(13,30,56,0.80) 50%, rgba(26,50,96,0.60) 100%)",
+            border: "1px solid rgba(212,168,67,0.25)",
+            boxShadow: "0 32px 80px rgba(0,0,0,0.40)",
+          }}
+        >
+          <blockquote
+            style={{
+              fontFamily: "'Playfair Display', Georgia, serif",
+              fontSize: "clamp(22px, 3.5vw, 38px)",
+              fontWeight: 800,
+              lineHeight: 1.2,
+              letterSpacing: "-0.6px",
+              color: "rgba(255,255,255,0.95)",
+              margin: 0,
+              maxWidth: "28ch",
+            }}
+          >
+            "We don't just tell you how to do it.{" "}
+            <span style={{ color: "#D4A843" }}>We deliver the results."</span>
+          </blockquote>
+          <p
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: "16px",
+              color: "rgba(200,212,224,0.75)",
+              margin: 0,
+              maxWidth: "52ch",
+            }}
+          >
+            AiiAco is the turnkey AI agency. You hire one entity. We hire and manage
+            your entire AI workforce and deliver outcomes — not workload.
+          </p>
+          <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "16px", padding: "16px 36px" }}>
+            Begin Your Upgrade
+          </button>
         </motion.div>
       </div>
     </section>

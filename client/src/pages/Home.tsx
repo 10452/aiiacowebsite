@@ -1,6 +1,6 @@
 /*
- * AiiACo — Home Page (Corporate Institutional Rebuild)
- * Assembles all corporate sections in order
+ * AiiACo — Home Page (Upgraded Corporate Design)
+ * Vendasta-inspired: vivid gradients, bold typography, alternating sections
  */
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -15,23 +15,16 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#05070a" }}>
+    <div className="min-h-screen flex flex-col" style={{ background: "#050C1A" }}>
       <Navbar />
       <main className="flex-1">
         <HeroSection />
-        <div className="section-divider" />
         <PlatformSection />
-        <div className="section-divider" />
         <MethodSection />
-        <div className="section-divider" />
         <AfterUpgradeSection />
-        <div className="section-divider" />
         <Industries />
-        <div className="section-divider" />
         <EngagementModels />
-        <div className="section-divider" />
         <BuiltForCorporateAge />
-        <div className="section-divider" />
         <ContactSection />
       </main>
       <Footer />

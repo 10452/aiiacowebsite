@@ -1,7 +1,6 @@
 /*
- * AiiACo Engagement Models Section — Corporate Institutional
- * "Choose Your Upgrade Path."
- * Three models: Strategic Upgrade / Full Integration / Performance Partnership
+ * AiiACo Engagement Models — Upgraded Design
+ * Vendasta-inspired: vivid featured card, bold headline, strong CTA
  */
 import { motion } from "framer-motion";
 
@@ -19,6 +18,7 @@ const models = [
     ],
     cta: "Request Blueprint",
     featured: false,
+    bg: "rgba(9,19,37,0.80)",
   },
   {
     name: "Full Integration",
@@ -33,6 +33,7 @@ const models = [
     ],
     cta: "Request Integration",
     featured: true,
+    bg: "linear-gradient(160deg, #1A3260 0%, #0D1E38 100%)",
   },
   {
     name: "Performance Partnership",
@@ -47,6 +48,7 @@ const models = [
     ],
     cta: "Explore Partnership",
     featured: false,
+    bg: "rgba(26,26,0,0.60)",
   },
 ];
 
@@ -55,108 +57,157 @@ export default function EngagementModels() {
     document.querySelector("#upgrade")?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <section id="models" className="py-16">
+    <section
+      id="models"
+      className="py-24"
+      style={{
+        background: "linear-gradient(180deg, #050C1A 0%, #091325 100%)",
+      }}
+    >
       <div className="container">
         {/* Header */}
-        <div className="flex items-end justify-between gap-6 mb-8 flex-wrap">
-          <div>
-            <div className="corp-pill mb-4">Engagement Models</div>
-            <h2
-              className="text-white m-0"
-              style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: "clamp(22px, 3vw, 36px)",
-                letterSpacing: "-0.5px",
-              }}
-            >
-              Choose Your Upgrade Path.
-            </h2>
-          </div>
-          <p
-            className="text-base leading-relaxed max-w-[52ch] m-0"
-            style={{ color: "rgba(197,204,214,0.80)", fontFamily: "'DM Sans', sans-serif" }}
-          >
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-14 flex flex-col gap-5"
+        >
+          <div className="section-pill w-fit">Engagement Models</div>
+          <h2 className="section-headline" style={{ maxWidth: "18ch" }}>
+            Choose Your{" "}
+            <span className="accent">Upgrade Path.</span>
+          </h2>
+          <p className="section-subhead">
             Every engagement is scoped to business size and complexity. What never changes:
             execution, management, and measurable outcomes.
           </p>
-        </div>
+        </motion.div>
 
         {/* Plans grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {models.map((model, i) => (
             <motion.div
               key={model.name}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="corp-card p-6 flex flex-col"
-              style={
-                model.featured
-                  ? {
-                      border: "1px solid rgba(184,156,74,0.45)",
-                      background: "rgba(10,16,24,0.75)",
-                      boxShadow: "0 20px 60px rgba(184,156,74,0.12)",
-                    }
-                  : {}
-              }
+              transition={{ delay: i * 0.12, duration: 0.55 }}
+              className="flex flex-col rounded-[20px] overflow-hidden"
+              style={{
+                background: model.bg,
+                border: model.featured
+                  ? "1.5px solid rgba(212,168,67,0.50)"
+                  : "1px solid rgba(200,212,224,0.12)",
+                boxShadow: model.featured
+                  ? "0 0 0 1px rgba(212,168,67,0.15), 0 32px 80px rgba(212,168,67,0.12)"
+                  : "0 12px 40px rgba(0,0,0,0.35)",
+                position: "relative",
+              }}
             >
-              {/* Top */}
-              <div className="flex items-start justify-between gap-3 mb-4">
-                <h3
-                  className="m-0 font-bold"
+              {/* Featured badge */}
+              {model.featured && (
+                <div
+                  className="text-center py-2 text-xs font-black tracking-[1.2px] uppercase"
                   style={{
-                    fontSize: "18px",
-                    color: model.featured ? "#B89C4A" : "rgba(255,255,255,0.92)",
-                    fontFamily: "'Playfair Display', Georgia, serif",
-                    letterSpacing: "-0.3px",
+                    background: "linear-gradient(90deg, #D4A843, #F0C84A)",
+                    color: "#0A0800",
+                    fontFamily: "'DM Sans', sans-serif",
                   }}
                 >
-                  {model.name}
-                </h3>
-                <span className="corp-pill flex-shrink-0">{model.badge}</span>
-              </div>
+                  Most Comprehensive
+                </div>
+              )}
 
-              {/* Meta */}
-              <p
-                className="text-sm leading-relaxed mb-5"
-                style={{ color: "rgba(197,204,214,0.85)", fontFamily: "'DM Sans', sans-serif", margin: "0 0 20px" }}
-              >
-                {model.meta}
-              </p>
-
-              {/* Features */}
-              <ul className="flex flex-col gap-2.5 m-0 p-0 list-none flex-1 mb-6">
-                {model.features.map((f) => (
-                  <li
-                    key={f}
-                    className="flex items-start gap-2.5 text-sm"
-                    style={{ color: "rgba(197,204,214,0.85)", fontFamily: "'DM Sans', sans-serif" }}
+              <div className="p-7 flex flex-col flex-1 gap-5">
+                {/* Top */}
+                <div className="flex items-start justify-between gap-3">
+                  <h3
+                    style={{
+                      fontFamily: "'Playfair Display', Georgia, serif",
+                      fontSize: "clamp(18px, 2vw, 22px)",
+                      fontWeight: 800,
+                      color: model.featured ? "#D4A843" : "rgba(255,255,255,0.95)",
+                      letterSpacing: "-0.3px",
+                      margin: 0,
+                    }}
                   >
-                    <span
-                      className="flex-shrink-0 mt-[6px] w-1.5 h-1.5 rounded-full"
-                      style={{ background: "rgba(184,156,74,0.70)" }}
-                    />
-                    {f}
-                  </li>
-                ))}
-              </ul>
+                    {model.name}
+                  </h3>
+                  <span className="section-pill flex-shrink-0" style={{ fontSize: "10px" }}>
+                    {model.badge}
+                  </span>
+                </div>
 
-              {/* CTA */}
-              <button
-                onClick={scrollToUpgrade}
-                className={model.featured ? "btn-primary w-full justify-center" : "btn-ghost w-full justify-center"}
-              >
-                {model.cta}
-              </button>
+                {/* Meta */}
+                <p
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "14px",
+                    lineHeight: 1.65,
+                    color: "rgba(200,212,224,0.85)",
+                    margin: 0,
+                  }}
+                >
+                  {model.meta}
+                </p>
+
+                {/* Features */}
+                <ul className="flex flex-col gap-3 m-0 p-0 list-none flex-1">
+                  {model.features.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-start gap-3"
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: "14px",
+                        color: "rgba(200,212,224,0.85)",
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: "18px",
+                          height: "18px",
+                          borderRadius: "50%",
+                          background: "rgba(212,168,67,0.15)",
+                          border: "1px solid rgba(212,168,67,0.30)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                          marginTop: "2px",
+                          fontSize: "10px",
+                          color: "#D4A843",
+                          fontWeight: 900,
+                        }}
+                      >
+                        ✓
+                      </span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <button
+                  onClick={scrollToUpgrade}
+                  className={model.featured ? "btn-gold w-full" : "btn-outline w-full"}
+                >
+                  {model.cta}
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
 
         {/* Fine print */}
         <p
-          className="mt-5 text-sm"
-          style={{ color: "rgba(197,204,214,0.50)", fontFamily: "'DM Sans', sans-serif" }}
+          className="mt-6"
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "13px",
+            color: "rgba(200,212,224,0.40)",
+          }}
         >
           Engagement begins with a structured diagnostic call to confirm fit and scope.
         </p>
