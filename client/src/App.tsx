@@ -1,7 +1,3 @@
-/*
- * AiiACo App — Bioluminescent Cosmos Design System
- * Dark theme enforced globally — the void is the canvas
- */
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";

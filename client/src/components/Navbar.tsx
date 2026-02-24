@@ -1,17 +1,18 @@
 /*
- * AiiACo Navbar — Bioluminescent Cosmos
- * Glassmorphism sticky nav with AiiA brand mark and CTA
+ * AiiACo Navbar — Corporate Institutional
+ * Design: BlackRock meets Palantir — sticky glass topbar, gold mark, DM Sans nav
+ * No avatar. No personality. Pure authority.
  */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "What is AiiA", href: "#what-is-aiia" },
-  { label: "How It Works", href: "#how-it-works" },
+  { label: "Platform", href: "#platform" },
+  { label: "Method", href: "#method" },
   { label: "Industries", href: "#industries" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "The Team", href: "#team" },
+  { label: "Engagement Models", href: "#models" },
+  { label: "Upgrade", href: "#upgrade" },
 ];
 
 export default function Navbar() {
@@ -20,7 +21,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -32,91 +33,113 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      initial={{ y: -80, opacity: 0 }}
+      initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "glass border-b border-[#00E5FF]/10 shadow-lg shadow-[#00E5FF]/5"
-          : "bg-transparent"
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${
+        scrolled ? "topbar-glass" : "bg-transparent"
       }`}
     >
       <div className="container">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <a
-            href="/"
-            className="flex items-center gap-3 group"
-            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-          >
-            <div className="relative w-10 h-10 flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full bg-[#00E5FF]/10 group-hover:bg-[#00E5FF]/20 transition-all duration-300 animate-pulse-glow" />
-              <span className="font-cinzel text-[#00E5FF] font-bold text-lg relative z-10">A</span>
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="font-cinzel text-white font-bold text-xl tracking-widest">AiiA</span>
-              <span className="font-rajdhani text-[#7A9BB5] text-[10px] tracking-[0.2em] uppercase">AI Director</span>
-            </div>
-          </a>
+        <div className="flex items-center justify-between py-4 gap-4">
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Brand mark */}
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center gap-3 group"
+          >
+            <div
+              className="w-9 h-9 rounded-[10px] flex-shrink-0 transition-all duration-300 group-hover:shadow-[0_0_20px_rgba(184,156,74,0.30)]"
+              style={{
+                background: "linear-gradient(135deg, rgba(184,156,74,0.95), rgba(197,204,214,0.25))",
+                boxShadow: "0 8px 24px rgba(184,156,74,0.15)",
+                border: "1px solid rgba(184,156,74,0.35)",
+              }}
+            />
+            <div className="flex flex-col leading-none">
+              <span
+                className="text-white font-bold text-base tracking-[0.5px] uppercase"
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                AiiAco
+              </span>
+              <span
+                className="text-[10px] font-semibold tracking-[1.2px] uppercase"
+                style={{ color: "rgba(197,204,214,0.60)", fontFamily: "'DM Sans', sans-serif" }}
+              >
+                UPGRADE
+              </span>
+            </div>
+          </button>
+
+          {/* Desktop nav links */}
+          <div className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => (
               <button
                 key={link.href}
                 onClick={() => scrollTo(link.href)}
-                className="font-dm text-[#7A9BB5] hover:text-[#00E5FF] text-sm tracking-wide transition-colors duration-200 relative group"
+                className="text-sm font-semibold tracking-wide transition-colors duration-200 relative group"
+                style={{ color: "rgba(255,255,255,0.72)", fontFamily: "'DM Sans', sans-serif" }}
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#00E5FF] group-hover:w-full transition-all duration-300" />
+                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-[#B89C4A] group-hover:w-full transition-all duration-300" />
               </button>
             ))}
           </div>
 
           {/* CTA */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex">
             <button
-              onClick={() => scrollTo("#contact")}
-              className="relative px-6 py-2.5 font-rajdhani font-600 text-sm tracking-[0.1em] uppercase text-[#020B18] bg-[#C9A227] rounded hover:bg-[#E8C84A] transition-all duration-300 glow-gold"
+              onClick={() => scrollTo("#upgrade")}
+              className="btn-primary text-sm"
             >
-              Hire AiiA
+              Request Upgrade
             </button>
           </div>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile toggle */}
           <button
-            className="md:hidden text-[#7A9BB5] hover:text-[#00E5FF] transition-colors"
+            className="lg:hidden transition-colors duration-200"
+            style={{ color: "rgba(197,204,214,0.80)" }}
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
           >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass border-t border-[#00E5FF]/10"
+            transition={{ duration: 0.25 }}
+            className="lg:hidden topbar-glass border-t"
+            style={{ borderColor: "rgba(197,204,214,0.12)" }}
           >
-            <div className="container py-6 flex flex-col gap-4">
+            <div className="container py-5 flex flex-col gap-1">
               {navLinks.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => scrollTo(link.href)}
-                  className="text-left font-dm text-[#E8F4F8] hover:text-[#00E5FF] text-base py-2 border-b border-[#071428] transition-colors"
+                  className="text-left py-3 text-sm font-semibold border-b transition-colors duration-200"
+                  style={{
+                    color: "rgba(255,255,255,0.80)",
+                    borderColor: "rgba(197,204,214,0.10)",
+                    fontFamily: "'DM Sans', sans-serif",
+                  }}
                 >
                   {link.label}
                 </button>
               ))}
               <button
-                onClick={() => scrollTo("#contact")}
-                className="mt-2 w-full py-3 font-rajdhani font-600 text-sm tracking-[0.1em] uppercase text-[#020B18] bg-[#C9A227] rounded hover:bg-[#E8C84A] transition-all"
+                onClick={() => scrollTo("#upgrade")}
+                className="btn-primary mt-3 w-full justify-center"
               >
-                Hire AiiA
+                Request Upgrade
               </button>
             </div>
           </motion.div>

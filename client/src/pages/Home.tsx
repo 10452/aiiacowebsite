@@ -1,31 +1,39 @@
 /*
- * AiiACo Home Page — Bioluminescent Cosmos Design
- * Full lead-generation website for AiiA, the AI Director
- * Sections: Hero → What is AiiA → How It Works → Industries → Pricing → Team → Contact → Footer
+ * AiiACo — Home Page (Corporate Institutional Rebuild)
+ * Assembles all corporate sections in order
  */
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
-import WhatIsAiiA from "@/components/WhatIsAiiA";
-import HowItWorks from "@/components/HowItWorks";
+import PlatformSection from "@/components/PlatformSection";
+import MethodSection from "@/components/MethodSection";
+import AfterUpgradeSection from "@/components/AfterUpgradeSection";
 import Industries from "@/components/Industries";
-import DreamState from "@/components/DreamState";
-import Pricing from "@/components/Pricing";
-import TeamSection from "@/components/TeamSection";
+import EngagementModels from "@/components/EngagementModels";
+import BuiltForCorporateAge from "@/components/BuiltForCorporateAge";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#020B18] overflow-x-hidden">
+    <div className="min-h-screen flex flex-col" style={{ background: "#05070a" }}>
       <Navbar />
-      <HeroSection />
-      <WhatIsAiiA />
-      <HowItWorks />
-      <DreamState />
-      <Industries />
-      <Pricing />
-      <TeamSection />
-      <ContactSection />
+      <main className="flex-1">
+        <HeroSection />
+        <div className="section-divider" />
+        <PlatformSection />
+        <div className="section-divider" />
+        <MethodSection />
+        <div className="section-divider" />
+        <AfterUpgradeSection />
+        <div className="section-divider" />
+        <Industries />
+        <div className="section-divider" />
+        <EngagementModels />
+        <div className="section-divider" />
+        <BuiltForCorporateAge />
+        <div className="section-divider" />
+        <ContactSection />
+      </main>
       <Footer />
     </div>
   );
