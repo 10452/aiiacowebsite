@@ -1,25 +1,32 @@
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
-
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
+/*
+ * AiiACo Home Page — Bioluminescent Cosmos Design
+ * Full lead-generation website for AiiA, the AI Director
+ * Sections: Hero → What is AiiA → How It Works → Industries → Pricing → Team → Contact → Footer
  */
-export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import WhatIsAiiA from "@/components/WhatIsAiiA";
+import HowItWorks from "@/components/HowItWorks";
+import Industries from "@/components/Industries";
+import DreamState from "@/components/DreamState";
+import Pricing from "@/components/Pricing";
+import TeamSection from "@/components/TeamSection";
+import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
 
+export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
-      </main>
+    <div className="min-h-screen bg-[#020B18] overflow-x-hidden">
+      <Navbar />
+      <HeroSection />
+      <WhatIsAiiA />
+      <HowItWorks />
+      <DreamState />
+      <Industries />
+      <Pricing />
+      <TeamSection />
+      <ContactSection />
+      <Footer />
     </div>
   );
 }
