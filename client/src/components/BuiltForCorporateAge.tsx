@@ -4,10 +4,12 @@
 import { motion } from "framer-motion";
 
 const principles = [
-  { title: "Structural Integrity", desc: "Every AI system we deploy is built for operational durability — not demonstration." },
-  { title: "Outcome Accountability", desc: "We are measured by results, not deliverables. Performance-based models available." },
-  { title: "Executive Alignment", desc: "AiiAco engagements are designed for leadership — not IT departments." },
-  { title: "Scalable Architecture", desc: "Systems built to grow with your business, not require replacement as you scale." },
+  { title: "Diagnostic First", desc: "We do not recommend before we understand. Every engagement begins with a structured audit, not a sales pitch." },
+  { title: "Execution, Not Advice", desc: "We build and run the system. Recommendations without implementation are not our model." },
+  { title: "Measurable or Nothing", desc: "Every deployment is tied to defined KPIs. If it cannot be measured, it will not be deployed." },
+  { title: "Governance by Default", desc: "Quality controls, audit trails, and exception handling are built into every integration, not added later." },
+  { title: "Outcome Alignment", desc: "Performance-based structures are available because we are confident in what we build." },
+  { title: "No Internal Overload", desc: "We manage the system. Your team manages the business. Complexity stays on our side of the engagement." },
 ];
 
 export default function BuiltForCorporateAge() {
@@ -37,15 +39,14 @@ export default function BuiltForCorporateAge() {
         >
           <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content", margin: "0 auto 20px" }}>
             <span className="dot" />
-            Built for the Corporate Age
+            Principles
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px", textAlign: "center" }}>
-            The Standard We Hold <span className="accent">Ourselves To.</span>
+            How We <span className="accent">Operate.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px", margin: "0 auto 20px" }} />
           <p className="section-subhead" style={{ textAlign: "center", margin: "0 auto", maxWidth: "56ch" }}>
-            AiiAco operates at the intersection of strategic intelligence and operational execution.
-            The principles below are not aspirational. They are the basis on which every engagement is built.
+            These are not values statements. They are operating constraints that govern every engagement.
           </p>
         </motion.div>
 
@@ -84,15 +85,15 @@ export default function BuiltForCorporateAge() {
           style={{ padding: "52px 48px", textAlign: "center" }}
         >
           <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 16px", lineHeight: 1.1, letterSpacing: "-0.8px" }}>
-            The Corporate Age of AI Has Begun.
+            The businesses that will define this decade<br />
+            <span style={{ color: "#D4A843" }}>are the ones that integrated, not experimented.</span>
           </h2>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(15px, 1.6vw, 18px)", color: "rgba(200,215,230,0.75)", margin: "0 auto 32px", maxWidth: "56ch", lineHeight: 1.6 }}>
-            The question is not whether AI will transform your industry. It already is.
-            The question is whether your business will lead that transformation — or respond to it.
+            AiiAco principle: We do not build what clients ask for. We build what creates leverage.
           </p>
           <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
             <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "16px", padding: "16px 36px" }}>
-              Begin Your Upgrade
+              Initiate Upgrade
             </button>
             <button
               onClick={() => document.querySelector("#models")?.scrollIntoView({ behavior: "smooth" })}

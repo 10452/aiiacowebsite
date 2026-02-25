@@ -6,51 +6,51 @@ import { motion } from "framer-motion";
 
 const models = [
   {
-    name: "AI Strategy & Blueprint",
+    name: "Strategic Blueprint",
     tag: "Foundational",
     price: "Fixed Investment",
-    desc: "A comprehensive business intelligence audit and custom AI integration blueprint. Delivered as a structured document with defined priorities, deployment sequence, ROI targets, and implementation framework.",
+    desc: "A structured diagnostic and integration blueprint. Defines what to upgrade, in what order, and how to measure it.",
     includes: [
-      "Full business architecture audit",
-      "Competitive AI adoption analysis",
-      "Custom AI integration blueprint",
-      "Prioritized deployment roadmap",
-      "ROI targets and performance benchmarks",
-      "Executive presentation and handoff",
+      "Business architecture audit",
+      "Bottleneck and friction mapping",
+      "AI integration blueprint",
+      "Prioritized deployment sequence",
+      "ROI targets and success metrics",
+      "Governance and tooling framework",
     ],
-    ideal: "Organizations seeking strategic clarity before committing to full deployment.",
+    ideal: "For organizations that want strategic clarity before committing to execution.",
     featured: false,
   },
   {
     name: "Full Integration",
-    tag: "Most Engaged",
+    tag: "Recommended",
     price: "Structured Retainer",
-    desc: "End-to-end AI integration — from blueprint through deployment, management, and optimization. AiiAco functions as your AI Director, assembling and operating your complete AI workforce.",
+    desc: "End-to-end deployment: blueprint, AI workforce configuration, integration, managed optimization, and performance reporting.",
     includes: [
-      "Everything in AI Strategy & Blueprint",
-      "AI workforce assembly and deployment",
+      "Everything in Strategic Blueprint",
+      "AI workforce assembly and configuration",
       "Full operational integration",
       "Ongoing management and monitoring",
-      "Performance reporting and optimization",
+      "Performance reporting against benchmarks",
       "Quarterly strategic expansion reviews",
     ],
-    ideal: "Organizations ready to operate with AI infrastructure — not experiment with it.",
+    ideal: "For organizations ready to operate with AI infrastructure, not experiment with it.",
     featured: true,
   },
   {
     name: "Performance Partnership",
     tag: "Results-Aligned",
     price: "Milestone-Based",
-    desc: "A performance-aligned engagement model where AiiAco's compensation is structurally tied to the results delivered. Reduced upfront investment with milestone-based fees linked to defined outcomes.",
+    desc: "Reduced upfront investment. Milestone-based fees tied to defined outcomes. We earn more when you hit your targets.",
     includes: [
       "Full integration scope included",
       "Reduced upfront investment",
       "Milestone-based fee structure",
-      "Shared risk, shared reward model",
       "Defined outcome benchmarks",
+      "Shared accountability model",
       "Long-term partnership alignment",
     ],
-    ideal: "Organizations that prefer to align vendor compensation with business outcomes.",
+    ideal: "For organizations that want vendor compensation aligned to business outcomes.",
     featured: false,
   },
 ];
@@ -82,15 +82,14 @@ export default function EngagementModels() {
         >
           <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
             <span className="dot" />
-            Engagement Models
+            Models
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px" }}>
-            Three Models. <span className="accent">One Standard.</span>
+            Three Structures. <span className="accent">One Standard of Execution.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
-            Every AiiAco engagement is structured around measurable outcomes. The model
-            you choose determines the investment structure — not the quality of execution.
+            Every engagement is built around measurable outcomes. The model you choose determines the investment structure — not the quality of what gets delivered.
           </p>
         </motion.div>
 

@@ -6,8 +6,8 @@ const navLinks = [
   { label: "Platform", href: "#platform" },
   { label: "Method", href: "#method" },
   { label: "Industries", href: "#industries" },
-  { label: "Engagement Models", href: "#models" },
-  { label: "Contact", href: "#contact" },
+  { label: "Models", href: "#models" },
+  { label: "Upgrade", href: "#contact" },
 ];
 
 export default function Footer() {
@@ -48,8 +48,11 @@ export default function Footer() {
                 AiiAco
               </span>
             </div>
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.48)", margin: "0 0 8px", maxWidth: "36ch" }}>
-              The integrated AI agency. We deploy and manage your entire AI workforce — and deliver results, not workload.
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.48)", margin: "0 0 4px", maxWidth: "38ch" }}>
+              AiiAco is the AI Integration Authority for the Corporate Age.
+            </p>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12.5px", lineHeight: 1.6, color: "rgba(200,215,230,0.32)", margin: "0 0 8px", maxWidth: "38ch" }}>
+              Operational AI infrastructure engineered for measurable outcomes.
             </p>
             <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.32)", margin: 0 }}>
               www.aiiaco.com
@@ -84,7 +87,7 @@ export default function Footer() {
             © {new Date().getFullYear()} AiiAco. All rights reserved.
           </p>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.28)", margin: 0 }}>
-            AI Integration Agency · Integrated Intelligence · Measurable Outcomes
+            AI Integration Authority · Operational Infrastructure · Measurable Outcomes
           </p>
         </div>
       </div>

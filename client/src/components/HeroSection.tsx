@@ -7,16 +7,16 @@ import { motion } from "framer-motion";
 const HERO_BG = "https://private-us-east-1.manuscdn.com/sessionFile/FvSFBd374GXzqjgBtweNkq/sandbox/KV9rHWJ9VYR1NSAlzZrFLI-img-1_1771979979000_na1fn_YWlpYS1nbGFzcy1oZXJv.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRnZTRkJkMzc0R1h6cWpnQnR3ZU5rcS9zYW5kYm94L0tWOXJIV0o5VllSMU5TQWx6WnJGTEktaW1nLTFfMTc3MTk3OTk3OTAwMF9uYTFmbl9ZV2xwWVMxbmJHRnpjeTFvWlhKdi5wbmc~eC1vc3MtcHJvY2Vzcz1pbWFnZS9yZXNpemUsd18xOTIwLGhfMTkyMC9mb3JtYXQsd2VicC9xdWFsaXR5LHFfODAiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTg3NjE2MDB9fX1dfQ__&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=IIazNlOoHV8170uFXchIaHa34J5vzX23qrQb3LVV9AzF~OiH9Btz6EwN7L0xgFpZUpHLzjZBGC2NCSJn5EmFUhL2xrlVox-b-NOvzv0SO4hPEa18Zl32uzJoHrGaSqeyyyatH2USmFpbJw2xHVVXrhJB3ALS0Xk-uE1E6GVda3za0ztjngT50984lFRGyMW8eHm8hrWKrXimODsn3WolhqTB5aHLxMbD8Pgr-QWkFrVXmyhtWUh-psF3WuzurBLB~FQEs5oh4pQ1csdxuziIv1MoaWyYbJt5e6VFIbCKGhcd6~Hbf4qDtWpuRhknbOX2z2poIASSL5rf7rDsLfB0Pg__";
 
 const kpis = [
-  { num: "20+", label: "Industries Integrated" },
-  { num: "100%", label: "Managed Execution" },
-  { num: "0", label: "Internal Overload" },
+  { num: "20+", label: "Industries Integrated", sub: "Cross-industry deployment capability for high-complexity operations." },
+  { num: "100%", label: "Managed Execution", sub: "We build, integrate, and run the system. You run the business." },
+  { num: "0", label: "Internal Overload", sub: "Outcomes delivered without dumping complexity on your team." },
 ];
 
 const points = [
-  "Deep structural analysis of your business architecture",
-  "Custom AI integration blueprint with measurable ROI targets",
-  "Full deployment, managed execution, and lifecycle optimization",
-  "Performance-aligned engagement models",
+  "Business architecture audit: friction, leverage, and exposure",
+  "Custom integration blueprint aligned to measurable ROI",
+  "Deployment + managed optimization without internal overload",
+  "Optional performance alignment: milestones, metrics, and success-linked fees",
 ];
 
 export default function HeroSection() {
@@ -74,15 +74,15 @@ export default function HeroSection() {
             </div>
 
             <h1 className="display-headline">
-              The Corporate Age<br />of AI Has Begun.
-              <span className="gold-line">Upgrade or Fall Behind.</span>
+              Upgrade or Fall Behind.
+              <span className="gold-line">The Corporate Age of AI Has Begun.</span>
             </h1>
 
             <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(15px, 1.5vw, 18px)", lineHeight: 1.65, color: "rgba(200,215,230,0.82)", maxWidth: "52ch", margin: 0 }}>
-              AiiAco designs, deploys, and manages complete AI operational systems for
-              businesses that intend to lead — not experiment.{" "}
+              AiiAco designs, deploys, and manages operational AI infrastructure for businesses
+              that intend to lead, not experiment.{" "}
               <strong style={{ color: "rgba(255,255,255,0.92)", fontWeight: 700 }}>
-                We do not sell tools. We engineer outcomes.
+                We engineer outcomes. Your team keeps focus.
               </strong>
             </p>
 
@@ -99,9 +99,18 @@ export default function HeroSection() {
               <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "15px", padding: "14px 30px" }}>
                 Request Your Upgrade Plan
               </button>
-              <button onClick={scrollToPlatform} className="btn-glass" style={{ fontSize: "15px", padding: "14px 24px" }}>
-                Explore the Platform
+              <button onClick={() => document.querySelector("#method")?.scrollIntoView({ behavior: "smooth" })} className="btn-glass" style={{ fontSize: "15px", padding: "14px 24px" }}>
+                Review the Method
               </button>
+            </div>
+
+            <div style={{ marginTop: "8px", display: "flex", flexDirection: "column", gap: "6px" }}>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12.5px", color: "rgba(200,215,230,0.50)", margin: 0, letterSpacing: "0.1px" }}>
+                Not software. Not consulting. Operational AI infrastructure built to compound results.
+              </p>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", fontStyle: "italic", color: "rgba(200,215,230,0.38)", margin: 0 }}>
+                We do not deploy what’s popular. We deploy what produces leverage.
+              </p>
             </div>
           </motion.div>
 
@@ -126,6 +135,7 @@ export default function HeroSection() {
                   <span className="stat-number">{kpi.num}</span>
                   <span className="stat-label" style={{ textAlign: "right" }}>{kpi.label}</span>
                 </div>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.50)", margin: "8px 0 0", lineHeight: 1.4 }}>{kpi.sub}</p>
               </motion.div>
             ))}
 

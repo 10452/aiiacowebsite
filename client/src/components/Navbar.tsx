@@ -10,7 +10,7 @@ const navLinks = [
   { label: "Platform", href: "#platform" },
   { label: "Method", href: "#method" },
   { label: "Industries", href: "#industries" },
-  { label: "Engagement Models", href: "#models" },
+  { label: "Models", href: "#models" },
   { label: "Upgrade", href: "#contact" },
 ];
 
@@ -33,14 +33,7 @@ export default function Navbar() {
     <div style={{ position: "sticky", top: 0, zIndex: 100 }}>
       {/* Announcement bar */}
       <div className="announce-bar">
-        <span className="gold-text">AI Integration Authority</span>
-        {" — "}Performance-based models available. We earn more when you hit your targets.{" "}
-        <button
-          onClick={() => scrollTo("#models")}
-          style={{ color: "rgba(212,168,67,0.90)", fontWeight: 700, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textDecorationColor: "rgba(212,168,67,0.35)", fontSize: "inherit", fontFamily: "inherit" }}
-        >
-          See models →
-        </button>
+        <span className="gold-text">AI Integration Authority for the Corporate Age.</span>
       </div>
 
       {/* Main navbar */}

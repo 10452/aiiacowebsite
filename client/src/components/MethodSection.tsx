@@ -7,38 +7,38 @@ import { motion } from "framer-motion";
 const phases = [
   {
     num: "01",
-    title: "Business Intelligence Audit",
+    title: "Intelligence & Diagnostics",
     sub: "Understand Before Recommending",
-    body: "We begin with a structured audit of your business architecture — revenue model, operational workflow, technology stack, competitive environment, and growth constraints. This is not a discovery call. It is a diagnostic process designed to surface the precise gaps where AI integration will generate the highest return.",
-    outputs: ["Revenue and operational gap analysis", "Competitive AI adoption assessment", "Technology infrastructure review", "Priority opportunity mapping"],
+    body: "We map processes, identify bottlenecks, quantify friction, and locate high-leverage upgrade zones.",
+    outputs: ["Process mapping", "Data readiness", "Bottleneck analysis", "Revenue friction", "Risk exposure", "Competitive gaps"],
   },
   {
     num: "02",
-    title: "Strategic AI Blueprint",
+    title: "Strategic Architecture",
     sub: "Precision Before Deployment",
-    body: "Based on the audit, we develop a custom AI integration blueprint. This document defines the specific systems to be deployed, the sequence of implementation, the measurable outcomes targeted, and the performance benchmarks that will govern the engagement.",
-    outputs: ["Custom AI integration roadmap", "Prioritized deployment sequence", "ROI targets and performance benchmarks", "Resource and timeline framework"],
+    body: "We design the integration blueprint: what gets upgraded first, why it matters, how it will be measured, and how it scales.",
+    outputs: ["Integration blueprint", "ROI prioritization", "Governance", "Tooling selection", "Timeline", "Success metrics"],
   },
   {
     num: "03",
-    title: "AI Workforce Assembly",
-    sub: "The Right Systems for the Right Functions",
-    body: "AiiAco selects, configures, and deploys the AI systems required to execute the blueprint. This is a curated, purpose-built AI workforce — each system selected for its specific function within your operational architecture.",
-    outputs: ["AI system selection and configuration", "Workflow integration and testing", "Performance baseline establishment", "Team onboarding and transition support"],
+    title: "Future State Simulation",
+    sub: "See the Outcome Before Execution",
+    body: "Before implementation, you see the upgraded operating model: workflows, automations, decision loops, and expected outcomes.",
+    outputs: ["Future-state map", "Outcome forecast", "KPI framework", "Investment structure", "Milestones", "Acceptance criteria"],
   },
   {
     num: "04",
-    title: "Managed Execution",
+    title: "Deployment & Integration",
     sub: "We Run It. You Receive Results.",
-    body: "AiiAco manages the operational execution of your AI infrastructure. We monitor performance, resolve issues, optimize outputs, and ensure that the systems continue to deliver against the targets defined in the blueprint. You do not manage AI. You manage your business.",
-    outputs: ["Ongoing system monitoring and management", "Performance reporting against benchmarks", "Continuous optimization and refinement", "Escalation and issue resolution"],
+    body: "We configure the AI workforce, integrate systems, and operationalize execution. No tool chaos. No internal burden.",
+    outputs: ["Automation build", "Agent orchestration", "Integrations", "Quality controls", "Monitoring", "Documentation"],
   },
   {
     num: "05",
-    title: "Lifecycle Expansion",
-    sub: "Growth Without Complexity",
-    body: "As your business evolves, your AI infrastructure evolves with it. AiiAco conducts regular strategic reviews to identify new integration opportunities, expand existing systems, and ensure that your AI capabilities remain aligned with your current and future objectives.",
-    outputs: ["Quarterly strategic review", "Capability expansion planning", "New opportunity identification", "Long-term AI roadmap management"],
+    title: "Managed Optimization",
+    sub: "Compounding Performance Over Time",
+    body: "We run the system: reporting, improvement cycles, scaling support, and optional milestone-based performance alignment.",
+    outputs: ["Optimization cycles", "Performance reporting", "Scaling", "Governance", "Success-linked fees", "Continuous improvement"],
   },
 ];
 
@@ -66,16 +66,14 @@ export default function MethodSection() {
         >
           <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
             <span className="dot" />
-            The Method
+            Method
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px" }}>
-            Five Phases. <span className="accent">One Outcome.</span>
+            From Diagnostics to <span className="accent">Compounding Results.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
-            A structured, five-phase process designed to take any business from its current
-            operational state to a fully integrated, AI-powered architecture — with
-            measurable outcomes at every stage.
+            A disciplined upgrade path from legacy operations to AI-driven execution, without internal overload.
           </p>
         </motion.div>
 

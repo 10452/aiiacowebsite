@@ -7,33 +7,33 @@ import { motion } from "framer-motion";
 const foundations = [
   {
     num: "01",
-    title: "Business Intelligence Mapping",
-    body: "We begin by learning your business with the depth of a strategic partner — not a vendor. Revenue architecture, operational bottlenecks, competitive positioning, and growth constraints are catalogued before a single AI recommendation is made.",
+    title: "Business Intelligence Audit",
+    body: "A comprehensive diagnostic of operational friction, revenue drag, data readiness, and competitive exposure. No templates. No assumptions.",
   },
   {
     num: "02",
-    title: "AI Integration Blueprint",
-    body: "Every engagement produces a custom integration blueprint: a structured, sequenced plan that maps AI capabilities to your specific operational gaps and growth objectives. No generic frameworks. No recycled playbooks.",
+    title: "Strategic AI Architecture",
+    body: "A custom integration blueprint: priorities, timeline, metrics, governance, and ROI targets.",
   },
   {
     num: "03",
-    title: "Managed Deployment",
-    body: "AiiAco executes. We do not hand you a roadmap and leave. Our team deploys, configures, and integrates AI systems directly into your operations — with full accountability for outcomes.",
+    title: "AI Workforce Deployment",
+    body: "We configure the AI workforce your business actually needs: automations, agents, and integrated systems with accountability.",
   },
   {
     num: "04",
-    title: "AI Workforce Management",
-    body: "Rather than requiring you to hire, manage, and coordinate multiple AI specialists, AiiAco functions as your AI Director — assembling, deploying, and managing a complete AI workforce on your behalf.",
+    title: "Full Execution",
+    body: "Implementation is not optional. We deploy and integrate workflows end-to-end so outcomes land in operations, not in documents.",
   },
   {
     num: "05",
-    title: "Performance Alignment",
-    body: "Our performance-based engagement model means our compensation is structurally tied to the results we deliver. When you grow, we grow. This is not a consulting model. It is a partnership model.",
+    title: "Managed Optimization",
+    body: "Continuous monitoring, quality control, and iteration. AI is maintained like infrastructure, not treated like a project.",
   },
   {
     num: "06",
-    title: "Continuous Optimization",
-    body: "AI integration is not a one-time event. AiiAco provides ongoing lifecycle management — monitoring performance, refining systems, and expanding capabilities as your business evolves.",
+    title: "Performance Alignment",
+    body: "Optional success-linked structures that align incentives. We earn more when the system produces measurable outcomes.",
   },
 ];
 
@@ -61,16 +61,17 @@ export default function PlatformSection() {
         >
           <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
             <span className="dot" />
-            The Platform
+            Platform
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px" }}>
-            What AiiAco <span className="accent">Actually Does</span>
+            Operational AI <span className="accent">Infrastructure.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
-          <p className="section-subhead">
-            AiiAco is not a software platform. It is an integrated AI operating system
-            for your business — designed, deployed, and managed by a team that treats
-            your outcomes as its own.
+          <p className="section-subhead" style={{ marginBottom: "16px" }}>
+            Most vendors sell tools. Most consultants sell recommendations. AiiAco delivers an integrated operating model: diagnostics, architecture, deployment, and managed optimization.
+          </p>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.55)", margin: 0, maxWidth: "58ch" }}>
+            AI is no longer a novelty. It is infrastructure. Businesses that treat it as experimentation will be outpaced by businesses that integrate intelligence into operations.
           </p>
         </motion.div>
 

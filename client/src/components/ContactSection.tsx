@@ -1,5 +1,6 @@
 /*
  * AiiACo Contact Section — Liquid Glass Bio-Organic Design
+ * Two-path lead capture: Fast Path (30s) + Structured Intake (recommended)
  */
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -12,24 +13,42 @@ const industries = [
   "Beauty, Health & Wellness", "Other",
 ];
 
-const models = [
-  "AI Strategy & Blueprint", "Full Integration", "Performance Partnership", "Not sure yet",
+const engagementOptions = [
+  "Strategic Blueprint", "Full Integration", "Performance Partnership", "Not sure yet",
+];
+
+const whatHappensNext = [
+  { n: "01", t: "Review within 24 hours" },
+  { n: "02", t: "Direct response aligned to your scenario" },
+  { n: "03", t: "Scope, metrics, and feasibility confirmed" },
+  { n: "04", t: "Upgrade plan initiated" },
 ];
 
 export default function ContactSection() {
-  const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({
+  const [fastSubmitted, setFastSubmitted] = useState(false);
+  const [fullSubmitted, setFullSubmitted] = useState(false);
+  const [fastForm, setFastForm] = useState({ name: "", email: "" });
+  const [fullForm, setFullForm] = useState({
     name: "", company: "", email: "", phone: "",
     industry: "", model: "", revenue: "", message: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleFastChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFastForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleFullChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFullForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleFastSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setFastSubmitted(true);
+  };
+
+  const handleFullSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFullSubmitted(true);
   };
 
   return (
@@ -45,121 +64,220 @@ export default function ContactSection() {
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(900px 600px at 30% 50%, rgba(184,156,74,0.04) 0%, transparent 55%)" }} />
 
       <div className="container" style={{ position: "relative", zIndex: 2 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: "64px", alignItems: "flex-start" }}>
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          style={{ maxWidth: "640px", marginBottom: "64px" }}
+        >
+          <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
+            <span className="dot" />
+            Upgrade
+          </div>
+          <h2 className="section-headline" style={{ marginBottom: "20px" }}>
+            Initiate <span className="accent">Upgrade.</span>
+          </h2>
+          <div className="gold-divider" style={{ marginBottom: "20px" }} />
+          <p className="section-subhead">
+            Describe your business and operational friction. We will determine what should be upgraded, how, and in what order.
+          </p>
+        </motion.div>
 
-          {/* Left — copy */}
+        <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: "48px", alignItems: "flex-start" }}>
+
+          {/* Left — Forms */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
           >
-            <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
-              <span className="dot" />
-              Initiate Engagement
-            </div>
-            <h2 className="section-headline" style={{ marginBottom: "20px" }}>
-              Begin Your <span className="accent">AI Upgrade.</span>
-            </h2>
-            <div className="gold-divider" style={{ marginBottom: "24px" }} />
-            <p className="section-subhead" style={{ marginBottom: "40px" }}>
-              Every AiiAco engagement begins with a structured discovery process.
-              Complete the form and a member of our team will contact you within
-              one business day to confirm fit and outline next steps.
-            </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              {[
-                { title: "No Obligation", desc: "The initial discovery call is complimentary. We assess fit before proposing any engagement." },
-                { title: "Confidential", desc: "All information shared during the discovery process is treated with full confidentiality." },
-                { title: "Structured Process", desc: "Every engagement begins with a business intelligence audit — not a sales presentation." },
-              ].map((item) => (
-                <div key={item.title} style={{ display: "flex", gap: "14px", alignItems: "flex-start" }}>
-                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "rgba(184,156,74,0.80)", marginTop: "6px", flexShrink: 0 }} />
-                  <div>
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "14px", color: "rgba(255,255,255,0.90)", margin: "0 0 4px" }}>{item.title}</p>
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", color: "rgba(200,215,230,0.62)", margin: 0, lineHeight: 1.6 }}>{item.desc}</p>
-                  </div>
+            {/* Fast Path */}
+            <div className="glass-card" style={{ padding: "28px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
+                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "18px", fontWeight: 700, color: "rgba(255,255,255,0.96)", letterSpacing: "-0.1px" }}>
+                  Executive Call Request
                 </div>
-              ))}
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10px", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(184,156,74,0.80)", background: "rgba(184,156,74,0.10)", border: "1px solid rgba(184,156,74,0.25)", borderRadius: "999px", padding: "3px 10px" }}>
+                  30 seconds
+                </span>
+              </div>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.55)", margin: "0 0 20px", lineHeight: 1.5 }}>
+                For teams that want a direct diagnostic conversation first.
+              </p>
+
+              {fastSubmitted ? (
+                <div style={{ textAlign: "center", padding: "20px 0" }}>
+                  <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(184,156,74,0.12)", border: "1px solid rgba(184,156,74,0.30)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", fontSize: "18px", color: "#D4A843" }}>✓</div>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>Request received.</p>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.60)", margin: 0 }}>We will contact you within 24 hours.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleFastSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                    <div className="form-group">
+                      <label className="form-label">Name *</label>
+                      <input name="name" required value={fastForm.name} onChange={handleFastChange} placeholder="Your name" className="form-input" />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Email *</label>
+                      <input name="email" type="email" required value={fastForm.email} onChange={handleFastChange} placeholder="your@email.com" className="form-input" />
+                    </div>
+                  </div>
+                  <button type="submit" className="btn-gold" style={{ justifyContent: "center", marginTop: "4px" }}>
+                    Request Executive Call
+                  </button>
+                </form>
+              )}
+            </div>
+
+            {/* Structured Intake */}
+            <div className="glass-card" style={{ padding: "28px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
+                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "18px", fontWeight: 700, color: "rgba(255,255,255,0.96)", letterSpacing: "-0.1px" }}>
+                  Structured Intake
+                </div>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10px", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(210,220,235,0.70)", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "999px", padding: "3px 10px" }}>
+                  Recommended
+                </span>
+              </div>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.55)", margin: "0 0 20px", lineHeight: 1.5 }}>
+                Allows us to prepare a relevant, scenario-specific response before the first conversation.
+              </p>
+
+              {fullSubmitted ? (
+                <div className="glass-card-gold" style={{ padding: "36px", textAlign: "center" }}>
+                  <div style={{ width: "52px", height: "52px", borderRadius: "50%", background: "rgba(184,156,74,0.15)", border: "1px solid rgba(184,156,74,0.35)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px", fontSize: "20px", color: "#D4A843" }}>✓</div>
+                  <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "22px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 10px" }}>Intake Received</h3>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", color: "rgba(200,215,230,0.70)", lineHeight: 1.6, margin: 0 }}>
+                    A member of the AiiAco team will review your submission and respond within 24 hours with a scenario-aligned reply.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleFullSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                    <div className="form-group">
+                      <label className="form-label">Full Name *</label>
+                      <input name="name" required value={fullForm.name} onChange={handleFullChange} placeholder="Your name" className="form-input" />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Company *</label>
+                      <input name="company" required value={fullForm.company} onChange={handleFullChange} placeholder="Company name" className="form-input" />
+                    </div>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                    <div className="form-group">
+                      <label className="form-label">Email *</label>
+                      <input name="email" type="email" required value={fullForm.email} onChange={handleFullChange} placeholder="your@email.com" className="form-input" />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Phone</label>
+                      <input name="phone" value={fullForm.phone} onChange={handleFullChange} placeholder="+1 (000) 000-0000" className="form-input" />
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Engagement Interest</label>
+                    <select name="model" value={fullForm.model} onChange={handleFullChange} className="form-input">
+                      <option value="">Select engagement type</option>
+                      {engagementOptions.map((m) => <option key={m} value={m}>{m}</option>)}
+                    </select>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                    <div className="form-group">
+                      <label className="form-label">Industry</label>
+                      <select name="industry" value={fullForm.industry} onChange={handleFullChange} className="form-input">
+                        <option value="">Select industry</option>
+                        {industries.map((ind) => <option key={ind} value={ind}>{ind}</option>)}
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Annual Revenue</label>
+                      <select name="revenue" value={fullForm.revenue} onChange={handleFullChange} className="form-input">
+                        <option value="">Select range</option>
+                        <option>Under $1M</option>
+                        <option>$1M – $5M</option>
+                        <option>$5M – $25M</option>
+                        <option>$25M – $100M</option>
+                        <option>$100M+</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Business Overview</label>
+                    <textarea
+                      name="message"
+                      value={fullForm.message}
+                      onChange={handleFullChange}
+                      placeholder="Describe operations, bottlenecks, targets, and constraints. We will determine the upgrade sequence."
+                      className="form-input"
+                      style={{ minHeight: "110px", resize: "vertical" }}
+                    />
+                  </div>
+                  <button type="submit" className="btn-gold" style={{ justifyContent: "center", marginTop: "4px" }}>
+                    Submit Structured Intake
+                  </button>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11.5px", color: "rgba(200,215,230,0.35)", textAlign: "center", margin: 0 }}>
+                    Your information is treated with full confidentiality and will not be shared with third parties.
+                  </p>
+                </form>
+              )}
             </div>
           </motion.div>
 
-          {/* Right — form */}
+          {/* Right — What Happens Next + quote */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
           >
-            {submitted ? (
-              <div className="glass-card-gold" style={{ padding: "48px", textAlign: "center" }}>
-                <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(184,156,74,0.15)", border: "1px solid rgba(184,156,74,0.35)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", fontSize: "22px", color: "#D4A843" }}>✓</div>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "26px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 12px" }}>Submission Received</h3>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14.5px", color: "rgba(200,215,230,0.72)", lineHeight: 1.6, margin: 0 }}>
-                  A member of the AiiAco team will contact you within one business day
-                  to schedule your initial discovery session.
-                </p>
+            <div className="glass-card" style={{ padding: "28px" }}>
+              <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "18px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "24px", letterSpacing: "-0.1px" }}>
+                What Happens Next
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="glass-card" style={{ padding: "36px", display: "flex", flexDirection: "column", gap: "16px" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                  <div className="form-group">
-                    <label className="form-label">Full Name *</label>
-                    <input name="name" required value={form.name} onChange={handleChange} placeholder="Your name" className="form-input" />
+              <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+                {whatHappensNext.map((step) => (
+                  <div key={step.n} style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+                    <div className="phase-badge" style={{ width: "32px", height: "32px", fontSize: "11px", borderRadius: "9px", flexShrink: 0 }}>{step.n}</div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(210,220,235,0.85)", paddingTop: "6px", lineHeight: 1.4 }}>
+                      {step.t}
+                    </div>
                   </div>
-                  <div className="form-group">
-                    <label className="form-label">Company *</label>
-                    <input name="company" required value={form.company} onChange={handleChange} placeholder="Company name" className="form-input" />
+                ))}
+              </div>
+            </div>
+
+            <div className="glass-card-gold" style={{ padding: "28px" }}>
+              <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(17px, 1.8vw, 22px)", fontWeight: 700, fontStyle: "italic", color: "rgba(255,255,255,0.92)", lineHeight: 1.3, margin: "0 0 16px", letterSpacing: "-0.2px" }}>
+                "AiiAco principle: We do not build what clients ask for. We build what creates leverage."
+              </p>
+              <div style={{ height: "1px", background: "rgba(184,156,74,0.20)", marginBottom: "16px" }} />
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.55)", margin: 0, lineHeight: 1.55 }}>
+                Every engagement begins with a diagnostic. We assess your operational architecture before making a single recommendation.
+              </p>
+            </div>
+
+            <div className="glass-card" style={{ padding: "24px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                {[
+                  { title: "No Obligation", desc: "The initial discovery call is complimentary." },
+                  { title: "Confidential", desc: "All information shared is treated with full confidentiality." },
+                  { title: "Diagnostic First", desc: "Every engagement begins with an audit, not a sales pitch." },
+                ].map((item) => (
+                  <div key={item.title} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                    <div style={{ width: "7px", height: "7px", borderRadius: "50%", background: "rgba(184,156,74,0.75)", marginTop: "7px", flexShrink: 0 }} />
+                    <div>
+                      <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "13.5px", color: "rgba(255,255,255,0.88)", margin: "0 0 3px" }}>{item.title}</p>
+                      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.58)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+                    </div>
                   </div>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                  <div className="form-group">
-                    <label className="form-label">Email Address *</label>
-                    <input name="email" type="email" required value={form.email} onChange={handleChange} placeholder="your@email.com" className="form-input" />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Phone Number</label>
-                    <input name="phone" value={form.phone} onChange={handleChange} placeholder="+1 (000) 000-0000" className="form-input" />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Industry *</label>
-                  <select name="industry" required value={form.industry} onChange={handleChange} className="form-input">
-                    <option value="">Select your industry</option>
-                    {industries.map((ind) => <option key={ind} value={ind}>{ind}</option>)}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Engagement Model of Interest</label>
-                  <select name="model" value={form.model} onChange={handleChange} className="form-input">
-                    <option value="">Select a model</option>
-                    {models.map((m) => <option key={m} value={m}>{m}</option>)}
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Annual Revenue Range</label>
-                  <select name="revenue" value={form.revenue} onChange={handleChange} className="form-input">
-                    <option value="">Select range</option>
-                    <option>Under $1M</option>
-                    <option>$1M – $5M</option>
-                    <option>$5M – $25M</option>
-                    <option>$25M – $100M</option>
-                    <option>$100M+</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">What are your primary business objectives?</label>
-                  <textarea name="message" value={form.message} onChange={handleChange} placeholder="Describe your current challenges and what you are trying to achieve..." className="form-input" style={{ minHeight: "100px", resize: "vertical" }} />
-                </div>
-                <button type="submit" className="btn-gold" style={{ justifyContent: "center", marginTop: "4px" }}>
-                  Submit Inquiry
-                </button>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11.5px", color: "rgba(200,215,230,0.40)", textAlign: "center", margin: 0 }}>
-                  By submitting, you agree to be contacted by the AiiAco team. Your information will not be shared with third parties.
-                </p>
-              </form>
-            )}
+                ))}
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>

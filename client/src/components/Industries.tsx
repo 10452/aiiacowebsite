@@ -15,12 +15,12 @@ const industries = [
 ];
 
 const capabilities = [
-  { title: "Revenue Operations", desc: "Lead qualification, pipeline management, conversion optimization, and revenue forecasting." },
-  { title: "Customer Operations", desc: "Automated support, personalization engines, retention systems, and lifecycle management." },
+  { title: "Revenue Operations", desc: "Lead qualification, pipeline automation, conversion tracking, and revenue forecasting." },
+  { title: "Customer Operations", desc: "Automated support, response consistency, retention systems, and lifecycle management." },
   { title: "Marketing Intelligence", desc: "Content generation, campaign optimization, audience segmentation, and performance analytics." },
   { title: "Financial Operations", desc: "Reporting automation, anomaly detection, compliance monitoring, and forecasting." },
-  { title: "Talent & HR Operations", desc: "Recruitment automation, onboarding systems, performance management, and workforce analytics." },
-  { title: "Product & Development", desc: "Code generation, QA automation, documentation, and development workflow optimization." },
+  { title: "Workforce Optimization", desc: "Recruitment automation, onboarding systems, performance management, and workforce analytics." },
+  { title: "Operational Infrastructure", desc: "Workflow orchestration, documentation automation, approvals, and decision support." },
 ];
 
 export default function Industries() {
@@ -47,16 +47,14 @@ export default function Industries() {
         >
           <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
             <span className="dot" />
-            Cross-Industry Deployment
+            Industries
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px" }}>
-            Built for Any Industry. <span className="accent">Optimized for Yours.</span>
+            Industry-Agnostic. <span className="accent">Operationally Precise.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
-            AiiAco has developed integration frameworks across more than twenty industries.
-            Our methodology adapts to the specific operational architecture, regulatory
-            environment, and competitive dynamics of each sector.
+            AI integration is not industry-specific. Operational drag, manual dependency, and decision latency exist across every sector. AiiAco has built and deployed across more than twenty industries.
           </p>
         </motion.div>
 
