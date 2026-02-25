@@ -1,20 +1,13 @@
 /*
- * AiiACo Built For Corporate Age — Upgraded Design
- * Vendasta-inspired: vivid gradient section, large quote, bold stats
+ * AiiACo Built For Corporate Age — Liquid Glass Bio-Organic Design
  */
 import { motion } from "framer-motion";
 
-const pillars = [
-  { num: "1", title: "Hire One. Deploy Many.", desc: "Instead of sourcing, onboarding, and managing multiple AI vendors, you engage AiiAco. We architect the entire AI workforce and manage it on your behalf." },
-  { num: "2", title: "No Learning Curve.", desc: "You do not need to become an AI expert. We translate your business goals into operational systems. You receive outcomes, not complexity." },
-  { num: "3", title: "Aligned Incentives.", desc: "In our Performance Partnership model, our compensation is tied to your results. We build for outcomes because that is how we are measured." },
-];
-
-const stats = [
-  { num: "20+", label: "Industries" },
-  { num: "5", label: "Deployment Phases" },
-  { num: "3", label: "Engagement Models" },
-  { num: "0", label: "Internal Overload" },
+const principles = [
+  { title: "Structural Integrity", desc: "Every AI system we deploy is built for operational durability — not demonstration." },
+  { title: "Outcome Accountability", desc: "We are measured by results, not deliverables. Performance-based models available." },
+  { title: "Executive Alignment", desc: "AiiAco engagements are designed for leadership — not IT departments." },
+  { title: "Scalable Architecture", desc: "Systems built to grow with your business, not require replacement as you scale." },
 ];
 
 export default function BuiltForCorporateAge() {
@@ -24,168 +17,91 @@ export default function BuiltForCorporateAge() {
   return (
     <section
       id="about"
-      className="py-24"
       style={{
-        background: "linear-gradient(160deg, #0D2050 0%, #091325 40%, #1A1200 100%)",
         position: "relative",
+        padding: "120px 0",
+        background: "#03050A",
         overflow: "hidden",
       }}
     >
-      {/* Background glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "radial-gradient(800px 500px at 50% 0%, rgba(212,168,67,0.10) 0%, transparent 60%)",
-        }}
-      />
+      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(1200px 700px at 50% 50%, rgba(3,5,10,0.60) 0%, rgba(3,5,10,0.90) 70%)" }} />
 
-      <div className="container relative z-10">
+      <div className="container" style={{ position: "relative", zIndex: 2 }}>
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-14 flex flex-col gap-5 items-center text-center"
+          style={{ textAlign: "center", marginBottom: "64px" }}
         >
-          <div className="section-pill">Built for the Corporate Age</div>
-          <h2 className="section-headline" style={{ maxWidth: "22ch", textAlign: "center" }}>
-            One Engagement.{" "}
-            <span className="accent">Your Entire AI Infrastructure.</span>
+          <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content", margin: "0 auto 20px" }}>
+            <span className="dot" />
+            Built for the Corporate Age
+          </div>
+          <h2 className="section-headline" style={{ marginBottom: "20px", textAlign: "center" }}>
+            The Standard We Hold <span className="accent">Ourselves To.</span>
           </h2>
-          <p className="section-subhead" style={{ textAlign: "center", maxWidth: "60ch", margin: "0 auto" }}>
-            AiiAco is not a software subscription. It is not a consulting report. It is the
-            operating layer that transforms your business into an AI-powered enterprise.
+          <div className="gold-divider" style={{ marginBottom: "20px", margin: "0 auto 20px" }} />
+          <p className="section-subhead" style={{ textAlign: "center", margin: "0 auto", maxWidth: "56ch" }}>
+            AiiAco operates at the intersection of strategic intelligence and operational execution.
+            The principles below are not aspirational. They are the basis on which every engagement is built.
           </p>
         </motion.div>
 
-        {/* Stats row */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-px mb-14"
-          style={{
-            background: "rgba(200,212,224,0.10)",
-            borderRadius: "18px",
-            overflow: "hidden",
-            border: "1px solid rgba(200,212,224,0.12)",
-          }}
-        >
-          {stats.map((s, i) => (
-            <div
-              key={s.label}
-              className="flex flex-col items-center justify-center py-8 gap-1"
-              style={{
-                background: i % 2 === 0 ? "rgba(9,19,37,0.75)" : "rgba(13,30,56,0.65)",
-              }}
-            >
-              <span className="stat-number">{s.num}</span>
-              <span className="stat-label">{s.label}</span>
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Three pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
-          {pillars.map((p, i) => (
+        {/* Principles grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "14px", marginBottom: "64px" }}>
+          {principles.map((p, i) => (
             <motion.div
               key={p.title}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.12, duration: 0.5 }}
-              className="card-base p-7 flex flex-col gap-4"
+              transition={{ delay: i * 0.10, duration: 0.5 }}
+              className="glass-card"
+              style={{ padding: "28px", textAlign: "center" }}
             >
-              <div
-                className="w-10 h-10 rounded-[12px] flex items-center justify-center flex-shrink-0"
-                style={{
-                  background: "linear-gradient(135deg, rgba(212,168,67,0.20), rgba(212,168,67,0.06))",
-                  border: "1px solid rgba(212,168,67,0.30)",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
-                    fontWeight: 900,
-                    fontSize: "16px",
-                    color: "#D4A843",
-                  }}
-                >
-                  {p.num}
-                </span>
+              <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "rgba(184,156,74,0.10)", border: "1px solid rgba(184,156,74,0.22)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px", fontSize: "16px", color: "rgba(184,156,74,0.80)" }}>
+                ◆
               </div>
-              <h4
-                style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  fontSize: "clamp(17px, 2vw, 21px)",
-                  fontWeight: 800,
-                  color: "rgba(255,255,255,0.95)",
-                  letterSpacing: "-0.3px",
-                  margin: 0,
-                }}
-              >
+              <h4 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "19px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 10px", letterSpacing: "-0.2px" }}>
                 {p.title}
               </h4>
-              <p
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "14.5px",
-                  lineHeight: 1.65,
-                  color: "rgba(200,212,224,0.82)",
-                  margin: 0,
-                }}
-              >
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", lineHeight: 1.6, color: "rgba(200,215,230,0.65)", margin: 0 }}>
                 {p.desc}
               </p>
             </motion.div>
           ))}
         </div>
 
-        {/* Central quote + CTA */}
+        {/* CTA block */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="rounded-[24px] p-10 md:p-14 flex flex-col items-center gap-8 text-center"
-          style={{
-            background: "linear-gradient(135deg, rgba(212,168,67,0.10) 0%, rgba(13,30,56,0.80) 50%, rgba(26,50,96,0.60) 100%)",
-            border: "1px solid rgba(212,168,67,0.25)",
-            boxShadow: "0 32px 80px rgba(0,0,0,0.40)",
-          }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="glass-card-gold"
+          style={{ padding: "52px 48px", textAlign: "center" }}
         >
-          <blockquote
-            style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: "clamp(22px, 3.5vw, 38px)",
-              fontWeight: 800,
-              lineHeight: 1.2,
-              letterSpacing: "-0.6px",
-              color: "rgba(255,255,255,0.95)",
-              margin: 0,
-              maxWidth: "28ch",
-            }}
-          >
-            "We don't just tell you how to do it.{" "}
-            <span style={{ color: "#D4A843" }}>We deliver the results."</span>
-          </blockquote>
-          <p
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "16px",
-              color: "rgba(200,212,224,0.75)",
-              margin: 0,
-              maxWidth: "52ch",
-            }}
-          >
-            AiiAco is the turnkey AI agency. You hire one entity. We hire and manage
-            your entire AI workforce and deliver outcomes — not workload.
+          <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 16px", lineHeight: 1.1, letterSpacing: "-0.8px" }}>
+            The Corporate Age of AI Has Begun.
+          </h2>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(15px, 1.6vw, 18px)", color: "rgba(200,215,230,0.75)", margin: "0 auto 32px", maxWidth: "56ch", lineHeight: 1.6 }}>
+            The question is not whether AI will transform your industry. It already is.
+            The question is whether your business will lead that transformation — or respond to it.
           </p>
-          <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "16px", padding: "16px 36px" }}>
-            Begin Your Upgrade
-          </button>
+          <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
+            <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "16px", padding: "16px 36px" }}>
+              Begin Your Upgrade
+            </button>
+            <button
+              onClick={() => document.querySelector("#models")?.scrollIntoView({ behavior: "smooth" })}
+              className="btn-glass"
+              style={{ fontSize: "16px", padding: "16px 28px" }}
+            >
+              Review Engagement Models
+            </button>
+          </div>
         </motion.div>
       </div>
     </section>

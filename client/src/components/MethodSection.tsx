@@ -1,44 +1,44 @@
 /*
- * AiiACo Method Section — Upgraded Design
- * Vendasta-inspired: alternating bg, large phase cards, vivid phase badges
+ * AiiACo Method Section — Liquid Glass Bio-Organic Design
+ * 5-phase process with glass cards and gold spine
  */
 import { motion } from "framer-motion";
 
 const phases = [
   {
-    phase: "Phase 01",
-    title: "Intelligence & Diagnostics",
-    desc: "We assess operational bottlenecks, data readiness, revenue friction, and competitive exposure.",
-    tags: ["Business architecture", "Process mapping", "ROI targets", "Risk assessment"],
-    accent: "rgba(212,168,67,0.15)",
+    num: "01",
+    title: "Business Intelligence Audit",
+    sub: "Understand Before Recommending",
+    body: "We begin with a structured audit of your business architecture — revenue model, operational workflow, technology stack, competitive environment, and growth constraints. This is not a discovery call. It is a diagnostic process designed to surface the precise gaps where AI integration will generate the highest return.",
+    outputs: ["Revenue and operational gap analysis", "Competitive AI adoption assessment", "Technology infrastructure review", "Priority opportunity mapping"],
   },
   {
-    phase: "Phase 02",
-    title: "Strategic AI Architecture",
-    desc: "A custom integration blueprint with priorities, timeline, metrics, and investment structure.",
-    tags: ["Blueprint", "Opportunity ranking", "Timeline", "Success metrics"],
-    accent: "rgba(26,50,96,0.40)",
+    num: "02",
+    title: "Strategic AI Blueprint",
+    sub: "Precision Before Deployment",
+    body: "Based on the audit, we develop a custom AI integration blueprint. This document defines the specific systems to be deployed, the sequence of implementation, the measurable outcomes targeted, and the performance benchmarks that will govern the engagement.",
+    outputs: ["Custom AI integration roadmap", "Prioritized deployment sequence", "ROI targets and performance benchmarks", "Resource and timeline framework"],
   },
   {
-    phase: "Phase 03",
-    title: "Deployment",
-    desc: "We configure, integrate, and operationalize the AI workforce: automations, agents, and systems.",
-    tags: ["Integrations", "Automation", "AI agents", "Quality controls"],
-    accent: "rgba(212,168,67,0.15)",
+    num: "03",
+    title: "AI Workforce Assembly",
+    sub: "The Right Systems for the Right Functions",
+    body: "AiiAco selects, configures, and deploys the AI systems required to execute the blueprint. This is a curated, purpose-built AI workforce — each system selected for its specific function within your operational architecture.",
+    outputs: ["AI system selection and configuration", "Workflow integration and testing", "Performance baseline establishment", "Team onboarding and transition support"],
   },
   {
-    phase: "Phase 04",
-    title: "Managed Optimization",
-    desc: "Continuous improvement, monitoring, and scaling to ensure results compound over time.",
-    tags: ["Monitoring", "Optimization", "Reporting", "Scaling"],
-    accent: "rgba(26,50,96,0.40)",
+    num: "04",
+    title: "Managed Execution",
+    sub: "We Run It. You Receive Results.",
+    body: "AiiAco manages the operational execution of your AI infrastructure. We monitor performance, resolve issues, optimize outputs, and ensure that the systems continue to deliver against the targets defined in the blueprint. You do not manage AI. You manage your business.",
+    outputs: ["Ongoing system monitoring and management", "Performance reporting against benchmarks", "Continuous optimization and refinement", "Escalation and issue resolution"],
   },
   {
-    phase: "Phase 05",
-    title: "Measurable Results",
-    desc: "Documented outcomes tied directly to business objectives. Optional success-linked pricing models.",
-    tags: ["Outcome delivery", "Metric alignment", "Milestones", "Performance partnership"],
-    accent: "rgba(212,168,67,0.15)",
+    num: "05",
+    title: "Lifecycle Expansion",
+    sub: "Growth Without Complexity",
+    body: "As your business evolves, your AI infrastructure evolves with it. AiiAco conducts regular strategic reviews to identify new integration opportunities, expand existing systems, and ensure that your AI capabilities remain aligned with your current and future objectives.",
+    outputs: ["Quarterly strategic review", "Capability expansion planning", "New opportunity identification", "Long-term AI roadmap management"],
   },
 ];
 
@@ -46,106 +46,89 @@ export default function MethodSection() {
   return (
     <section
       id="method"
-      className="py-24"
       style={{
-        background: "linear-gradient(180deg, #050C1A 0%, #0D2050 50%, #050C1A 100%)",
+        position: "relative",
+        padding: "120px 0",
+        background: "#03050A",
+        overflow: "hidden",
       }}
     >
-      <div className="container">
+      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(800px 600px at 10% 60%, rgba(184,156,74,0.04) 0%, transparent 55%)" }} />
+
+      <div className="container" style={{ position: "relative", zIndex: 2 }}>
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-14 flex flex-col gap-5"
+          style={{ maxWidth: "640px", marginBottom: "72px" }}
         >
-          <div className="section-pill w-fit">Method</div>
-          <h2 className="section-headline" style={{ maxWidth: "20ch" }}>
-            From Diagnostics to{" "}
-            <span className="accent">Compounding Results.</span>
+          <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
+            <span className="dot" />
+            The Method
+          </div>
+          <h2 className="section-headline" style={{ marginBottom: "20px" }}>
+            Five Phases. <span className="accent">One Outcome.</span>
           </h2>
+          <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
-            A disciplined process that upgrades operations, reduces friction, and scales
-            performance without internal overload.
+            A structured, five-phase process designed to take any business from its current
+            operational state to a fully integrated, AI-powered architecture — with
+            measurable outcomes at every stage.
           </p>
         </motion.div>
 
-        {/* Phase steps */}
-        <div className="flex flex-col gap-4">
-          {phases.map((p, i) => (
+        {/* Phases */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+          {phases.map((phase, i) => (
             <motion.div
-              key={p.phase}
-              initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+              key={phase.num}
+              initial={{ opacity: 0, x: -24 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.55 }}
-              className="card-base p-7"
-              style={{ background: `rgba(9,19,37,0.75)` }}
+              transition={{ delay: i * 0.09, duration: 0.55 }}
+              className="glass-card"
+              style={{ padding: "28px 32px" }}
             >
-              <div className="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-6 items-start">
-                {/* Phase badge */}
-                <div
-                  className="rounded-[14px] py-4 px-3 flex flex-col items-center justify-center gap-1"
-                  style={{
-                    background: p.accent,
-                    border: "1px solid rgba(212,168,67,0.25)",
-                    minHeight: "80px",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: "10px",
-                      fontWeight: 800,
-                      letterSpacing: "1.5px",
-                      textTransform: "uppercase",
-                      color: "rgba(212,168,67,0.80)",
-                    }}
-                  >
-                    {p.phase}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "'Playfair Display', Georgia, serif",
-                      fontSize: "32px",
-                      fontWeight: 900,
-                      color: "#D4A843",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+              <div style={{ display: "grid", gridTemplateColumns: "56px 1fr", gap: "20px", alignItems: "flex-start" }}>
+                {/* Badge + spine */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+                  <div className="phase-badge" style={{ width: "48px", height: "48px", fontSize: "13px", borderRadius: "14px" }}>{phase.num}</div>
+                  {i < phases.length - 1 && (
+                    <div style={{ width: "1px", height: "32px", background: "linear-gradient(to bottom, rgba(184,156,74,0.22), transparent)" }} />
+                  )}
                 </div>
-
                 {/* Content */}
                 <div>
-                  <h4
-                    style={{
-                      fontFamily: "'Playfair Display', Georgia, serif",
-                      fontSize: "clamp(18px, 2vw, 24px)",
-                      fontWeight: 800,
-                      color: "rgba(255,255,255,0.95)",
-                      letterSpacing: "-0.3px",
-                      margin: "0 0 8px",
-                    }}
-                  >
-                    {p.title}
-                  </h4>
-                  <p
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: "15px",
-                      lineHeight: 1.65,
-                      color: "rgba(200,212,224,0.85)",
-                      margin: "0 0 14px",
-                    }}
-                  >
-                    {p.desc}
+                  <div style={{ marginBottom: "4px" }}>
+                    <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "1.2px", textTransform: "uppercase", color: "rgba(184,156,74,0.72)" }}>
+                      {phase.sub}
+                    </span>
+                  </div>
+                  <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(19px, 2vw, 25px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 12px", lineHeight: 1.15, letterSpacing: "-0.3px" }}>
+                    {phase.title}
+                  </h3>
+                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", lineHeight: 1.65, color: "rgba(200,215,230,0.70)", margin: "0 0 18px", maxWidth: "72ch" }}>
+                    {phase.body}
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    {p.tags.map((tag) => (
-                      <span key={tag} className="tag-chip">{tag}</span>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "7px" }}>
+                    {phase.outputs.map((o) => (
+                      <span
+                        key={o}
+                        style={{
+                          fontFamily: "'DM Sans', sans-serif",
+                          fontSize: "12px",
+                          fontWeight: 600,
+                          color: "rgba(200,215,230,0.72)",
+                          padding: "5px 12px",
+                          borderRadius: "999px",
+                          background: "rgba(255,255,255,0.04)",
+                          border: "1px solid rgba(255,255,255,0.08)",
+                        }}
+                      >
+                        {o}
+                      </span>
                     ))}
                   </div>
                 </div>

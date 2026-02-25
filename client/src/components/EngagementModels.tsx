@@ -1,216 +1,168 @@
 /*
- * AiiACo Engagement Models — Upgraded Design
- * Vendasta-inspired: vivid featured card, bold headline, strong CTA
+ * AiiACo Engagement Models — Liquid Glass Bio-Organic Design
+ * Three pricing tiers with glass cards
  */
 import { motion } from "framer-motion";
 
 const models = [
   {
-    name: "Strategic Upgrade",
-    badge: "Blueprint",
-    meta: "A defined AI integration plan with priorities, metrics, and implementation structure.",
-    features: [
-      "Diagnostics + discovery",
-      "Custom integration architecture",
-      "ROI priorities and timeline",
-      "Technology selection guidance",
-      "30-day support window",
+    name: "AI Strategy & Blueprint",
+    tag: "Foundational",
+    price: "Fixed Investment",
+    desc: "A comprehensive business intelligence audit and custom AI integration blueprint. Delivered as a structured document with defined priorities, deployment sequence, ROI targets, and implementation framework.",
+    includes: [
+      "Full business architecture audit",
+      "Competitive AI adoption analysis",
+      "Custom AI integration blueprint",
+      "Prioritized deployment roadmap",
+      "ROI targets and performance benchmarks",
+      "Executive presentation and handoff",
     ],
-    cta: "Request Blueprint",
+    ideal: "Organizations seeking strategic clarity before committing to full deployment.",
     featured: false,
-    bg: "rgba(9,19,37,0.80)",
   },
   {
     name: "Full Integration",
-    badge: "Managed",
-    meta: "End-to-end deployment and ongoing management. You focus on leadership. We run the AI system.",
-    features: [
-      "Everything in Strategic Upgrade",
-      "Deployment + integrations",
-      "Automation + agent configuration",
-      "Monitoring + optimization",
-      "Performance reporting",
+    tag: "Most Engaged",
+    price: "Structured Retainer",
+    desc: "End-to-end AI integration — from blueprint through deployment, management, and optimization. AiiAco functions as your AI Director, assembling and operating your complete AI workforce.",
+    includes: [
+      "Everything in AI Strategy & Blueprint",
+      "AI workforce assembly and deployment",
+      "Full operational integration",
+      "Ongoing management and monitoring",
+      "Performance reporting and optimization",
+      "Quarterly strategic expansion reviews",
     ],
-    cta: "Request Integration",
+    ideal: "Organizations ready to operate with AI infrastructure — not experiment with it.",
     featured: true,
-    bg: "linear-gradient(160deg, #1A3260 0%, #0D1E38 100%)",
   },
   {
     name: "Performance Partnership",
-    badge: "Aligned",
-    meta: "Reduced upfront structure with milestone-based upside. We only earn more when targets are hit.",
-    features: [
-      "Everything in Full Integration",
-      "Milestone-based structure",
-      "Transparent metrics",
-      "Success-linked fees",
-      "Long-term compounding model",
+    tag: "Results-Aligned",
+    price: "Milestone-Based",
+    desc: "A performance-aligned engagement model where AiiAco's compensation is structurally tied to the results delivered. Reduced upfront investment with milestone-based fees linked to defined outcomes.",
+    includes: [
+      "Full integration scope included",
+      "Reduced upfront investment",
+      "Milestone-based fee structure",
+      "Shared risk, shared reward model",
+      "Defined outcome benchmarks",
+      "Long-term partnership alignment",
     ],
-    cta: "Explore Partnership",
+    ideal: "Organizations that prefer to align vendor compensation with business outcomes.",
     featured: false,
-    bg: "rgba(26,26,0,0.60)",
   },
 ];
 
 export default function EngagementModels() {
-  const scrollToUpgrade = () =>
-    document.querySelector("#upgrade")?.scrollIntoView({ behavior: "smooth" });
+  const scrollToContact = () =>
+    document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <section
       id="models"
-      className="py-24"
       style={{
-        background: "linear-gradient(180deg, #050C1A 0%, #091325 100%)",
+        position: "relative",
+        padding: "120px 0",
+        background: "#060B14",
+        overflow: "hidden",
       }}
     >
-      <div className="container">
+      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(900px 600px at 50% 50%, rgba(184,156,74,0.05) 0%, transparent 60%)" }} />
+
+      <div className="container" style={{ position: "relative", zIndex: 2 }}>
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-14 flex flex-col gap-5"
+          style={{ maxWidth: "640px", marginBottom: "64px" }}
         >
-          <div className="section-pill w-fit">Engagement Models</div>
-          <h2 className="section-headline" style={{ maxWidth: "18ch" }}>
-            Choose Your{" "}
-            <span className="accent">Upgrade Path.</span>
+          <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
+            <span className="dot" />
+            Engagement Models
+          </div>
+          <h2 className="section-headline" style={{ marginBottom: "20px" }}>
+            Three Models. <span className="accent">One Standard.</span>
           </h2>
+          <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
-            Every engagement is scoped to business size and complexity. What never changes:
-            execution, management, and measurable outcomes.
+            Every AiiAco engagement is structured around measurable outcomes. The model
+            you choose determines the investment structure — not the quality of execution.
           </p>
         </motion.div>
 
-        {/* Plans grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* Cards */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px" }}>
           {models.map((model, i) => (
             <motion.div
               key={model.name}
-              initial={{ opacity: 0, y: 28 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.12, duration: 0.55 }}
-              className="flex flex-col rounded-[20px] overflow-hidden"
-              style={{
-                background: model.bg,
-                border: model.featured
-                  ? "1.5px solid rgba(212,168,67,0.50)"
-                  : "1px solid rgba(200,212,224,0.12)",
-                boxShadow: model.featured
-                  ? "0 0 0 1px rgba(212,168,67,0.15), 0 32px 80px rgba(212,168,67,0.12)"
-                  : "0 12px 40px rgba(0,0,0,0.35)",
-                position: "relative",
-              }}
+              className={model.featured ? "glass-card-gold" : "glass-card"}
+              style={{ padding: "32px", display: "flex", flexDirection: "column", gap: "20px", position: "relative" }}
             >
-              {/* Featured badge */}
               {model.featured && (
-                <div
-                  className="text-center py-2 text-xs font-black tracking-[1.2px] uppercase"
-                  style={{
-                    background: "linear-gradient(90deg, #D4A843, #F0C84A)",
-                    color: "#0A0800",
-                    fontFamily: "'DM Sans', sans-serif",
-                  }}
-                >
-                  Most Comprehensive
+                <div style={{ position: "absolute", top: "-1px", left: "50%", transform: "translateX(-50%)", background: "linear-gradient(135deg, rgba(184,156,74,0.95), rgba(212,168,67,0.80))", color: "#0a0800", fontFamily: "'DM Sans', sans-serif", fontWeight: 800, fontSize: "10px", letterSpacing: "1.2px", textTransform: "uppercase", padding: "5px 16px", borderRadius: "0 0 10px 10px", whiteSpace: "nowrap" }}>
+                  Most Engaged
                 </div>
               )}
 
-              <div className="p-7 flex flex-col flex-1 gap-5">
-                {/* Top */}
-                <div className="flex items-start justify-between gap-3">
-                  <h3
-                    style={{
-                      fontFamily: "'Playfair Display', Georgia, serif",
-                      fontSize: "clamp(18px, 2vw, 22px)",
-                      fontWeight: 800,
-                      color: model.featured ? "#D4A843" : "rgba(255,255,255,0.95)",
-                      letterSpacing: "-0.3px",
-                      margin: 0,
-                    }}
-                  >
-                    {model.name}
-                  </h3>
-                  <span className="section-pill flex-shrink-0" style={{ fontSize: "10px" }}>
-                    {model.badge}
-                  </span>
+              <div>
+                <div className="section-pill" style={{ marginBottom: "12px", width: "fit-content", fontSize: "10px" }}>
+                  <span className="dot" />
+                  {model.tag}
                 </div>
-
-                {/* Meta */}
-                <p
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "14px",
-                    lineHeight: 1.65,
-                    color: "rgba(200,212,224,0.85)",
-                    margin: 0,
-                  }}
-                >
-                  {model.meta}
+                <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "24px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 6px", letterSpacing: "-0.3px", lineHeight: 1.1 }}>
+                  {model.name}
+                </h3>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.8px", textTransform: "uppercase", color: model.featured ? "#D4A843" : "rgba(184,156,74,0.62)", margin: 0 }}>
+                  {model.price}
                 </p>
+              </div>
 
-                {/* Features */}
-                <ul className="flex flex-col gap-3 m-0 p-0 list-none flex-1">
-                  {model.features.map((f) => (
-                    <li
-                      key={f}
-                      className="flex items-start gap-3"
-                      style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: "14px",
-                        color: "rgba(200,212,224,0.85)",
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: "18px",
-                          height: "18px",
-                          borderRadius: "50%",
-                          background: "rgba(212,168,67,0.15)",
-                          border: "1px solid rgba(212,168,67,0.30)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                          marginTop: "2px",
-                          fontSize: "10px",
-                          color: "#D4A843",
-                          fontWeight: 900,
-                        }}
-                      >
-                        ✓
-                      </span>
-                      {f}
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", lineHeight: 1.65, color: "rgba(200,215,230,0.70)", margin: 0 }}>
+                {model.desc}
+              </p>
+
+              <div>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "1px", textTransform: "uppercase", color: "rgba(184,156,74,0.58)", marginBottom: "12px" }}>Includes</p>
+                <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
+                  {model.includes.map((item) => (
+                    <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", color: "rgba(210,220,235,0.80)" }}>
+                      <span style={{ color: "#D4A843", fontWeight: 900, flexShrink: 0, marginTop: "1px", fontSize: "11px" }}>✓</span>
+                      {item}
                     </li>
                   ))}
                 </ul>
-
-                {/* CTA */}
-                <button
-                  onClick={scrollToUpgrade}
-                  className={model.featured ? "btn-gold w-full" : "btn-outline w-full"}
-                >
-                  {model.cta}
-                </button>
               </div>
+
+              <div style={{ padding: "14px 16px", borderRadius: "10px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", marginTop: "auto" }}>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", fontWeight: 600, color: "rgba(200,215,230,0.62)", margin: 0, lineHeight: 1.5 }}>
+                  <strong style={{ color: "rgba(255,255,255,0.72)", fontWeight: 700 }}>Ideal for:</strong>{" "}{model.ideal}
+                </p>
+              </div>
+
+              <button onClick={scrollToContact} className={model.featured ? "btn-gold" : "btn-glass"} style={{ justifyContent: "center" }}>
+                {model.featured ? "Begin Full Integration" : "Discuss This Model"}
+              </button>
             </motion.div>
           ))}
         </div>
 
-        {/* Fine print */}
-        <p
-          className="mt-6"
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "13px",
-            color: "rgba(200,212,224,0.40)",
-          }}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.40)", marginTop: "32px", textAlign: "center" }}
         >
-          Engagement begins with a structured diagnostic call to confirm fit and scope.
-        </p>
+          All engagements begin with a structured discovery process. Pricing is determined following the initial business intelligence audit.
+        </motion.p>
       </div>
     </section>
   );

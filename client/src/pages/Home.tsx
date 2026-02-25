@@ -1,6 +1,6 @@
 /*
- * AiiACo — Home Page (Upgraded Corporate Design)
- * Vendasta-inspired: vivid gradients, bold typography, alternating sections
+ * AiiACo — Home Page
+ * Design: Liquid Glass Bio-Organic — deep void black, liquid glass, gold electricity
  */
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -15,7 +15,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: "#050C1A" }}>
+    <div className="min-h-screen flex flex-col" style={{ background: "#03050A" }}>
       <Navbar />
       <main className="flex-1">
         <HeroSection />

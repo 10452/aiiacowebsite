@@ -1,105 +1,121 @@
 /*
- * AiiACo Industries Section — Upgraded Design
- * Vendasta-inspired: vivid colored accent cards, large headline, alternating bg
+ * AiiACo Industries Section — Liquid Glass Bio-Organic Design
+ * Cross-industry pill grid + capability cards
  */
 import { motion } from "framer-motion";
 
 const industries = [
-  { title: "Financial Services", desc: "Lending, underwriting support, customer ops automation, compliance workflows.", color: "rgba(26,50,96,0.80)" },
-  { title: "Real Estate", desc: "Lead ops, property workflows, investment analysis, document automation.", color: "rgba(18,37,72,0.80)" },
-  { title: "Insurance", desc: "Claims triage, intake automation, underwriting acceleration, service systems.", color: "rgba(13,30,56,0.80)" },
-  { title: "Crypto & Web3", desc: "Ops automation, support workflows, compliance layers, analytics pipelines.", color: "rgba(26,50,96,0.80)" },
-  { title: "Software & Tech", desc: "SaaS operations, support automation, internal tooling, engineering leverage.", color: "rgba(18,37,72,0.80)" },
-  { title: "Energy", desc: "Operations intelligence, vendor workflows, reporting automation, analytics.", color: "rgba(26,26,0,0.80)" },
-  { title: "High-Risk Merchant", desc: "Portal automation, onboarding, monitoring, and compliance orchestration.", color: "rgba(13,30,56,0.80)" },
-  { title: "Automotive & EV", desc: "Dealer ops, service workflows, scheduling, customer communication systems.", color: "rgba(26,50,96,0.80)" },
-  { title: "Food & Beverage", desc: "Inventory + ops workflows, support systems, reporting, customer operations.", color: "rgba(18,37,72,0.80)" },
-  { title: "Investment Firms", desc: "Portfolio analytics, reporting automation, client ops, research workflows.", color: "rgba(26,26,0,0.80)" },
-  { title: "Luxury & Lifestyle", desc: "Client experience systems, concierge automation, brand ops, CRM intelligence.", color: "rgba(13,30,56,0.80)" },
-  { title: "Alternative Energy", desc: "Biofuel, helium, hydrogen — operations data, compliance, and reporting systems.", color: "rgba(26,50,96,0.80)" },
+  "Real Estate & Brokerage", "Mortgage & Lending", "High-Risk Merchant Services",
+  "Cryptocurrency & Digital Assets", "Insurance", "Luxury Lifestyle & Hospitality",
+  "Investment & Wealth Management", "Software Consulting", "Software Engineering",
+  "Beauty, Health & Wellness", "Cosmetics & Personal Care", "Automotive",
+  "Solar & Renewable Energy", "Battery & EV Technology", "Oil & Gas",
+  "Alternative Energy", "Helium & Specialty Gas", "Biofuel & Sustainable Fuels",
+  "Food & Beverage", "Agency Operations",
+];
+
+const capabilities = [
+  { title: "Revenue Operations", desc: "Lead qualification, pipeline management, conversion optimization, and revenue forecasting." },
+  { title: "Customer Operations", desc: "Automated support, personalization engines, retention systems, and lifecycle management." },
+  { title: "Marketing Intelligence", desc: "Content generation, campaign optimization, audience segmentation, and performance analytics." },
+  { title: "Financial Operations", desc: "Reporting automation, anomaly detection, compliance monitoring, and forecasting." },
+  { title: "Talent & HR Operations", desc: "Recruitment automation, onboarding systems, performance management, and workforce analytics." },
+  { title: "Product & Development", desc: "Code generation, QA automation, documentation, and development workflow optimization." },
 ];
 
 export default function Industries() {
   return (
     <section
       id="industries"
-      className="py-24"
       style={{
-        background: "linear-gradient(180deg, #050C1A 0%, #0D1E38 60%, #050C1A 100%)",
+        position: "relative",
+        padding: "120px 0",
+        background: "#03050A",
+        overflow: "hidden",
       }}
     >
-      <div className="container">
+      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(1000px 600px at 80% 30%, rgba(184,156,74,0.04) 0%, transparent 55%)" }} />
+
+      <div className="container" style={{ position: "relative", zIndex: 2 }}>
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-14 flex flex-col gap-5"
+          style={{ maxWidth: "640px", marginBottom: "64px" }}
         >
-          <div className="section-pill w-fit">Industries</div>
-          <h2 className="section-headline" style={{ maxWidth: "22ch" }}>
-            Cross-Industry{" "}
-            <span className="accent">Deployment Capability.</span>
+          <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
+            <span className="dot" />
+            Cross-Industry Deployment
+          </div>
+          <h2 className="section-headline" style={{ marginBottom: "20px" }}>
+            Built for Any Industry. <span className="accent">Optimized for Yours.</span>
           </h2>
+          <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
-            If your business runs on processes, data, and decisions — it can be upgraded.
+            AiiAco has developed integration frameworks across more than twenty industries.
+            Our methodology adapts to the specific operational architecture, regulatory
+            environment, and competitive dynamics of each sector.
           </p>
         </motion.div>
 
-        {/* Industry grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          {industries.map((ind, i) => (
+        {/* Industry pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "64px" }}
+        >
+          {industries.map((industry, i) => (
+            <motion.span
+              key={industry}
+              initial={{ opacity: 0, scale: 0.94 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.03, duration: 0.35 }}
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "13px",
+                fontWeight: 600,
+                color: "rgba(210,220,235,0.82)",
+                padding: "8px 16px",
+                borderRadius: "999px",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.09)",
+                cursor: "default",
+              }}
+            >
+              {industry}
+            </motion.span>
+          ))}
+        </motion.div>
+
+        {/* Capabilities */}
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.62)", marginBottom: "24px" }}>
+          Core AI Capabilities Deployed Across All Industries
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "12px" }}>
+          {capabilities.map((cap, i) => (
             <motion.div
-              key={ind.title}
-              initial={{ opacity: 0, y: 20 }}
+              key={cap.title}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.05, duration: 0.45 }}
-              className="card-base p-6 flex flex-col gap-3"
-              style={{ background: ind.color }}
+              transition={{ delay: i * 0.07, duration: 0.5 }}
+              className="glass-card"
+              style={{ padding: "22px 24px" }}
             >
-              <div
-                className="w-8 h-1 rounded-full"
-                style={{ background: "linear-gradient(90deg, #D4A843, #F0C84A)" }}
-              />
-              <h3
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontWeight: 700,
-                  fontSize: "16px",
-                  color: "rgba(255,255,255,0.95)",
-                  letterSpacing: "-0.2px",
-                  margin: 0,
-                }}
-              >
-                {ind.title}
-              </h3>
-              <p
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "13.5px",
-                  lineHeight: 1.6,
-                  color: "rgba(200,212,224,0.80)",
-                  margin: 0,
-                }}
-              >
-                {ind.desc}
+              <h4 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.94)", margin: "0 0 8px", letterSpacing: "-0.2px" }}>
+                {cap.title}
+              </h4>
+              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.6, color: "rgba(200,215,230,0.65)", margin: 0 }}>
+                {cap.desc}
               </p>
             </motion.div>
           ))}
         </div>
-
-        {/* Footer note */}
-        <p
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "14px",
-            color: "rgba(200,212,224,0.45)",
-          }}
-        >
-          Don't see your sector? If it has workflows, it has leverage.
-        </p>
       </div>
     </section>
   );

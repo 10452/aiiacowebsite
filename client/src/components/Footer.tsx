@@ -1,146 +1,90 @@
 /*
- * AiiACo Footer — Upgraded Design
- * Vendasta-inspired: vivid gradient top border, bold brand, clean nav
+ * AiiACo Footer — Liquid Glass Bio-Organic Design
  */
+
+const navLinks = [
+  { label: "Platform", href: "#platform" },
+  { label: "Method", href: "#method" },
+  { label: "Industries", href: "#industries" },
+  { label: "Engagement Models", href: "#models" },
+  { label: "Contact", href: "#contact" },
+];
+
 export default function Footer() {
-  const scrollTo = (href: string) =>
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = (id: string) => {
+    document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <footer
       style={{
-        background: "#050C1A",
-        borderTop: "1px solid rgba(200,212,224,0.10)",
+        background: "#02030A",
+        borderTop: "1px solid rgba(255,255,255,0.06)",
+        padding: "48px 0 32px",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Top gold gradient line */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "2px",
-          background: "linear-gradient(90deg, transparent, #D4A843, transparent)",
-        }}
-      />
+      {/* Top gold line */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(184,156,74,0.50), transparent)" }} />
 
-      <div className="container py-14">
-        <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10 mb-10">
+      <div className="container">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "48px", alignItems: "flex-start", marginBottom: "40px" }}>
           {/* Brand */}
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <div
-                style={{
-                  width: "38px",
-                  height: "38px",
-                  borderRadius: "10px",
-                  background: "linear-gradient(135deg, #D4A843, #F0C84A)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "0 4px 16px rgba(212,168,67,0.25)",
-                }}
-              >
-                <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 900, fontSize: "15px", color: "#0A0800" }}>A</span>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
+              <div style={{
+                width: "32px", height: "32px", borderRadius: "8px",
+                background: "linear-gradient(135deg, rgba(184,156,74,0.90), rgba(212,168,67,0.60))",
+                border: "1px solid rgba(184,156,74,0.45)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: "0 0 12px rgba(184,156,74,0.20)",
+              }}>
+                <div style={{ width: "14px", height: "14px", borderRadius: "3px", background: "rgba(3,5,10,0.80)", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2px", padding: "2px" }}>
+                  {[0,1,2,3].map(i => <div key={i} style={{ background: "rgba(184,156,74,0.90)", borderRadius: "1px" }} />)}
+                </div>
               </div>
-              <div>
-                <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 800, fontSize: "17px", color: "rgba(255,255,255,0.95)" }}>AiiAco</div>
-                <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "8px", letterSpacing: "2px", textTransform: "uppercase", color: "rgba(200,212,224,0.45)" }}>AI INTEGRATION AUTHORITY</div>
-              </div>
-            </div>
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", lineHeight: 1.65, color: "rgba(200,212,224,0.60)", margin: 0, maxWidth: "30ch" }}>
-              We design, deploy, and manage complete AI operational systems for businesses that intend to lead.
-            </p>
-            <div
-              className="inline-flex items-center gap-2 rounded-[10px] px-3 py-2 w-fit"
-              style={{ background: "rgba(212,168,67,0.08)", border: "1px solid rgba(212,168,67,0.20)" }}
-            >
-              <div className="dot-pulse" />
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", fontWeight: 600, color: "rgba(212,168,67,0.85)" }}>
-                Performance models available
+              <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "rgba(255,255,255,0.92)", letterSpacing: "0.5px" }}>
+                AiiAco
               </span>
             </div>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.48)", margin: "0 0 8px", maxWidth: "36ch" }}>
+              The integrated AI agency. We deploy and manage your entire AI workforce — and deliver results, not workload.
+            </p>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.32)", margin: 0 }}>
+              www.aiiaco.com
+            </p>
           </div>
 
-          {/* Platform */}
-          <div>
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "1.2px", textTransform: "uppercase", color: "rgba(200,212,224,0.40)", margin: "0 0 14px" }}>Platform</p>
-            {[
-              { label: "Platform Overview", href: "#platform" },
-              { label: "The Method", href: "#method" },
-              { label: "After Upgrade", href: "#method" },
-            ].map((link) => (
+          {/* Nav */}
+          <nav style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "flex-end" }}>
+            {navLinks.map((link) => (
               <button
-                key={link.href + link.label}
+                key={link.label}
                 onClick={() => scrollTo(link.href)}
-                className="block mb-3 text-left"
-                style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "rgba(200,212,224,0.70)", background: "none", border: "none", padding: 0, cursor: "pointer", transition: "color 0.15s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.95)")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(200,212,224,0.70)")}
+                style={{
+                  background: "none", border: "none", cursor: "pointer",
+                  fontFamily: "'DM Sans', sans-serif", fontSize: "13px", fontWeight: 600,
+                  color: "rgba(200,215,230,0.50)", letterSpacing: "0.2px",
+                  padding: "2px 0", transition: "color 0.15s",
+                }}
+                onMouseEnter={e => (e.currentTarget.style.color = "rgba(184,156,74,0.85)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(200,215,230,0.50)")}
               >
                 {link.label}
               </button>
             ))}
-          </div>
-
-          {/* Industries */}
-          <div>
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "1.2px", textTransform: "uppercase", color: "rgba(200,212,224,0.40)", margin: "0 0 14px" }}>Industries</p>
-            {["Financial Services", "Real Estate", "Energy", "Software & Tech", "Automotive & EV"].map((ind) => (
-              <button
-                key={ind}
-                onClick={() => scrollTo("#industries")}
-                className="block mb-3 text-left"
-                style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "rgba(200,212,224,0.70)", background: "none", border: "none", padding: 0, cursor: "pointer", transition: "color 0.15s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.95)")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(200,212,224,0.70)")}
-              >
-                {ind}
-              </button>
-            ))}
-          </div>
-
-          {/* Engage */}
-          <div>
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "1.2px", textTransform: "uppercase", color: "rgba(200,212,224,0.40)", margin: "0 0 14px" }}>Engage</p>
-            {[
-              { label: "Engagement Models", href: "#models" },
-              { label: "Request Upgrade", href: "#contact" },
-            ].map((link) => (
-              <button
-                key={link.href}
-                onClick={() => scrollTo(link.href)}
-                className="block mb-3 text-left"
-                style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", color: "rgba(200,212,224,0.70)", background: "none", border: "none", padding: 0, cursor: "pointer", transition: "color 0.15s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.95)")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(200,212,224,0.70)")}
-              >
-                {link.label}
-              </button>
-            ))}
-            <button
-              onClick={() => scrollTo("#contact")}
-              className="btn-gold mt-2"
-              style={{ fontSize: "13px", padding: "10px 18px" }}
-            >
-              Begin Upgrade
-            </button>
-          </div>
+          </nav>
         </div>
 
-        {/* Bottom bar */}
-        <div
-          className="flex flex-col md:flex-row items-center justify-between gap-3 pt-6"
-          style={{ borderTop: "1px solid rgba(200,212,224,0.08)" }}
-        >
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,212,224,0.35)", margin: 0 }}>
-            © {new Date().getFullYear()} AiiAco. All rights reserved. AI Integration Authority.
+        <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", marginBottom: "24px" }} />
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.28)", margin: 0 }}>
+            © {new Date().getFullYear()} AiiAco. All rights reserved.
           </p>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,212,224,0.35)", margin: 0 }}>
-            aiiaco.com
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.28)", margin: 0 }}>
+            AI Integration Agency · Integrated Intelligence · Measurable Outcomes
           </p>
         </div>
       </div>

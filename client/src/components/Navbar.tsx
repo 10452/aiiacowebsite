@@ -1,17 +1,17 @@
 /*
- * AiiACo Navbar — Upgraded (Vendasta-inspired)
- * Announcement bar + sticky glass nav + bold brand mark
+ * AiiACo Navbar — Liquid Glass Bio-Organic Design
+ * Gold AI chip logo, glassmorphism nav, announcement bar
  */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Platform", href: "#platform" },
   { label: "Method", href: "#method" },
   { label: "Industries", href: "#industries" },
   { label: "Engagement Models", href: "#models" },
-  { label: "Upgrade", href: "#upgrade" },
+  { label: "Upgrade", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -19,9 +19,9 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const scrollTo = (href: string) => {
@@ -30,152 +30,127 @@ export default function Navbar() {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50">
+    <div style={{ position: "sticky", top: 0, zIndex: 100 }}>
       {/* Announcement bar */}
       <div className="announce-bar">
-        <span>AI Integration Authority — </span>
-        <span className="highlight">Performance-based models available.</span>
-        <span> We earn more when you hit your targets.</span>
+        <span className="gold-text">AI Integration Authority</span>
+        {" — "}Performance-based models available. We earn more when you hit your targets.{" "}
         <button
           onClick={() => scrollTo("#models")}
-          className="inline-flex items-center gap-1 ml-2 font-bold underline underline-offset-2"
-          style={{ color: "rgba(212,168,67,0.90)" }}
+          style={{ color: "rgba(212,168,67,0.90)", fontWeight: 700, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", textDecorationColor: "rgba(212,168,67,0.35)", fontSize: "inherit", fontFamily: "inherit" }}
         >
-          See models <ArrowRight size={12} />
+          See models →
         </button>
       </div>
 
-      {/* Main nav */}
+      {/* Main navbar */}
       <motion.nav
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
-        className={`transition-all duration-300 ${scrolled ? "topbar-glass" : "bg-transparent"}`}
+        className="navbar"
+        style={{ boxShadow: scrolled ? "0 8px 40px rgba(0,0,0,0.55)" : "none", transition: "box-shadow 0.3s ease" }}
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
       >
         <div className="container">
-          <div className="flex items-center justify-between py-4 gap-4">
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0", gap: "16px" }}>
             {/* Brand */}
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="flex items-center gap-3 group flex-shrink-0"
+              style={{ display: "flex", alignItems: "center", gap: "12px", background: "none", border: "none", padding: 0, cursor: "pointer" }}
             >
-              <div
-                className="w-10 h-10 rounded-[11px] flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_24px_rgba(212,168,67,0.35)]"
-                style={{
-                  background: "linear-gradient(135deg, #D4A843 0%, #F0C84A 60%, rgba(200,212,224,0.30) 100%)",
-                  boxShadow: "0 4px 16px rgba(212,168,67,0.25)",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
-                    fontWeight: 900,
-                    fontSize: "16px",
-                    color: "#0A0800",
-                    letterSpacing: "-0.5px",
-                  }}
-                >
-                  A
-                </span>
+              <div className="logo-chip">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ position: "relative", zIndex: 1 }}>
+                  <rect x="5" y="5" width="10" height="10" rx="2" fill="rgba(10,8,0,0.85)" stroke="rgba(10,8,0,0.30)" strokeWidth="0.5"/>
+                  <line x1="7" y1="5" x2="7" y2="2" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="10" y1="5" x2="10" y2="2" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="13" y1="5" x2="13" y2="2" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="7" y1="15" x2="7" y2="18" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="10" y1="15" x2="10" y2="18" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="13" y1="15" x2="13" y2="18" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="5" y1="7" x2="2" y2="7" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="5" y1="10" x2="2" y2="10" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="5" y1="13" x2="2" y2="13" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="15" y1="7" x2="18" y2="7" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="15" y1="10" x2="18" y2="10" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <line x1="15" y1="13" x2="18" y2="13" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
+                  <circle cx="10" cy="10" r="2" fill="rgba(10,8,0,0.90)"/>
+                </svg>
               </div>
-              <div className="flex flex-col leading-none">
-                <span
-                  style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
-                    fontWeight: 800,
-                    fontSize: "18px",
-                    color: "rgba(255,255,255,0.95)",
-                    letterSpacing: "-0.3px",
-                  }}
-                >
+              <div>
+                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 700, fontSize: "20px", letterSpacing: "-0.3px", color: "rgba(255,255,255,0.96)", lineHeight: 1 }}>
                   AiiAco
-                </span>
-                <span
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontWeight: 700,
-                    fontSize: "9px",
-                    letterSpacing: "2px",
-                    textTransform: "uppercase",
-                    color: "rgba(200,212,224,0.50)",
-                    marginTop: "1px",
-                  }}
-                >
+                </div>
+                <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 800, fontSize: "8px", letterSpacing: "2.5px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", lineHeight: 1, marginTop: "3px" }}>
                   UPGRADE
-                </span>
+                </div>
               </div>
             </button>
 
-            {/* Desktop nav */}
-            <div className="hidden lg:flex items-center gap-8">
+            {/* Desktop links */}
+            <div style={{ display: "flex", alignItems: "center", gap: "4px" }} className="hidden lg:flex">
               {navLinks.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => scrollTo(link.href)}
-                  className="text-sm font-semibold relative group transition-colors duration-200"
-                  style={{ color: "rgba(255,255,255,0.70)", fontFamily: "'DM Sans', sans-serif" }}
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontWeight: 600,
+                    fontSize: "13.5px",
+                    color: "rgba(200,215,230,0.72)",
+                    background: "none",
+                    border: "none",
+                    padding: "8px 13px",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                    transition: "color 0.15s, background 0.15s",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.96)"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(200,215,230,0.72)"; e.currentTarget.style.background = "none"; }}
                 >
-                  <span className="group-hover:text-white transition-colors duration-200">{link.label}</span>
-                  <span className="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-[#D4A843] group-hover:w-full transition-all duration-300 rounded-full" />
+                  {link.label}
                 </button>
               ))}
             </div>
 
-            {/* CTA */}
-            <button
-              onClick={() => scrollTo("#upgrade")}
-              className="hidden lg:flex btn-gold text-sm py-2.5 px-5"
-            >
-              Request Upgrade
-            </button>
-
-            {/* Mobile toggle */}
-            <button
-              className="lg:hidden"
-              style={{ color: "rgba(200,212,224,0.80)" }}
-              onClick={() => setMobileOpen(!mobileOpen)}
-            >
-              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
+            {/* CTA + mobile toggle */}
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <button onClick={() => scrollTo("#contact")} className="btn-gold hidden lg:inline-flex" style={{ fontSize: "13px", padding: "10px 20px" }}>
+                Request Upgrade
+              </button>
+              <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden" style={{ background: "none", border: "none", color: "rgba(255,255,255,0.80)", padding: "6px", cursor: "pointer" }}>
+                {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* Mobile menu */}
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.22 }}
-              className="lg:hidden topbar-glass"
-              style={{ borderTop: "1px solid rgba(200,212,224,0.10)" }}
-            >
-              <div className="container py-5 flex flex-col gap-1">
-                {navLinks.map((link) => (
-                  <button
-                    key={link.href}
-                    onClick={() => scrollTo(link.href)}
-                    className="text-left py-3 text-sm font-semibold border-b"
-                    style={{
-                      color: "rgba(255,255,255,0.82)",
-                      borderColor: "rgba(200,212,224,0.08)",
-                      fontFamily: "'DM Sans', sans-serif",
-                    }}
-                  >
-                    {link.label}
+          {/* Mobile menu */}
+          <AnimatePresence>
+            {mobileOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                style={{ borderTop: "1px solid rgba(255,255,255,0.07)", overflow: "hidden" }}
+              >
+                <div style={{ padding: "12px 0 20px", display: "flex", flexDirection: "column", gap: "2px" }}>
+                  {navLinks.map((link) => (
+                    <button
+                      key={link.href}
+                      onClick={() => scrollTo(link.href)}
+                      style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "15px", color: "rgba(200,215,230,0.85)", background: "none", border: "none", padding: "10px 8px", textAlign: "left", cursor: "pointer", borderRadius: "8px" }}
+                    >
+                      {link.label}
+                    </button>
+                  ))}
+                  <button onClick={() => scrollTo("#contact")} className="btn-gold mt-2" style={{ justifyContent: "center" }}>
+                    Request Upgrade
                   </button>
-                ))}
-                <button
-                  onClick={() => scrollTo("#upgrade")}
-                  className="btn-gold mt-3 w-full"
-                >
-                  Request Upgrade
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </motion.nav>
     </div>
   );

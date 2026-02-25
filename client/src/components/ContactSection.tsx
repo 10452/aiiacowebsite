@@ -1,33 +1,30 @@
 /*
- * AiiACo Contact / Upgrade Section — Upgraded Design
- * Vendasta-inspired: vivid gradient bg, bold headline, polished form
+ * AiiACo Contact Section — Liquid Glass Bio-Organic Design
  */
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
 
 const industries = [
-  "Financial Services", "Real Estate", "Insurance", "Crypto & Web3",
-  "Software & Technology", "Energy (Oil, Gas, Alternative)", "High-Risk Merchant",
-  "Automotive & EV", "Food & Beverage", "Investment / Wealth Management",
-  "Luxury & Lifestyle", "Health, Beauty & Fitness", "Other",
+  "Real Estate & Brokerage", "Mortgage & Lending", "Financial Services",
+  "Insurance", "Investment & Wealth Management", "Cryptocurrency & Digital Assets",
+  "High-Risk Merchant Services", "Software & Technology", "Energy",
+  "Automotive & EV", "Food & Beverage", "Luxury & Hospitality",
+  "Beauty, Health & Wellness", "Other",
 ];
 
 const models = [
-  "Strategic Upgrade — Blueprint",
-  "Full Integration — Managed",
-  "Performance Partnership — Aligned",
-  "Not sure — advise me",
+  "AI Strategy & Blueprint", "Full Integration", "Performance Partnership", "Not sure yet",
 ];
 
 export default function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
-    name: "", company: "", email: "", phone: "", industry: "", model: "", challenge: "",
+    name: "", company: "", email: "", phone: "",
+    industry: "", model: "", revenue: "", message: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,174 +35,128 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="py-24"
       style={{
-        background: "linear-gradient(180deg, #050C1A 0%, #091325 60%, #050C1A 100%)",
         position: "relative",
+        padding: "120px 0",
+        background: "#060B14",
         overflow: "hidden",
       }}
     >
-      {/* Glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: "radial-gradient(700px 400px at 80% 50%, rgba(212,168,67,0.08) 0%, transparent 60%)",
-        }}
-      />
+      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(900px 600px at 30% 50%, rgba(184,156,74,0.04) 0%, transparent 55%)" }} />
 
-      <div className="container relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 items-start">
-          {/* Left: Copy */}
+      <div className="container" style={{ position: "relative", zIndex: 2 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: "64px", alignItems: "flex-start" }}>
+
+          {/* Left — copy */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col gap-6"
           >
-            <div className="section-pill w-fit">Request Upgrade</div>
-            <h2 className="section-headline" style={{ maxWidth: "18ch" }}>
-              Begin Your{" "}
-              <span className="accent">AI Upgrade.</span>
+            <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
+              <span className="dot" />
+              Initiate Engagement
+            </div>
+            <h2 className="section-headline" style={{ marginBottom: "20px" }}>
+              Begin Your <span className="accent">AI Upgrade.</span>
             </h2>
-            <p className="section-subhead">
-              Every engagement begins with a structured diagnostic call. We assess your
-              operations, identify leverage points, and outline a deployment path.
+            <div className="gold-divider" style={{ marginBottom: "24px" }} />
+            <p className="section-subhead" style={{ marginBottom: "40px" }}>
+              Every AiiAco engagement begins with a structured discovery process.
+              Complete the form and a member of our team will contact you within
+              one business day to confirm fit and outline next steps.
             </p>
 
-            {/* What to expect */}
-            <div className="flex flex-col gap-4 mt-2">
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               {[
-                { step: "01", title: "Diagnostic Call", desc: "60-minute structured session to map your operations and objectives." },
-                { step: "02", title: "Upgrade Blueprint", desc: "A custom integration plan with priorities, timeline, and ROI targets." },
-                { step: "03", title: "Deployment Decision", desc: "Choose your engagement model and initiate execution." },
+                { title: "No Obligation", desc: "The initial discovery call is complimentary. We assess fit before proposing any engagement." },
+                { title: "Confidential", desc: "All information shared during the discovery process is treated with full confidentiality." },
+                { title: "Structured Process", desc: "Every engagement begins with a business intelligence audit — not a sales presentation." },
               ].map((item) => (
-                <div key={item.step} className="flex gap-4 items-start">
-                  <div className="phase-badge" style={{ width: "36px", height: "36px", fontSize: "11px", flexShrink: 0 }}>
-                    {item.step}
-                  </div>
+                <div key={item.title} style={{ display: "flex", gap: "14px", alignItems: "flex-start" }}>
+                  <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "rgba(184,156,74,0.80)", marginTop: "6px", flexShrink: 0 }} />
                   <div>
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "14px", color: "rgba(255,255,255,0.92)", margin: "0 0 2px" }}>
-                      {item.title}
-                    </p>
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,212,224,0.70)", margin: 0, lineHeight: 1.5 }}>
-                      {item.desc}
-                    </p>
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "14px", color: "rgba(255,255,255,0.90)", margin: "0 0 4px" }}>{item.title}</p>
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", color: "rgba(200,215,230,0.62)", margin: 0, lineHeight: 1.6 }}>{item.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
-
-            {/* Quote */}
-            <div
-              className="rounded-[14px] p-5 mt-2"
-              style={{
-                background: "linear-gradient(135deg, rgba(212,168,67,0.10), rgba(212,168,67,0.04))",
-                border: "1px solid rgba(212,168,67,0.25)",
-              }}
-            >
-              <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "15px", fontStyle: "italic", color: "rgba(255,255,255,0.88)", margin: 0, lineHeight: 1.6 }}>
-                "We do not build what clients ask for. We build what creates leverage."
-              </p>
-            </div>
           </motion.div>
 
-          {/* Right: Form */}
+          {/* Right — form */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
           >
             {submitted ? (
-              <div
-                className="rounded-[20px] p-10 flex flex-col items-center gap-5 text-center"
-                style={{
-                  background: "rgba(9,19,37,0.80)",
-                  border: "1px solid rgba(212,168,67,0.30)",
-                  boxShadow: "0 24px 60px rgba(0,0,0,0.40)",
-                }}
-              >
-                <CheckCircle2 size={52} style={{ color: "#D4A843" }} />
-                <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: "26px", fontWeight: 800, color: "rgba(255,255,255,0.95)", margin: 0 }}>
-                  Submission Received
-                </h3>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "15px", lineHeight: 1.65, color: "rgba(200,212,224,0.80)", margin: 0, maxWidth: "38ch" }}>
-                  Our team will contact you within one business day to schedule your
-                  diagnostic call and confirm next steps.
+              <div className="glass-card-gold" style={{ padding: "48px", textAlign: "center" }}>
+                <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(184,156,74,0.15)", border: "1px solid rgba(184,156,74,0.35)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", fontSize: "22px", color: "#D4A843" }}>✓</div>
+                <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "26px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 12px" }}>Submission Received</h3>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14.5px", color: "rgba(200,215,230,0.72)", lineHeight: 1.6, margin: 0 }}>
+                  A member of the AiiAco team will contact you within one business day
+                  to schedule your initial discovery session.
                 </p>
               </div>
             ) : (
-              <form
-                onSubmit={handleSubmit}
-                className="rounded-[20px] p-8 flex flex-col gap-5"
-                style={{
-                  background: "rgba(9,19,37,0.80)",
-                  border: "1px solid rgba(200,212,224,0.12)",
-                  boxShadow: "0 24px 60px rgba(0,0,0,0.40)",
-                }}
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="corp-label">Full Name *</label>
-                    <input className="corp-input" name="name" value={form.name} onChange={handleChange} placeholder="Your name" required />
+              <form onSubmit={handleSubmit} className="glass-card" style={{ padding: "36px", display: "flex", flexDirection: "column", gap: "16px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div className="form-group">
+                    <label className="form-label">Full Name *</label>
+                    <input name="name" required value={form.name} onChange={handleChange} placeholder="Your name" className="form-input" />
                   </div>
-                  <div>
-                    <label className="corp-label">Company *</label>
-                    <input className="corp-input" name="company" value={form.company} onChange={handleChange} placeholder="Company name" required />
+                  <div className="form-group">
+                    <label className="form-label">Company *</label>
+                    <input name="company" required value={form.company} onChange={handleChange} placeholder="Company name" className="form-input" />
                   </div>
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="corp-label">Email *</label>
-                    <input className="corp-input" name="email" type="email" value={form.email} onChange={handleChange} placeholder="you@company.com" required />
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div className="form-group">
+                    <label className="form-label">Email Address *</label>
+                    <input name="email" type="email" required value={form.email} onChange={handleChange} placeholder="your@email.com" className="form-input" />
                   </div>
-                  <div>
-                    <label className="corp-label">Phone</label>
-                    <input className="corp-input" name="phone" value={form.phone} onChange={handleChange} placeholder="+1 (000) 000-0000" />
+                  <div className="form-group">
+                    <label className="form-label">Phone Number</label>
+                    <input name="phone" value={form.phone} onChange={handleChange} placeholder="+1 (000) 000-0000" className="form-input" />
                   </div>
                 </div>
-
-                <div>
-                  <label className="corp-label">Industry *</label>
-                  <select className="corp-input" name="industry" value={form.industry} onChange={handleChange} required>
-                    <option value="" disabled>Select your industry</option>
-                    {industries.map((ind) => (
-                      <option key={ind} value={ind}>{ind}</option>
-                    ))}
+                <div className="form-group">
+                  <label className="form-label">Industry *</label>
+                  <select name="industry" required value={form.industry} onChange={handleChange} className="form-input">
+                    <option value="">Select your industry</option>
+                    {industries.map((ind) => <option key={ind} value={ind}>{ind}</option>)}
                   </select>
                 </div>
-
-                <div>
-                  <label className="corp-label">Preferred Engagement Model</label>
-                  <select className="corp-input" name="model" value={form.model} onChange={handleChange}>
-                    <option value="" disabled>Select a model</option>
-                    {models.map((m) => (
-                      <option key={m} value={m}>{m}</option>
-                    ))}
+                <div className="form-group">
+                  <label className="form-label">Engagement Model of Interest</label>
+                  <select name="model" value={form.model} onChange={handleChange} className="form-input">
+                    <option value="">Select a model</option>
+                    {models.map((m) => <option key={m} value={m}>{m}</option>)}
                   </select>
                 </div>
-
-                <div>
-                  <label className="corp-label">Primary Challenge or Objective</label>
-                  <textarea
-                    className="corp-input"
-                    name="challenge"
-                    value={form.challenge}
-                    onChange={handleChange}
-                    placeholder="Describe your current operational challenge or growth objective..."
-                    rows={4}
-                    style={{ resize: "vertical" }}
-                  />
+                <div className="form-group">
+                  <label className="form-label">Annual Revenue Range</label>
+                  <select name="revenue" value={form.revenue} onChange={handleChange} className="form-input">
+                    <option value="">Select range</option>
+                    <option>Under $1M</option>
+                    <option>$1M – $5M</option>
+                    <option>$5M – $25M</option>
+                    <option>$25M – $100M</option>
+                    <option>$100M+</option>
+                  </select>
                 </div>
-
-                <button type="submit" className="btn-gold w-full" style={{ fontSize: "16px", padding: "16px" }}>
-                  Request Diagnostic Call
+                <div className="form-group">
+                  <label className="form-label">What are your primary business objectives?</label>
+                  <textarea name="message" value={form.message} onChange={handleChange} placeholder="Describe your current challenges and what you are trying to achieve..." className="form-input" style={{ minHeight: "100px", resize: "vertical" }} />
+                </div>
+                <button type="submit" className="btn-gold" style={{ justifyContent: "center", marginTop: "4px" }}>
+                  Submit Inquiry
                 </button>
-
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,212,224,0.40)", margin: 0, textAlign: "center" }}>
-                  No commitment required. We confirm fit before any engagement begins.
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11.5px", color: "rgba(200,215,230,0.40)", textAlign: "center", margin: 0 }}>
+                  By submitting, you agree to be contacted by the AiiAco team. Your information will not be shared with third parties.
                 </p>
               </form>
             )}
