@@ -1,6 +1,8 @@
 /*
- * AiiACo Structured Data — JSON-LD schemas for Organization and Service
- * Injected globally in App.tsx for all pages
+ * AiiACo Structured Data — JSON-LD schemas for Organization, Service, WebSite
+ * Uses dangerouslySetInnerHTML because react-helmet-async does not support
+ * text children inside <script> tags — they must be passed as innerHTML.
+ * Injected globally in App.tsx for all pages.
  */
 import { Helmet } from "react-helmet-async";
 
@@ -69,15 +71,18 @@ const websiteSchema = {
 export default function StructuredData() {
   return (
     <Helmet>
-      <script type="application/ld+json">
-        {JSON.stringify(organizationSchema)}
-      </script>
-      <script type="application/ld+json">
-        {JSON.stringify(serviceSchema)}
-      </script>
-      <script type="application/ld+json">
-        {JSON.stringify(websiteSchema)}
-      </script>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
     </Helmet>
   );
 }

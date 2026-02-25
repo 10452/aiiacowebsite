@@ -85,7 +85,7 @@ export default function EngagementModels() {
             Models
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px" }}>
-            Three Structures. <span className="accent">One Standard of Execution.</span>
+            Three AI Integration Models. <span className="accent">One Standard of Execution.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">

@@ -192,7 +192,7 @@ export default function ResultsSection() {
             Results
           </motion.div>
           <motion.h2 variants={item} className="section-headline" style={{ marginBottom: 0 }}>
-            Proof Without <span className="accent">Personalities.</span>
+            AI Integration Results. <span className="accent">Proof Without Personalities.</span>
           </motion.h2>
           <div className="gold-divider" />
           <motion.p variants={item} className="section-subhead" style={{ margin: 0 }}>

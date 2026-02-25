@@ -74,8 +74,8 @@ export default function HeroSection() {
             </div>
 
             <h1 className="display-headline">
-              Upgrade or Fall Behind.
-              <span className="gold-line">The Corporate Age of AI Has Begun.</span>
+              The AI Integration Agency
+              <span className="gold-line">That Delivers Outcomes, Not Decks.</span>
             </h1>
 
             <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(15px, 1.5vw, 18px)", lineHeight: 1.65, color: "rgba(200,215,230,0.82)", maxWidth: "52ch", margin: 0 }}>

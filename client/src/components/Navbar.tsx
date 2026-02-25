@@ -7,11 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "Platform", href: "#platform" },
-  { label: "Method", href: "#method" },
-  { label: "Industries", href: "#industries" },
-  { label: "Models", href: "#models" },
-  { label: "Upgrade", href: "#contact" },
+  { label: "Platform", href: "#platform", route: "/" },
+  { label: "Method", href: "#method", route: "/method" },
+  { label: "Industries", href: "#industries", route: "/industries" },
+  { label: "Models", href: "#models", route: "/models" },
+  { label: "Upgrade", href: "#contact", route: "/upgrade" },
 ];
 
 export default function Navbar() {
@@ -82,9 +82,10 @@ export default function Navbar() {
             {/* Desktop links */}
             <div style={{ display: "flex", alignItems: "center", gap: "4px" }} className="hidden lg:flex">
               {navLinks.map((link) => (
-                <button
+                <a
                   key={link.href}
-                  onClick={() => scrollTo(link.href)}
+                  href={link.route}
+                  onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontWeight: 600,
@@ -96,12 +97,14 @@ export default function Navbar() {
                     borderRadius: "8px",
                     cursor: "pointer",
                     transition: "color 0.15s, background 0.15s",
+                    textDecoration: "none",
+                    display: "inline-block",
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.96)"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(200,215,230,0.72)"; e.currentTarget.style.background = "none"; }}
                 >
                   {link.label}
-                </button>
+                </a>
               ))}
             </div>
 

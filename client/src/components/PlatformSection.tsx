@@ -64,7 +64,7 @@ export default function PlatformSection() {
             Platform
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px" }}>
-            Operational AI <span className="accent">Infrastructure.</span>
+            AI Integration as <span className="accent">Operational Infrastructure.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead" style={{ marginBottom: "16px" }}>
