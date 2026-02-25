@@ -51,14 +51,14 @@ export default function AfterUpgradeSection() {
         >
           <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
             <span className="dot" />
-            After Upgrade
+            The Structural Transformation
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px" }}>
-            Your Operating Model, <span className="accent">Rebuilt.</span>
+            This Is What <span className="accent">Your Business Looks Like After AiiAco.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
-            You do not need to learn AI. You need to integrate it. Advantage comes from structure, not novelty.
+            You do not need to understand AI. You need to be running on it. The businesses that survive the next decade will not be the ones that tried AI — they will be the ones that integrated it at the operational level. This is that level.
           </p>
         </motion.div>
 
@@ -106,9 +106,9 @@ export default function AfterUpgradeSection() {
           style={{ marginTop: "48px", textAlign: "center" }}
         >
           <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(22px, 2.8vw, 36px)", fontWeight: 700, color: "rgba(255,255,255,0.92)", lineHeight: 1.2, margin: "0 auto 20px", maxWidth: "60ch", letterSpacing: "-0.4px" }}>
-            We do not add AI to your business.
+            Your competitors are not waiting.
             <br />
-            <span style={{ color: "#D4A843" }}>We rebuild your business around it.</span>
+            <span style={{ color: "#D4A843" }}>The question is whether you move first or respond last.</span>
           </p>
           <button
             onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}

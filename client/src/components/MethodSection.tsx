@@ -66,14 +66,14 @@ export default function MethodSection() {
         >
           <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
             <span className="dot" />
-            Method
+            The AiiAco Execution Method
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px" }}>
-            From Diagnostics to <span className="accent">Compounding Results.</span>
+            Five Phases. <span className="accent">Zero Guesswork. Irreversible Results.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
-            A disciplined upgrade path from legacy operations to AI-driven execution, without internal overload.
+            This is not a roadmap. It is an execution protocol. AiiAco runs every phase — you receive outcomes at each milestone, not status reports and slide decks.
           </p>
         </motion.div>
 

@@ -70,19 +70,22 @@ export default function HeroSection() {
           >
             <div className="section-pill w-fit">
               <span className="dot" />
-              AI Integration Authority
+              AI Integration Authority — Not Consulting. Execution.
             </div>
 
             <h1 className="display-headline">
-              The AI Integration Agency
-              <span className="gold-line">That Delivers Outcomes, Not Decks.</span>
+              Operational AI Integration<br />
+              <span className="gold-line">for the Corporate Age.</span>
             </h1>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(13px, 1.2vw, 15px)", fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", margin: "-8px 0 0" }}>
+              The Corporate Age of AI Has Begun. Upgrade or Fall Behind.
+            </p>
 
             <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(15px, 1.5vw, 18px)", lineHeight: 1.65, color: "rgba(200,215,230,0.82)", maxWidth: "52ch", margin: 0 }}>
-              AiiAco designs, deploys, and manages operational AI infrastructure for businesses
-              that intend to lead, not experiment.{" "}
+              AiiAco is the AI Integration Authority that designs, deploys, and manages your
+              complete AI operational infrastructure — from diagnostics to execution.{" "}
               <strong style={{ color: "rgba(255,255,255,0.92)", fontWeight: 700 }}>
-                We engineer outcomes. Your team keeps focus.
+                You do not hire AI tools. You hire AiiAco. AiiAco hires and manages everything else.
               </strong>
             </p>
 
@@ -106,10 +109,10 @@ export default function HeroSection() {
 
             <div style={{ marginTop: "8px", display: "flex", flexDirection: "column", gap: "6px" }}>
               <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12.5px", color: "rgba(200,215,230,0.50)", margin: 0, letterSpacing: "0.1px" }}>
-                Not software. Not consulting. Operational AI infrastructure built to compound results.
+                Not a consultant. Not a software vendor. The AI Integration Authority that executes.
               </p>
               <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", fontStyle: "italic", color: "rgba(200,215,230,0.38)", margin: 0 }}>
-                We do not deploy what’s popular. We deploy what produces leverage.
+                We do not advise. We do not recommend. We build, deploy, and run your AI operation.
               </p>
             </div>
           </motion.div>

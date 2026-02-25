@@ -23,7 +23,7 @@ const models = [
   },
   {
     name: "Full Integration",
-    tag: "Recommended",
+    tag: "Most Selected",
     price: "Structured Retainer",
     desc: "End-to-end deployment: blueprint, AI workforce configuration, integration, managed optimization, and performance reporting.",
     includes: [
@@ -82,14 +82,14 @@ export default function EngagementModels() {
         >
           <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
             <span className="dot" />
-            Models
+            Engagement Models
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px" }}>
-            Three AI Integration Models. <span className="accent">One Standard of Execution.</span>
+            You Choose the Structure. <span className="accent">AiiAco Delivers the Outcome.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
-            Every engagement is built around measurable outcomes. The model you choose determines the investment structure — not the quality of what gets delivered.
+            Three engagement structures. One non-negotiable standard: measurable, operational results. The model you select determines how the investment is structured — not what gets built, not how it is executed, and not what you receive.
           </p>
         </motion.div>
 
@@ -107,15 +107,18 @@ export default function EngagementModels() {
             >
               {model.featured && (
                 <div style={{ position: "absolute", top: "-1px", left: "50%", transform: "translateX(-50%)", background: "linear-gradient(135deg, rgba(184,156,74,0.95), rgba(212,168,67,0.80))", color: "#0a0800", fontFamily: "'DM Sans', sans-serif", fontWeight: 800, fontSize: "10px", letterSpacing: "1.2px", textTransform: "uppercase", padding: "5px 16px", borderRadius: "0 0 10px 10px", whiteSpace: "nowrap" }}>
-                  Most Engaged
+                  Most Selected
                 </div>
               )}
 
               <div>
-                <div className="section-pill" style={{ marginBottom: "12px", width: "fit-content", fontSize: "10px" }}>
-                  <span className="dot" />
-                  {model.tag}
-                </div>
+                {!model.featured && (
+                  <div className="section-pill" style={{ marginBottom: "12px", width: "fit-content", fontSize: "10px" }}>
+                    <span className="dot" />
+                    {model.tag}
+                  </div>
+                )}
+                {model.featured && <div style={{ height: "22px" }} />}
                 <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "24px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 6px", letterSpacing: "-0.3px", lineHeight: 1.1 }}>
                   {model.name}
                 </h3>

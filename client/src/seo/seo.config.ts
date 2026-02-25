@@ -12,7 +12,7 @@ export const SITE = {
   ogImage: "https://aiiaco.com/og-image.jpg",
   twitterHandle: "@aiiaco",
   keywords:
-    "AI integration, enterprise AI integration, AI implementation services, AI operational infrastructure, business AI automation, AI transformation, managed AI integration, AI workflow automation, AI governance, AI operating model, AI agents for business, done-for-you AI deployment, performance-based AI implementation, AI integration agency",
+    "AI integration, enterprise AI integration, AI implementation services, AI operational infrastructure, business AI automation, AI transformation, managed AI integration, AI workflow automation, AI governance, AI operating model, AI agents for business, done-for-you AI deployment, performance-based AI implementation, AI integration authority",
 };
 
 export const PAGE_META: Record<string, { title: string; description: string }> = {

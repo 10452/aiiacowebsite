@@ -39,14 +39,14 @@ export default function BuiltForCorporateAge() {
         >
           <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content", margin: "0 auto 20px" }}>
             <span className="dot" />
-            Principles
+            The AiiAco Operating Constraints
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px", textAlign: "center" }}>
-            How We <span className="accent">Operate.</span>
+            Non-Negotiable Standards. <span className="accent">Every Engagement. No Exceptions.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px", margin: "0 auto 20px" }} />
           <p className="section-subhead" style={{ textAlign: "center", margin: "0 auto", maxWidth: "56ch" }}>
-            These are not values statements. They are operating constraints that govern every engagement.
+            These are not values statements or marketing commitments. They are the operating constraints that govern every managed AI integration engagement AiiAco runs.
           </p>
         </motion.div>
 
@@ -85,11 +85,12 @@ export default function BuiltForCorporateAge() {
           style={{ padding: "52px 48px", textAlign: "center" }}
         >
           <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 16px", lineHeight: 1.1, letterSpacing: "-0.8px" }}>
-            The businesses that will define this decade<br />
-            <span style={{ color: "#D4A843" }}>are the ones that integrated, not experimented.</span>
+            The Corporate Age of AI has already begun.
+            <br />
+            <span style={{ color: "#D4A843" }}>The only question is whether you are building the infrastructure or watching others do it.</span>
           </h2>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(15px, 1.6vw, 18px)", color: "rgba(200,215,230,0.75)", margin: "0 auto 32px", maxWidth: "56ch", lineHeight: 1.6 }}>
-            AiiAco principle: We do not build what clients ask for. We build what creates leverage.
+            AiiAco is the AI Integration Authority for the Corporate Age. One engagement. Complete operational AI infrastructure. Delivered, managed, and performance-aligned.
           </p>
           <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
             <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "16px", padding: "16px 36px" }}>

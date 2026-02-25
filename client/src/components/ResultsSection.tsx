@@ -72,7 +72,8 @@ const outcomes: OutcomeCard[] = [
 ];
 
 function useCountUp(target: number, start: number, enabled: boolean, durationMs = 900) {
-  const [val, setVal] = useState(start);
+  // Initialize to target so SSR/prerender shows real values immediately
+  const [val, setVal] = useState(target);
 
   useEffect(() => {
     if (!enabled) return;
@@ -89,7 +90,7 @@ function useCountUp(target: number, start: number, enabled: boolean, durationMs 
 
     let raf = 0;
     const t0 = performance.now();
-    const from = start;
+    const from = 0; // animate from 0 visually even though DOM starts at target
 
     const tick = (t: number) => {
       const p = Math.min(1, (t - t0) / durationMs);
@@ -124,7 +125,8 @@ function KpiCard({
   variants: any;
   index: number;
 }) {
-  const val = useCountUp(kpi.value, 0, inView, 850 + index * 90);
+  // SSR fix: start from final value so static HTML shows real numbers; animation is visual-only
+  const val = useCountUp(kpi.value, kpi.value, inView, 850 + index * 90);
 
   return (
     <motion.div variants={variants} className="glass-card" style={{ padding: "24px" }}>
@@ -189,15 +191,15 @@ export default function ResultsSection() {
         >
           <motion.div variants={item} className="section-pill" style={{ width: "fit-content" }}>
             <span className="dot" />
-            Results
+            Managed AI Integration Results
           </motion.div>
           <motion.h2 variants={item} className="section-headline" style={{ marginBottom: 0 }}>
-            AI Integration Results. <span className="accent">Proof Without Personalities.</span>
+            Enterprise AI Integration Outcomes. <span className="accent">Measured. Verified. Repeatable.</span>
           </motion.h2>
           <div className="gold-divider" />
           <motion.p variants={item} className="section-subhead" style={{ margin: 0 }}>
-            We don't rely on founder bios or brand theatre. We rely on measurable operational impact.
-            Outcomes vary by baseline maturity, but the direction is consistent: reduced drag, increased leverage, compounding efficiency.
+            AiiAco does not rely on brand theatre or founder credentials. Every AI implementation service engagement is measured against defined KPIs from day one.
+            Outcomes across enterprise AI integration and AI automation for business processes are consistent: reduced operational drag, increased throughput leverage, and compounding efficiency gains.
           </motion.p>
         </motion.div>
 

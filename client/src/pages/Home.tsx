@@ -21,10 +21,10 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="AiiAco — AI Integration Agency | Upgrade Your Business"
-        description="AiiAco designs, deploys, and manages complete AI operational systems for businesses that intend to lead. AI integration, automation, and performance-based AI consulting across 20+ industries."
+        title="AiiAco | AI Integration Authority for the Corporate Age"
+        description="AiiAco is the AI Integration Authority for the Corporate Age. We design, deploy, and manage enterprise AI integration, AI implementation services, and managed AI integration for businesses across 20+ industries. Performance-based AI available."
         path="/"
-        keywords="AI integration agency, AI consulting, business AI automation, AI operational infrastructure, AI workforce, AI director, done-for-you AI, performance-based AI, AI integration services, AI agency, artificial intelligence consulting, business automation, AI implementation, AI strategy, operational AI"
+        keywords="AI integration authority, enterprise AI integration, AI implementation services, managed AI integration, AI automation for business, operational AI infrastructure, AI workforce, AI director, done-for-you AI, performance-based AI, AI integration services, artificial intelligence consulting, business AI automation, AI strategy, managed AI services"
       />
       <div className="min-h-screen flex flex-col" style={{ background: "#03050A" }}>
         <Navbar />

@@ -69,7 +69,7 @@ export default function Footer() {
             © {new Date().getFullYear()} AiiAco. All rights reserved.
           </p>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.28)", margin: 0 }}>
-            AI Integration Agency · Operational AI Infrastructure · Performance-Based AI Consulting
+            AI Integration Authority · Operational AI Infrastructure · Performance-Based AI Consulting
           </p>
         </div>
       </div>

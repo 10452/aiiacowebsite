@@ -61,17 +61,17 @@ export default function PlatformSection() {
         >
           <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
             <span className="dot" />
-            Platform
+            The AiiAco Authority Platform
           </div>
           <h2 className="section-headline" style={{ marginBottom: "20px" }}>
-            AI Integration as <span className="accent">Operational Infrastructure.</span>
+            One Engagement. <span className="accent">Complete AI Operational Command.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead" style={{ marginBottom: "16px" }}>
-            Most vendors sell tools. Most consultants sell recommendations. AiiAco delivers an integrated operating model: diagnostics, architecture, deployment, and managed optimization.
+            Vendors sell tools. Consultants sell decks. AiiAco delivers the entire operating model — diagnostics, architecture, deployment, managed execution, and performance-aligned outcomes. This is not a service. It is a structural upgrade.
           </p>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.55)", margin: 0, maxWidth: "58ch" }}>
-            AI is no longer a novelty. It is infrastructure. Businesses that treat it as experimentation will be outpaced by businesses that integrate intelligence into operations.
+            The businesses winning the next decade are not experimenting with AI. They are running on it. AiiAco is the authority that makes that transition irreversible.
           </p>
         </motion.div>
 
