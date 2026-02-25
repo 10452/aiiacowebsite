@@ -1,0 +1,174 @@
+/**
+ * AiiACo — /ai-integration SEO Pillar Page
+ * Design: Liquid Glass Bio-Organic | Cormorant Garamond + DM Sans | Deep void-black + gold
+ * Purpose: Rank for "AI integration" head term — long-form authoritative content
+ */
+
+import SEO from "@/seo/SEO";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { motion } from "framer-motion";
+
+const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } };
+
+const pillars = [
+  {
+    n: "01",
+    title: "Diagnostic Architecture",
+    body: "AI integration begins with a complete audit of your operational architecture — workflows, data flows, decision bottlenecks, and competitive exposure. Without this foundation, AI deployment is guesswork dressed as strategy.",
+  },
+  {
+    n: "02",
+    title: "Integration Blueprint",
+    body: "A custom AI integration blueprint maps each identified leverage point to a specific AI capability — LLMs, automation agents, predictive models, or workflow orchestration — with measurable ROI targets attached to each.",
+  },
+  {
+    n: "03",
+    title: "Managed Deployment",
+    body: "AiiAco deploys, configures, and manages every AI system in the blueprint. You do not manage vendors, prompts, or integrations. You receive outcomes: reduced drag, increased throughput, compounding efficiency.",
+  },
+  {
+    n: "04",
+    title: "Continuous Optimization",
+    body: "AI integration is not a one-time project. AiiAco monitors performance against KPIs, retrains models as your business evolves, and expands the integration footprint as new leverage points emerge.",
+  },
+];
+
+const industries = [
+  "Financial Services", "Real Estate", "Insurance", "Energy & Resources",
+  "Software & Technology", "Healthcare & Wellness", "Automotive", "Food & Beverage",
+  "Luxury & Lifestyle", "Agency Operations", "Investment & Capital", "Retail & Commerce",
+];
+
+export default function AIIntegrationPage() {
+  return (
+    <>
+      <SEO
+        title="AI Integration Services | AiiAco — Operational AI for Enterprise"
+        description="AiiAco delivers end-to-end AI integration for enterprise and mid-market businesses. From diagnostic architecture to managed deployment — we build, integrate, and run your complete AI operational infrastructure."
+        keywords="AI integration, AI integration services, enterprise AI integration, business AI integration, AI integration company, operational AI, AI deployment, AI implementation"
+        path="/ai-integration"
+      />
+      <Navbar />
+
+      <main style={{ background: "linear-gradient(180deg, #050810 0%, #070c14 60%, #050810 100%)", minHeight: "100vh" }}>
+
+        {/* Hero */}
+        <section style={{ padding: "clamp(80px, 10vw, 140px) 0 clamp(60px, 8vw, 100px)" }}>
+          <div className="container" style={{ maxWidth: "900px" }}>
+            <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.12 } } }}>
+              <motion.div variants={fade} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(184,156,74,0.08)", border: "1px solid rgba(184,156,74,0.22)", borderRadius: "999px", padding: "6px 16px", marginBottom: "28px" }}>
+                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#D4A843" }} />
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.85)" }}>AI Integration Authority</span>
+              </motion.div>
+
+              <motion.h1 variants={fade} className="display-headline" style={{ marginBottom: "24px" }}>
+                AI Integration<br />
+                <span className="gold-line">for the Corporate Age.</span>
+              </motion.h1>
+
+              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(16px, 1.6vw, 20px)", lineHeight: 1.7, color: "rgba(200,215,230,0.78)", maxWidth: "68ch", marginBottom: "40px" }}>
+                AI integration is the process of embedding artificial intelligence into the operational infrastructure of a business — not as a tool layer, but as a functional system that executes, decides, and delivers. AiiAco is the AI Integration Authority that designs, deploys, and manages this infrastructure on your behalf.
+              </motion.p>
+
+              <motion.div variants={fade} style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+                <a href="/upgrade" className="btn-gold" style={{ textDecoration: "none" }}>Initiate Integration</a>
+                <a href="/method" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(200,215,230,0.70)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", padding: "12px 0", borderBottom: "1px solid rgba(200,215,230,0.20)" }}>
+                  View Our Method →
+                </a>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* What AI Integration Actually Means */}
+        <section style={{ padding: "clamp(60px, 8vw, 100px) 0", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="container" style={{ maxWidth: "900px" }}>
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={{ show: { transition: { staggerChildren: 0.1 } } }}>
+              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>What AI Integration Is</motion.p>
+              <motion.h2 variants={fade} className="section-headline" style={{ marginBottom: "24px" }}>
+                Not a Tool. <span className="accent">An Operating System.</span>
+              </motion.h2>
+              <div className="gold-divider" />
+              <motion.div variants={fade} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                <p className="section-subhead" style={{ margin: 0 }}>
+                  Most businesses approach AI as a tool procurement exercise — they subscribe to ChatGPT, add a chatbot, or automate one email sequence. This is not AI integration. It is AI decoration.
+                </p>
+                <p className="section-subhead" style={{ margin: 0 }}>
+                  True AI integration means your business has an AI operational layer that handles repeatable decisions, automates complex workflows, surfaces intelligence from your data, and scales execution without scaling headcount. It is infrastructure — not a feature.
+                </p>
+                <p className="section-subhead" style={{ margin: 0 }}>
+                  AiiAco builds this infrastructure. We audit your operations, design the integration architecture, deploy every AI system, and manage the entire stack. You do not hire AI tools. You hire AiiAco. AiiAco hires and manages everything else.
+                </p>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Four Pillars */}
+        <section style={{ padding: "clamp(60px, 8vw, 100px) 0", background: "rgba(255,255,255,0.015)", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="container">
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={{ show: { transition: { staggerChildren: 0.1 } } }}>
+              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>The Integration Framework</motion.p>
+              <motion.h2 variants={fade} className="section-headline" style={{ marginBottom: "48px" }}>
+                Four Phases of <span className="accent">Operational AI Integration</span>
+              </motion.h2>
+
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
+                {pillars.map((p) => (
+                  <motion.div key={p.n} variants={fade} className="glass-card" style={{ padding: "32px 28px" }}>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 900, letterSpacing: "0.2em", color: "rgba(184,156,74,0.55)", marginBottom: "12px" }}>PHASE {p.n}</div>
+                    <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "22px", fontWeight: 700, color: "rgba(255,255,255,0.94)", margin: "0 0 14px", letterSpacing: "-0.3px" }}>{p.title}</h3>
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", lineHeight: 1.65, color: "rgba(200,215,230,0.68)", margin: 0 }}>{p.body}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Industries */}
+        <section style={{ padding: "clamp(60px, 8vw, 100px) 0", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="container" style={{ maxWidth: "900px" }}>
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={{ show: { transition: { staggerChildren: 0.1 } } }}>
+              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>Cross-Industry Deployment</motion.p>
+              <motion.h2 variants={fade} className="section-headline" style={{ marginBottom: "16px" }}>
+                AI Integration Across <span className="accent">Every Sector</span>
+              </motion.h2>
+              <motion.p variants={fade} className="section-subhead" style={{ marginBottom: "36px" }}>
+                AiiAco has deployed AI integration frameworks across more than 20 industries. The architecture differs by sector; the methodology does not.
+              </motion.p>
+              <motion.div variants={fade} style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                {industries.map((ind) => (
+                  <span key={ind} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", fontWeight: 600, color: "rgba(200,215,230,0.72)", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.10)", borderRadius: "6px", padding: "7px 14px" }}>{ind}</span>
+                ))}
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section style={{ padding: "clamp(60px, 8vw, 100px) 0", borderTop: "1px solid rgba(255,255,255,0.06)", background: "rgba(184,156,74,0.03)" }}>
+          <div className="container" style={{ maxWidth: "700px", textAlign: "center" }}>
+            <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={{ show: { transition: { staggerChildren: 0.12 } } }}>
+              <motion.h2 variants={fade} className="section-headline" style={{ marginBottom: "20px" }}>
+                Ready to Integrate <span className="accent">AI Into Your Operations?</span>
+              </motion.h2>
+              <motion.p variants={fade} className="section-subhead" style={{ marginBottom: "36px" }}>
+                AiiAco operates three engagement models — from strategic advisory to full performance-based integration. Every engagement begins with a Business Intelligence Audit.
+              </motion.p>
+              <motion.div variants={fade} style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
+                <a href="/upgrade" className="btn-gold" style={{ textDecoration: "none" }}>Initiate Your Integration</a>
+                <a href="/models" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(200,215,230,0.70)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", padding: "12px 0", borderBottom: "1px solid rgba(200,215,230,0.20)" }}>
+                  View Engagement Models →
+                </a>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+      </main>
+      <Footer />
+    </>
+  );
+}

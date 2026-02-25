@@ -72,8 +72,9 @@ export default function CaseStudyCard({ cs }: { cs: CaseStudy }) {
           </div>
           <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
             {cs.approach.map((a) => (
-              <li key={a} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.68)", lineHeight: 1.45 }}>
-                · {a}
+              <li key={a} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.68)", lineHeight: 1.45, display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                <span style={{ color: "rgba(184,156,74,0.70)", fontWeight: 900, flexShrink: 0, marginTop: "1px" }}>—</span>
+                <span>{a}</span>
               </li>
             ))}
           </ul>

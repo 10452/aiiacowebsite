@@ -158,7 +158,7 @@ export default function HeroSection() {
                 <span style={{ color: "#D4A843" }}>Complete AI infrastructure.</span>
               </p>
               {[
-                { n: "01", t: "We learn your business", s: "Architecture, goals, bottlenecks, competition." },
+                { n: "01", t: "Business Intelligence Audit", s: "Architecture, goals, bottlenecks, competition." },
                 { n: "02", t: "We build the blueprint", s: "Custom AI integration plan with ROI targets." },
                 { n: "03", t: "We deploy and manage", s: "Full execution — you receive outcomes, not dashboards." },
               ].map((step) => (

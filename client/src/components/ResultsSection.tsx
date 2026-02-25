@@ -198,8 +198,10 @@ export default function ResultsSection() {
           </motion.h2>
           <div className="gold-divider" />
           <motion.p variants={item} className="section-subhead" style={{ margin: 0 }}>
-            AiiAco does not rely on brand theatre or founder credentials. Every AI implementation service engagement is measured against defined KPIs from day one.
-            Outcomes across enterprise AI integration and AI automation for business processes are consistent: reduced operational drag, increased throughput leverage, and compounding efficiency gains.
+            AiiAco does not rely on brand theatre or founder credentials. Every engagement is measured against defined KPIs from day one — no vanity metrics, no narrative substitutes.
+          </motion.p>
+          <motion.p variants={item} className="section-subhead" style={{ margin: 0 }}>
+            The outcomes of enterprise AI integration are consistent across sectors: reduced operational drag, increased throughput leverage, and compounding efficiency gains that accelerate as AI automation matures inside the business.
           </motion.p>
         </motion.div>
 

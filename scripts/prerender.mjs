@@ -27,6 +27,9 @@ const ROUTES = [
   "/upgrade",
   "/privacy",
   "/terms",
+  "/ai-integration",
+  "/ai-implementation-services",
+  "/ai-automation-for-business",
 ];
 
 // ─── Step 1: Load the clean Vite-built shell ───────────────────────────────

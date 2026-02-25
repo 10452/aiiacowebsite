@@ -30,6 +30,9 @@ import UpgradePage from "./pages/UpgradePage";
 import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
 import NotFound from "./pages/NotFound";
+import AIIntegrationPage from "./pages/AIIntegrationPage";
+import AIImplementationPage from "./pages/AIImplementationPage";
+import AIAutomationPage from "./pages/AIAutomationPage";
 
 const routeMap: Record<string, React.ComponentType> = {
   "/": Home,
@@ -42,6 +45,9 @@ const routeMap: Record<string, React.ComponentType> = {
   "/upgrade": UpgradePage,
   "/privacy": PrivacyPage,
   "/terms": TermsPage,
+  "/ai-integration": AIIntegrationPage,
+  "/ai-implementation-services": AIImplementationPage,
+  "/ai-automation-for-business": AIAutomationPage,
 };
 
 export type HelmetContext = {

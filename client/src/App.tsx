@@ -18,6 +18,9 @@ import ResultsPage from "./pages/ResultsPage";
 import UpgradePage from "./pages/UpgradePage";
 import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
+import AIIntegrationPage from "./pages/AIIntegrationPage";
+import AIImplementationPage from "./pages/AIImplementationPage";
+import AIAutomationPage from "./pages/AIAutomationPage";
 
 function Router() {
   return (
@@ -32,6 +35,9 @@ function Router() {
       <Route path="/upgrade" component={UpgradePage} />
       <Route path="/privacy" component={PrivacyPage} />
       <Route path="/terms" component={TermsPage} />
+      <Route path="/ai-integration" component={AIIntegrationPage} />
+      <Route path="/ai-implementation-services" component={AIImplementationPage} />
+      <Route path="/ai-automation-for-business" component={AIAutomationPage} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback */}
       <Route component={NotFound} />

@@ -7,9 +7,9 @@ import { motion } from "framer-motion";
 const phases = [
   {
     num: "01",
-    title: "Intelligence & Diagnostics",
-    sub: "Understand Before Recommending",
-    body: "We map processes, identify bottlenecks, quantify friction, and locate high-leverage upgrade zones.",
+    title: "Business Intelligence Audit",
+    sub: "Diagnostic Clarity Before Any Recommendation",
+    body: "We conduct a structured audit of your operations: process mapping, data readiness, bottleneck identification, revenue friction, and competitive exposure. No assumptions. No templates.",
     outputs: ["Process mapping", "Data readiness", "Bottleneck analysis", "Revenue friction", "Risk exposure", "Competitive gaps"],
   },
   {
