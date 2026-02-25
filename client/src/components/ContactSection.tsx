@@ -141,7 +141,7 @@ export default function ContactSection() {
                   Structured Intake
                 </div>
                 <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10px", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(210,220,235,0.70)", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "999px", padding: "3px 10px" }}>
-                  Recommended
+                  Preferred
                 </span>
               </div>
               <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.55)", margin: "0 0 20px", lineHeight: 1.5 }}>
