@@ -22,6 +22,7 @@ import AIIntegrationPage from "./pages/AIIntegrationPage";
 import AIImplementationPage from "./pages/AIImplementationPage";
 import AIAutomationPage from "./pages/AIAutomationPage";
 import IndustryMicrosite from "./pages/IndustryMicrosite";
+import AdminLeadsPage from "./pages/AdminLeadsPage";
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -40,6 +41,7 @@ function Router() {
       <Route path="/ai-implementation-services" component={AIImplementationPage} />
       <Route path="/ai-automation-for-business" component={AIAutomationPage} />
       <Route path="/industries/:slug" component={IndustryMicrosite} />
+      <Route path="/admin/leads" component={AdminLeadsPage} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback */}
       <Route component={NotFound} />

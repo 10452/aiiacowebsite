@@ -15,6 +15,8 @@ export interface IndustryData {
   seoTitle: string;
   seoDescription: string;
   seoKeywords: string;
+  /** ID of a related case study to feature on the microsite page */
+  featuredCaseStudyId?: string;
 }
 
 export const industries: IndustryData[] = [
@@ -213,6 +215,7 @@ export const industries: IndustryData[] = [
     seoTitle: "AI Integration for High-Risk Merchant Services | AiiAco",
     seoDescription: "AiiAco deploys AI chargeback prediction, merchant underwriting automation, and compliance monitoring for high-risk payment processors and ISOs.",
     seoKeywords: "AI for high-risk merchants, chargeback AI, merchant underwriting automation, payment processing AI, high-risk payments AI",
+    featuredCaseStudyId: "merchant-compliance",
   },
   {
     slug: "software-technology",
@@ -577,6 +580,91 @@ export const industries: IndustryData[] = [
     seoTitle: "AI Integration for Alternative Energy | AiiAco",
     seoDescription: "AiiAco deploys AI production optimization, commercial intelligence, and compliance automation for alternative and emerging energy companies.",
     seoKeywords: "AI for alternative energy, biofuel AI, hydrogen energy AI, emerging energy AI, alternative energy operations AI",
+  },
+  // ─── 3 Remaining Industries ───────────────────────────────────────────────────
+  {
+    slug: "battery-ev-technology",
+    name: "Battery & EV Technology",
+    headline: "AI Integration for Battery & EV Technology Companies",
+    subheadline: "Accelerate R&D cycles, optimize manufacturing, and automate compliance — with AI built for the electrification era.",
+    description: "Battery and EV technology companies operate at the intersection of rapid innovation, capital intensity, and regulatory complexity. AiiAco deploys AI systems that accelerate materials research, optimize cell manufacturing, monitor supply chain risk, and automate regulatory compliance — so engineering and commercial teams move faster with less friction.",
+    painPoints: [
+      { title: "R&D Velocity Bottleneck", body: "Materials discovery and cell chemistry iteration cycles are constrained by manual data analysis and literature review." },
+      { title: "Manufacturing Yield Losses", body: "Cell and pack manufacturing defects are identified reactively rather than predicted and prevented." },
+      { title: "Supply Chain Fragility", body: "Critical mineral and component supply chains lack real-time risk monitoring and alternative sourcing intelligence." },
+      { title: "Regulatory Complexity", body: "Battery safety, recycling, and emissions regulations across jurisdictions create significant compliance overhead." },
+    ],
+    useCases: [
+      { title: "Materials Intelligence", body: "AI accelerates literature review, patent analysis, and experimental data synthesis to surface promising chemistries faster." },
+      { title: "Predictive Manufacturing Quality", body: "Machine learning models predict cell defects and yield losses before they occur, reducing scrap and rework." },
+      { title: "Supply Chain Risk Monitoring", body: "Real-time monitoring of critical mineral markets, supplier health, and geopolitical signals with automated alerts." },
+      { title: "Regulatory Compliance Automation", body: "AI tracks evolving battery regulations across markets and automates compliance documentation and reporting." },
+    ],
+    kpis: [
+      { value: "40%", label: "Faster R&D Iteration Cycles" },
+      { value: "25%", label: "Reduction in Manufacturing Scrap" },
+      { value: "Real-Time", label: "Supply Chain Risk Visibility" },
+      { value: "0→AI", label: "Regulatory Compliance Monitoring" },
+    ],
+    seoTitle: "AI Integration for Battery & EV Technology | AiiAco",
+    seoDescription: "AiiAco deploys AI materials intelligence, predictive manufacturing quality, and supply chain risk monitoring for battery and EV technology companies.",
+    seoKeywords: "AI for battery technology, EV AI integration, battery manufacturing AI, electric vehicle AI, battery supply chain AI",
+  },
+  {
+    slug: "helium-specialty-gas",
+    name: "Helium & Specialty Gas",
+    headline: "AI Integration for Helium & Specialty Gas Operations",
+    subheadline: "Optimize production, predict demand, and automate compliance — with AI built for specialty gas markets.",
+    description: "Helium and specialty gas companies operate in supply-constrained, technically complex markets with demanding customer specifications and strict regulatory requirements. AiiAco deploys AI systems that optimize extraction and purification, predict demand fluctuations, monitor equipment health, and automate compliance documentation.",
+    painPoints: [
+      { title: "Production Optimization Gaps", body: "Extraction and purification processes are not continuously optimized against real-time operational data." },
+      { title: "Demand Volatility", body: "Specialty gas demand is driven by complex downstream markets that are difficult to forecast without AI." },
+      { title: "Equipment Reliability", body: "Unplanned downtime in compression, purification, and storage equipment creates significant revenue loss." },
+      { title: "Compliance Documentation", body: "Purity certifications, safety data sheets, and regulatory filings are manually intensive to produce and maintain." },
+    ],
+    useCases: [
+      { title: "Production Process Optimization", body: "AI continuously optimizes extraction rates, purification parameters, and energy consumption against operational targets." },
+      { title: "Demand Forecasting", body: "AI models downstream market signals — semiconductor cycles, MRI procurement, aerospace programs — to forecast demand with precision." },
+      { title: "Predictive Equipment Maintenance", body: "Sensor data from compressors, purifiers, and storage systems analyzed to predict failures before they occur." },
+      { title: "Compliance Automation", body: "Automated generation of purity certificates, safety data sheets, and regulatory submissions across applicable frameworks." },
+    ],
+    kpis: [
+      { value: "15%", label: "Production Efficiency Improvement" },
+      { value: "35%", label: "Reduction in Unplanned Downtime" },
+      { value: "50%", label: "Faster Compliance Documentation" },
+      { value: "0→AI", label: "Demand Intelligence" },
+    ],
+    seoTitle: "AI Integration for Helium & Specialty Gas | AiiAco",
+    seoDescription: "AiiAco deploys AI production optimization, demand forecasting, and predictive maintenance for helium and specialty gas companies.",
+    seoKeywords: "AI for helium industry, specialty gas AI, helium production optimization, gas supply chain AI, specialty gas compliance AI",
+  },
+  {
+    slug: "biofuel-sustainable-fuels",
+    name: "Biofuel & Sustainable Fuels",
+    headline: "AI Integration for Biofuel & Sustainable Fuels",
+    subheadline: "Optimize feedstock, accelerate certification, and automate carbon accounting — with AI built for sustainable fuel producers.",
+    description: "Biofuel and sustainable fuels producers operate at the intersection of agricultural supply chains, complex refining processes, and rapidly evolving carbon markets. AiiAco deploys AI systems that optimize feedstock procurement, improve conversion yields, automate carbon accounting, and accelerate regulatory certification.",
+    painPoints: [
+      { title: "Feedstock Volatility", body: "Agricultural commodity prices and availability fluctuate significantly, creating margin pressure and planning challenges." },
+      { title: "Conversion Yield Optimization", body: "Fermentation, transesterification, and refining processes are not continuously optimized against real-time data." },
+      { title: "Carbon Accounting Complexity", body: "Lifecycle carbon intensity calculations across complex supply chains are manually intensive and audit-prone." },
+      { title: "Regulatory Certification", body: "Sustainability certifications (RSB, ISCC, RFS) require extensive documentation that creates significant administrative overhead." },
+    ],
+    useCases: [
+      { title: "Feedstock Intelligence", body: "AI monitors commodity markets, weather patterns, and supplier networks to optimize procurement timing and sourcing decisions." },
+      { title: "Process Yield Optimization", body: "Machine learning models continuously optimize conversion parameters to maximize yield and minimize energy consumption." },
+      { title: "Carbon Intensity Automation", body: "AI automates lifecycle carbon intensity calculations across the full supply chain for compliance and credit generation." },
+      { title: "Certification Documentation", body: "Automated generation and maintenance of sustainability certification documentation across applicable standards." },
+    ],
+    kpis: [
+      { value: "12%", label: "Improvement in Conversion Yield" },
+      { value: "60%", label: "Faster Carbon Accounting" },
+      { value: "40%", label: "Reduction in Certification Overhead" },
+      { value: "0→AI", label: "Feedstock Market Intelligence" },
+    ],
+    seoTitle: "AI Integration for Biofuel & Sustainable Fuels | AiiAco",
+    seoDescription: "AiiAco deploys AI feedstock intelligence, process optimization, and carbon accounting automation for biofuel and sustainable fuels producers.",
+    seoKeywords: "AI for biofuel, sustainable fuels AI, biofuel production optimization, carbon accounting AI, SAF AI integration",
   },
 ];
 

@@ -200,4 +200,22 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://aiiaco.com/industries/battery-ev-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://aiiaco.com/industries/helium-specialty-gas</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://aiiaco.com/industries/biofuel-sustainable-fuels</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>

@@ -7,6 +7,7 @@
 import { motion } from "framer-motion";
 import { useParams, Link } from "wouter";
 import { getIndustryBySlug } from "@/data/industries";
+import { caseStudies } from "@/components/caseStudies/caseStudies.data";
 import SEO from "@/seo/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -494,6 +495,220 @@ export default function IndustryMicrosite() {
             </div>
           </div>
         </section>
+
+        {/* Featured Case Study */}
+        {industry.featuredCaseStudyId && (() => {
+          const cs = caseStudies.find((c) => c.id === industry.featuredCaseStudyId);
+          if (!cs) return null;
+          return (
+            <section
+              style={{
+                padding: "80px 0",
+                background: "rgba(255,255,255,0.015)",
+                borderTop: "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
+              <div className="container" style={{ maxWidth: "900px" }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                  style={{ marginBottom: "40px" }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "11px",
+                      fontWeight: 800,
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      color: "rgba(184,156,74,0.60)",
+                      marginBottom: "16px",
+                    }}
+                  >
+                    Case Study
+                  </p>
+                  <h2
+                    style={{
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontSize: "clamp(24px, 3vw, 34px)",
+                      fontWeight: 700,
+                      color: "rgba(255,255,255,0.92)",
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1.2,
+                      marginBottom: "8px",
+                    }}
+                  >
+                    {cs.sector} — {cs.type}
+                  </h2>
+                  <p
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "15px",
+                      lineHeight: 1.65,
+                      color: "rgba(200,215,230,0.60)",
+                      maxWidth: "640px",
+                    }}
+                  >
+                    {cs.situation}
+                  </p>
+                </motion.div>
+
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                    gap: "16px",
+                    marginBottom: "32px",
+                  }}
+                >
+                  {/* Outcomes */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    style={{
+                      padding: "24px 28px",
+                      background: "rgba(184,156,74,0.04)",
+                      border: "1px solid rgba(184,156,74,0.12)",
+                      borderRadius: "14px",
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: "10px",
+                        fontWeight: 800,
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        color: "rgba(184,156,74,0.60)",
+                        marginBottom: "16px",
+                      }}
+                    >
+                      Outcomes
+                    </p>
+                    {cs.outcomes.map((o, i) => (
+                      <div key={i} style={{ marginBottom: i < cs.outcomes.length - 1 ? "14px" : 0 }}>
+                        <div
+                          style={{
+                            fontFamily: "'Cormorant Garamond', Georgia, serif",
+                            fontSize: "22px",
+                            fontWeight: 700,
+                            color: "rgba(184,156,74,0.90)",
+                            lineHeight: 1,
+                            marginBottom: "4px",
+                          }}
+                        >
+                          {o.value}
+                        </div>
+                        <div
+                          style={{
+                            fontFamily: "'DM Sans', sans-serif",
+                            fontSize: "12px",
+                            color: "rgba(200,215,230,0.55)",
+                          }}
+                        >
+                          {o.label}
+                        </div>
+                      </div>
+                    ))}
+                  </motion.div>
+
+                  {/* Approach */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1, duration: 0.5 }}
+                    style={{
+                      padding: "24px 28px",
+                      background: "rgba(255,255,255,0.025)",
+                      border: "1px solid rgba(255,255,255,0.07)",
+                      borderRadius: "14px",
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontSize: "10px",
+                        fontWeight: 800,
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        color: "rgba(200,215,230,0.35)",
+                        marginBottom: "16px",
+                      }}
+                    >
+                      Approach
+                    </p>
+                    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                      {cs.approach.map((a, i) => (
+                        <li
+                          key={i}
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            alignItems: "flex-start",
+                            marginBottom: i < cs.approach.length - 1 ? "10px" : 0,
+                          }}
+                        >
+                          <span
+                            style={{
+                              color: "rgba(184,156,74,0.70)",
+                              fontSize: "14px",
+                              lineHeight: 1.5,
+                              flexShrink: 0,
+                            }}
+                          >
+                            —
+                          </span>
+                          <span
+                            style={{
+                              fontFamily: "'DM Sans', sans-serif",
+                              fontSize: "13px",
+                              lineHeight: 1.55,
+                              color: "rgba(200,215,230,0.65)",
+                            }}
+                          >
+                            {a}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                  <a
+                    href="/case-studies"
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      color: "rgba(184,156,74,0.80)",
+                      textDecoration: "none",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                    }}
+                  >
+                    View All Case Studies →
+                  </a>
+                  <span
+                    style={{
+                      fontFamily: "'DM Sans', sans-serif",
+                      fontSize: "11px",
+                      color: "rgba(200,215,230,0.30)",
+                    }}
+                  >
+                    {cs.timeline} timeline
+                  </span>
+                </div>
+              </div>
+            </section>
+          );
+        })()}
 
         {/* CTA */}
         <section style={{ padding: "80px 0" }}>
