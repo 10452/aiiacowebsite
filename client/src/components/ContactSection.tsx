@@ -1,9 +1,11 @@
 /*
  * AiiACo Contact Section — Liquid Glass Bio-Organic Design
  * Two-path lead capture: Fast Path (30s) + Structured Intake (recommended)
+ * Forms are wired to the tRPC backend — submissions stored in DB + owner notified.
  */
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { trpc } from "@/lib/trpc";
 
 const industries = [
   "Real Estate & Brokerage", "Mortgage & Lending", "Financial Services",
@@ -27,28 +29,52 @@ const whatHappensNext = [
 export default function ContactSection() {
   const [fastSubmitted, setFastSubmitted] = useState(false);
   const [fullSubmitted, setFullSubmitted] = useState(false);
+  const [fastError, setFastError] = useState("");
+  const [fullError, setFullError] = useState("");
+
   const [fastForm, setFastForm] = useState({ name: "", email: "" });
   const [fullForm, setFullForm] = useState({
     name: "", company: "", email: "", phone: "",
-    industry: "", model: "", revenue: "", message: "",
+    industry: "", engagementModel: "", annualRevenue: "", message: "",
+  });
+
+  const submitCall = trpc.leads.submitCall.useMutation({
+    onSuccess: () => setFastSubmitted(true),
+    onError: (err) => setFastError(err.message || "Submission failed. Please try again."),
+  });
+
+  const submitIntake = trpc.leads.submitIntake.useMutation({
+    onSuccess: () => setFullSubmitted(true),
+    onError: (err) => setFullError(err.message || "Submission failed. Please try again."),
   });
 
   const handleFastChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFastForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFastError("");
   };
 
   const handleFullChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFullForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setFullError("");
   };
 
   const handleFastSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setFastSubmitted(true);
+    submitCall.mutate({ name: fastForm.name, email: fastForm.email });
   };
 
   const handleFullSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setFullSubmitted(true);
+    submitIntake.mutate({
+      name: fullForm.name,
+      email: fullForm.email,
+      company: fullForm.company || undefined,
+      phone: fullForm.phone || undefined,
+      industry: fullForm.industry || undefined,
+      engagementModel: fullForm.engagementModel || undefined,
+      annualRevenue: fullForm.annualRevenue || undefined,
+      message: fullForm.message || undefined,
+    });
   };
 
   return (
@@ -95,7 +121,7 @@ export default function ContactSection() {
             transition={{ duration: 0.6 }}
             style={{ display: "flex", flexDirection: "column", gap: "20px" }}
           >
-            {/* Fast Path */}
+            {/* Fast Path — Executive Call Request */}
             <div className="glass-card" style={{ padding: "28px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
                 <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "18px", fontWeight: 700, color: "rgba(255,255,255,0.96)", letterSpacing: "-0.1px" }}>
@@ -127,8 +153,16 @@ export default function ContactSection() {
                       <input name="email" type="email" required value={fastForm.email} onChange={handleFastChange} placeholder="your@email.com" className="form-input" />
                     </div>
                   </div>
-                  <button type="submit" className="btn-gold" style={{ justifyContent: "center", marginTop: "4px" }}>
-                    Request Executive Call
+                  {fastError && (
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(220,80,80,0.90)", margin: 0 }}>{fastError}</p>
+                  )}
+                  <button
+                    type="submit"
+                    className="btn-gold"
+                    style={{ justifyContent: "center", marginTop: "4px", opacity: submitCall.isPending ? 0.7 : 1 }}
+                    disabled={submitCall.isPending}
+                  >
+                    {submitCall.isPending ? "Sending…" : "Request Executive Call"}
                   </button>
                 </form>
               )}
@@ -180,7 +214,7 @@ export default function ContactSection() {
                   </div>
                   <div className="form-group">
                     <label className="form-label">Engagement Interest</label>
-                    <select name="model" value={fullForm.model} onChange={handleFullChange} className="form-input">
+                    <select name="engagementModel" value={fullForm.engagementModel} onChange={handleFullChange} className="form-input">
                       <option value="">Select engagement type</option>
                       {engagementOptions.map((m) => <option key={m} value={m}>{m}</option>)}
                     </select>
@@ -195,7 +229,7 @@ export default function ContactSection() {
                     </div>
                     <div className="form-group">
                       <label className="form-label">Annual Revenue</label>
-                      <select name="revenue" value={fullForm.revenue} onChange={handleFullChange} className="form-input">
+                      <select name="annualRevenue" value={fullForm.annualRevenue} onChange={handleFullChange} className="form-input">
                         <option value="">Select range</option>
                         <option>Under $1M</option>
                         <option>$1M – $5M</option>
@@ -216,8 +250,16 @@ export default function ContactSection() {
                       style={{ minHeight: "110px", resize: "vertical" }}
                     />
                   </div>
-                  <button type="submit" className="btn-gold" style={{ justifyContent: "center", marginTop: "4px" }}>
-                    Submit Structured Intake
+                  {fullError && (
+                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(220,80,80,0.90)", margin: 0 }}>{fullError}</p>
+                  )}
+                  <button
+                    type="submit"
+                    className="btn-gold"
+                    style={{ justifyContent: "center", marginTop: "4px", opacity: submitIntake.isPending ? 0.7 : 1 }}
+                    disabled={submitIntake.isPending}
+                  >
+                    {submitIntake.isPending ? "Submitting…" : "Submit Structured Intake"}
                   </button>
                   <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11.5px", color: "rgba(200,215,230,0.35)", textAlign: "center", margin: 0 }}>
                     Your information is treated with full confidentiality and will not be shared with third parties.

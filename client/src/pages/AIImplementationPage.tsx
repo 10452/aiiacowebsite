@@ -151,6 +151,23 @@ export default function AIImplementationPage() {
           </div>
         </section>
 
+        {/* Cross-links to related pillar pages */}
+        <section style={{ padding: "60px 0", background: "rgba(6,11,20,0.80)", borderTop: "1px solid rgba(184,156,74,0.10)" }}>
+          <div className="container" style={{ maxWidth: "900px" }}>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "24px" }}>Related Services</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              <a href="/ai-integration" style={{ display: "block", padding: "20px 24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", textDecoration: "none" }}>
+                <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>AI Integration Services</p>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.50)", margin: 0, lineHeight: 1.5 }}>End-to-end AI integration across your full operational architecture — diagnostic, blueprint, and managed deployment.</p>
+              </a>
+              <a href="/ai-automation-for-business" style={{ display: "block", padding: "20px 24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", textDecoration: "none" }}>
+                <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>AI Automation for Business</p>
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.50)", margin: 0, lineHeight: 1.5 }}>End-to-end automation of repeatable business processes using AI agents and workflow orchestration.</p>
+              </a>
+            </div>
+          </div>
+        </section>
+
       </main>
       <Footer />
     </>

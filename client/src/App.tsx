@@ -21,8 +21,8 @@ import TermsPage from "./pages/TermsPage";
 import AIIntegrationPage from "./pages/AIIntegrationPage";
 import AIImplementationPage from "./pages/AIImplementationPage";
 import AIAutomationPage from "./pages/AIAutomationPage";
-
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path="/" component={Home} />
