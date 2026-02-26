@@ -3,15 +3,30 @@
  * Cross-industry pill grid + capability cards
  */
 import { motion } from "framer-motion";
+import { industries as industryData } from "@/data/industries";
 
-const industries = [
-  "Real Estate & Brokerage", "Mortgage & Lending", "High-Risk Merchant Services",
-  "Cryptocurrency & Digital Assets", "Insurance", "Luxury Lifestyle & Hospitality",
-  "Investment & Wealth Management", "Software Consulting", "Software Engineering",
-  "Beauty, Health & Wellness", "Cosmetics & Personal Care", "Automotive",
-  "Solar & Renewable Energy", "Battery & EV Technology", "Oil & Gas",
-  "Alternative Energy", "Helium & Specialty Gas", "Biofuel & Sustainable Fuels",
-  "Food & Beverage", "Agency Operations",
+// Map display names to slugs for industries that have microsite pages
+const industryLinks: { name: string; slug: string | null }[] = [
+  { name: "Real Estate & Brokerage", slug: "real-estate-brokerage" },
+  { name: "Mortgage & Lending", slug: "mortgage-lending" },
+  { name: "High-Risk Merchant Services", slug: "high-risk-merchant-services" },
+  { name: "Cryptocurrency & Digital Assets", slug: "cryptocurrency-digital-assets" },
+  { name: "Insurance", slug: "insurance" },
+  { name: "Luxury Lifestyle & Hospitality", slug: "luxury-lifestyle-hospitality" },
+  { name: "Investment & Wealth Management", slug: "investment-wealth-management" },
+  { name: "Software Consulting", slug: "software-consulting" },
+  { name: "Software Engineering", slug: "software-engineering" },
+  { name: "Beauty, Health & Wellness", slug: "beauty-health-wellness" },
+  { name: "Cosmetics & Personal Care", slug: "cosmetics-personal-care" },
+  { name: "Automotive & EV", slug: "automotive-ev" },
+  { name: "Solar & Renewable Energy", slug: "solar-renewable-energy" },
+  { name: "Battery & EV Technology", slug: null },
+  { name: "Oil & Gas", slug: "oil-gas" },
+  { name: "Alternative Energy", slug: "alternative-energy" },
+  { name: "Helium & Specialty Gas", slug: null },
+  { name: "Biofuel & Sustainable Fuels", slug: null },
+  { name: "Food & Beverage", slug: "food-beverage" },
+  { name: "Agency Operations", slug: "agency-operations" },
 ];
 
 const capabilities = [
@@ -66,27 +81,60 @@ export default function Industries() {
           transition={{ duration: 0.6 }}
           style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "64px" }}
         >
-          {industries.map((industry, i) => (
-            <motion.span
-              key={industry}
+          {industryLinks.map((industry, i) => (
+            <motion.div
+              key={industry.name}
               initial={{ opacity: 0, scale: 0.94 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.03, duration: 0.35 }}
-              style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "13px",
-                fontWeight: 600,
-                color: "rgba(210,220,235,0.82)",
-                padding: "8px 16px",
-                borderRadius: "999px",
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.09)",
-                cursor: "default",
-              }}
             >
-              {industry}
-            </motion.span>
+              {industry.slug ? (
+                <a
+                  href={`/industries/${industry.slug}`}
+                  style={{
+                    display: "inline-block",
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: "rgba(210,220,235,0.88)",
+                    padding: "8px 16px",
+                    borderRadius: "999px",
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(184,156,74,0.22)",
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    transition: "background 0.2s, border-color 0.2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.background = "rgba(184,156,74,0.10)";
+                    (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(184,156,74,0.45)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.04)";
+                    (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(184,156,74,0.22)";
+                  }}
+                >
+                  {industry.name} →
+                </a>
+              ) : (
+                <span
+                  style={{
+                    display: "inline-block",
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: "rgba(210,220,235,0.62)",
+                    padding: "8px 16px",
+                    borderRadius: "999px",
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid rgba(255,255,255,0.07)",
+                  }}
+                >
+                  {industry.name}
+                </span>
+              )}
+            </motion.div>
           ))}
         </motion.div>
 
