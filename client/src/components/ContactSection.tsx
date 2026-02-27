@@ -136,10 +136,26 @@ export default function ContactSection() {
               </p>
 
               {fastSubmitted ? (
-                <div style={{ textAlign: "center", padding: "20px 0" }}>
-                  <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(184,156,74,0.12)", border: "1px solid rgba(184,156,74,0.30)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", fontSize: "18px", color: "#D4A843" }}>✓</div>
-                  <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>Request received.</p>
-                  <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.60)", margin: 0 }}>We will contact you within 24 hours.</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                  {/* Confirmation header */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 16px", background: "rgba(184,156,74,0.08)", border: "1px solid rgba(184,156,74,0.22)", borderRadius: "8px" }}>
+                    <span style={{ fontSize: "16px", color: "#D4A843" }}>✓</span>
+                    <div>
+                      <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: 0 }}>Request received. Book your call below.</p>
+                      <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.55)", margin: 0 }}>Select a time that works for you.</p>
+                    </div>
+                  </div>
+                  {/* Calendly inline embed */}
+                  <div style={{ borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(184,156,74,0.15)" }}>
+                    <iframe
+                      src="https://calendly.com/nemr1?embed_type=Inline&hide_gdpr_banner=1&background_color=03050A&text_color=d2dceb&primary_color=B89C4A"
+                      width="100%"
+                      height="600"
+                      frameBorder="0"
+                      title="Schedule a call with AiiAco"
+                      style={{ display: "block", background: "#03050A" }}
+                    />
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleFastSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>

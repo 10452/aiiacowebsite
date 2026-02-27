@@ -673,6 +673,35 @@ export const industries: IndustryData[] = [
     seoDescription: "AiiAco deploys AI feedstock intelligence, process optimization, and carbon accounting automation for biofuel and sustainable fuels producers.",
     seoKeywords: "AI for biofuel, sustainable fuels AI, biofuel production optimization, carbon accounting AI, SAF AI integration",
   },
+  {
+    slug: "uhnw-private-wealth",
+    name: "UHNW & Private Wealth",
+    headline: "AI Infrastructure for Ultra High Net Worth Individuals & Family Offices",
+    subheadline: "Protect capital, manage complexity, and operate at the standard your wealth demands — with AI built for the ultra-private tier.",
+    description: "Ultra High Net Worth individuals and family offices operate at a level of complexity, discretion, and expectation that standard enterprise tools cannot serve. AiiAco designs and deploys AI infrastructure for the UHNW tier — private wealth intelligence, family office operations, concierge lifestyle management, estate and entity oversight, and principal protection — all built to the standard of absolute discretion.",
+    painPoints: [
+      { title: "Operational Complexity at Scale", body: "Multi-entity structures, cross-border assets, and diverse investment portfolios generate administrative complexity that consumes principal and advisor time." },
+      { title: "Intelligence Without Infrastructure", body: "Market signals, geopolitical risk, and opportunity intelligence are not systematically surfaced across the full wealth picture." },
+      { title: "Lifestyle Operations Overhead", body: "Managing properties, travel, staff, vendors, and personal logistics at the UHNW level requires coordination infrastructure that most principals lack." },
+      { title: "Privacy and Security Exposure", body: "Digital footprint, communication patterns, and vendor relationships create principal security and privacy risks that are not actively managed." },
+    ],
+    useCases: [
+      { title: "Family Office Intelligence Layer", body: "AI aggregates and synthesizes portfolio data, entity structures, and market signals into a unified principal intelligence dashboard." },
+      { title: "Private Wealth Reporting Automation", body: "Consolidated reporting across custodians, entities, and asset classes — generated automatically and delivered on schedule." },
+      { title: "Lifestyle Operations Infrastructure", body: "AI-assisted coordination of properties, travel, staff, vendors, and personal logistics — managed with the discretion the UHNW tier requires." },
+      { title: "Principal Security Intelligence", body: "Continuous monitoring of digital exposure, communication risk, and vendor relationships with automated alerts and remediation workflows." },
+    ],
+    kpis: [
+      { value: "100%", label: "Discretion Standard" },
+      { value: "60%", label: "Reduction in Administrative Overhead" },
+      { value: "Real-Time", label: "Wealth Intelligence" },
+      { value: "0→AI", label: "Principal Operations Infrastructure" },
+    ],
+    seoTitle: "AI Infrastructure for UHNW & Private Wealth | AiiAco",
+    seoDescription: "AiiAco designs and deploys AI infrastructure for ultra high net worth individuals and family offices — private wealth intelligence, lifestyle operations, and principal protection at the highest standard of discretion.",
+    seoKeywords: "AI for UHNW, ultra high net worth AI, family office AI, private wealth AI, UHNW operations AI, principal intelligence AI",
+    featuredCaseStudyId: "wealth-client-ops",
+  },
 ];
 
 export function getIndustryBySlug(slug: string): IndustryData | undefined {
