@@ -61,7 +61,7 @@ function StatusBadge({ status }: { status: Lead["status"] }) {
         background: c.bg,
         color: c.text,
         border: `1px solid ${c.border}`,
-        fontFamily: "'DM Sans', sans-serif",
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
       }}
     >
       {STATUS_LABELS[status]}
@@ -85,16 +85,16 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
         onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
       >
         <td style={tdStyle}>
-          <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "15px", fontWeight: 700, color: "rgba(255,255,255,0.90)" }}>
+          <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "15px", fontWeight: 700, color: "rgba(255,255,255,0.90)" }}>
             {lead.name}
           </span>
           <br />
-          <a href={`mailto:${lead.email}`} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(184,156,74,0.75)", textDecoration: "none" }}>
+          <a href={`mailto:${lead.email}`} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(184,156,74,0.75)", textDecoration: "none" }}>
             {lead.email}
           </a>
         </td>
         <td style={tdStyle}>
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.60)" }}>
+          <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.60)" }}>
             {lead.company || "—"}
           </span>
         </td>
@@ -108,14 +108,14 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
               fontWeight: 600,
               background: lead.type === "intake" ? "rgba(184,156,74,0.08)" : "rgba(255,255,255,0.04)",
               color: lead.type === "intake" ? "rgba(184,156,74,0.80)" : "rgba(200,215,230,0.50)",
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
             }}
           >
             {TYPE_LABELS[lead.type]}
           </span>
         </td>
         <td style={tdStyle}>
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.55)" }}>
+          <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.55)" }}>
             {lead.industry || "—"}
           </span>
         </td>
@@ -123,7 +123,7 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
           <StatusBadge status={lead.status} />
         </td>
         <td style={tdStyle}>
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", color: "rgba(200,215,230,0.40)" }}>
+          <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", color: "rgba(200,215,230,0.40)" }}>
             {new Date(lead.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
           </span>
         </td>
@@ -164,7 +164,7 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
 
             {/* Status controls */}
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "rgba(200,215,230,0.40)", alignSelf: "center", marginRight: "4px" }}>
+              <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "rgba(200,215,230,0.40)", alignSelf: "center", marginRight: "4px" }}>
                 Move to:
               </span>
               {(["new", "reviewed", "contacted", "closed"] as Lead["status"][]).map((s) => (
@@ -176,7 +176,7 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
                   }}
                   disabled={lead.status === s}
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     fontSize: "12px",
                     fontWeight: 600,
                     padding: "5px 14px",
@@ -206,7 +206,7 @@ const tdStyle: React.CSSProperties = {
 };
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: "'DM Sans', sans-serif",
+  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
   fontSize: "10px",
   fontWeight: 800,
   letterSpacing: "0.12em",
@@ -216,7 +216,7 @@ const labelStyle: React.CSSProperties = {
 };
 
 const valueStyle: React.CSSProperties = {
-  fontFamily: "'DM Sans', sans-serif",
+  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
   fontSize: "13px",
   color: "rgba(200,215,230,0.75)",
   margin: 0,
@@ -242,7 +242,7 @@ export default function AdminLeadsPage() {
   if (loading) {
     return (
       <div style={{ background: "#03050A", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(200,215,230,0.40)", fontSize: "14px" }}>Loading…</div>
+        <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "rgba(200,215,230,0.40)", fontSize: "14px" }}>Loading…</div>
       </div>
     );
   }
@@ -251,14 +251,14 @@ export default function AdminLeadsPage() {
     return (
       <div style={{ background: "#03050A", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ textAlign: "center" }}>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "32px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "16px" }}>
+          <h1 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "32px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "16px" }}>
             Sign In Required
           </h1>
           <a
             href={getLoginUrl()}
             style={{
               display: "inline-block",
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
               fontSize: "14px",
               fontWeight: 700,
               color: "#03050A",
@@ -307,20 +307,20 @@ export default function AdminLeadsPage() {
         <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
             <a href="/" style={{ textDecoration: "none" }}>
-              <span style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "rgba(184,156,74,0.90)" }}>
+              <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "20px", fontWeight: 700, color: "rgba(184,156,74,0.90)" }}>
                 AiiAco
               </span>
             </a>
             <span style={{ color: "rgba(255,255,255,0.15)", fontSize: "16px" }}>/</span>
-            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", fontWeight: 600, color: "rgba(200,215,230,0.55)", letterSpacing: "0.04em" }}>
+            <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", fontWeight: 600, color: "rgba(200,215,230,0.55)", letterSpacing: "0.04em" }}>
               Lead Pipeline
             </span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.45)" }}>
+            <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.45)" }}>
               {user?.name || user?.email}
             </span>
-            <a href="/" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(184,156,74,0.70)", textDecoration: "none" }}>
+            <a href="/" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(184,156,74,0.70)", textDecoration: "none" }}>
               ← Site
             </a>
           </div>
@@ -332,7 +332,7 @@ export default function AdminLeadsPage() {
         <div style={{ marginBottom: "32px" }}>
           <h1
             style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
               fontSize: "clamp(28px, 4vw, 40px)",
               fontWeight: 700,
               color: "rgba(255,255,255,0.92)",
@@ -350,7 +350,7 @@ export default function AdminLeadsPage() {
                 key={s}
                 onClick={() => setFilter(s)}
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "13px",
                   fontWeight: 600,
                   padding: "8px 18px",
@@ -396,15 +396,15 @@ export default function AdminLeadsPage() {
           }}
         >
           {isLoading ? (
-            <div style={{ padding: "60px", textAlign: "center", fontFamily: "'DM Sans', sans-serif", color: "rgba(200,215,230,0.35)", fontSize: "14px" }}>
+            <div style={{ padding: "60px", textAlign: "center", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", color: "rgba(200,215,230,0.35)", fontSize: "14px" }}>
               Loading leads…
             </div>
           ) : filteredLeads.length === 0 ? (
             <div style={{ padding: "60px", textAlign: "center" }}>
-              <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "22px", fontWeight: 700, color: "rgba(255,255,255,0.50)", marginBottom: "8px" }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "22px", fontWeight: 700, color: "rgba(255,255,255,0.50)", marginBottom: "8px" }}>
                 No leads yet
               </p>
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.35)" }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.35)" }}>
                 Submissions from the contact forms will appear here.
               </p>
             </div>
@@ -419,7 +419,7 @@ export default function AdminLeadsPage() {
                         style={{
                           padding: "12px 16px",
                           textAlign: "left",
-                          fontFamily: "'DM Sans', sans-serif",
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                           fontSize: "10px",
                           fontWeight: 800,
                           letterSpacing: "0.12em",

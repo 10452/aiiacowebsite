@@ -70,10 +70,10 @@ export default function Navbar() {
                 </svg>
               </div>
               <div>
-                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 700, fontSize: "20px", letterSpacing: "-0.3px", color: "rgba(255,255,255,0.96)", lineHeight: 1 }}>
+                <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontWeight: 700, fontSize: "20px", letterSpacing: "-0.3px", color: "rgba(255,255,255,0.96)", lineHeight: 1 }}>
                   AiiAco
                 </div>
-                <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 800, fontSize: "8px", letterSpacing: "2.5px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", lineHeight: 1, marginTop: "3px" }}>
+                <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontWeight: 800, fontSize: "8px", letterSpacing: "2.5px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", lineHeight: 1, marginTop: "3px" }}>
                   UPGRADE
                 </div>
               </div>
@@ -87,7 +87,7 @@ export default function Navbar() {
                   href={link.route}
                   onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     fontWeight: 600,
                     fontSize: "13.5px",
                     color: "rgba(200,215,230,0.72)",
@@ -134,7 +134,7 @@ export default function Navbar() {
                     <button
                       key={link.href}
                       onClick={() => scrollTo(link.href)}
-                      style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "15px", color: "rgba(200,215,230,0.85)", background: "none", border: "none", padding: "10px 8px", textAlign: "left", cursor: "pointer", borderRadius: "8px" }}
+                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontWeight: 600, fontSize: "15px", color: "rgba(200,215,230,0.85)", background: "none", border: "none", padding: "10px 8px", textAlign: "left", cursor: "pointer", borderRadius: "8px" }}
                     >
                       {link.label}
                     </button>

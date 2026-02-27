@@ -47,6 +47,7 @@ export const industries: IndustryData[] = [
     seoTitle: "AI Integration for Real Estate & Brokerage | AiiAco",
     seoDescription: "AiiAco deploys AI lead qualification, automated follow-up, listing content generation, and pipeline intelligence for real estate brokerages. Operational AI for the modern brokerage.",
     seoKeywords: "AI for real estate, real estate AI integration, brokerage AI automation, AI lead qualification real estate, real estate CRM automation",
+    featuredCaseStudyId: "realestate-lead-ops",
   },
   {
     slug: "mortgage-lending",
@@ -75,6 +76,7 @@ export const industries: IndustryData[] = [
     seoTitle: "AI Integration for Mortgage & Lending | AiiAco",
     seoDescription: "AiiAco deploys AI document extraction, borrower communication automation, and compliance monitoring for mortgage lenders. Reduce origination time and compliance risk.",
     seoKeywords: "AI for mortgage, lending AI automation, mortgage document processing AI, underwriting automation, loan origination AI",
+    featuredCaseStudyId: "mortgage-origination",
   },
   {
     slug: "financial-services",
@@ -103,6 +105,7 @@ export const industries: IndustryData[] = [
     seoTitle: "AI Integration for Financial Services | AiiAco",
     seoDescription: "AiiAco deploys AI reporting automation, anomaly detection, and client intelligence systems for financial services firms. Operational AI for regulated financial environments.",
     seoKeywords: "AI for financial services, financial services AI automation, AI compliance monitoring, portfolio AI, financial reporting automation",
+    featuredCaseStudyId: "fs-intake-ops",
   },
   {
     slug: "insurance",
@@ -131,6 +134,7 @@ export const industries: IndustryData[] = [
     seoTitle: "AI Integration for Insurance Operations | AiiAco",
     seoDescription: "AiiAco deploys AI claims automation, underwriting intelligence, and fraud detection for insurance carriers and MGAs. Operational AI for insurance at scale.",
     seoKeywords: "AI for insurance, insurance claims automation, underwriting AI, fraud detection AI, insurance AI integration",
+    featuredCaseStudyId: "insurance-claims-ops",
   },
   {
     slug: "investment-wealth-management",
@@ -159,6 +163,7 @@ export const industries: IndustryData[] = [
     seoTitle: "AI Integration for Investment & Wealth Management | AiiAco",
     seoDescription: "AiiAco deploys AI portfolio commentary, client reporting automation, and compliance systems for RIAs and wealth management firms. Institutional AI for wealth advisors.",
     seoKeywords: "AI for wealth management, investment AI automation, portfolio AI, RIA AI integration, wealth management AI",
+    featuredCaseStudyId: "wealth-client-ops",
   },
   {
     slug: "cryptocurrency-digital-assets",
@@ -356,6 +361,7 @@ export const industries: IndustryData[] = [
     seoTitle: "AI Integration for Luxury Lifestyle & Hospitality | AiiAco",
     seoDescription: "AiiAco deploys AI guest intelligence, personalized communication, and revenue optimization for luxury hotels, resorts, and hospitality brands.",
     seoKeywords: "AI for luxury hospitality, hotel AI automation, guest experience AI, hospitality revenue optimization AI, luxury brand AI",
+    featuredCaseStudyId: "luxury-hospitality-ops",
   },
   {
     slug: "beauty-health-wellness",
@@ -524,6 +530,7 @@ export const industries: IndustryData[] = [
     seoTitle: "AI Integration for Agency Operations | AiiAco",
     seoDescription: "AiiAco deploys AI content production, client reporting automation, and campaign intelligence for marketing and creative agencies.",
     seoKeywords: "AI for agencies, marketing agency AI, content automation AI, agency reporting AI, campaign intelligence AI",
+    featuredCaseStudyId: "agency-ops-scale",
   },
   {
     slug: "cosmetics-personal-care",

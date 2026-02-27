@@ -20,7 +20,7 @@ export default function CaseStudyCard({ cs }: { cs: CaseStudy }) {
           border: "1px solid rgba(255,255,255,0.12)",
           background: "rgba(255,255,255,0.05)",
           padding: "4px 12px",
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
           fontSize: "11px",
           fontWeight: 800,
           letterSpacing: "0.14em",
@@ -34,7 +34,7 @@ export default function CaseStudyCard({ cs }: { cs: CaseStudy }) {
           border: "1px solid rgba(184,156,74,0.28)",
           background: "rgba(184,156,74,0.08)",
           padding: "4px 12px",
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
           fontSize: "11px",
           fontWeight: 800,
           letterSpacing: "0.14em",
@@ -45,7 +45,7 @@ export default function CaseStudyCard({ cs }: { cs: CaseStudy }) {
         </span>
         <span style={{
           marginLeft: "auto",
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
           fontSize: "11px",
           fontWeight: 800,
           letterSpacing: "0.14em",
@@ -57,22 +57,22 @@ export default function CaseStudyCard({ cs }: { cs: CaseStudy }) {
       </div>
 
       {/* Situation */}
-      <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "16px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "6px", letterSpacing: "-0.1px" }}>
+      <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "16px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "6px", letterSpacing: "-0.1px" }}>
         Situation
       </div>
-      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", lineHeight: 1.6, color: "rgba(200,215,230,0.68)", margin: "0 0 20px" }}>
+      <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", lineHeight: 1.6, color: "rgba(200,215,230,0.68)", margin: "0 0 20px" }}>
         {cs.situation}
       </p>
 
       {/* Approach + Outcomes */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
         <div>
-          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(200,215,230,0.45)", marginBottom: "10px" }}>
+          <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(200,215,230,0.45)", marginBottom: "10px" }}>
             Approach
           </div>
           <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
             {cs.approach.map((a) => (
-              <li key={a} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.68)", lineHeight: 1.45, display: "flex", alignItems: "flex-start", gap: "8px" }}>
+              <li key={a} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.68)", lineHeight: 1.45, display: "flex", alignItems: "flex-start", gap: "8px" }}>
                 <span style={{ color: "rgba(184,156,74,0.70)", fontWeight: 900, flexShrink: 0, marginTop: "1px" }}>—</span>
                 <span>{a}</span>
               </li>
@@ -81,21 +81,21 @@ export default function CaseStudyCard({ cs }: { cs: CaseStudy }) {
         </div>
 
         <div>
-          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(200,215,230,0.45)", marginBottom: "10px" }}>
+          <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(200,215,230,0.45)", marginBottom: "10px" }}>
             Outcomes
           </div>
           <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
             {cs.outcomes.map((m) => (
               <li key={m.label} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px" }}>
-                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12.5px", color: "rgba(200,215,230,0.65)" }}>{m.label}</span>
-                  <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", fontWeight: 700, color: "rgba(210,220,235,0.90)", whiteSpace: "nowrap" as const }}>{m.value}</span>
+                  <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12.5px", color: "rgba(200,215,230,0.65)" }}>{m.label}</span>
+                  <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", fontWeight: 700, color: "rgba(210,220,235,0.90)", whiteSpace: "nowrap" as const }}>{m.value}</span>
                 </div>
               </li>
             ))}
           </ul>
           {cs.outcomes.some((o) => o.note) && (
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11.5px", color: "rgba(200,215,230,0.40)", margin: "8px 0 0", lineHeight: 1.4 }}>
+            <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11.5px", color: "rgba(200,215,230,0.40)", margin: "8px 0 0", lineHeight: 1.4 }}>
               Notes vary by workflow and baseline maturity.
             </p>
           )}
@@ -104,7 +104,7 @@ export default function CaseStudyCard({ cs }: { cs: CaseStudy }) {
 
       {/* Governance */}
       <div>
-        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(200,215,230,0.40)", marginBottom: "8px" }}>
+        <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(200,215,230,0.40)", marginBottom: "8px" }}>
           Governance
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
@@ -116,7 +116,7 @@ export default function CaseStudyCard({ cs }: { cs: CaseStudy }) {
                 border: "1px solid rgba(255,255,255,0.10)",
                 background: "rgba(255,255,255,0.04)",
                 padding: "3px 10px",
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 fontSize: "12px",
                 fontWeight: 600,
                 color: "rgba(200,215,230,0.60)",

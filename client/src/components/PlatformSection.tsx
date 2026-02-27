@@ -70,7 +70,7 @@ export default function PlatformSection() {
           <p className="section-subhead" style={{ marginBottom: "16px" }}>
             Vendors sell tools. Consultants sell decks. AiiAco delivers the entire operating model — diagnostics, architecture, deployment, managed execution, and performance-aligned outcomes. This is not a service. It is a structural upgrade.
           </p>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.55)", margin: 0, maxWidth: "58ch" }}>
+          <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.55)", margin: 0, maxWidth: "58ch" }}>
             The businesses winning the next decade are not experimenting with AI. They are running on it. AiiAco is the authority that makes that transition irreversible.
           </p>
         </motion.div>
@@ -96,10 +96,10 @@ export default function PlatformSection() {
               <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
                 <div className="phase-badge" style={{ flexShrink: 0 }}>{f.num}</div>
                 <div>
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "19px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 10px", lineHeight: 1.15, letterSpacing: "-0.2px" }}>
+                  <h3 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "19px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 10px", lineHeight: 1.15, letterSpacing: "-0.2px" }}>
                     {f.title}
                   </h3>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.70)", margin: 0 }}>
+                  <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.70)", margin: 0 }}>
                     {f.body}
                   </p>
                 </div>
@@ -117,11 +117,11 @@ export default function PlatformSection() {
           className="glass-card-gold"
           style={{ marginTop: "40px", padding: "36px 40px", textAlign: "center" }}
         >
-          <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(22px, 2.5vw, 30px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 12px", lineHeight: 1.2, letterSpacing: "-0.4px" }}>
+          <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(22px, 2.5vw, 30px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 12px", lineHeight: 1.2, letterSpacing: "-0.4px" }}>
             You do not hire AI tools. You hire{" "}
             <span style={{ color: "#D4A843" }}>AiiAco</span>.
           </p>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "16px", color: "rgba(200,215,230,0.70)", margin: 0, maxWidth: "60ch", marginLeft: "auto", marginRight: "auto" }}>
+          <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "16px", color: "rgba(200,215,230,0.70)", margin: 0, maxWidth: "60ch", marginLeft: "auto", marginRight: "auto" }}>
             AiiAco assembles, deploys, and manages your entire AI workforce — and delivers
             the results, not the workload.
           </p>

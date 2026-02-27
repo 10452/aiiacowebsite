@@ -11,10 +11,15 @@
 - [x] Step 01 wording fix: "Business Intelligence Audit"
 - [x] Results intro split into 2 sentences
 - [x] Case Studies bullet formatting fixed
+- [x] 20 industry microsites at /industries/[slug]
+- [x] All 20 industry pills on homepage linked to microsites
+- [x] Back button on each microsite → /#industries
+- [x] /admin/leads dashboard with pipeline status controls
+- [x] Featured case study block on 5 industry microsites
+- [x] 3 remaining industry microsites (Battery & EV, Helium & Specialty Gas, Biofuel & Sustainable Fuels)
+- [x] Sitemap updated to 23 URLs
 
-## In Progress
-- [ ] Industry microsite pages (20 industries, path: /industries/[slug])
-- [ ] Wire industry bubbles on homepage to /industries/[slug]
-- [ ] Back button on each microsite → /#industries
-- [ ] Add /industries/[slug] routes to App.tsx
-- [ ] Add /industries/[slug] routes to sitemap.xml
+## Follow-up Round 3
+- [ ] CRM webhook integration in leads router (Zapier/Make.com configurable endpoint)
+- [ ] 4 new anonymized case studies (Mortgage/Lending, Insurance, Luxury Hospitality, Software)
+- [ ] Wire all matching industry microsites to featured case studies

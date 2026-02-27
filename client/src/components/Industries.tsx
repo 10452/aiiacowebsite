@@ -94,7 +94,7 @@ export default function Industries() {
                   href={`/industries/${industry.slug}`}
                   style={{
                     display: "inline-block",
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     fontSize: "13px",
                     fontWeight: 600,
                     color: "rgba(210,220,235,0.88)",
@@ -121,7 +121,7 @@ export default function Industries() {
                 <span
                   style={{
                     display: "inline-block",
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     fontSize: "13px",
                     fontWeight: 600,
                     color: "rgba(210,220,235,0.62)",
@@ -139,7 +139,7 @@ export default function Industries() {
         </motion.div>
 
         {/* Capabilities */}
-        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.62)", marginBottom: "24px" }}>
+        <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.62)", marginBottom: "24px" }}>
           Core AI Capabilities Deployed Across All Industries
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "12px" }}>
@@ -153,10 +153,10 @@ export default function Industries() {
               className="glass-card"
               style={{ padding: "22px 24px" }}
             >
-              <h4 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.94)", margin: "0 0 8px", letterSpacing: "-0.2px" }}>
+              <h4 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.94)", margin: "0 0 8px", letterSpacing: "-0.2px" }}>
                 {cap.title}
               </h4>
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.6, color: "rgba(200,215,230,0.65)", margin: 0 }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.6, color: "rgba(200,215,230,0.65)", margin: 0 }}>
                 {cap.desc}
               </p>
             </motion.div>

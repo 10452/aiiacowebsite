@@ -131,14 +131,14 @@ function KpiCard({
   return (
     <motion.div variants={variants} className="glass-card" style={{ padding: "24px" }}>
       <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "12px" }}>
-        <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(200,215,230,0.55)" }}>
+        <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(200,215,230,0.55)" }}>
           {kpi.label}
         </div>
         <div className="stat-number" style={{ fontSize: "clamp(28px, 3vw, 40px)" }}>
           {kpi.suffix === "→AI" ? "0→AI" : formatValue(val, kpi.suffix)}
         </div>
       </div>
-      <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.55, color: "rgba(200,215,230,0.60)", margin: "10px 0 14px" }}>
+      <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.55, color: "rgba(200,215,230,0.60)", margin: "10px 0 14px" }}>
         {kpi.sub}
       </div>
       <div style={{ height: "2px", width: "100%", overflow: "hidden", borderRadius: "999px", background: "rgba(255,255,255,0.07)" }}>
@@ -233,10 +233,10 @@ export default function ResultsSection() {
               className="glass-card"
               style={{ padding: "22px" }}
             >
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "8px" }}>
+              <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "8px" }}>
                 {o.title}
               </div>
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.6, color: "rgba(200,215,230,0.65)" }}>
+              <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.6, color: "rgba(200,215,230,0.65)" }}>
                 {o.body}
               </div>
             </motion.div>
@@ -253,10 +253,10 @@ export default function ResultsSection() {
         >
           <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "24px", alignItems: "center" }}>
             <div>
-              <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(18px, 2vw, 24px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", marginBottom: "8px", letterSpacing: "-0.2px" }}>
+              <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(18px, 2vw, 24px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", marginBottom: "8px", letterSpacing: "-0.2px" }}>
                 Results are not promised. They are engineered.
               </div>
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", color: "rgba(200,215,230,0.65)", lineHeight: 1.55 }}>
+              <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", color: "rgba(200,215,230,0.65)", lineHeight: 1.55 }}>
                 If you want marketing claims, the internet is full of them. If you want an upgraded operating model, request the plan.
               </div>
             </div>

@@ -106,7 +106,7 @@ export default function EngagementModels() {
               style={{ padding: "32px", display: "flex", flexDirection: "column", gap: "20px", position: "relative" }}
             >
               {model.featured && (
-                <div style={{ position: "absolute", top: "-1px", left: "50%", transform: "translateX(-50%)", background: "linear-gradient(135deg, rgba(184,156,74,0.95), rgba(212,168,67,0.80))", color: "#0a0800", fontFamily: "'DM Sans', sans-serif", fontWeight: 800, fontSize: "10px", letterSpacing: "1.2px", textTransform: "uppercase", padding: "5px 16px", borderRadius: "0 0 10px 10px", whiteSpace: "nowrap" }}>
+                <div style={{ position: "absolute", top: "-1px", left: "50%", transform: "translateX(-50%)", background: "linear-gradient(135deg, rgba(184,156,74,0.95), rgba(212,168,67,0.80))", color: "#0a0800", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontWeight: 800, fontSize: "10px", letterSpacing: "1.2px", textTransform: "uppercase", padding: "5px 16px", borderRadius: "0 0 10px 10px", whiteSpace: "nowrap" }}>
                   Most Selected
                 </div>
               )}
@@ -119,23 +119,23 @@ export default function EngagementModels() {
                   </div>
                 )}
                 {model.featured && <div style={{ height: "22px" }} />}
-                <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "24px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 6px", letterSpacing: "-0.3px", lineHeight: 1.1 }}>
+                <h3 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "24px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 6px", letterSpacing: "-0.3px", lineHeight: 1.1 }}>
                   {model.name}
                 </h3>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.8px", textTransform: "uppercase", color: model.featured ? "#D4A843" : "rgba(184,156,74,0.62)", margin: 0 }}>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.8px", textTransform: "uppercase", color: model.featured ? "#D4A843" : "rgba(184,156,74,0.62)", margin: 0 }}>
                   {model.price}
                 </p>
               </div>
 
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", lineHeight: 1.65, color: "rgba(200,215,230,0.70)", margin: 0 }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", lineHeight: 1.65, color: "rgba(200,215,230,0.70)", margin: 0 }}>
                 {model.desc}
               </p>
 
               <div>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "1px", textTransform: "uppercase", color: "rgba(184,156,74,0.58)", marginBottom: "12px" }}>Includes</p>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "1px", textTransform: "uppercase", color: "rgba(184,156,74,0.58)", marginBottom: "12px" }}>Includes</p>
                 <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
                   {model.includes.map((item) => (
-                    <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", color: "rgba(210,220,235,0.80)" }}>
+                    <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: "10px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", color: "rgba(210,220,235,0.80)" }}>
                       <span style={{ color: "#D4A843", fontWeight: 900, flexShrink: 0, marginTop: "1px", fontSize: "11px" }}>✓</span>
                       {item}
                     </li>
@@ -144,7 +144,7 @@ export default function EngagementModels() {
               </div>
 
               <div style={{ padding: "14px 16px", borderRadius: "10px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", marginTop: "auto" }}>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", fontWeight: 600, color: "rgba(200,215,230,0.62)", margin: 0, lineHeight: 1.5 }}>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 600, color: "rgba(200,215,230,0.62)", margin: 0, lineHeight: 1.5 }}>
                   <strong style={{ color: "rgba(255,255,255,0.72)", fontWeight: 700 }}>Ideal for:</strong>{" "}{model.ideal}
                 </p>
               </div>
@@ -161,7 +161,7 @@ export default function EngagementModels() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
-          style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.40)", marginTop: "32px", textAlign: "center" }}
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.40)", marginTop: "32px", textAlign: "center" }}
         >
           All engagements begin with a structured discovery process. Pricing is determined following the initial business intelligence audit.
         </motion.p>

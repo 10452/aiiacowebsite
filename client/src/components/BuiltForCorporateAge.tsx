@@ -65,10 +65,10 @@ export default function BuiltForCorporateAge() {
               <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: "rgba(184,156,74,0.10)", border: "1px solid rgba(184,156,74,0.22)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px", fontSize: "16px", color: "rgba(184,156,74,0.80)" }}>
                 ◆
               </div>
-              <h4 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "19px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 10px", letterSpacing: "-0.2px" }}>
+              <h4 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "19px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 10px", letterSpacing: "-0.2px" }}>
                 {p.title}
               </h4>
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", lineHeight: 1.6, color: "rgba(200,215,230,0.65)", margin: 0 }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", lineHeight: 1.6, color: "rgba(200,215,230,0.65)", margin: 0 }}>
                 {p.desc}
               </p>
             </motion.div>
@@ -84,12 +84,12 @@ export default function BuiltForCorporateAge() {
           className="glass-card-gold"
           style={{ padding: "52px 48px", textAlign: "center" }}
         >
-          <h2 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 16px", lineHeight: 1.1, letterSpacing: "-0.8px" }}>
+          <h2 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 16px", lineHeight: 1.1, letterSpacing: "-0.8px" }}>
             The Corporate Age of AI has already begun.
             <br />
             <span style={{ color: "#D4A843" }}>The only question is whether you are building the infrastructure or watching others do it.</span>
           </h2>
-          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(15px, 1.6vw, 18px)", color: "rgba(200,215,230,0.75)", margin: "0 auto 32px", maxWidth: "56ch", lineHeight: 1.6 }}>
+          <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(15px, 1.6vw, 18px)", color: "rgba(200,215,230,0.75)", margin: "0 auto 32px", maxWidth: "56ch", lineHeight: 1.6 }}>
             AiiAco is the AI Integration Authority for the Corporate Age. One engagement. Complete operational AI infrastructure. Delivered, managed, and performance-aligned.
           </p>
           <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>

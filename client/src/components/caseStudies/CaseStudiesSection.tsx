@@ -73,7 +73,7 @@ export default function CaseStudiesSection() {
                 style={{
                   borderRadius: "999px",
                   padding: "8px 16px",
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "12px",
                   fontWeight: 800,
                   letterSpacing: "0.14em",
@@ -121,10 +121,10 @@ export default function CaseStudiesSection() {
         <div className="glass-card" style={{ padding: "28px 32px" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "24px", alignItems: "center" }}>
             <div>
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "6px" }}>
+              <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "6px" }}>
                 Want outcomes tied to your exact constraints?
               </div>
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", color: "rgba(200,215,230,0.60)", lineHeight: 1.5 }}>
+              <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", color: "rgba(200,215,230,0.60)", lineHeight: 1.5 }}>
                 Submit a structured intake. We'll map your bottlenecks, governance needs, and upgrade sequence.
               </div>
             </div>

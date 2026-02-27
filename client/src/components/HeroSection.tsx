@@ -77,11 +77,11 @@ export default function HeroSection() {
               Operational AI Integration<br />
               <span className="gold-line">for the Corporate Age.</span>
             </h1>
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(13px, 1.2vw, 15px)", fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", margin: "-8px 0 0" }}>
+            <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(13px, 1.2vw, 15px)", fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", margin: "-8px 0 0" }}>
               The Corporate Age of AI Has Begun. Upgrade or Fall Behind.
             </p>
 
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(15px, 1.5vw, 18px)", lineHeight: 1.65, color: "rgba(200,215,230,0.82)", maxWidth: "52ch", margin: 0 }}>
+            <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(15px, 1.5vw, 18px)", lineHeight: 1.65, color: "rgba(200,215,230,0.82)", maxWidth: "52ch", margin: 0 }}>
               AiiAco is the AI Integration Authority that designs, deploys, and manages your
               complete AI operational infrastructure — from diagnostics to execution.{" "}
               <strong style={{ color: "rgba(255,255,255,0.92)", fontWeight: 700 }}>
@@ -91,7 +91,7 @@ export default function HeroSection() {
 
             <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
               {points.map((p) => (
-                <li key={p} style={{ display: "flex", alignItems: "flex-start", gap: "12px", fontFamily: "'DM Sans', sans-serif", fontSize: "14.5px", fontWeight: 600, color: "rgba(210,220,235,0.85)" }}>
+                <li key={p} style={{ display: "flex", alignItems: "flex-start", gap: "12px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14.5px", fontWeight: 600, color: "rgba(210,220,235,0.85)" }}>
                   <span style={{ width: "18px", height: "18px", borderRadius: "50%", background: "rgba(184,156,74,0.12)", border: "1px solid rgba(184,156,74,0.32)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px", fontSize: "10px", color: "#D4A843", fontWeight: 900 }}>✓</span>
                   {p}
                 </li>
@@ -108,10 +108,10 @@ export default function HeroSection() {
             </div>
 
             <div style={{ marginTop: "8px", display: "flex", flexDirection: "column", gap: "6px" }}>
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12.5px", color: "rgba(200,215,230,0.50)", margin: 0, letterSpacing: "0.1px" }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12.5px", color: "rgba(200,215,230,0.50)", margin: 0, letterSpacing: "0.1px" }}>
                 Not a consultant. Not a software vendor. The AI Integration Authority that executes.
               </p>
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", fontStyle: "italic", color: "rgba(200,215,230,0.38)", margin: 0 }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontStyle: "italic", color: "rgba(200,215,230,0.38)", margin: 0 }}>
                 We do not advise. We do not recommend. We build, deploy, and run your AI operation.
               </p>
             </div>
@@ -138,7 +138,7 @@ export default function HeroSection() {
                   <span className="stat-number">{kpi.num}</span>
                   <span className="stat-label" style={{ textAlign: "right" }}>{kpi.label}</span>
                 </div>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.50)", margin: "8px 0 0", lineHeight: 1.4 }}>{kpi.sub}</p>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.50)", margin: "8px 0 0", lineHeight: 1.4 }}>{kpi.sub}</p>
               </motion.div>
             ))}
 
@@ -153,7 +153,7 @@ export default function HeroSection() {
                 <span className="dot" />
                 How It Works
               </div>
-              <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "20px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 16px", lineHeight: 1.2, letterSpacing: "-0.3px" }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "20px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 16px", lineHeight: 1.2, letterSpacing: "-0.3px" }}>
                 One engagement.<br />
                 <span style={{ color: "#D4A843" }}>Complete AI infrastructure.</span>
               </p>
@@ -165,13 +165,13 @@ export default function HeroSection() {
                 <div key={step.n} style={{ display: "flex", gap: "12px", alignItems: "flex-start", marginBottom: "12px" }}>
                   <div className="phase-badge" style={{ width: "30px", height: "30px", fontSize: "10px", borderRadius: "8px", flexShrink: 0 }}>{step.n}</div>
                   <div>
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "13px", color: "rgba(255,255,255,0.90)", margin: "0 0 2px" }}>{step.t}</p>
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.62)", margin: 0, lineHeight: 1.4 }}>{step.s}</p>
+                    <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontWeight: 700, fontSize: "13px", color: "rgba(255,255,255,0.90)", margin: "0 0 2px" }}>{step.t}</p>
+                    <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.62)", margin: 0, lineHeight: 1.4 }}>{step.s}</p>
                   </div>
                 </div>
               ))}
               <div style={{ marginTop: "12px", padding: "12px 14px", borderRadius: "10px", background: "rgba(184,156,74,0.07)", border: "1px solid rgba(184,156,74,0.18)" }}>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(210,220,235,0.78)", margin: 0, lineHeight: 1.5 }}>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(210,220,235,0.78)", margin: 0, lineHeight: 1.5 }}>
                   Performance-based models available — we earn more when you hit your targets.
                 </p>
               </div>

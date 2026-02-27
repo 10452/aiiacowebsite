@@ -1,6 +1,6 @@
 /*
  * AiiACo — Industry Microsite Page
- * Design: Liquid Glass Bio-Organic | Cormorant Garamond + DM Sans | Deep void-black + gold
+ * Design: Liquid Glass Bio-Organic | SF Pro Display + SF Pro Text | Deep void-black + gold
  * Used for all /industries/[slug] routes
  */
 
@@ -37,7 +37,7 @@ export default function IndustryMicrosite() {
           <div style={{ textAlign: "center" }}>
             <h1
               style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                 fontSize: "clamp(32px, 5vw, 48px)",
                 fontWeight: 700,
                 color: "rgba(255,255,255,0.90)",
@@ -49,7 +49,7 @@ export default function IndustryMicrosite() {
             <Link
               href="/#industries"
               style={{
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 fontSize: "14px",
                 fontWeight: 600,
                 color: "rgba(184,156,74,0.90)",
@@ -100,7 +100,7 @@ export default function IndustryMicrosite() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "8px",
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 fontSize: "13px",
                 fontWeight: 600,
                 color: "rgba(184,156,74,0.85)",
@@ -148,7 +148,7 @@ export default function IndustryMicrosite() {
                 />
                 <span
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     fontSize: "11px",
                     fontWeight: 800,
                     letterSpacing: "0.16em",
@@ -163,7 +163,7 @@ export default function IndustryMicrosite() {
               <motion.h1
                 variants={fade}
                 style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "clamp(32px, 5vw, 56px)",
                   fontWeight: 700,
                   lineHeight: 1.1,
@@ -178,7 +178,7 @@ export default function IndustryMicrosite() {
               <motion.p
                 variants={fade}
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "clamp(16px, 2vw, 19px)",
                   lineHeight: 1.65,
                   color: "rgba(200,215,230,0.70)",
@@ -202,7 +202,7 @@ export default function IndustryMicrosite() {
               <motion.p
                 variants={fade}
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "15px",
                   lineHeight: 1.7,
                   color: "rgba(200,215,230,0.60)",
@@ -224,7 +224,7 @@ export default function IndustryMicrosite() {
                 <a
                   href="/#models"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     fontSize: "14px",
                     fontWeight: 600,
                     color: "rgba(200,215,230,0.70)",
@@ -270,7 +270,7 @@ export default function IndustryMicrosite() {
                 >
                   <div
                     style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "clamp(32px, 4vw, 44px)",
                       fontWeight: 700,
                       color: "rgba(184,156,74,0.92)",
@@ -282,7 +282,7 @@ export default function IndustryMicrosite() {
                   </div>
                   <div
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "12px",
                       fontWeight: 700,
                       letterSpacing: "0.10em",
@@ -310,7 +310,7 @@ export default function IndustryMicrosite() {
             >
               <p
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "11px",
                   fontWeight: 800,
                   letterSpacing: "0.18em",
@@ -323,7 +323,7 @@ export default function IndustryMicrosite() {
               </p>
               <h2
                 style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "clamp(26px, 3.5vw, 38px)",
                   fontWeight: 700,
                   color: "rgba(255,255,255,0.92)",
@@ -358,7 +358,7 @@ export default function IndustryMicrosite() {
                 >
                   <h3
                     style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "18px",
                       fontWeight: 700,
                       color: "rgba(255,255,255,0.90)",
@@ -370,7 +370,7 @@ export default function IndustryMicrosite() {
                   </h3>
                   <p
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "14px",
                       lineHeight: 1.65,
                       color: "rgba(200,215,230,0.60)",
@@ -403,7 +403,7 @@ export default function IndustryMicrosite() {
             >
               <p
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "11px",
                   fontWeight: 800,
                   letterSpacing: "0.18em",
@@ -416,7 +416,7 @@ export default function IndustryMicrosite() {
               </p>
               <h2
                 style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "clamp(26px, 3.5vw, 38px)",
                   fontWeight: 700,
                   color: "rgba(255,255,255,0.92)",
@@ -468,7 +468,7 @@ export default function IndustryMicrosite() {
                     />
                     <h3
                       style={{
-                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                         fontSize: "18px",
                         fontWeight: 700,
                         color: "rgba(255,255,255,0.92)",
@@ -481,7 +481,7 @@ export default function IndustryMicrosite() {
                   </div>
                   <p
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "14px",
                       lineHeight: 1.65,
                       color: "rgba(200,215,230,0.65)",
@@ -518,7 +518,7 @@ export default function IndustryMicrosite() {
                 >
                   <p
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "11px",
                       fontWeight: 800,
                       letterSpacing: "0.18em",
@@ -531,7 +531,7 @@ export default function IndustryMicrosite() {
                   </p>
                   <h2
                     style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "clamp(24px, 3vw, 34px)",
                       fontWeight: 700,
                       color: "rgba(255,255,255,0.92)",
@@ -544,7 +544,7 @@ export default function IndustryMicrosite() {
                   </h2>
                   <p
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "15px",
                       lineHeight: 1.65,
                       color: "rgba(200,215,230,0.60)",
@@ -578,7 +578,7 @@ export default function IndustryMicrosite() {
                   >
                     <p
                       style={{
-                        fontFamily: "'DM Sans', sans-serif",
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                         fontSize: "10px",
                         fontWeight: 800,
                         letterSpacing: "0.14em",
@@ -593,7 +593,7 @@ export default function IndustryMicrosite() {
                       <div key={i} style={{ marginBottom: i < cs.outcomes.length - 1 ? "14px" : 0 }}>
                         <div
                           style={{
-                            fontFamily: "'Cormorant Garamond', Georgia, serif",
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                             fontSize: "22px",
                             fontWeight: 700,
                             color: "rgba(184,156,74,0.90)",
@@ -605,7 +605,7 @@ export default function IndustryMicrosite() {
                         </div>
                         <div
                           style={{
-                            fontFamily: "'DM Sans', sans-serif",
+                            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                             fontSize: "12px",
                             color: "rgba(200,215,230,0.55)",
                           }}
@@ -631,7 +631,7 @@ export default function IndustryMicrosite() {
                   >
                     <p
                       style={{
-                        fontFamily: "'DM Sans', sans-serif",
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                         fontSize: "10px",
                         fontWeight: 800,
                         letterSpacing: "0.14em",
@@ -665,7 +665,7 @@ export default function IndustryMicrosite() {
                           </span>
                           <span
                             style={{
-                              fontFamily: "'DM Sans', sans-serif",
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                               fontSize: "13px",
                               lineHeight: 1.55,
                               color: "rgba(200,215,230,0.65)",
@@ -683,7 +683,7 @@ export default function IndustryMicrosite() {
                   <a
                     href="/case-studies"
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "13px",
                       fontWeight: 600,
                       color: "rgba(184,156,74,0.80)",
@@ -697,7 +697,7 @@ export default function IndustryMicrosite() {
                   </a>
                   <span
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "11px",
                       color: "rgba(200,215,230,0.30)",
                     }}
@@ -721,7 +721,7 @@ export default function IndustryMicrosite() {
             >
               <h2
                 style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "clamp(28px, 4vw, 42px)",
                   fontWeight: 700,
                   color: "rgba(255,255,255,0.92)",
@@ -734,7 +734,7 @@ export default function IndustryMicrosite() {
               </h2>
               <p
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "16px",
                   lineHeight: 1.65,
                   color: "rgba(200,215,230,0.60)",
@@ -750,7 +750,7 @@ export default function IndustryMicrosite() {
                 <a
                   href="/#industries"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                     fontSize: "14px",
                     fontWeight: 600,
                     color: "rgba(200,215,230,0.60)",
@@ -780,7 +780,7 @@ export default function IndustryMicrosite() {
           <div className="container" style={{ maxWidth: "900px" }}>
             <p
               style={{
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                 fontSize: "11px",
                 fontWeight: 800,
                 letterSpacing: "0.18em",
@@ -829,7 +829,7 @@ export default function IndustryMicrosite() {
                 >
                   <p
                     style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "17px",
                       fontWeight: 700,
                       color: "rgba(255,255,255,0.90)",
@@ -840,7 +840,7 @@ export default function IndustryMicrosite() {
                   </p>
                   <p
                     style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "13px",
                       color: "rgba(200,215,230,0.50)",
                       margin: 0,

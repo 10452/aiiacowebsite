@@ -124,22 +124,22 @@ export default function ContactSection() {
             {/* Fast Path — Executive Call Request */}
             <div className="glass-card" style={{ padding: "28px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
-                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "18px", fontWeight: 700, color: "rgba(255,255,255,0.96)", letterSpacing: "-0.1px" }}>
+                <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "18px", fontWeight: 700, color: "rgba(255,255,255,0.96)", letterSpacing: "-0.1px" }}>
                   Executive Call Request
                 </div>
-                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10px", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(184,156,74,0.80)", background: "rgba(184,156,74,0.10)", border: "1px solid rgba(184,156,74,0.25)", borderRadius: "999px", padding: "3px 10px" }}>
+                <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(184,156,74,0.80)", background: "rgba(184,156,74,0.10)", border: "1px solid rgba(184,156,74,0.25)", borderRadius: "999px", padding: "3px 10px" }}>
                   30 seconds
                 </span>
               </div>
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.55)", margin: "0 0 20px", lineHeight: 1.5 }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.55)", margin: "0 0 20px", lineHeight: 1.5 }}>
                 For teams that want a direct diagnostic conversation first.
               </p>
 
               {fastSubmitted ? (
                 <div style={{ textAlign: "center", padding: "20px 0" }}>
                   <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(184,156,74,0.12)", border: "1px solid rgba(184,156,74,0.30)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", fontSize: "18px", color: "#D4A843" }}>✓</div>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>Request received.</p>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.60)", margin: 0 }}>We will contact you within 24 hours.</p>
+                  <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>Request received.</p>
+                  <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.60)", margin: 0 }}>We will contact you within 24 hours.</p>
                 </div>
               ) : (
                 <form onSubmit={handleFastSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -154,7 +154,7 @@ export default function ContactSection() {
                     </div>
                   </div>
                   {fastError && (
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(220,80,80,0.90)", margin: 0 }}>{fastError}</p>
+                    <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(220,80,80,0.90)", margin: 0 }}>{fastError}</p>
                   )}
                   <button
                     type="submit"
@@ -171,22 +171,22 @@ export default function ContactSection() {
             {/* Structured Intake */}
             <div className="glass-card" style={{ padding: "28px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
-                <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "18px", fontWeight: 700, color: "rgba(255,255,255,0.96)", letterSpacing: "-0.1px" }}>
+                <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "18px", fontWeight: 700, color: "rgba(255,255,255,0.96)", letterSpacing: "-0.1px" }}>
                   Structured Intake
                 </div>
-                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "10px", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(210,220,235,0.70)", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "999px", padding: "3px 10px" }}>
+                <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(210,220,235,0.70)", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "999px", padding: "3px 10px" }}>
                   Preferred
                 </span>
               </div>
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.55)", margin: "0 0 20px", lineHeight: 1.5 }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.55)", margin: "0 0 20px", lineHeight: 1.5 }}>
                 Allows us to prepare a relevant, scenario-specific response before the first conversation.
               </p>
 
               {fullSubmitted ? (
                 <div className="glass-card-gold" style={{ padding: "36px", textAlign: "center" }}>
                   <div style={{ width: "52px", height: "52px", borderRadius: "50%", background: "rgba(184,156,74,0.15)", border: "1px solid rgba(184,156,74,0.35)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px", fontSize: "20px", color: "#D4A843" }}>✓</div>
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "22px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 10px" }}>Intake Received</h3>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", color: "rgba(200,215,230,0.70)", lineHeight: 1.6, margin: 0 }}>
+                  <h3 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "22px", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 10px" }}>Intake Received</h3>
+                  <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", color: "rgba(200,215,230,0.70)", lineHeight: 1.6, margin: 0 }}>
                     A member of the AiiAco team will review your submission and respond within 24 hours with a scenario-aligned reply.
                   </p>
                 </div>
@@ -251,7 +251,7 @@ export default function ContactSection() {
                     />
                   </div>
                   {fullError && (
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "12px", color: "rgba(220,80,80,0.90)", margin: 0 }}>{fullError}</p>
+                    <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(220,80,80,0.90)", margin: 0 }}>{fullError}</p>
                   )}
                   <button
                     type="submit"
@@ -261,7 +261,7 @@ export default function ContactSection() {
                   >
                     {submitIntake.isPending ? "Submitting…" : "Submit Structured Intake"}
                   </button>
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11.5px", color: "rgba(200,215,230,0.35)", textAlign: "center", margin: 0 }}>
+                  <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11.5px", color: "rgba(200,215,230,0.35)", textAlign: "center", margin: 0 }}>
                     Your information is treated with full confidentiality and will not be shared with third parties.
                   </p>
                 </form>
@@ -278,14 +278,14 @@ export default function ContactSection() {
             style={{ display: "flex", flexDirection: "column", gap: "20px" }}
           >
             <div className="glass-card" style={{ padding: "28px" }}>
-              <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "18px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "24px", letterSpacing: "-0.1px" }}>
+              <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "18px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "24px", letterSpacing: "-0.1px" }}>
                 What Happens Next
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
                 {whatHappensNext.map((step) => (
                   <div key={step.n} style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
                     <div className="phase-badge" style={{ width: "32px", height: "32px", fontSize: "11px", borderRadius: "9px", flexShrink: 0 }}>{step.n}</div>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(210,220,235,0.85)", paddingTop: "6px", lineHeight: 1.4 }}>
+                    <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(210,220,235,0.85)", paddingTop: "6px", lineHeight: 1.4 }}>
                       {step.t}
                     </div>
                   </div>
@@ -294,11 +294,11 @@ export default function ContactSection() {
             </div>
 
             <div className="glass-card-gold" style={{ padding: "28px" }}>
-              <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(17px, 1.8vw, 22px)", fontWeight: 700, fontStyle: "italic", color: "rgba(255,255,255,0.92)", lineHeight: 1.3, margin: "0 0 16px", letterSpacing: "-0.2px" }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(17px, 1.8vw, 22px)", fontWeight: 700, fontStyle: "italic", color: "rgba(255,255,255,0.92)", lineHeight: 1.3, margin: "0 0 16px", letterSpacing: "-0.2px" }}>
                 "AiiAco principle: We do not build what clients ask for. We build what creates leverage."
               </p>
               <div style={{ height: "1px", background: "rgba(184,156,74,0.20)", marginBottom: "16px" }} />
-              <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.55)", margin: 0, lineHeight: 1.55 }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.55)", margin: 0, lineHeight: 1.55 }}>
                 Every engagement begins with a diagnostic. We assess your operational architecture before making a single recommendation.
               </p>
             </div>
@@ -313,8 +313,8 @@ export default function ContactSection() {
                   <div key={item.title} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
                     <div style={{ width: "7px", height: "7px", borderRadius: "50%", background: "rgba(184,156,74,0.75)", marginTop: "7px", flexShrink: 0 }} />
                     <div>
-                      <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "13.5px", color: "rgba(255,255,255,0.88)", margin: "0 0 3px" }}>{item.title}</p>
-                      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.58)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+                      <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontWeight: 700, fontSize: "13.5px", color: "rgba(255,255,255,0.88)", margin: "0 0 3px" }}>{item.title}</p>
+                      <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.58)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
                     </div>
                   </div>
                 ))}

@@ -74,7 +74,7 @@ export default function ManifestoPage() {
                   Manifesto
                 </div>
                 <h1 style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "clamp(40px, 6vw, 72px)",
                   fontWeight: 700,
                   color: "rgba(255,255,255,0.97)",
@@ -87,7 +87,7 @@ export default function ManifestoPage() {
                 </h1>
                 <div className="gold-divider" style={{ marginBottom: "28px" }} />
                 <p style={{
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "clamp(16px, 1.8vw, 20px)",
                   color: "rgba(200,215,230,0.72)",
                   lineHeight: 1.65,
@@ -122,7 +122,7 @@ export default function ManifestoPage() {
                     }}
                   >
                     <div style={{
-                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                       fontSize: "13px",
                       fontWeight: 700,
                       letterSpacing: "0.12em",
@@ -134,7 +134,7 @@ export default function ManifestoPage() {
                     </div>
                     <div>
                       <h2 style={{
-                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                         fontSize: "clamp(20px, 2.5vw, 30px)",
                         fontWeight: 700,
                         color: "rgba(255,255,255,0.96)",
@@ -145,7 +145,7 @@ export default function ManifestoPage() {
                         {d.headline}
                       </h2>
                       <p style={{
-                        fontFamily: "'DM Sans', sans-serif",
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                         fontSize: "clamp(14px, 1.5vw, 16px)",
                         color: "rgba(200,215,230,0.70)",
                         lineHeight: 1.7,
@@ -168,7 +168,7 @@ export default function ManifestoPage() {
                 style={{ padding: "40px 36px", marginTop: "56px", textAlign: "center" }}
               >
                 <h3 style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "clamp(22px, 2.8vw, 34px)",
                   fontWeight: 700,
                   color: "rgba(255,255,255,0.97)",
@@ -179,7 +179,7 @@ export default function ManifestoPage() {
                   Principles without execution are philosophy.
                 </h3>
                 <p style={{
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "clamp(14px, 1.5vw, 16px)",
                   color: "rgba(200,215,230,0.68)",
                   margin: "0 auto 28px",

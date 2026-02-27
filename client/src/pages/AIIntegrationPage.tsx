@@ -1,6 +1,6 @@
 /**
  * AiiACo — /ai-integration SEO Pillar Page
- * Design: Liquid Glass Bio-Organic | Cormorant Garamond + DM Sans | Deep void-black + gold
+ * Design: Liquid Glass Bio-Organic | SF Pro Display + SF Pro Text | Deep void-black + gold
  * Purpose: Rank for "AI integration" head term — long-form authoritative content
  */
 
@@ -59,7 +59,7 @@ export default function AIIntegrationPage() {
             <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.12 } } }}>
               <motion.div variants={fade} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(184,156,74,0.08)", border: "1px solid rgba(184,156,74,0.22)", borderRadius: "999px", padding: "6px 16px", marginBottom: "28px" }}>
                 <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#D4A843" }} />
-                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.85)" }}>AI Integration Authority</span>
+                <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.85)" }}>AI Integration Authority</span>
               </motion.div>
 
               <motion.h1 variants={fade} className="display-headline" style={{ marginBottom: "24px" }}>
@@ -67,13 +67,13 @@ export default function AIIntegrationPage() {
                 <span className="gold-line">for the Corporate Age.</span>
               </motion.h1>
 
-              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(16px, 1.6vw, 20px)", lineHeight: 1.7, color: "rgba(200,215,230,0.78)", maxWidth: "68ch", marginBottom: "40px" }}>
+              <motion.p variants={fade} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(16px, 1.6vw, 20px)", lineHeight: 1.7, color: "rgba(200,215,230,0.78)", maxWidth: "68ch", marginBottom: "40px" }}>
                 AI integration is the process of embedding artificial intelligence into the operational infrastructure of a business — not as a tool layer, but as a functional system that executes, decides, and delivers. AiiAco is the AI Integration Authority that designs, deploys, and manages this infrastructure on your behalf.
               </motion.p>
 
               <motion.div variants={fade} style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
                 <a href="/upgrade" className="btn-gold" style={{ textDecoration: "none" }}>Initiate Integration</a>
-                <a href="/method" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(200,215,230,0.70)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", padding: "12px 0", borderBottom: "1px solid rgba(200,215,230,0.20)" }}>
+                <a href="/method" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(200,215,230,0.70)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", padding: "12px 0", borderBottom: "1px solid rgba(200,215,230,0.20)" }}>
                   View Our Method →
                 </a>
               </motion.div>
@@ -85,7 +85,7 @@ export default function AIIntegrationPage() {
         <section style={{ padding: "clamp(60px, 8vw, 100px) 0", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           <div className="container" style={{ maxWidth: "900px" }}>
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={{ show: { transition: { staggerChildren: 0.1 } } }}>
-              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>What AI Integration Is</motion.p>
+              <motion.p variants={fade} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>What AI Integration Is</motion.p>
               <motion.h2 variants={fade} className="section-headline" style={{ marginBottom: "24px" }}>
                 Not a Tool. <span className="accent">An Operating System.</span>
               </motion.h2>
@@ -109,7 +109,7 @@ export default function AIIntegrationPage() {
         <section style={{ padding: "clamp(60px, 8vw, 100px) 0", background: "rgba(255,255,255,0.015)", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           <div className="container">
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={{ show: { transition: { staggerChildren: 0.1 } } }}>
-              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>The Integration Framework</motion.p>
+              <motion.p variants={fade} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>The Integration Framework</motion.p>
               <motion.h2 variants={fade} className="section-headline" style={{ marginBottom: "48px" }}>
                 Four Phases of <span className="accent">Operational AI Integration</span>
               </motion.h2>
@@ -117,9 +117,9 @@ export default function AIIntegrationPage() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
                 {pillars.map((p) => (
                   <motion.div key={p.n} variants={fade} className="glass-card" style={{ padding: "32px 28px" }}>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 900, letterSpacing: "0.2em", color: "rgba(184,156,74,0.55)", marginBottom: "12px" }}>PHASE {p.n}</div>
-                    <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "22px", fontWeight: 700, color: "rgba(255,255,255,0.94)", margin: "0 0 14px", letterSpacing: "-0.3px" }}>{p.title}</h3>
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", lineHeight: 1.65, color: "rgba(200,215,230,0.68)", margin: 0 }}>{p.body}</p>
+                    <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 900, letterSpacing: "0.2em", color: "rgba(184,156,74,0.55)", marginBottom: "12px" }}>PHASE {p.n}</div>
+                    <h3 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "22px", fontWeight: 700, color: "rgba(255,255,255,0.94)", margin: "0 0 14px", letterSpacing: "-0.3px" }}>{p.title}</h3>
+                    <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", lineHeight: 1.65, color: "rgba(200,215,230,0.68)", margin: 0 }}>{p.body}</p>
                   </motion.div>
                 ))}
               </div>
@@ -131,7 +131,7 @@ export default function AIIntegrationPage() {
         <section style={{ padding: "clamp(60px, 8vw, 100px) 0", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           <div className="container" style={{ maxWidth: "900px" }}>
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={{ show: { transition: { staggerChildren: 0.1 } } }}>
-              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>Cross-Industry Deployment</motion.p>
+              <motion.p variants={fade} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>Cross-Industry Deployment</motion.p>
               <motion.h2 variants={fade} className="section-headline" style={{ marginBottom: "16px" }}>
                 AI Integration Across <span className="accent">Every Sector</span>
               </motion.h2>
@@ -140,7 +140,7 @@ export default function AIIntegrationPage() {
               </motion.p>
               <motion.div variants={fade} style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                 {industries.map((ind) => (
-                  <span key={ind} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", fontWeight: 600, color: "rgba(200,215,230,0.72)", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.10)", borderRadius: "6px", padding: "7px 14px" }}>{ind}</span>
+                  <span key={ind} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", fontWeight: 600, color: "rgba(200,215,230,0.72)", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.10)", borderRadius: "6px", padding: "7px 14px" }}>{ind}</span>
                 ))}
               </motion.div>
             </motion.div>
@@ -159,7 +159,7 @@ export default function AIIntegrationPage() {
               </motion.p>
               <motion.div variants={fade} style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
                 <a href="/upgrade" className="btn-gold" style={{ textDecoration: "none" }}>Initiate Your Integration</a>
-                <a href="/models" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(200,215,230,0.70)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", padding: "12px 0", borderBottom: "1px solid rgba(200,215,230,0.20)" }}>
+                <a href="/models" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(200,215,230,0.70)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", padding: "12px 0", borderBottom: "1px solid rgba(200,215,230,0.20)" }}>
                   View Engagement Models →
                 </a>
               </motion.div>
@@ -170,15 +170,15 @@ export default function AIIntegrationPage() {
         {/* Cross-links to related pillar pages */}
         <section style={{ padding: "60px 0", background: "rgba(6,11,20,0.80)", borderTop: "1px solid rgba(184,156,74,0.10)" }}>
           <div className="container" style={{ maxWidth: "900px" }}>
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "24px" }}>Related Services</p>
+            <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "24px" }}>Related Services</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
               <a href="/ai-implementation-services" style={{ display: "block", padding: "20px 24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", textDecoration: "none", transition: "border-color 0.2s" }}>
-                <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>AI Implementation Services</p>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.50)", margin: 0, lineHeight: 1.5 }}>Structured deployment of AI systems across your operational stack — from scoping to go-live.</p>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>AI Implementation Services</p>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.50)", margin: 0, lineHeight: 1.5 }}>Structured deployment of AI systems across your operational stack — from scoping to go-live.</p>
               </a>
               <a href="/ai-automation-for-business" style={{ display: "block", padding: "20px 24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", textDecoration: "none", transition: "border-color 0.2s" }}>
-                <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>AI Automation for Business</p>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.50)", margin: 0, lineHeight: 1.5 }}>End-to-end automation of repeatable business processes using AI agents and workflow orchestration.</p>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>AI Automation for Business</p>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.50)", margin: 0, lineHeight: 1.5 }}>End-to-end automation of repeatable business processes using AI agents and workflow orchestration.</p>
               </a>
             </div>
           </div>

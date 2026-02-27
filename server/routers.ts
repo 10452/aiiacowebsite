@@ -5,6 +5,25 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { insertLead, getAllLeads, updateLeadStatus } from "./db";
 import { notifyOwner } from "./_core/notification";
+import { ENV } from "./_core/env";
+
+// ─── CRM Webhook Helper ───────────────────────────────────────────────────────
+/**
+ * Fire-and-forget POST to the configured CRM webhook URL (Zapier / Make.com).
+ * Non-fatal: if the webhook is not configured or fails, the lead is still saved.
+ */
+async function fireCrmWebhook(payload: Record<string, unknown>): Promise<void> {
+  if (!ENV.crmWebhookUrl) return;
+  try {
+    await fetch(ENV.crmWebhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...payload, source: "aiiaco.com", timestamp: new Date().toISOString() }),
+    });
+  } catch (err) {
+    console.warn("[CRM Webhook] Failed to deliver:", err);
+  }
+}
 
 // ─── Lead Schemas ─────────────────────────────────────────────────────────────
 
@@ -54,6 +73,9 @@ export const appRouter = router({
           content: `Name: ${input.name}\nEmail: ${input.email}\nType: Executive Call Request`,
         }).catch(() => {/* non-fatal */});
 
+        // Fire CRM webhook (non-fatal)
+        await fireCrmWebhook({ type: "call_request", name: input.name, email: input.email });
+
         return { success: true };
       }),
 
@@ -92,6 +114,19 @@ export const appRouter = router({
           title: `New Structured Intake — ${input.name} (${input.company ?? "no company"})`,
           content: lines,
         }).catch(() => {/* non-fatal */});
+
+        // Fire CRM webhook (non-fatal)
+        await fireCrmWebhook({
+          type: "structured_intake",
+          name: input.name,
+          email: input.email,
+          company: input.company ?? null,
+          phone: input.phone ?? null,
+          industry: input.industry ?? null,
+          engagementModel: input.engagementModel ?? null,
+          annualRevenue: input.annualRevenue ?? null,
+          message: input.message ?? null,
+        });
 
         return { success: true };
       }),

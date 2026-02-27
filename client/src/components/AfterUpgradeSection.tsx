@@ -105,7 +105,7 @@ export default function AfterUpgradeSection() {
           transition={{ delay: 0.5, duration: 0.6 }}
           style={{ marginTop: "48px", textAlign: "center" }}
         >
-          <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(22px, 2.8vw, 36px)", fontWeight: 700, color: "rgba(255,255,255,0.92)", lineHeight: 1.2, margin: "0 auto 20px", maxWidth: "60ch", letterSpacing: "-0.4px" }}>
+          <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(22px, 2.8vw, 36px)", fontWeight: 700, color: "rgba(255,255,255,0.92)", lineHeight: 1.2, margin: "0 auto 20px", maxWidth: "60ch", letterSpacing: "-0.4px" }}>
             Your competitors are not waiting.
             <br />
             <span style={{ color: "#D4A843" }}>The question is whether you move first or respond last.</span>

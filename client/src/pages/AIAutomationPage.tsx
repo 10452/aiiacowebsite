@@ -1,6 +1,6 @@
 /**
  * AiiACo — /ai-automation-for-business SEO Pillar Page
- * Design: Liquid Glass Bio-Organic | Cormorant Garamond + DM Sans | Deep void-black + gold
+ * Design: Liquid Glass Bio-Organic | SF Pro Display + SF Pro Text | Deep void-black + gold
  * Purpose: Rank for "AI automation for business" head term
  */
 
@@ -64,7 +64,7 @@ export default function AIAutomationPage() {
             <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.12 } } }}>
               <motion.div variants={fade} style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(184,156,74,0.08)", border: "1px solid rgba(184,156,74,0.22)", borderRadius: "999px", padding: "6px 16px", marginBottom: "28px" }}>
                 <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#D4A843" }} />
-                <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.85)" }}>AI Automation for Business</span>
+                <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.85)" }}>AI Automation for Business</span>
               </motion.div>
 
               <motion.h1 variants={fade} className="display-headline" style={{ marginBottom: "24px" }}>
@@ -72,13 +72,13 @@ export default function AIAutomationPage() {
                 <span className="gold-line">for Business Operations.</span>
               </motion.h1>
 
-              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(16px, 1.6vw, 20px)", lineHeight: 1.7, color: "rgba(200,215,230,0.78)", maxWidth: "68ch", marginBottom: "40px" }}>
+              <motion.p variants={fade} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(16px, 1.6vw, 20px)", lineHeight: 1.7, color: "rgba(200,215,230,0.78)", maxWidth: "68ch", marginBottom: "40px" }}>
                 AI automation for business is the systematic replacement of manual, repetitive, and decision-based tasks with AI systems that execute faster, more accurately, and at greater scale than human operators. AiiAco designs, deploys, and manages these systems as a complete operational layer — not as individual tools.
               </motion.p>
 
               <motion.div variants={fade} style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
                 <a href="/upgrade" className="btn-gold" style={{ textDecoration: "none" }}>Automate Your Operations</a>
-                <a href="/results" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(200,215,230,0.70)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", padding: "12px 0", borderBottom: "1px solid rgba(200,215,230,0.20)" }}>
+                <a href="/results" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(200,215,230,0.70)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", padding: "12px 0", borderBottom: "1px solid rgba(200,215,230,0.20)" }}>
                   View Outcomes →
                 </a>
               </motion.div>
@@ -90,7 +90,7 @@ export default function AIAutomationPage() {
         <section style={{ padding: "clamp(60px, 8vw, 100px) 0", borderTop: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.015)" }}>
           <div className="container">
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={{ show: { transition: { staggerChildren: 0.1 } } }}>
-              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>Automation Capabilities</motion.p>
+              <motion.p variants={fade} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>Automation Capabilities</motion.p>
               <motion.h2 variants={fade} className="section-headline" style={{ marginBottom: "48px" }}>
                 Six Domains of <span className="accent">Business AI Automation</span>
               </motion.h2>
@@ -98,8 +98,8 @@ export default function AIAutomationPage() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: "20px" }}>
                 {automationTypes.map((a) => (
                   <motion.div key={a.title} variants={fade} className="glass-card" style={{ padding: "28px 24px" }}>
-                    <h3 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "21px", fontWeight: 700, color: "rgba(255,255,255,0.94)", margin: "0 0 12px", letterSpacing: "-0.3px" }}>{a.title}</h3>
-                    <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.68)", margin: 0 }}>{a.body}</p>
+                    <h3 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "21px", fontWeight: 700, color: "rgba(255,255,255,0.94)", margin: "0 0 12px", letterSpacing: "-0.3px" }}>{a.title}</h3>
+                    <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.68)", margin: 0 }}>{a.body}</p>
                   </motion.div>
                 ))}
               </div>
@@ -111,7 +111,7 @@ export default function AIAutomationPage() {
         <section style={{ padding: "clamp(60px, 8vw, 100px) 0", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           <div className="container" style={{ maxWidth: "900px" }}>
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={{ show: { transition: { staggerChildren: 0.1 } } }}>
-              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>Measured Outcomes</motion.p>
+              <motion.p variants={fade} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>Measured Outcomes</motion.p>
               <motion.h2 variants={fade} className="section-headline" style={{ marginBottom: "40px" }}>
                 What AI Automation <span className="accent">Delivers in Practice</span>
               </motion.h2>
@@ -119,8 +119,8 @@ export default function AIAutomationPage() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px" }}>
                 {outcomes.map((o) => (
                   <motion.div key={o.label} variants={fade} className="glass-card" style={{ padding: "28px 24px", textAlign: "center" }}>
-                    <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(36px, 5vw, 52px)", fontWeight: 700, color: "#D4A843", letterSpacing: "-1px", marginBottom: "12px" }}>{o.metric}</div>
-                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", lineHeight: 1.55, color: "rgba(200,215,230,0.65)" }}>{o.label}</div>
+                    <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(36px, 5vw, 52px)", fontWeight: 700, color: "#D4A843", letterSpacing: "-1px", marginBottom: "12px" }}>{o.metric}</div>
+                    <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.55, color: "rgba(200,215,230,0.65)" }}>{o.label}</div>
                   </motion.div>
                 ))}
               </div>
@@ -132,7 +132,7 @@ export default function AIAutomationPage() {
         <section style={{ padding: "clamp(60px, 8vw, 100px) 0", borderTop: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.015)" }}>
           <div className="container" style={{ maxWidth: "900px" }}>
             <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={{ show: { transition: { staggerChildren: 0.1 } } }}>
-              <motion.p variants={fade} style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>The AiiAco Model</motion.p>
+              <motion.p variants={fade} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "16px" }}>The AiiAco Model</motion.p>
               <motion.h2 variants={fade} className="section-headline" style={{ marginBottom: "24px" }}>
                 You Do Not Manage <span className="accent">AI Automation. We Do.</span>
               </motion.h2>
@@ -164,7 +164,7 @@ export default function AIAutomationPage() {
               </motion.p>
               <motion.div variants={fade} style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
                 <a href="/upgrade" className="btn-gold" style={{ textDecoration: "none" }}>Begin Automation Audit</a>
-                <a href="/ai-integration" style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(200,215,230,0.70)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", padding: "12px 0", borderBottom: "1px solid rgba(200,215,230,0.20)" }}>
+                <a href="/ai-integration" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(200,215,230,0.70)", textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", padding: "12px 0", borderBottom: "1px solid rgba(200,215,230,0.20)" }}>
                   Learn About AI Integration →
                 </a>
               </motion.div>
@@ -175,15 +175,15 @@ export default function AIAutomationPage() {
         {/* Cross-links to related pillar pages */}
         <section style={{ padding: "60px 0", background: "rgba(6,11,20,0.80)", borderTop: "1px solid rgba(184,156,74,0.10)" }}>
           <div className="container" style={{ maxWidth: "900px" }}>
-            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "24px" }}>Related Services</p>
+            <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(184,156,74,0.60)", marginBottom: "24px" }}>Related Services</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
               <a href="/ai-integration" style={{ display: "block", padding: "20px 24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", textDecoration: "none" }}>
-                <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>AI Integration Services</p>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.50)", margin: 0, lineHeight: 1.5 }}>End-to-end AI integration across your full operational architecture — diagnostic, blueprint, and managed deployment.</p>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>AI Integration Services</p>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.50)", margin: 0, lineHeight: 1.5 }}>End-to-end AI integration across your full operational architecture — diagnostic, blueprint, and managed deployment.</p>
               </a>
               <a href="/ai-implementation-services" style={{ display: "block", padding: "20px 24px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", textDecoration: "none" }}>
-                <p style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>AI Implementation Services</p>
-                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.50)", margin: 0, lineHeight: 1.5 }}>Structured deployment of AI systems across your operational stack — from scoping to go-live.</p>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "17px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 6px" }}>AI Implementation Services</p>
+                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.50)", margin: 0, lineHeight: 1.5 }}>Structured deployment of AI systems across your operational stack — from scoping to go-live.</p>
               </a>
             </div>
           </div>
