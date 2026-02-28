@@ -20,6 +20,14 @@
 - [x] Sitemap updated to 23 URLs
 
 ## Follow-up Round 3
-- [ ] CRM webhook integration in leads router (Zapier/Make.com configurable endpoint)
-- [ ] 4 new anonymized case studies (Mortgage/Lending, Insurance, Luxury Hospitality, Software)
-- [ ] Wire all matching industry microsites to featured case studies
+- [x] CRM webhook integration in leads router (Zapier/Make.com configurable endpoint)
+- [x] 4 new anonymized case studies (Mortgage/Lending, Insurance, Luxury Hospitality, Software)
+- [x] Wire all matching industry microsites to featured case studies
+- [x] SF Pro / Apple system font applied site-wide
+- [x] UHNW & Private Wealth industry added with dedicated microsite + featured section
+- [x] Calendly (calendly.com/nemr1) embedded after Executive Call Request form submission
+
+## Follow-up Round 4
+- [ ] Add Calendly embed to UHNW microsite CTA section
+- [ ] Build protected /admin/leads dashboard UI with pipeline status controls
+- [ ] Add Private Division nav item to Navbar

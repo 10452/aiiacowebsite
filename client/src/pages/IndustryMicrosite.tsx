@@ -712,7 +712,7 @@ export default function IndustryMicrosite() {
 
         {/* CTA */}
         <section style={{ padding: "80px 0" }}>
-          <div className="container" style={{ maxWidth: "700px", textAlign: "center" }}>
+          <div className="container" style={{ maxWidth: industry.showCalendly ? "860px" : "700px", textAlign: "center" }}>
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -730,7 +730,7 @@ export default function IndustryMicrosite() {
                   marginBottom: "20px",
                 }}
               >
-                Ready to Deploy AI in {industry.name}?
+                {industry.showCalendly ? "Schedule a Private Consultation" : `Ready to Deploy AI in ${industry.name}?`}
               </h2>
               <p
                 style={{
@@ -739,32 +739,77 @@ export default function IndustryMicrosite() {
                   lineHeight: 1.65,
                   color: "rgba(200,215,230,0.60)",
                   marginBottom: "36px",
+                  maxWidth: "560px",
+                  margin: "0 auto 36px",
                 }}
               >
-                Every engagement begins with a Business Intelligence Audit — a diagnostic of your architecture, goals, and operational bottlenecks. No commitment required.
+                {industry.showCalendly
+                  ? "Select a time directly. All consultations are conducted under strict confidentiality — no obligation, no pitch decks."
+                  : "Every engagement begins with a Business Intelligence Audit — a diagnostic of your architecture, goals, and operational bottlenecks. No commitment required."}
               </p>
-              <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
-                <a href="/#contact" className="btn-gold" style={{ textDecoration: "none" }}>
-                  Request Your Audit
-                </a>
+
+              {industry.showCalendly ? (
+                /* Calendly inline embed for UHNW */
+                <div
+                  style={{
+                    borderRadius: "14px",
+                    overflow: "hidden",
+                    border: "1px solid rgba(184,156,74,0.20)",
+                    background: "rgba(3,5,10,0.80)",
+                    marginBottom: "28px",
+                  }}
+                >
+                  <iframe
+                    src="https://calendly.com/nemr1?embed_type=Inline&hide_gdpr_banner=1&background_color=03050A&text_color=d2dceb&primary_color=B89C4A"
+                    width="100%"
+                    height="650"
+                    frameBorder="0"
+                    title="Schedule a Private Consultation with AiiAco"
+                    style={{ display: "block", background: "#03050A" }}
+                  />
+                </div>
+              ) : (
+                <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
+                  <a href="/#contact" className="btn-gold" style={{ textDecoration: "none" }}>
+                    Request Your Audit
+                  </a>
+                  <a
+                    href="/#industries"
+                    style={{
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      color: "rgba(200,215,230,0.60)",
+                      textDecoration: "none",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "12px 0",
+                      borderBottom: "1px solid rgba(200,215,230,0.20)",
+                    }}
+                  >
+                    ← All Industries
+                  </a>
+                </div>
+              )}
+
+              {industry.showCalendly && (
                 <a
                   href="/#industries"
                   style={{
                     fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
-                    fontSize: "14px",
+                    fontSize: "13px",
                     fontWeight: 600,
-                    color: "rgba(200,215,230,0.60)",
+                    color: "rgba(200,215,230,0.45)",
                     textDecoration: "none",
-                    display: "flex",
+                    display: "inline-flex",
                     alignItems: "center",
                     gap: "6px",
-                    padding: "12px 0",
-                    borderBottom: "1px solid rgba(200,215,230,0.20)",
                   }}
                 >
                   ← All Industries
                 </a>
-              </div>
+              )}
             </motion.div>
           </div>
         </section>

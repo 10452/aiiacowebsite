@@ -17,6 +17,8 @@ export interface IndustryData {
   seoKeywords: string;
   /** ID of a related case study to feature on the microsite page */
   featuredCaseStudyId?: string;
+  /** Show an inline Calendly embed in the CTA section instead of the generic contact link */
+  showCalendly?: boolean;
 }
 
 export const industries: IndustryData[] = [
@@ -701,6 +703,7 @@ export const industries: IndustryData[] = [
     seoDescription: "AiiAco designs and deploys AI infrastructure for ultra high net worth individuals and family offices — private wealth intelligence, lifestyle operations, and principal protection at the highest standard of discretion.",
     seoKeywords: "AI for UHNW, ultra high net worth AI, family office AI, private wealth AI, UHNW operations AI, principal intelligence AI",
     featuredCaseStudyId: "wealth-client-ops",
+    showCalendly: true,
   },
 ];
 

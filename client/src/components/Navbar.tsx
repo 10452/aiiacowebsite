@@ -14,6 +14,9 @@ const navLinks = [
   { label: "Upgrade", href: "#contact", route: "/upgrade" },
 ];
 
+const FF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
+const FFD = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -26,6 +29,11 @@ export default function Navbar() {
 
   const scrollTo = (href: string) => {
     setMobileOpen(false);
+    // If we're not on the homepage, navigate there first
+    if (window.location.pathname !== "/") {
+      window.location.href = "/" + href;
+      return;
+    }
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -70,10 +78,10 @@ export default function Navbar() {
                 </svg>
               </div>
               <div>
-                <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontWeight: 700, fontSize: "20px", letterSpacing: "-0.3px", color: "rgba(255,255,255,0.96)", lineHeight: 1 }}>
+                <div style={{ fontFamily: FFD, fontWeight: 700, fontSize: "20px", letterSpacing: "-0.3px", color: "rgba(255,255,255,0.96)", lineHeight: 1 }}>
                   AiiAco
                 </div>
-                <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontWeight: 800, fontSize: "8px", letterSpacing: "2.5px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", lineHeight: 1, marginTop: "3px" }}>
+                <div style={{ fontFamily: FF, fontWeight: 800, fontSize: "8px", letterSpacing: "2.5px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", lineHeight: 1, marginTop: "3px" }}>
                   UPGRADE
                 </div>
               </div>
@@ -87,7 +95,7 @@ export default function Navbar() {
                   href={link.route}
                   onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
                   style={{
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                    fontFamily: FF,
                     fontWeight: 600,
                     fontSize: "13.5px",
                     color: "rgba(200,215,230,0.72)",
@@ -106,6 +114,40 @@ export default function Navbar() {
                   {link.label}
                 </a>
               ))}
+
+              {/* Private Division — distinct gold pill */}
+              <a
+                href="/industries/uhnw-private-wealth"
+                style={{
+                  fontFamily: FF,
+                  fontWeight: 700,
+                  fontSize: "12px",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "rgba(184,156,74,0.85)",
+                  background: "rgba(184,156,74,0.07)",
+                  border: "1px solid rgba(184,156,74,0.22)",
+                  padding: "6px 13px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  transition: "color 0.15s, background 0.15s, border-color 0.15s",
+                  textDecoration: "none",
+                  display: "inline-block",
+                  marginLeft: "8px",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "rgba(212,168,67,1)";
+                  e.currentTarget.style.background = "rgba(184,156,74,0.14)";
+                  e.currentTarget.style.borderColor = "rgba(184,156,74,0.45)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "rgba(184,156,74,0.85)";
+                  e.currentTarget.style.background = "rgba(184,156,74,0.07)";
+                  e.currentTarget.style.borderColor = "rgba(184,156,74,0.22)";
+                }}
+              >
+                Private
+              </a>
             </div>
 
             {/* CTA + mobile toggle */}
@@ -134,11 +176,19 @@ export default function Navbar() {
                     <button
                       key={link.href}
                       onClick={() => scrollTo(link.href)}
-                      style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontWeight: 600, fontSize: "15px", color: "rgba(200,215,230,0.85)", background: "none", border: "none", padding: "10px 8px", textAlign: "left", cursor: "pointer", borderRadius: "8px" }}
+                      style={{ fontFamily: FF, fontWeight: 600, fontSize: "15px", color: "rgba(200,215,230,0.85)", background: "none", border: "none", padding: "10px 8px", textAlign: "left", cursor: "pointer", borderRadius: "8px" }}
                     >
                       {link.label}
                     </button>
                   ))}
+                  {/* Private Division in mobile menu */}
+                  <a
+                    href="/industries/uhnw-private-wealth"
+                    onClick={() => setMobileOpen(false)}
+                    style={{ fontFamily: FF, fontWeight: 700, fontSize: "14px", letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(184,156,74,0.90)", background: "rgba(184,156,74,0.07)", border: "1px solid rgba(184,156,74,0.22)", padding: "10px 12px", borderRadius: "8px", textDecoration: "none", display: "block", marginTop: "4px" }}
+                  >
+                    Private Division
+                  </a>
                   <button onClick={() => scrollTo("#contact")} className="btn-gold mt-2" style={{ justifyContent: "center" }}>
                     Request Upgrade
                   </button>
