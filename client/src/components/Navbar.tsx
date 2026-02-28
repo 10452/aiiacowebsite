@@ -115,39 +115,6 @@ export default function Navbar() {
                 </a>
               ))}
 
-              {/* Private Division - distinct gold pill */}
-              <a
-                href="/industries/uhnw-private-wealth"
-                style={{
-                  fontFamily: FF,
-                  fontWeight: 700,
-                  fontSize: "12px",
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: "rgba(184,156,74,0.85)",
-                  background: "rgba(184,156,74,0.07)",
-                  border: "1px solid rgba(184,156,74,0.22)",
-                  padding: "6px 13px",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  transition: "color 0.15s, background 0.15s, border-color 0.15s",
-                  textDecoration: "none",
-                  display: "inline-block",
-                  marginLeft: "8px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "rgba(212,168,67,1)";
-                  e.currentTarget.style.background = "rgba(184,156,74,0.14)";
-                  e.currentTarget.style.borderColor = "rgba(184,156,74,0.45)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "rgba(184,156,74,0.85)";
-                  e.currentTarget.style.background = "rgba(184,156,74,0.07)";
-                  e.currentTarget.style.borderColor = "rgba(184,156,74,0.22)";
-                }}
-              >
-                Private
-              </a>
             </div>
 
             {/* CTA + mobile toggle */}
@@ -181,14 +148,7 @@ export default function Navbar() {
                       {link.label}
                     </button>
                   ))}
-                  {/* Private Division in mobile menu */}
-                  <a
-                    href="/industries/uhnw-private-wealth"
-                    onClick={() => setMobileOpen(false)}
-                    style={{ fontFamily: FF, fontWeight: 700, fontSize: "14px", letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(184,156,74,0.90)", background: "rgba(184,156,74,0.07)", border: "1px solid rgba(184,156,74,0.22)", padding: "10px 12px", borderRadius: "8px", textDecoration: "none", display: "block", marginTop: "4px" }}
-                  >
-                    Private Division
-                  </a>
+
                   <button onClick={() => scrollTo("#contact")} className="btn-gold mt-2" style={{ justifyContent: "center" }}>
                     Request Upgrade
                   </button>

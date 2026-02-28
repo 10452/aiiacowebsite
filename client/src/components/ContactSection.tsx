@@ -31,6 +31,7 @@ export default function ContactSection() {
   const [fullSubmitted, setFullSubmitted] = useState(false);
   const [fastError, setFastError] = useState("");
   const [fullError, setFullError] = useState("");
+  const [showCalendlyModal, setShowCalendlyModal] = useState(false);
 
   const [fastForm, setFastForm] = useState({ name: "", email: "" });
   const [fullForm, setFullForm] = useState({
@@ -39,7 +40,7 @@ export default function ContactSection() {
   });
 
   const submitCall = trpc.leads.submitCall.useMutation({
-    onSuccess: () => setFastSubmitted(true),
+    onSuccess: () => { setFastSubmitted(true); setShowCalendlyModal(true); },
     onError: (err) => setFastError(err.message || "Submission failed. Please try again."),
   });
 
@@ -78,6 +79,96 @@ export default function ContactSection() {
   };
 
   return (
+    <>
+    {/* Calendly Full-Screen Modal */}
+    {showCalendlyModal && (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
+          background: "rgba(3,5,10,0.96)",
+          backdropFilter: "blur(20px)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "24px",
+        }}
+      >
+        {/* Gold accent line top */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: "linear-gradient(90deg, transparent, rgba(184,156,74,0.6), transparent)" }} />
+        {/* Close button */}
+        <button
+          onClick={() => setShowCalendlyModal(false)}
+          style={{
+            position: "absolute",
+            top: "24px",
+            right: "24px",
+            background: "rgba(184,156,74,0.08)",
+            border: "1px solid rgba(184,156,74,0.22)",
+            borderRadius: "8px",
+            color: "rgba(184,156,74,0.80)",
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+            fontSize: "13px",
+            fontWeight: 600,
+            letterSpacing: "0.06em",
+            padding: "8px 16px",
+            cursor: "pointer",
+            textTransform: "uppercase",
+          }}
+        >
+          Close
+        </button>
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          style={{ textAlign: "center", marginBottom: "32px" }}
+        >
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "12px", padding: "4px 14px", background: "rgba(184,156,74,0.08)", border: "1px solid rgba(184,156,74,0.22)", borderRadius: "999px" }}>
+            <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "rgba(184,156,74,0.80)", display: "inline-block" }} />
+            <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(184,156,74,0.80)" }}>Request Confirmed</span>
+          </div>
+          <h2 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 8px", letterSpacing: "-0.3px" }}>
+            Select a time for your <span style={{ color: "#D4A843" }}>Executive Call.</span>
+          </h2>
+          <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", color: "rgba(200,215,230,0.55)", margin: 0 }}>
+            Your submission has been received. Choose a slot that works for your schedule.
+          </p>
+        </motion.div>
+        {/* Calendly embed container */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          style={{
+            width: "100%",
+            maxWidth: "720px",
+            borderRadius: "16px",
+            overflow: "hidden",
+            border: "1px solid rgba(184,156,74,0.18)",
+            boxShadow: "0 0 80px rgba(184,156,74,0.08), 0 24px 60px rgba(0,0,0,0.6)",
+            background: "#060B14",
+          }}
+        >
+          <iframe
+            src="https://calendly.com/nemr1?embed_type=Inline&hide_gdpr_banner=1&background_color=060B14&text_color=d2dceb&primary_color=B89C4A"
+            width="100%"
+            height="580"
+            frameBorder="0"
+            title="Schedule a call with AiiAco"
+            style={{ display: "block" }}
+          />
+        </motion.div>
+        {/* Gold accent line bottom */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "2px", background: "linear-gradient(90deg, transparent, rgba(184,156,74,0.4), transparent)" }} />
+      </motion.div>
+    )}
     <section
       id="contact"
       style={{
@@ -136,26 +227,16 @@ export default function ContactSection() {
               </p>
 
               {fastSubmitted ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {/* Confirmation header */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 16px", background: "rgba(184,156,74,0.08)", border: "1px solid rgba(184,156,74,0.22)", borderRadius: "8px" }}>
-                    <span style={{ fontSize: "16px", color: "#D4A843" }}>✓</span>
-                    <div>
-                      <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: 0 }}>Request received. Book your call below.</p>
-                      <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.55)", margin: 0 }}>Select a time that works for you.</p>
-                    </div>
-                  </div>
-                  {/* Calendly inline embed */}
-                  <div style={{ borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(184,156,74,0.15)" }}>
-                    <iframe
-                      src="https://calendly.com/nemr1?embed_type=Inline&hide_gdpr_banner=1&background_color=03050A&text_color=d2dceb&primary_color=B89C4A"
-                      width="100%"
-                      height="600"
-                      frameBorder="0"
-                      title="Schedule a call with AiiAco"
-                      style={{ display: "block", background: "#03050A" }}
-                    />
-                  </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px", padding: "20px", background: "rgba(184,156,74,0.06)", border: "1px solid rgba(184,156,74,0.20)", borderRadius: "10px", textAlign: "center" }}>
+                  <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "rgba(184,156,74,0.12)", border: "1px solid rgba(184,156,74,0.30)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto", fontSize: "18px", color: "#D4A843" }}>✓</div>
+                  <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", fontWeight: 700, color: "rgba(255,255,255,0.92)", margin: 0 }}>Request received.</p>
+                  <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12.5px", color: "rgba(200,215,230,0.55)", margin: 0, lineHeight: 1.5 }}>Your booking window is open. Select a time that works for your schedule.</p>
+                  <button
+                    onClick={() => setShowCalendlyModal(true)}
+                    style={{ marginTop: "4px", padding: "10px 20px", background: "rgba(184,156,74,0.12)", border: "1px solid rgba(184,156,74,0.35)", borderRadius: "8px", color: "rgba(184,156,74,0.90)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", cursor: "pointer" }}
+                  >
+                    Open Booking Calendar
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleFastSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -340,5 +421,6 @@ export default function ContactSection() {
         </div>
       </div>
     </section>
+    </>
   );
 }

@@ -33,7 +33,12 @@
 - [x] Add Private Division nav item to Navbar
 
 ## Round 5
-- [ ] Secret admin console at unique URL with access control
-- [ ] Defence & Aerospace industry section + microsite
-- [ ] Subtle animated liquid glass background movement
-- [ ] Gold shimmer on section titles
+- [x] Secret admin console at unique URL with access control
+- [x] Defence & Aerospace industry section + microsite
+- [x] Subtle animated liquid glass background movement
+- [x] Gold shimmer on section titles
+
+## Round 6
+- [ ] Remove Private nav button from Navbar (keep UHNW only in Industries section)
+- [ ] Fix glass orb animation (currently not visible)
+- [ ] Redesign Calendly booking flow to be aesthetically aligned with site design
