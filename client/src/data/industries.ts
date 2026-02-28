@@ -705,6 +705,34 @@ export const industries: IndustryData[] = [
     featuredCaseStudyId: "wealth-client-ops",
     showCalendly: true,
   },
+  {
+    slug: "defence-aerospace",
+    name: "Defence & Aerospace",
+    headline: "AI Infrastructure Built for the Classified Tier.",
+    subheadline: "Mission-critical AI for defence contractors, aerospace primes, and government-adjacent operations where security, precision, and operational continuity are non-negotiable.",
+    description: "AiiAco designs and deploys AI systems for defence and aerospace environments where standard cloud AI is not an option. From intelligence analysis automation to secure procurement and predictive maintenance — we build AI infrastructure that operates within your security constraints, not around them.",
+    painPoints: [
+      { title: "Classified Data Constraints", body: "Public cloud AI infrastructure cannot be used in classified or sensitive environments — requiring on-premise or air-gap compatible solutions." },
+      { title: "Intelligence Analysis Overload", body: "Analysts are overwhelmed by unstructured data volume across multi-source feeds — slowing decision cycles at the operational level." },
+      { title: "Legacy System Integration", body: "Maintenance, logistics, and procurement operations run on legacy systems with no AI layer and no clear integration path." },
+      { title: "Procurement Compliance Drag", body: "Complex regulatory and compliance requirements extend procurement timelines from weeks to months without AI assistance." },
+    ],
+    useCases: [
+      { title: "Intelligence Analysis Automation", body: "AI systems that ingest, classify, and summarise multi-source intelligence feeds — reducing analyst time-to-insight from hours to minutes." },
+      { title: "Secure Procurement AI", body: "Automated compliance checking, vendor risk scoring, and contract analysis across classified procurement workflows." },
+      { title: "Predictive Maintenance", body: "AI-driven maintenance scheduling for aircraft, vehicles, and mission-critical hardware — reducing downtime and unplanned failures." },
+      { title: "Logistics & Supply Chain Intelligence", body: "Real-time inventory optimisation, demand forecasting, and supplier risk monitoring for complex defence supply chains." },
+    ],
+    kpis: [
+      { value: "99.99%", label: "Uptime SLA" },
+      { value: "60%", label: "Intelligence Cycle Reduction" },
+      { value: "3×", label: "Analyst Throughput" },
+      { value: "0", label: "Data Sovereignty Compromises" },
+    ],
+    seoTitle: "AI Integration for Defence & Aerospace | AiiAco",
+    seoDescription: "AiiAco deploys AI systems for defence contractors, aerospace primes, and government-adjacent operations. Secure, air-gap compatible AI infrastructure for mission-critical environments.",
+    seoKeywords: "AI for defence, aerospace AI integration, government AI contractor, classified AI infrastructure, defence AI automation, military AI operations, sovereign AI deployment",
+  },
 ];
 
 export function getIndustryBySlug(slug: string): IndustryData | undefined {

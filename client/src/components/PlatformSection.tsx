@@ -63,7 +63,7 @@ export default function PlatformSection() {
             <span className="dot" />
             The AiiAco Authority Platform
           </div>
-          <h2 className="section-headline" style={{ marginBottom: "20px" }}>
+          <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px" }}>
             One Engagement. <span className="accent">Complete AI Operational Command.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />

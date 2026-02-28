@@ -55,7 +55,7 @@ export default function CaseStudiesSection() {
             <span className="dot" />
             Case Studies
           </motion.div>
-          <motion.h2 variants={item} className="section-headline" style={{ marginBottom: 0 }}>
+          <motion.h2 variants={item} className="section-headline shimmer-headline" style={{ marginBottom: 0 }}>
             Anonymized. <span className="accent">Verifiable in Structure.</span>
           </motion.h2>
           <div className="gold-divider" />

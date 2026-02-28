@@ -1,5 +1,5 @@
 /*
- * AiiACo Navbar — Liquid Glass Bio-Organic Design
+ * AiiACo Navbar - Liquid Glass Bio-Organic Design
  * Gold AI chip logo, glassmorphism nav, announcement bar
  */
 import { useState, useEffect } from "react";
@@ -115,7 +115,7 @@ export default function Navbar() {
                 </a>
               ))}
 
-              {/* Private Division — distinct gold pill */}
+              {/* Private Division - distinct gold pill */}
               <a
                 href="/industries/uhnw-private-wealth"
                 style={{

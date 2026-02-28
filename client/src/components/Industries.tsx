@@ -31,6 +31,7 @@ const industryLinks: { name: string; slug: string | null }[] = [
   { name: "Financial Services", slug: "financial-services" },
   { name: "Software & Technology", slug: "software-technology" },
   { name: "Energy", slug: "energy" },
+  { name: "Defence & Aerospace", slug: "defence-aerospace" },
 ];
 
 const capabilities = [
@@ -68,7 +69,7 @@ export default function Industries() {
             <span className="dot" />
             Industries
           </div>
-          <h2 className="section-headline" style={{ marginBottom: "20px" }}>
+          <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px" }}>
             Industry-Agnostic. <span className="accent">Operationally Precise.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
@@ -242,6 +243,111 @@ export default function Industries() {
                   }}
                 >
                   <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "26px", fontWeight: 800, color: "#C9A84C", letterSpacing: "-0.5px", marginBottom: "4px" }}>{kpi.value}</div>
+                  <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 700, color: "rgba(255,255,255,0.82)", marginBottom: "2px" }}>{kpi.label}</div>
+                  <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", color: "rgba(200,215,230,0.45)" }}>{kpi.sub}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Defence & Aerospace Featured Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          style={{
+            marginBottom: "64px",
+            borderRadius: "16px",
+            overflow: "hidden",
+            position: "relative",
+            background: "linear-gradient(135deg, rgba(30,40,60,0.6) 0%, rgba(3,5,10,0.95) 50%, rgba(20,35,55,0.4) 100%)",
+            border: "1px solid rgba(100,140,200,0.22)",
+            padding: "48px 48px",
+          }}
+        >
+          <div style={{ position: "absolute", top: 0, left: 0, width: "400px", height: "400px", background: "radial-gradient(circle, rgba(80,120,200,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+          <div style={{ position: "relative", zIndex: 2, display: "grid", gridTemplateColumns: "1fr 1fr", gap: "48px", alignItems: "center" }}>
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
+                <span style={{
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                  fontSize: "10px",
+                  fontWeight: 800,
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  color: "rgba(120,160,220,0.9)",
+                  padding: "5px 12px",
+                  border: "1px solid rgba(100,140,200,0.35)",
+                  borderRadius: "4px",
+                }}>CLASSIFIED TIER</span>
+                <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", color: "rgba(120,160,220,0.55)", letterSpacing: "1px", textTransform: "uppercase" }}>Defence &amp; Aerospace</span>
+              </div>
+              <h3 style={{
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                fontSize: "clamp(24px, 3vw, 36px)",
+                fontWeight: 700,
+                color: "rgba(255,255,255,0.96)",
+                lineHeight: 1.15,
+                margin: "0 0 16px",
+                letterSpacing: "-0.5px",
+              }}>
+                AI Infrastructure<br />
+                <span style={{ color: "#7AA0DC" }}>for the Classified Tier.</span>
+              </h3>
+              <p style={{
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                fontSize: "15px",
+                lineHeight: 1.7,
+                color: "rgba(200,215,230,0.72)",
+                margin: "0 0 28px",
+                maxWidth: "420px",
+              }}>
+                AiiAco designs and deploys AI systems for defence contractors, aerospace primes, and government-adjacent operations where standard cloud AI is not an option. We build AI infrastructure that operates within your security constraints, not around them.
+              </p>
+              <a
+                href="/industries/defence-aerospace"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  letterSpacing: "0.5px",
+                  color: "#fff",
+                  background: "linear-gradient(135deg, rgba(80,120,200,0.8) 0%, rgba(60,100,180,0.9) 100%)",
+                  padding: "12px 24px",
+                  borderRadius: "6px",
+                  textDecoration: "none",
+                  border: "1px solid rgba(100,140,220,0.4)",
+                  transition: "opacity 0.2s",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.88"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
+              >
+                Explore Defence Division →
+              </a>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              {[
+                { value: "99.99%", label: "Uptime SLA", sub: "Mission-critical deployments" },
+                { value: "60%", label: "Intel Cycle Reduction", sub: "Faster decision loops" },
+                { value: "3×", label: "Analyst Throughput", sub: "Per analyst per shift" },
+                { value: "0", label: "Data Sovereignty Compromises", sub: "Air-gap compatible" },
+              ].map((kpi) => (
+                <div
+                  key={kpi.label}
+                  style={{
+                    background: "rgba(80,120,200,0.05)",
+                    border: "1px solid rgba(100,140,200,0.15)",
+                    borderRadius: "10px",
+                    padding: "20px 18px",
+                  }}
+                >
+                  <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(20px, 2.5vw, 28px)", fontWeight: 800, color: "#7AA0DC", letterSpacing: "-0.5px", marginBottom: "4px" }}>{kpi.value}</div>
                   <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 700, color: "rgba(255,255,255,0.82)", marginBottom: "2px" }}>{kpi.label}</div>
                   <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", color: "rgba(200,215,230,0.45)" }}>{kpi.sub}</div>
                 </div>

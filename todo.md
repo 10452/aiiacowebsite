@@ -28,6 +28,12 @@
 - [x] Calendly (calendly.com/nemr1) embedded after Executive Call Request form submission
 
 ## Follow-up Round 4
-- [ ] Add Calendly embed to UHNW microsite CTA section
-- [ ] Build protected /admin/leads dashboard UI with pipeline status controls
-- [ ] Add Private Division nav item to Navbar
+- [x] Add Calendly embed to UHNW microsite CTA section
+- [x] Build protected /admin/leads dashboard UI with pipeline status controls
+- [x] Add Private Division nav item to Navbar
+
+## Round 5
+- [ ] Secret admin console at unique URL with access control
+- [ ] Defence & Aerospace industry section + microsite
+- [ ] Subtle animated liquid glass background movement
+- [ ] Gold shimmer on section titles

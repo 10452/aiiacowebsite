@@ -50,6 +50,10 @@ export default function HeroSection() {
       {/* Directional fade */}
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(3,5,10,0.94) 0%, rgba(3,5,10,0.70) 50%, rgba(3,5,10,0.30) 100%)" }} />
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(700px 500px at 8% 75%, rgba(184,156,74,0.07) 0%, transparent 60%)" }} />
+      {/* Animated liquid glass orbs */}
+      <div className="glass-orb glass-orb-1" style={{ top: "10%", left: "5%" }} />
+      <div className="glass-orb glass-orb-2" style={{ top: "55%", right: "8%" }} />
+      <div className="glass-orb glass-orb-3" style={{ bottom: "15%", left: "40%" }} />
 
       <div className="container" style={{ position: "relative", zIndex: 2, paddingTop: "80px", paddingBottom: "80px" }}>
         <div

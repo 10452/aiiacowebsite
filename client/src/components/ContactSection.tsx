@@ -102,7 +102,7 @@ export default function ContactSection() {
             <span className="dot" />
             Upgrade
           </div>
-          <h2 className="section-headline" style={{ marginBottom: "20px" }}>
+          <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px" }}>
             Initiate <span className="accent">Upgrade.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />

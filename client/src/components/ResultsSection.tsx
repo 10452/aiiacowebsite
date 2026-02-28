@@ -193,7 +193,7 @@ export default function ResultsSection() {
             <span className="dot" />
             Managed AI Integration Results
           </motion.div>
-          <motion.h2 variants={item} className="section-headline" style={{ marginBottom: 0 }}>
+          <motion.h2 variants={item} className="section-headline shimmer-headline" style={{ marginBottom: 0 }}>
             Enterprise AI Integration Outcomes. <span className="accent">Measured. Verified. Repeatable.</span>
           </motion.h2>
           <div className="gold-divider" />

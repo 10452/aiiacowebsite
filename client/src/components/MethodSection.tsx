@@ -68,7 +68,7 @@ export default function MethodSection() {
             <span className="dot" />
             The AiiAco Execution Method
           </div>
-          <h2 className="section-headline" style={{ marginBottom: "20px" }}>
+          <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px" }}>
             Five Phases. <span className="accent">Zero Guesswork. Irreversible Results.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />

@@ -84,7 +84,7 @@ export default function EngagementModels() {
             <span className="dot" />
             Engagement Models
           </div>
-          <h2 className="section-headline" style={{ marginBottom: "20px" }}>
+          <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px" }}>
             You Choose the Structure. <span className="accent">AiiAco Delivers the Outcome.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />

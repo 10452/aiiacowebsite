@@ -41,7 +41,7 @@ export default function BuiltForCorporateAge() {
             <span className="dot" />
             The AiiAco Operating Constraints
           </div>
-          <h2 className="section-headline" style={{ marginBottom: "20px", textAlign: "center" }}>
+          <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px", textAlign: "center" }}>
             Non-Negotiable Standards. <span className="accent">Every Engagement. No Exceptions.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px", margin: "0 auto 20px" }} />

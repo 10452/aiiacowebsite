@@ -492,6 +492,88 @@
     border-radius: 2px;
   }
 
+  /* ─── LIQUID GLASS FLOAT ANIMATION ───────────────────────── */
+  @keyframes glass-float-1 {
+    0%   { transform: translate(0px, 0px) scale(1); opacity: 0.55; }
+    33%  { transform: translate(18px, -22px) scale(1.04); opacity: 0.62; }
+    66%  { transform: translate(-12px, 14px) scale(0.97); opacity: 0.50; }
+    100% { transform: translate(0px, 0px) scale(1); opacity: 0.55; }
+  }
+  @keyframes glass-float-2 {
+    0%   { transform: translate(0px, 0px) scale(1); opacity: 0.40; }
+    40%  { transform: translate(-20px, 16px) scale(1.06); opacity: 0.48; }
+    70%  { transform: translate(14px, -10px) scale(0.95); opacity: 0.36; }
+    100% { transform: translate(0px, 0px) scale(1); opacity: 0.40; }
+  }
+  @keyframes glass-float-3 {
+    0%   { transform: translate(0px, 0px) scale(1); opacity: 0.30; }
+    50%  { transform: translate(10px, 20px) scale(1.03); opacity: 0.38; }
+    100% { transform: translate(0px, 0px) scale(1); opacity: 0.30; }
+  }
+  .glass-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(60px);
+    will-change: transform, opacity;
+  }
+  .glass-orb-1 {
+    width: 520px;
+    height: 520px;
+    background: radial-gradient(circle, rgba(184,156,74,0.09) 0%, rgba(184,156,74,0.03) 50%, transparent 70%);
+    animation: glass-float-1 18s ease-in-out infinite;
+  }
+  .glass-orb-2 {
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, rgba(200,220,255,0.02) 50%, transparent 70%);
+    animation: glass-float-2 24s ease-in-out infinite;
+  }
+  .glass-orb-3 {
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(184,156,74,0.06) 0%, transparent 65%);
+    animation: glass-float-3 14s ease-in-out infinite;
+  }
+
+  /* ─── GOLD SHIMMER ON SECTION HEADLINES ────────────────────── */
+  @keyframes gold-shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  .shimmer-headline {
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0.96) 0%,
+      rgba(255,255,255,0.96) 35%,
+      rgba(212,168,67,0.90) 50%,
+      rgba(255,255,255,0.96) 65%,
+      rgba(255,255,255,0.96) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gold-shimmer 8s linear infinite;
+  }
+  /* Accent words inside shimmer headlines stay gold */
+  .shimmer-headline .accent {
+    background: linear-gradient(
+      90deg,
+      rgba(212,168,67,0.95) 0%,
+      rgba(212,168,67,0.95) 35%,
+      rgba(255,220,100,1) 50%,
+      rgba(212,168,67,0.95) 65%,
+      rgba(212,168,67,0.95) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gold-shimmer 8s linear infinite;
+    animation-delay: -2s;
+  }
+
   /* ─── SCROLLBAR ─────────────────────────────────────────────── */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: var(--void); }

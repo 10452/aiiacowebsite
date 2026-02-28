@@ -53,7 +53,7 @@ export default function AfterUpgradeSection() {
             <span className="dot" />
             The Structural Transformation
           </div>
-          <h2 className="section-headline" style={{ marginBottom: "20px" }}>
+          <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px" }}>
             This Is What <span className="accent">Your Business Looks Like After AiiAco.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
