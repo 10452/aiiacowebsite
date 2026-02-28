@@ -39,6 +39,13 @@
 - [x] Gold shimmer on section titles
 
 ## Round 6
-- [ ] Remove Private nav button from Navbar (keep UHNW only in Industries section)
-- [ ] Fix glass orb animation (currently not visible)
-- [ ] Redesign Calendly booking flow to be aesthetically aligned with site design
+- [x] Remove Private nav button from Navbar (keep UHNW only in Industries section)
+- [x] Fix glass orb animation (currently not visible)
+- [x] Redesign Calendly booking flow to be aesthetically aligned with site design
+
+## Round 7
+- [x] Fix glass orb z-index stacking (overlays were covering orbs at z-index auto)
+- [x] Add mix-blend-mode: screen to glass orbs for visibility through dark overlays
+- [x] Increase animation movement range (80-150px travel distance for visible motion)
+- [x] Boost orb color intensity (rgba opacity 0.45-0.50 vs previous 0.07-0.18)
+- [x] Add animated counter roll-up to hero KPI numbers (20+, 100%, 0)

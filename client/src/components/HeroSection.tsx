@@ -3,6 +3,56 @@
  * Full-bleed liquid glass background, split layout, glass KPI cards
  */
 import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+
+// Animated counter hook — counts from 0 to target over duration ms
+function useCountUp(target: number, duration: number = 1800, delay: number = 0) {
+  const [count, setCount] = useState(0);
+  const startedRef = useRef(false);
+  useEffect(() => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    const timer = setTimeout(() => {
+      const start = performance.now();
+      const step = (now: number) => {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        // Ease out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setCount(Math.round(eased * target));
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [target, duration, delay]);
+  return count;
+}
+
+function KpiCard({ kpi, delay }: { kpi: { num: string; label: string; sub: string }; delay: number }) {
+  // Parse the numeric value and suffix from strings like "20+", "100%", "0"
+  const match = kpi.num.match(/^(\d+)([+%]?)$/);
+  const targetNum = match ? parseInt(match[1]) : 0;
+  const suffix = match ? match[2] : "";
+  const count = useCountUp(targetNum, 1600, delay);
+  const displayNum = targetNum === 0 ? "0" : `${count}${suffix}`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: delay / 1000 }}
+      className="glass-card"
+      style={{ padding: "20px 24px" }}
+    >
+      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "12px" }}>
+        <span className="stat-number">{displayNum}</span>
+        <span className="stat-label" style={{ textAlign: "right" }}>{kpi.label}</span>
+      </div>
+      <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.50)", margin: "8px 0 0", lineHeight: 1.4 }}>{kpi.sub}</p>
+    </motion.div>
+  );
+}
 
 const HERO_BG = "https://private-us-east-1.manuscdn.com/sessionFile/FvSFBd374GXzqjgBtweNkq/sandbox/KV9rHWJ9VYR1NSAlzZrFLI-img-1_1771979979000_na1fn_YWlpYS1nbGFzcy1oZXJv.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRnZTRkJkMzc0R1h6cWpnQnR3ZU5rcS9zYW5kYm94L0tWOXJIV0o5VllSMU5TQWx6WnJGTEktaW1nLTFfMTc3MTk3OTk3OTAwMF9uYTFmbl9ZV2xwWVMxbmJHRnpjeTFvWlhKdi5wbmc~eC1vc3MtcHJvY2Vzcz1pbWFnZS9yZXNpemUsd18xOTIwLGhfMTkyMC9mb3JtYXQsd2VicC9xdWFsaXR5LHFfODAiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTg3NjE2MDB9fX1dfQ__&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=IIazNlOoHV8170uFXchIaHa34J5vzX23qrQb3LVV9AzF~OiH9Btz6EwN7L0xgFpZUpHLzjZBGC2NCSJn5EmFUhL2xrlVox-b-NOvzv0SO4hPEa18Zl32uzJoHrGaSqeyyyatH2USmFpbJw2xHVVXrhJB3ALS0Xk-uE1E6GVda3za0ztjngT50984lFRGyMW8eHm8hrWKrXimODsn3WolhqTB5aHLxMbD8Pgr-QWkFrVXmyhtWUh-psF3WuzurBLB~FQEs5oh4pQ1csdxuziIv1MoaWyYbJt5e6VFIbCKGhcd6~Hbf4qDtWpuRhknbOX2z2poIASSL5rf7rDsLfB0Pg__";
 
@@ -41,19 +91,20 @@ export default function HeroSection() {
         style={{
           position: "absolute",
           inset: 0,
+          zIndex: 0,
           backgroundImage: `url(${HERO_BG})`,
           backgroundSize: "cover",
           backgroundPosition: "center right",
           opacity: 0.22,
         }}
       />
-      {/* Directional fade */}
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(3,5,10,0.94) 0%, rgba(3,5,10,0.70) 50%, rgba(3,5,10,0.30) 100%)" }} />
-      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(700px 500px at 8% 75%, rgba(184,156,74,0.07) 0%, transparent 60%)" }} />
-      {/* Animated liquid glass orbs */}
-      <div className="glass-orb glass-orb-1" style={{ top: "10%", left: "5%" }} />
-      <div className="glass-orb glass-orb-2" style={{ top: "55%", right: "8%" }} />
-      <div className="glass-orb glass-orb-3" style={{ bottom: "15%", left: "40%" }} />
+      {/* Directional fade overlays */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "linear-gradient(90deg, rgba(3,5,10,0.88) 0%, rgba(3,5,10,0.60) 50%, rgba(3,5,10,0.20) 100%)" }} />
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, background: "radial-gradient(700px 500px at 8% 75%, rgba(184,156,74,0.07) 0%, transparent 60%)" }} />
+      {/* Animated liquid glass orbs — rendered above overlays */}
+      <div className="glass-orb glass-orb-1" style={{ top: "8%", left: "4%", zIndex: 1 }} />
+      <div className="glass-orb glass-orb-2" style={{ top: "50%", right: "6%", zIndex: 1 }} />
+      <div className="glass-orb glass-orb-3" style={{ bottom: "12%", left: "38%", zIndex: 1 }} />
 
       <div className="container" style={{ position: "relative", zIndex: 2, paddingTop: "80px", paddingBottom: "80px" }}>
         <div
@@ -130,20 +181,7 @@ export default function HeroSection() {
             className="hidden lg:flex"
           >
             {kpis.map((kpi, i) => (
-              <motion.div
-                key={kpi.label}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 + i * 0.10 }}
-                className="glass-card"
-                style={{ padding: "20px 24px" }}
-              >
-                <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "12px" }}>
-                  <span className="stat-number">{kpi.num}</span>
-                  <span className="stat-label" style={{ textAlign: "right" }}>{kpi.label}</span>
-                </div>
-                <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.50)", margin: "8px 0 0", lineHeight: 1.4 }}>{kpi.sub}</p>
-              </motion.div>
+              <KpiCard key={kpi.label} kpi={kpi} delay={350 + i * 100} />
             ))}
 
             <motion.div
