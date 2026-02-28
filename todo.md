@@ -60,3 +60,7 @@
 - [x] Build dedicated admin login page at /admin-opsteam
 - [x] Build admin user management UI inside the console (create admin, list admins, delete admins)
 - [x] First-time setup flow (shown automatically when no admins exist yet)
+
+## Round 10
+- [x] Fix admin login cookie (sameSite: lax was blocking cookie on production cross-origin requests)
+- [x] Auto-login after setup (setup mutation should set session cookie immediately)

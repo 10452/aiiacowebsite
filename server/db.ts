@@ -141,7 +141,11 @@ export async function getAllAdminUsers() {
 export async function createAdminUser(data: InsertAdminUser) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  return db.insert(adminUsers).values(data);
+  await db.insert(adminUsers).values(data);
+  // Fetch the newly created user so callers have the full record (including auto-generated id)
+  const created = await db.select().from(adminUsers).where(eq(adminUsers.username, data.username)).limit(1);
+  if (!created.length) throw new Error("Failed to retrieve created admin user");
+  return created[0];
 }
 
 export async function deleteAdminUser(id: number) {

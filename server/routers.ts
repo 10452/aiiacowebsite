@@ -2,7 +2,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
 import { COOKIE_NAME } from "@shared/const";
-import { getSessionCookieOptions } from "./_core/cookies";
+import { getSessionCookieOptions, isSecureRequest } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import {
@@ -37,12 +37,12 @@ async function verifyAdminToken(token: string) {
   }
 }
 
-function getAdminCookieOptions(req: { secure?: boolean }) {
+function getAdminCookieOptions(req: import("express").Request) {
   return {
     httpOnly: true,
-    sameSite: "lax" as const,
+    sameSite: "none" as const,
     path: "/",
-    secure: ENV.isProduction,
+    secure: isSecureRequest(req),
     maxAge: ADMIN_SESSION_TTL,
   };
 }
@@ -198,12 +198,19 @@ export const appRouter = router({
           throw new TRPCError({ code: "FORBIDDEN", message: "Setup already complete. Use the admin console to manage users." });
         }
         const passwordHash = await bcrypt.hash(input.password, 12);
-        await createAdminUser({
+        const newUser = await createAdminUser({
           username: input.username.toLowerCase().trim(),
           passwordHash,
           displayName: input.displayName ?? input.username,
           role: "owner",
         });
+        // Auto-login: set session cookie immediately after setup
+        const token = await signAdminToken({
+          id: newUser.id,
+          username: newUser.username,
+          role: newUser.role,
+        });
+        ctx.res.cookie(ADMIN_COOKIE, token, getAdminCookieOptions(ctx.req));
         return { success: true };
       }),
 
