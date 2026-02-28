@@ -64,3 +64,7 @@
 ## Round 10
 - [x] Fix admin login cookie (sameSite: lax was blocking cookie on production cross-origin requests)
 - [x] Auto-login after setup (setup mutation should set session cookie immediately)
+
+## Round 11
+- [x] Switch admin session from cookie to localStorage + Authorization header (cookie blocked by proxy)
+- [x] Fix circular dependency (moved token helpers to @/lib/adminToken.ts)

@@ -6,6 +6,7 @@
 
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
+import { setAdminToken, clearAdminToken } from "@/lib/adminToken";
 import { toast } from "sonner";
 import type { Lead } from "../../../drizzle/schema";
 
@@ -88,8 +89,9 @@ function SetupPage({ onDone }: { onDone: () => void }) {
   const [loading, setLoading] = useState(false);
 
   const setup = trpc.adminAuth.setup.useMutation({
-    onSuccess: () => {
-      toast.success("Owner account created. You can now log in.");
+    onSuccess: (data) => {
+      if (data.token) setAdminToken(data.token);
+      toast.success("Owner account created. Signing you in…");
       onDone();
     },
     onError: (e) => toast.error(e.message),
@@ -184,7 +186,8 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
   const utils = trpc.useUtils();
 
   const login = trpc.adminAuth.login.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
+      if (data.token) setAdminToken(data.token);
       utils.adminAuth.me.invalidate();
       onLogin();
     },
@@ -515,7 +518,10 @@ function Console({ adminUser }: { adminUser: { id: number; username: string; dis
   });
 
   const logout = trpc.adminAuth.logout.useMutation({
-    onSuccess: () => { utils.adminAuth.me.invalidate(); },
+    onSuccess: () => {
+      clearAdminToken();
+      utils.adminAuth.me.invalidate();
+    },
   });
 
   const allLeads = leads ?? [];

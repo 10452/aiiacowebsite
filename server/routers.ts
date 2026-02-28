@@ -50,7 +50,10 @@ function getAdminCookieOptions(req: import("express").Request) {
 // ─── Admin-authenticated procedure ───────────────────────────────────────────
 
 const adminAuthedProcedure = publicProcedure.use(async ({ ctx, next }) => {
-  const token = ctx.req.cookies?.[ADMIN_COOKIE];
+  // Read token from custom header (primary) or cookie (fallback)
+  const headerToken = ctx.req.headers["x-admin-token"] as string | undefined;
+  const cookieToken = ctx.req.cookies?.[ADMIN_COOKIE];
+  const token = headerToken || cookieToken;
   if (!token) throw new TRPCError({ code: "UNAUTHORIZED", message: "Admin login required" });
   const session = await verifyAdminToken(token);
   if (!session) throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid or expired session" });
@@ -140,6 +143,7 @@ export const appRouter = router({
         ctx.res.cookie(ADMIN_COOKIE, token, getAdminCookieOptions(ctx.req));
         return {
           success: true,
+          token, // Return token for localStorage storage (cookie may be blocked by proxy)
           user: {
             id: adminUser.id,
             username: adminUser.username,
@@ -153,7 +157,10 @@ export const appRouter = router({
      * Get current admin session info.
      */
     me: publicProcedure.query(async ({ ctx }) => {
-      const token = ctx.req.cookies?.[ADMIN_COOKIE];
+      // Check header first (localStorage-based), then cookie fallback
+      const headerToken = ctx.req.headers["x-admin-token"] as string | undefined;
+      const cookieToken = ctx.req.cookies?.[ADMIN_COOKIE];
+      const token = headerToken || cookieToken;
       if (!token) return null;
       const session = await verifyAdminToken(token);
       if (!session) return null;
@@ -211,7 +218,7 @@ export const appRouter = router({
           role: newUser.role,
         });
         ctx.res.cookie(ADMIN_COOKIE, token, getAdminCookieOptions(ctx.req));
-        return { success: true };
+        return { success: true, token }; // Return token for localStorage storage
       }),
 
     /**
