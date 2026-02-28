@@ -1,6 +1,6 @@
 /*
  * AiiACo — Secret Admin Console
- * Route: /aiiaco-ops-9f4e2b7c (not linked anywhere, not in sitemap)
+ * Route: /admin-opsteam (not linked anywhere, not in sitemap)
  * Owner-only: requires authentication + admin role
  */
 

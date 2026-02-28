@@ -43,6 +43,9 @@
 - [x] Fix glass orb animation (currently not visible)
 - [x] Redesign Calendly booking flow to be aesthetically aligned with site design
 
+## Round 8
+- [x] Change admin panel URL from /aiiaco-ops-9f4e2b7c to /admin-opsteam
+
 ## Round 7
 - [x] Fix glass orb z-index stacking (overlays were covering orbs at z-index auto)
 - [x] Add mix-blend-mode: screen to glass orbs for visibility through dark overlays

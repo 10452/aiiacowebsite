@@ -43,7 +43,7 @@ function Router() {
       <Route path="/ai-automation-for-business" component={AIAutomationPage} />
       <Route path="/industries/:slug" component={IndustryMicrosite} />
       <Route path="/admin/leads" component={AdminLeadsPage} />
-      <Route path="/aiiaco-ops-9f4e2b7c" component={AdminConsolePage} />
+      <Route path="/admin-opsteam" component={AdminConsolePage} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback */}
       <Route component={NotFound} />
