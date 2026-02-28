@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin-opsteam
+Disallow: /admin/
 
 Sitemap: https://aiiaco.com/sitemap.xml

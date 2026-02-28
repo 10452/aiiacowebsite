@@ -9,4 +9,6 @@ export const ENV = {
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
   /** Optional: Zapier / Make.com webhook URL for CRM routing */
   crmWebhookUrl: process.env.CRM_WEBHOOK_URL ?? "",
+  /** Admin console session cookie name */
+  adminSessionCookieName: "aiiaco_admin_session",
 };

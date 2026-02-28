@@ -1,17 +1,72 @@
 import { z } from "zod";
+import bcrypt from "bcryptjs";
+import { SignJWT, jwtVerify } from "jose";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
-import { insertLead, getAllLeads, updateLeadStatus } from "./db";
+import {
+  insertLead, getAllLeads, updateLeadStatus,
+  getAdminUserByUsername, getAdminUserById, getAllAdminUsers,
+  createAdminUser, deleteAdminUser, updateAdminUserPassword, countAdminUsers,
+} from "./db";
 import { notifyOwner } from "./_core/notification";
 import { ENV } from "./_core/env";
+import { TRPCError } from "@trpc/server";
+
+// ─── Admin Session JWT helpers ────────────────────────────────────────────────
+
+const ADMIN_COOKIE = ENV.adminSessionCookieName;
+const ADMIN_JWT_SECRET = new TextEncoder().encode(ENV.cookieSecret + "_admin");
+const ADMIN_SESSION_TTL = 60 * 60 * 8; // 8 hours
+
+async function signAdminToken(payload: { id: number; username: string; role: string }) {
+  return new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime(`${ADMIN_SESSION_TTL}s`)
+    .setIssuedAt()
+    .sign(ADMIN_JWT_SECRET);
+}
+
+async function verifyAdminToken(token: string) {
+  try {
+    const { payload } = await jwtVerify(token, ADMIN_JWT_SECRET);
+    return payload as { id: number; username: string; role: string };
+  } catch {
+    return null;
+  }
+}
+
+function getAdminCookieOptions(req: { secure?: boolean }) {
+  return {
+    httpOnly: true,
+    sameSite: "lax" as const,
+    path: "/",
+    secure: ENV.isProduction,
+    maxAge: ADMIN_SESSION_TTL,
+  };
+}
+
+// ─── Admin-authenticated procedure ───────────────────────────────────────────
+
+const adminAuthedProcedure = publicProcedure.use(async ({ ctx, next }) => {
+  const token = ctx.req.cookies?.[ADMIN_COOKIE];
+  if (!token) throw new TRPCError({ code: "UNAUTHORIZED", message: "Admin login required" });
+  const session = await verifyAdminToken(token);
+  if (!session) throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid or expired session" });
+  return next({ ctx: { ...ctx, adminSession: session } });
+});
+
+// Owner-only procedure (can manage other admins)
+const ownerProcedure = adminAuthedProcedure.use(async ({ ctx, next }) => {
+  if ((ctx as any).adminSession.role !== "owner") {
+    throw new TRPCError({ code: "FORBIDDEN", message: "Owner access required" });
+  }
+  return next({ ctx });
+});
 
 // ─── CRM Webhook Helper ───────────────────────────────────────────────────────
-/**
- * Fire-and-forget POST to the configured CRM webhook URL (Zapier / Make.com).
- * Non-fatal: if the webhook is not configured or fails, the lead is still saved.
- */
+
 async function fireCrmWebhook(payload: Record<string, unknown>): Promise<void> {
   if (!ENV.crmWebhookUrl) return;
   try {
@@ -57,32 +112,181 @@ export const appRouter = router({
     }),
   }),
 
-  leads: router({
+  // ─── Admin Console Auth ─────────────────────────────────────────────────────
+  adminAuth: router({
     /**
-     * Fast-path: Executive Call Request (name + email only).
-     * Public — no auth required.
+     * Login with username + password.
+     * Returns session cookie on success.
      */
-    submitCall: publicProcedure
-      .input(callSchema)
-      .mutation(async ({ input }) => {
-        await insertLead({ type: "call", name: input.name, email: input.email });
+    login: publicProcedure
+      .input(z.object({
+        username: z.string().min(1).max(64),
+        password: z.string().min(1).max(128),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const adminUser = await getAdminUserByUsername(input.username.toLowerCase().trim());
+        if (!adminUser) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid username or password" });
+        }
+        const valid = await bcrypt.compare(input.password, adminUser.passwordHash);
+        if (!valid) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid username or password" });
+        }
+        const token = await signAdminToken({
+          id: adminUser.id,
+          username: adminUser.username,
+          role: adminUser.role,
+        });
+        ctx.res.cookie(ADMIN_COOKIE, token, getAdminCookieOptions(ctx.req));
+        return {
+          success: true,
+          user: {
+            id: adminUser.id,
+            username: adminUser.username,
+            displayName: adminUser.displayName,
+            role: adminUser.role,
+          },
+        };
+      }),
 
-        // Notify owner via Manus notification system
-        await notifyOwner({
-          title: `New Call Request — ${input.name}`,
-          content: `Name: ${input.name}\nEmail: ${input.email}\nType: Executive Call Request`,
-        }).catch(() => {/* non-fatal */});
+    /**
+     * Get current admin session info.
+     */
+    me: publicProcedure.query(async ({ ctx }) => {
+      const token = ctx.req.cookies?.[ADMIN_COOKIE];
+      if (!token) return null;
+      const session = await verifyAdminToken(token);
+      if (!session) return null;
+      const adminUser = await getAdminUserById(session.id);
+      if (!adminUser) return null;
+      return {
+        id: adminUser.id,
+        username: adminUser.username,
+        displayName: adminUser.displayName,
+        role: adminUser.role,
+      };
+    }),
 
-        // Fire CRM webhook (non-fatal)
-        await fireCrmWebhook({ type: "call_request", name: input.name, email: input.email });
+    /**
+     * Logout — clears admin session cookie.
+     */
+    logout: publicProcedure.mutation(({ ctx }) => {
+      ctx.res.clearCookie(ADMIN_COOKIE, { path: "/", httpOnly: true });
+      return { success: true };
+    }),
 
+    /**
+     * Public: check if any admin accounts exist (used to show setup vs login).
+     */
+    hasAdmins: publicProcedure.query(async () => {
+      const count = await countAdminUsers();
+      return { hasAdmins: count > 0 };
+    }),
+
+    /**
+     * Setup: create the first owner account (only works when no admins exist).
+     */
+    setup: publicProcedure
+      .input(z.object({
+        username: z.string().min(3).max(64).regex(/^[a-zA-Z0-9_-]+$/, "Username can only contain letters, numbers, underscores, and hyphens"),
+        password: z.string().min(8).max(128),
+        displayName: z.string().max(128).optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const count = await countAdminUsers();
+        if (count > 0) {
+          throw new TRPCError({ code: "FORBIDDEN", message: "Setup already complete. Use the admin console to manage users." });
+        }
+        const passwordHash = await bcrypt.hash(input.password, 12);
+        await createAdminUser({
+          username: input.username.toLowerCase().trim(),
+          passwordHash,
+          displayName: input.displayName ?? input.username,
+          role: "owner",
+        });
         return { success: true };
       }),
 
     /**
-     * Full structured intake form.
-     * Public — no auth required.
+     * Owner: create a new admin user.
      */
+    createAdmin: ownerProcedure
+      .input(z.object({
+        username: z.string().min(3).max(64).regex(/^[a-zA-Z0-9_-]+$/, "Username can only contain letters, numbers, underscores, and hyphens"),
+        password: z.string().min(8).max(128),
+        displayName: z.string().max(128).optional(),
+        role: z.enum(["owner", "admin"]).default("admin"),
+      }))
+      .mutation(async ({ input }) => {
+        const existing = await getAdminUserByUsername(input.username.toLowerCase().trim());
+        if (existing) {
+          throw new TRPCError({ code: "CONFLICT", message: "Username already taken" });
+        }
+        const passwordHash = await bcrypt.hash(input.password, 12);
+        await createAdminUser({
+          username: input.username.toLowerCase().trim(),
+          passwordHash,
+          displayName: input.displayName ?? input.username,
+          role: input.role,
+        });
+        return { success: true };
+      }),
+
+    /**
+     * Owner: list all admin users (no passwords).
+     */
+    listAdmins: adminAuthedProcedure.query(async () => {
+      return getAllAdminUsers();
+    }),
+
+    /**
+     * Owner: delete an admin user (cannot delete yourself).
+     */
+    deleteAdmin: ownerProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .mutation(async ({ input, ctx }) => {
+        const session = (ctx as any).adminSession;
+        if (input.id === session.id) {
+          throw new TRPCError({ code: "BAD_REQUEST", message: "You cannot delete your own account" });
+        }
+        await deleteAdminUser(input.id);
+        return { success: true };
+      }),
+
+    /**
+     * Change own password.
+     */
+    changePassword: adminAuthedProcedure
+      .input(z.object({
+        currentPassword: z.string().min(1),
+        newPassword: z.string().min(8).max(128),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const session = (ctx as any).adminSession;
+        const adminUser = await getAdminUserById(session.id);
+        if (!adminUser) throw new TRPCError({ code: "NOT_FOUND", message: "Admin user not found" });
+        const valid = await bcrypt.compare(input.currentPassword, adminUser.passwordHash);
+        if (!valid) throw new TRPCError({ code: "UNAUTHORIZED", message: "Current password is incorrect" });
+        const passwordHash = await bcrypt.hash(input.newPassword, 12);
+        await updateAdminUserPassword(session.id, passwordHash);
+        return { success: true };
+      }),
+  }),
+
+  // ─── Leads ──────────────────────────────────────────────────────────────────
+  leads: router({
+    submitCall: publicProcedure
+      .input(callSchema)
+      .mutation(async ({ input }) => {
+        await insertLead({ type: "call", name: input.name, email: input.email });
+        await notifyOwner({
+          title: `New Call Request — ${input.name}`,
+          content: `Name: ${input.name}\nEmail: ${input.email}\nType: Executive Call Request`,
+        }).catch(() => {});
+        await fireCrmWebhook({ type: "call_request", name: input.name, email: input.email });
+        return { success: true };
+      }),
+
     submitIntake: publicProcedure
       .input(intakeSchema)
       .mutation(async ({ input }) => {
@@ -97,8 +301,6 @@ export const appRouter = router({
           annualRevenue: input.annualRevenue ?? null,
           message: input.message ?? null,
         });
-
-        // Notify owner
         const lines = [
           `Name: ${input.name}`,
           `Email: ${input.email}`,
@@ -109,13 +311,10 @@ export const appRouter = router({
           input.annualRevenue ? `Revenue: ${input.annualRevenue}` : null,
           input.message ? `\nMessage:\n${input.message}` : null,
         ].filter(Boolean).join("\n");
-
         await notifyOwner({
           title: `New Structured Intake — ${input.name} (${input.company ?? "no company"})`,
           content: lines,
-        }).catch(() => {/* non-fatal */});
-
-        // Fire CRM webhook (non-fatal)
+        }).catch(() => {});
         await fireCrmWebhook({
           type: "structured_intake",
           name: input.name,
@@ -127,22 +326,14 @@ export const appRouter = router({
           annualRevenue: input.annualRevenue ?? null,
           message: input.message ?? null,
         });
-
         return { success: true };
       }),
 
-    /**
-     * Admin: list all leads ordered by newest first.
-     * Protected — requires authentication.
-     */
-    list: protectedProcedure.query(async () => {
+    list: adminAuthedProcedure.query(async () => {
       return getAllLeads();
     }),
 
-    /**
-     * Admin: update lead status.
-     */
-    updateStatus: protectedProcedure
+    updateStatus: adminAuthedProcedure
       .input(z.object({
         id: z.number().int().positive(),
         status: z.enum(["new", "reviewed", "contacted", "closed"]),

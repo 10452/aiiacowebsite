@@ -41,3 +41,21 @@ export const leads = mysqlTable("leads", {
 
 export type Lead = typeof leads.$inferSelect;
 export type InsertLead = typeof leads.$inferInsert;
+
+/**
+ * Admin users table — dedicated username/password auth for the admin console.
+ * Separate from Manus OAuth users. Passwords stored as bcrypt hashes.
+ * role "owner" = can create/delete other admins; role "admin" = leads access only.
+ */
+export const adminUsers = mysqlTable("admin_users", {
+  id: int("id").autoincrement().primaryKey(),
+  username: varchar("username", { length: 64 }).notNull().unique(),
+  passwordHash: varchar("passwordHash", { length: 255 }).notNull(),
+  displayName: varchar("displayName", { length: 128 }),
+  role: mysqlEnum("adminRole", ["owner", "admin"]).default("admin").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AdminUser = typeof adminUsers.$inferSelect;
+export type InsertAdminUser = typeof adminUsers.$inferInsert;

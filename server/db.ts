@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertLead, InsertUser, leads, users } from "../drizzle/schema";
+import { InsertLead, InsertUser, leads, users, adminUsers, InsertAdminUser } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -108,4 +108,57 @@ export async function updateLeadStatus(id: number, status: "new" | "reviewed" | 
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   return db.update(leads).set({ status }).where(eq(leads.id, id));
+}
+
+// ─── Admin user helpers ───────────────────────────────────────────────────────
+
+export async function getAdminUserByUsername(username: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.select().from(adminUsers).where(eq(adminUsers.username, username)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function getAdminUserById(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.select().from(adminUsers).where(eq(adminUsers.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function getAllAdminUsers() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.select({
+    id: adminUsers.id,
+    username: adminUsers.username,
+    displayName: adminUsers.displayName,
+    role: adminUsers.role,
+    createdAt: adminUsers.createdAt,
+  }).from(adminUsers).orderBy(desc(adminUsers.createdAt));
+}
+
+export async function createAdminUser(data: InsertAdminUser) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.insert(adminUsers).values(data);
+}
+
+export async function deleteAdminUser(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.delete(adminUsers).where(eq(adminUsers.id, id));
+}
+
+export async function updateAdminUserPassword(id: number, passwordHash: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.update(adminUsers).set({ passwordHash }).where(eq(adminUsers.id, id));
+}
+
+export async function countAdminUsers() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.select().from(adminUsers);
+  return result.length;
 }

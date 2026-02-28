@@ -52,3 +52,11 @@
 - [x] Increase animation movement range (80-150px travel distance for visible motion)
 - [x] Boost orb color intensity (rgba opacity 0.45-0.50 vs previous 0.07-0.18)
 - [x] Add animated counter roll-up to hero KPI numbers (20+, 100%, 0)
+
+## Round 9
+- [x] Update robots.txt to block /admin-opsteam and /admin/ routes
+- [x] Add admin_users table to database schema (username, hashed password, role, created_at)
+- [x] Build server-side admin auth procedures (login, logout, session, create/list/delete admins)
+- [x] Build dedicated admin login page at /admin-opsteam
+- [x] Build admin user management UI inside the console (create admin, list admins, delete admins)
+- [x] First-time setup flow (shown automatically when no admins exist yet)
