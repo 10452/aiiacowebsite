@@ -22,7 +22,7 @@ export default function Footer() {
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(184,156,74,0.50), transparent)" }} />
 
       <div className="container">
-        <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr", gap: "48px", alignItems: "flex-start", marginBottom: "48px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 1fr", gap: "40px", alignItems: "flex-start", marginBottom: "48px" }}>
           {/* Brand */}
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
@@ -64,6 +64,7 @@ export default function Footer() {
           <nav aria-label="Company navigation">
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.65)", marginBottom: "14px" }}>Company</p>
             <a href="/manifesto" style={linkStyle}>Our Manifesto</a>
+            <a href="/workplace" style={linkStyle}>Workplace Policy</a>
             <a href="/upgrade" style={linkStyle}>Request Upgrade</a>
             <a href="/privacy" style={linkStyle}>Privacy Policy</a>
             <a href="/terms" style={linkStyle}>Terms of Service</a>

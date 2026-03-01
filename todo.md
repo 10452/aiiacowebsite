@@ -99,3 +99,9 @@
 - [x] Replace old 4-dot gold square in Footer with real AiiA chip+wordmark logo
 - [x] Replace gear/lock emoji icons on Admin login and setup pages with AiiA logo
 - [x] Replace gear icon in Admin console header with AiiA logo
+
+## Round 16 — Workplace Page
+- [x] Create /workplace page with full remote work policy (6 pillars + standards table + philosophy + CTA)
+- [x] Register route in App.tsx
+- [x] Add to sitemap.xml
+- [x] Add to footer Company navigation
