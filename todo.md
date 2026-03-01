@@ -89,3 +89,8 @@
 - [x] Add Open Graph meta image (1200x630) for social share previews
 - [x] Add Twitter Card image meta tags
 - [x] Update Organization JSON-LD logo URL to real CDN asset
+
+## Round 14 — Favicon Fix (Tab Icon)
+- [x] Copy favicon files to client/public/ for same-origin serving (iOS Safari requires same-origin)
+- [x] Generate favicon.ico (16/32/48px multi-size) for maximum browser compatibility
+- [x] Update index.html to reference local /favicon.ico, /favicon-32.png, /apple-touch-icon.png
