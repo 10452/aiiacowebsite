@@ -116,9 +116,11 @@ function SetupPage({ onDone }: { onDone: () => void }) {
     <div style={{ background: "#03050A", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
       <div style={{ width: "100%", maxWidth: "420px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
-          <div style={{ width: "52px", height: "52px", background: "rgba(184,156,74,0.10)", border: "1px solid rgba(184,156,74,0.28)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-            <span style={{ fontSize: "24px" }}>⚙</span>
-          </div>
+          <img
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_full_4970c781.png"
+            alt="AiiA logo"
+            style={{ height: "56px", width: "auto", objectFit: "contain", margin: "0 auto 20px", display: "block" }}
+          />
           <h1 style={{ fontFamily: FFD, fontSize: "26px", fontWeight: 700, color: "rgba(255,255,255,0.92)", margin: "0 0 8px" }}>Initial Setup</h1>
           <p style={{ fontFamily: FF, fontSize: "14px", color: "rgba(200,215,230,0.45)", margin: 0, lineHeight: 1.6 }}>
             Create your owner account to access the AiiAco Operations Console.
@@ -203,9 +205,11 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
     <div style={{ background: "#03050A", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
       <div style={{ width: "100%", maxWidth: "380px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
-          <div style={{ width: "52px", height: "52px", background: "rgba(184,156,74,0.10)", border: "1px solid rgba(184,156,74,0.28)", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-            <span style={{ fontSize: "24px" }}>🔒</span>
-          </div>
+          <img
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_full_4970c781.png"
+            alt="AiiA logo"
+            style={{ height: "56px", width: "auto", objectFit: "contain", margin: "0 auto 20px", display: "block" }}
+          />
           <h1 style={{ fontFamily: FFD, fontSize: "26px", fontWeight: 700, color: "rgba(255,255,255,0.92)", margin: "0 0 8px" }}>Operations Console</h1>
           <p style={{ fontFamily: FF, fontSize: "13px", color: "rgba(200,215,230,0.40)", margin: 0 }}>AiiAco — Restricted Access</p>
         </div>
@@ -545,10 +549,12 @@ function Console({ adminUser }: { adminUser: { id: number; username: string; dis
       {/* Header */}
       <div style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 32px" }}>
         <div style={{ maxWidth: "1280px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: "64px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <div style={{ width: "32px", height: "32px", background: "rgba(184,156,74,0.12)", border: "1px solid rgba(184,156,74,0.28)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: "14px" }}>⚙</span>
-            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <img
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_full_4970c781.png"
+              alt="AiiA logo"
+              style={{ height: "36px", width: "auto", objectFit: "contain" }}
+            />
             <div>
               <p style={{ fontFamily: FFD, fontSize: "16px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: 0 }}>AiiAco Operations Console</p>
               <p style={{ fontFamily: FF, fontSize: "11px", color: "rgba(200,215,230,0.35)", margin: 0, letterSpacing: "0.06em" }}>

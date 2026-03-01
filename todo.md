@@ -94,3 +94,8 @@
 - [x] Copy favicon files to client/public/ for same-origin serving (iOS Safari requires same-origin)
 - [x] Generate favicon.ico (16/32/48px multi-size) for maximum browser compatibility
 - [x] Update index.html to reference local /favicon.ico, /favicon-32.png, /apple-touch-icon.png
+
+## Round 15 — Logo Consistency
+- [x] Replace old 4-dot gold square in Footer with real AiiA chip+wordmark logo
+- [x] Replace gear/lock emoji icons on Admin login and setup pages with AiiA logo
+- [x] Replace gear icon in Admin console header with AiiA logo

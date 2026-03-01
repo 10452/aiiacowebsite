@@ -26,12 +26,11 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
-              <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "linear-gradient(135deg, rgba(184,156,74,0.90), rgba(212,168,67,0.60))", border: "1px solid rgba(184,156,74,0.45)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 12px rgba(184,156,74,0.20)" }}>
-                <div style={{ width: "14px", height: "14px", borderRadius: "3px", background: "rgba(3,5,10,0.80)", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2px", padding: "2px" }}>
-                  {[0,1,2,3].map(i => <div key={i} style={{ background: "rgba(184,156,74,0.90)", borderRadius: "1px" }} />)}
-                </div>
-              </div>
-              <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "20px", fontWeight: 700, color: "rgba(255,255,255,0.92)", letterSpacing: "0.5px" }}>AiiAco</span>
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_full_4970c781.png"
+                alt="AiiA logo"
+                style={{ height: "44px", width: "auto", objectFit: "contain" }}
+              />
             </div>
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.48)", margin: "0 0 8px", maxWidth: "42ch" }}>
               AiiAco is the AI Integration Authority for the Corporate Age. We design, deploy, and manage operational AI infrastructure for businesses that intend to lead.
