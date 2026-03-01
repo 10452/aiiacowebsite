@@ -7,9 +7,33 @@
 import SEO from "@/seo/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import FAQSection from "@/components/FAQSection";
 import { motion } from "framer-motion";
 
 const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } };
+
+const automationFaqs = [
+  {
+    question: "What business processes can be automated with AI?",
+    answer: "AI automation applies to any process that is repetitive, rule-based, or data-intensive. High-value targets include: accounts payable and invoice processing (AI extracts, validates, and routes invoices automatically), customer communication (AI drafts responses, routes inquiries, and escalates exceptions), lead qualification and CRM updates (AI scores leads and updates pipeline records from email and call data), document processing (AI extracts data from contracts, forms, and reports), financial reporting (AI aggregates data and generates formatted reports), and supply chain management (AI forecasts demand and triggers procurement workflows).",
+  },
+  {
+    question: "What is the difference between AI automation and traditional RPA?",
+    answer: "Traditional RPA (Robotic Process Automation) automates rule-based, structured processes by mimicking mouse clicks and keystrokes. It breaks when interfaces change and cannot handle unstructured data. AI automation uses large language models, computer vision, and intelligent agents to handle unstructured inputs (emails, PDFs, voice, images), make judgment-based decisions, adapt to variations, and orchestrate multi-step workflows across systems. AI automation handles the 60-70% of business processes that RPA cannot touch.",
+  },
+  {
+    question: "How does AI automation reduce operational costs?",
+    answer: "AI automation reduces operational costs through three mechanisms: (1) Labor substitution — AI agents execute tasks that previously required human time, reducing headcount requirements for repetitive functions; (2) Error elimination — AI processes data with consistent accuracy, eliminating the cost of human errors and rework; (3) Speed increase — AI processes documents, routes decisions, and generates outputs in seconds rather than hours, reducing cycle times and freeing human capacity for higher-value work. ROI is typically measured in reduced FTE requirements, processing time reduction, and error rate improvement.",
+  },
+  {
+    question: "Does AI automation require replacing existing business software?",
+    answer: "No. AI automation is designed to integrate with your existing software stack, not replace it. AiiAco builds automation layers that connect to your ERP, CRM, document management, and communication platforms via APIs and webhooks. Your existing systems remain in place; AI automation adds an intelligent processing layer that handles data extraction, decision routing, and workflow orchestration on top of them.",
+  },
+  {
+    question: "What is AI agent orchestration?",
+    answer: "AI agent orchestration is the coordination of multiple AI agents working together to complete a complex, multi-step business process. For example: an AI agent extracts data from an incoming invoice, a second agent validates it against purchase orders in your ERP, a third agent routes it to the correct approver based on amount and department, and a fourth agent records the approval and triggers payment. AiiAco designs and deploys these multi-agent workflows as production-grade operational systems.",
+  },
+];
 
 const automationTypes = [
   {
@@ -151,6 +175,14 @@ export default function AIAutomationPage() {
             </motion.div>
           </div>
         </section>
+
+        {/* FAQ Section */}
+        <FAQSection
+          eyebrow="Common Questions"
+          headline="AI Automation — Answered Directly"
+          subheadline="What business leaders need to know before automating operations with AI."
+          items={automationFaqs}
+        />
 
         {/* CTA */}
         <section style={{ padding: "clamp(60px, 8vw, 100px) 0", borderTop: "1px solid rgba(255,255,255,0.06)", background: "rgba(184,156,74,0.03)" }}>

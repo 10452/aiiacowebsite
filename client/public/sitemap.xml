@@ -74,6 +74,12 @@
   </url>
 
   <url>
+    <loc>https://aiiaco.com/ai-governance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://aiiaco.com/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

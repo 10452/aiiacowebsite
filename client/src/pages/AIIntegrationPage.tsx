@@ -7,6 +7,7 @@
 import SEO from "@/seo/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import FAQSection from "@/components/FAQSection";
 import { motion } from "framer-motion";
 
 const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } };
@@ -31,6 +32,33 @@ const pillars = [
     n: "04",
     title: "Continuous Optimization",
     body: "AI integration is not a one-time project. AiiAco monitors performance against KPIs, retrains models as your business evolves, and expands the integration footprint as new leverage points emerge.",
+  },
+];
+
+const aiFaqs = [
+  {
+    question: "What is AI integration and how is it different from buying AI tools?",
+    answer: "AI integration means embedding artificial intelligence into your operational infrastructure as a functional system — not subscribing to standalone tools. Most businesses buy AI tools (ChatGPT, a chatbot, one automation) and call it AI adoption. That is AI decoration. True integration means your business has an AI operational layer that handles repeatable decisions, automates complex multi-step workflows, surfaces intelligence from your data, and scales execution without scaling headcount. AiiAco builds this infrastructure end-to-end.",
+  },
+  {
+    question: "How long does AI integration take for a mid-size or enterprise business?",
+    answer: "A Strategic Intelligence Blueprint (full operational diagnostic and architecture) takes 2–4 weeks. Initial deployment of a defined AI workflow — such as automating AP invoice processing using LLM-based document extraction, or deploying a predictive demand forecasting model — takes 4–8 weeks. Full managed AI integration across multiple operational functions spans 3–6 months for initial deployment, followed by continuous optimization. AiiAco manages every phase, eliminating the internal resource burden that typically extends enterprise AI timelines.",
+  },
+  {
+    question: "What does AiiAco actually do — are you consultants or do you build and run the systems?",
+    answer: "AiiAco is an AI Integration Authority, not a consulting firm. We do not deliver strategy decks and leave implementation to your team. We design the AI architecture, select and configure every AI system, deploy integrations with your existing ERP, CRM, and operational platforms, and manage the full stack on an ongoing basis. You receive operational outcomes — reduced processing time, increased throughput, automated decision workflows — not advisory documents.",
+  },
+  {
+    question: "How does AI integration work with existing ERP and CRM systems?",
+    answer: "AI integration connects to your existing systems through API integrations, data pipeline connectors, and workflow triggers. For ERP systems (SAP, Oracle, NetSuite), AI can automate document processing, exception handling, and reporting workflows. For CRM platforms (Salesforce, HubSpot), AI can automate lead scoring, communication drafting, and pipeline management. AiiAco designs the integration architecture to work within your existing technology stack — we do not require you to replace your core systems.",
+  },
+  {
+    question: "What is performance-based AI integration?",
+    answer: "Performance-based AI integration is an engagement model where AiiAco's fees are partially tied to measurable operational outcomes — such as reduction in manual processing time, increase in throughput, or cost savings from automation. This model reduces upfront investment and aligns AiiAco's incentives directly with your business results. It is available to qualified engagements where clear, measurable KPIs can be established at the outset of the engagement.",
+  },
+  {
+    question: "How does AiiAco handle AI governance, data security, and compliance?",
+    answer: "AiiAco implements AI governance protocols at every layer of the integration stack: data access controls and role-based permissions for all AI systems, model validation and output auditing before production deployment, documented AI decision trails for regulatory compliance, vendor security assessment for all third-party AI providers, and ongoing monitoring for model drift and performance degradation. Enterprise clients receive a governance framework document as part of every full integration engagement.",
   },
 ];
 
@@ -166,6 +194,14 @@ export default function AIIntegrationPage() {
             </motion.div>
           </div>
         </section>
+
+        {/* FAQ Section — targets enterprise AI integration search queries */}
+        <FAQSection
+          eyebrow="Common Questions"
+          headline="AI Integration — Answered Directly"
+          subheadline="The questions enterprise buyers ask before engaging an AI integration partner."
+          items={aiFaqs}
+        />
 
         {/* Cross-links to related pillar pages */}
         <section style={{ padding: "60px 0", background: "rgba(6,11,20,0.80)", borderTop: "1px solid rgba(184,156,74,0.10)" }}>

@@ -68,3 +68,14 @@
 ## Round 11
 - [x] Switch admin session from cookie to localStorage + Authorization header (cookie blocked by proxy)
 - [x] Fix circular dependency (moved token helpers to @/lib/adminToken.ts)
+
+## Round 12 — SEO & AI Search Visibility
+- [x] Research real search queries for AI integration services
+- [x] Implement JSON-LD schema: Organization, ProfessionalService, FAQPage, HowTo, WebSite (5 schemas)
+- [x] Add FAQ sections to /ai-integration, /ai-implementation-services, /ai-automation-for-business, /method
+- [x] Rewrite PlatformSection card bodies with technical specificity and quantified outcomes
+- [x] Create /ai-governance page: 6-pillar framework + regulatory alignment table + FAQ + CTA
+- [x] Add /ai-governance to sitemap.xml
+- [x] Add Services nav section to Footer with all 4 service pages
+- [x] Add FAQPage JSON-LD with 8 enterprise AI integration Q&As to global StructuredData
+- [x] Add HowTo JSON-LD with 6-step AI integration process to global StructuredData

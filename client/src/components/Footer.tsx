@@ -42,12 +42,21 @@ export default function Footer() {
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.28)", margin: 0 }}>www.aiiaco.com</p>
           </div>
 
+          {/* Services links */}
+          <nav aria-label="Services navigation">
+            <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.65)", marginBottom: "14px" }}>Services</p>
+            <a href="/ai-integration" style={linkStyle}>AI Integration</a>
+            <a href="/ai-implementation-services" style={linkStyle}>AI Implementation</a>
+            <a href="/ai-automation-for-business" style={linkStyle}>AI Automation</a>
+            <a href="/ai-governance" style={linkStyle}>AI Governance</a>
+            <a href="/models" style={linkStyle}>Engagement Models</a>
+          </nav>
+
           {/* Platform links */}
           <nav aria-label="Platform navigation">
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.65)", marginBottom: "14px" }}>Platform</p>
-            <a href="/method" style={linkStyle}>AI Integration Method</a>
+            <a href="/method" style={linkStyle}>The AiiAco Method</a>
             <a href="/industries" style={linkStyle}>Industries Served</a>
-            <a href="/models" style={linkStyle}>Engagement Models</a>
             <a href="/results" style={linkStyle}>Results & Outcomes</a>
             <a href="/case-studies" style={linkStyle}>Case Studies</a>
           </nav>

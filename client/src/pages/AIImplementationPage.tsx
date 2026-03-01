@@ -7,6 +7,7 @@
 import SEO from "@/seo/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import FAQSection from "@/components/FAQSection";
 import { motion } from "framer-motion";
 
 const fade = { hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } };
@@ -35,6 +36,29 @@ const services = [
   {
     title: "Performance-Based Option",
     body: "For qualifying engagements, AiiAco offers a performance-based implementation model: reduced upfront cost, with fees tied to measurable outcomes. You pay for results, not for effort.",
+  },
+];
+
+const implFaqs = [
+  {
+    question: "What does AI implementation actually involve for a business?",
+    answer: "AI implementation is the process of taking an AI integration design and making it operational inside your business. It includes: configuring AI models for your specific data and use cases, building API integrations with your existing ERP, CRM, and operational platforms, setting up data pipelines and automation triggers, testing outputs against accuracy and performance thresholds, and deploying systems into production. AiiAco handles every step — you receive a running system, not a technical specification.",
+  },
+  {
+    question: "What AI systems can be implemented into a business?",
+    answer: "AiiAco implements a range of AI system types depending on your operational needs: LLM-based document processing (contracts, invoices, reports), AI communication agents (email drafting, customer response, internal routing), predictive models (demand forecasting, churn scoring, risk assessment), workflow automation agents (multi-step process orchestration), computer vision systems (quality control, document extraction), and voice AI (call transcription, IVR automation). The right combination is determined during the readiness assessment.",
+  },
+  {
+    question: "How does AI implementation work with existing business software?",
+    answer: "AI systems connect to your existing software through API integrations, webhook triggers, and data pipeline connectors. For ERP systems (SAP, Oracle, NetSuite, Microsoft Dynamics), AI can automate invoice processing, exception handling, and financial reporting. For CRM platforms (Salesforce, HubSpot), AI can automate lead scoring, pipeline updates, and communication drafting. For document management systems, AI can extract, classify, and route documents automatically. AiiAco designs the integration architecture to fit your existing technology stack.",
+  },
+  {
+    question: "What is staff enablement in the context of AI implementation?",
+    answer: "Staff enablement is the process of defining how your team interacts with AI systems after deployment. This is not a training course — it is operational protocol design. AiiAco defines the boundaries of AI decision-making (what AI decides autonomously vs. what requires human review), escalation paths for edge cases, quality control checkpoints, and feedback mechanisms for continuous improvement. Proper enablement is what separates AI implementations that compound in value from those that create new operational complexity.",
+  },
+  {
+    question: "How long does AI implementation take from start to go-live?",
+    answer: "Implementation timelines depend on scope. A single workflow automation (e.g., automating AP invoice processing) typically goes live in 4–6 weeks. A multi-system integration across several operational functions typically takes 8–16 weeks for initial deployment. AiiAco manages the entire implementation timeline — you do not need to allocate internal engineering resources or manage vendor relationships. The timeline begins after the Strategic Architecture blueprint is approved.",
   },
 ];
 
@@ -150,6 +174,14 @@ export default function AIImplementationPage() {
             </motion.div>
           </div>
         </section>
+
+        {/* FAQ Section */}
+        <FAQSection
+          eyebrow="Common Questions"
+          headline="AI Implementation — Answered Directly"
+          subheadline="What enterprise buyers need to know before starting an AI implementation engagement."
+          items={implFaqs}
+        />
 
         {/* Cross-links to related pillar pages */}
         <section style={{ padding: "60px 0", background: "rgba(6,11,20,0.80)", borderTop: "1px solid rgba(184,156,74,0.10)" }}>

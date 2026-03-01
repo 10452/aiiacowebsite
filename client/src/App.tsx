@@ -21,6 +21,7 @@ import TermsPage from "./pages/TermsPage";
 import AIIntegrationPage from "./pages/AIIntegrationPage";
 import AIImplementationPage from "./pages/AIImplementationPage";
 import AIAutomationPage from "./pages/AIAutomationPage";
+import AIGovernancePage from "./pages/AIGovernancePage";
 import IndustryMicrosite from "./pages/IndustryMicrosite";
 import AdminLeadsPage from "./pages/AdminLeadsPage";
 import AdminConsolePage from "./pages/AdminConsolePage";
@@ -41,6 +42,7 @@ function Router() {
       <Route path="/ai-integration" component={AIIntegrationPage} />
       <Route path="/ai-implementation-services" component={AIImplementationPage} />
       <Route path="/ai-automation-for-business" component={AIAutomationPage} />
+      <Route path="/ai-governance" component={AIGovernancePage} />
       <Route path="/industries/:slug" component={IndustryMicrosite} />
       <Route path="/admin/leads" component={AdminLeadsPage} />
       <Route path="/admin-opsteam" component={AdminConsolePage} />

@@ -8,32 +8,32 @@ const foundations = [
   {
     num: "01",
     title: "Business Intelligence Audit",
-    body: "A comprehensive diagnostic of operational friction, revenue drag, data readiness, and competitive exposure. No templates. No assumptions.",
+    body: "Structured diagnostic of your workflows, data infrastructure, and decision bottlenecks. We map where manual processes create throughput drag, where data quality limits AI readiness, and where competitive exposure is highest. Output: a prioritized leverage map with quantified ROI targets per integration point.",
   },
   {
     num: "02",
     title: "Strategic AI Architecture",
-    body: "A custom integration blueprint: priorities, timeline, metrics, governance, and ROI targets.",
+    body: "Custom integration blueprint mapping each leverage point to a specific AI capability: LLMs for document extraction and communication, automation agents for workflow orchestration, predictive models for demand forecasting and risk scoring. Includes system selection, integration architecture, governance framework, and measurable success criteria.",
   },
   {
     num: "03",
     title: "AI Workforce Deployment",
-    body: "We configure the AI workforce your business actually needs: automations, agents, and integrated systems with accountability.",
+    body: "We configure and deploy the AI systems identified in the blueprint: API integrations with your ERP, CRM, and operational platforms; prompt-engineered LLM pipelines; multi-agent workflow orchestration; and data pipeline setup. Every system is validated against accuracy thresholds before production go-live.",
   },
   {
     num: "04",
     title: "Full Execution",
-    body: "Implementation is not optional. We deploy and integrate workflows end-to-end so outcomes land in operations, not in documents.",
+    body: "AiiAco manages the complete implementation stack — vendor contracting, API configuration, model tuning, integration testing, and production deployment. You do not manage tools, prompts, or vendor relationships. You receive running systems: automated workflows, AI-generated outputs, and reduced manual processing time.",
   },
   {
     num: "05",
     title: "Managed Optimization",
-    body: "Continuous monitoring, quality control, and iteration. AI is maintained like infrastructure, not treated like a project.",
+    body: "Monthly performance reporting against defined KPIs, model retraining as your business data evolves, governance reviews for regulatory compliance, and proactive identification of new automation opportunities. AI infrastructure requires ongoing management to maintain accuracy and compound performance over time.",
   },
   {
     num: "06",
     title: "Performance Alignment",
-    body: "Optional success-linked structures that align incentives. We earn more when the system produces measurable outcomes.",
+    body: "For qualifying engagements: reduced upfront cost with success-linked fees tied to measurable outcomes — processing time reduction, throughput increase, or cost savings from automation. Incentives are aligned from day one. AiiAco earns more when your operations perform better.",
   },
 ];
 
