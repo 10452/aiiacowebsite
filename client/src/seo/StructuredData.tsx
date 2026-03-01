@@ -14,9 +14,9 @@ const organizationSchema = {
   "url": "https://aiiaco.com",
   "logo": {
     "@type": "ImageObject",
-    "url": "https://aiiaco.com/logo.png",
-    "width": 512,
-    "height": 512
+    "url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_full_4970c781.png",
+    "width": 344,
+    "height": 431
   },
   "description": "AiiAco is the AI Integration Authority for the Corporate Age. We design, deploy, and manage complete AI operational infrastructure for enterprise and mid-market businesses across 20+ industries. Engagements include strategic AI blueprints, full managed integration, and performance-based AI partnerships.",
   "foundingDate": "2026",

@@ -59,32 +59,11 @@ export default function Navbar() {
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               style={{ display: "flex", alignItems: "center", gap: "12px", background: "none", border: "none", padding: 0, cursor: "pointer" }}
             >
-              <div className="logo-chip">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ position: "relative", zIndex: 1 }}>
-                  <rect x="5" y="5" width="10" height="10" rx="2" fill="rgba(10,8,0,0.85)" stroke="rgba(10,8,0,0.30)" strokeWidth="0.5"/>
-                  <line x1="7" y1="5" x2="7" y2="2" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="10" y1="5" x2="10" y2="2" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="13" y1="5" x2="13" y2="2" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="7" y1="15" x2="7" y2="18" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="10" y1="15" x2="10" y2="18" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="13" y1="15" x2="13" y2="18" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="5" y1="7" x2="2" y2="7" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="5" y1="10" x2="2" y2="10" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="5" y1="13" x2="2" y2="13" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="15" y1="7" x2="18" y2="7" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="15" y1="10" x2="18" y2="10" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="15" y1="13" x2="18" y2="13" stroke="rgba(10,8,0,0.65)" strokeWidth="1.2" strokeLinecap="round"/>
-                  <circle cx="10" cy="10" r="2" fill="rgba(10,8,0,0.90)"/>
-                </svg>
-              </div>
-              <div>
-                <div style={{ fontFamily: FFD, fontWeight: 700, fontSize: "20px", letterSpacing: "-0.3px", color: "rgba(255,255,255,0.96)", lineHeight: 1 }}>
-                  AiiAco
-                </div>
-                <div style={{ fontFamily: FF, fontWeight: 800, fontSize: "8px", letterSpacing: "2.5px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", lineHeight: 1, marginTop: "3px" }}>
-                  UPGRADE
-                </div>
-              </div>
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_full_4970c781.png"
+                alt="AiiAco — AI Integration Authority"
+                style={{ height: "44px", width: "auto", objectFit: "contain", display: "block" }}
+              />
             </button>
 
             {/* Desktop links */}

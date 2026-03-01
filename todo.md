@@ -79,3 +79,13 @@
 - [x] Add Services nav section to Footer with all 4 service pages
 - [x] Add FAQPage JSON-LD with 8 enterprise AI integration Q&As to global StructuredData
 - [x] Add HowTo JSON-LD with 6-step AI integration process to global StructuredData
+
+## Round 13 — Logo & Favicon
+- [x] Extract AiiA chip logo from uploaded image (crop left half, transparent PNG)
+- [x] Generate favicon sizes: 512, 192, 32, 16px from chip icon
+- [x] Upload all 7 logo assets to CDN
+- [x] Replace navbar SVG placeholder with real AiiA chip+wordmark logo
+- [x] Set favicon in index.html (tab icon, 4 sizes + apple-touch-icon)
+- [x] Add Open Graph meta image (1200x630) for social share previews
+- [x] Add Twitter Card image meta tags
+- [x] Update Organization JSON-LD logo URL to real CDN asset
