@@ -113,3 +113,10 @@
 - [x] Update Admin console (login, setup, header — 3 instances)
 - [x] Update favicon files in client/public/ (16/32/180/192/512px + .ico)
 - [x] Update Organization JSON-LD logo URL in StructuredData.tsx
+
+## Round 18 — Two-Tone Gold Logo
+- [x] Generate two-tone gold logo from source image (dark antique gold interior + bright goldenrod frame/pins/wordmark)
+- [x] Apply morphological closing to fill JPEG compression gaps in frame
+- [x] Upload two-tone logo to CDN (1x + 2x retina)
+- [x] Replace all 6 logo instances: Navbar, Footer, Admin login, Admin setup, Admin console header, JSON-LD schema
+- [x] Regenerate all favicon files from two-tone logo (16/32/180/192/512px PNG + multi-size .ico)
