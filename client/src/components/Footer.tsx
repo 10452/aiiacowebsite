@@ -27,7 +27,7 @@ export default function Footer() {
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_full_4970c781.png"
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_gold_transparent_4a0454df.png"
                 alt="AiiA logo"
                 style={{ height: "44px", width: "auto", objectFit: "contain" }}
               />

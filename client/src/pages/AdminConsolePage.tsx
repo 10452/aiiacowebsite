@@ -117,7 +117,7 @@ function SetupPage({ onDone }: { onDone: () => void }) {
       <div style={{ width: "100%", maxWidth: "420px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
           <img
-            src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_full_4970c781.png"
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_gold_transparent_4a0454df.png"
             alt="AiiA logo"
             style={{ height: "56px", width: "auto", objectFit: "contain", margin: "0 auto 20px", display: "block" }}
           />
@@ -206,7 +206,7 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
       <div style={{ width: "100%", maxWidth: "380px" }}>
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
           <img
-            src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_full_4970c781.png"
+            src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_gold_transparent_4a0454df.png"
             alt="AiiA logo"
             style={{ height: "56px", width: "auto", objectFit: "contain", margin: "0 auto 20px", display: "block" }}
           />
@@ -551,7 +551,7 @@ function Console({ adminUser }: { adminUser: { id: number; username: string; dis
         <div style={{ maxWidth: "1280px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: "64px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <img
-              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_full_4970c781.png"
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_gold_transparent_4a0454df.png"
               alt="AiiA logo"
               style={{ height: "36px", width: "auto", objectFit: "contain" }}
             />

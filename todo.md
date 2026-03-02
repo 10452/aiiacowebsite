@@ -105,3 +105,11 @@
 - [x] Register route in App.tsx
 - [x] Add to sitemap.xml
 - [x] Add to footer Company navigation
+
+## Round 17 — Logo Update (Gold-Only Transparent)
+- [x] Upload new gold-only transparent logo to CDN
+- [x] Update Navbar logo (6 references replaced, 0 old remaining)
+- [x] Update Footer logo
+- [x] Update Admin console (login, setup, header — 3 instances)
+- [x] Update favicon files in client/public/ (16/32/180/192/512px + .ico)
+- [x] Update Organization JSON-LD logo URL in StructuredData.tsx
