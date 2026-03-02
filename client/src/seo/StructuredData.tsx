@@ -14,7 +14,7 @@ const organizationSchema = {
   "url": "https://aiiaco.com",
   "logo": {
     "@type": "ImageObject",
-    "url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_pure_gold_33559279.png",
+    "url": "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_pure_gold_transparent_8063797a.png",
     "width": 344,
     "height": 431
   },
