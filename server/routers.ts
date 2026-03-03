@@ -305,6 +305,32 @@ export const appRouter = router({
         // Rachel voice ID — warm, authoritative, American
         const VOICE_ID = "21m00Tcm4TlvDq8ikWAM";
 
+        // ── Sanitize text for natural speech ──────────────────────────────────
+        // Preserve URLs (don't strip dots inside them), then clean everything else
+        const sanitized = input.text
+          // Fix brand name pronunciation FIRST (before any other transforms)
+          // "AiiACo" → "AiiA Co" so ElevenLabs reads it as two words: AyyA + Co
+          .replace(/AiiACo/gi, "AiiA Co")
+          // "AiiAco" → "AiiA Co"
+          .replace(/AiiAco/gi, "AiiA Co")
+          // Protect URLs: temporarily replace dots inside URLs
+          .replace(/https?:\/\/[^\s]+/g, (url) => url.replace(/\./g, "__DOT__"))
+          // Remove bullet/list symbols
+          .replace(/[•·▪▸►→✓✔★☆]/g, " ")
+          // Remove standalone dots (e.g. nav labels like "Platform. Method.")
+          .replace(/(?<![\w])\.(?![\w])/g, " ")
+          // Remove other non-speech punctuation that TTS reads literally
+          .replace(/[|\\^~`<>{}\[\]]/g, " ")
+          // Remove excessive dashes used as decorators (not hyphens in words)
+          .replace(/\s[-–—]{1,3}\s/g, ", ")
+          // Remove repeated punctuation
+          .replace(/([!?]){2,}/g, "$1")
+          // Restore URL dots
+          .replace(/__DOT__/g, ".")
+          // Collapse multiple spaces
+          .replace(/\s{2,}/g, " ")
+          .trim();
+
         const response = await fetch(
           `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
           {
@@ -315,12 +341,12 @@ export const appRouter = router({
               "Accept": "audio/mpeg",
             },
             body: JSON.stringify({
-              text: input.text,
-              model_id: "eleven_turbo_v2",
+              text: sanitized,
+              model_id: "eleven_multilingual_v2",  // Better prosody and naturalness than turbo
               voice_settings: {
-                stability: 0.45,
-                similarity_boost: 0.80,
-                style: 0.15,
+                stability: 0.30,          // Lower = more expressive, less monotone
+                similarity_boost: 0.75,   // Keeps Rachel's character
+                style: 0.40,              // Higher style = more personality and wit
                 use_speaker_boost: true,
               },
             }),

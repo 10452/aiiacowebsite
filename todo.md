@@ -127,3 +127,8 @@
 - [x] Create ReadAloud component with play/pause/stop controls and gold progress bar
 - [x] Add LISTEN button to Navbar (desktop, between nav links and CTA)
 - [x] Write vitest test for TTS API validation
+
+## Round 22 — Read Aloud Voice Fix
+- [x] Fix punctuation: clean dots/symbols from text before TTS (no literal "dot" spoken)
+- [x] Tune ElevenLabs voice settings for more natural, witty, human delivery
+- [x] Fix brand name pronunciation: AiiACo → "AiiA Co" (not AiiAko)
