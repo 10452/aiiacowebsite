@@ -120,3 +120,10 @@
 - [x] Upload two-tone logo to CDN (1x + 2x retina)
 - [x] Replace all 6 logo instances: Navbar, Footer, Admin login, Admin setup, Admin console header, JSON-LD schema
 - [x] Regenerate all favicon files from two-tone logo (16/32/180/192/512px PNG + multi-size .ico)
+
+## Round 21 — Read Aloud Feature (ElevenLabs Rachel Voice)
+- [x] Add ElevenLabs API key to project secrets
+- [x] Add TTS server procedure (Rachel voice, eleven_turbo_v2 model)
+- [x] Create ReadAloud component with play/pause/stop controls and gold progress bar
+- [x] Add LISTEN button to Navbar (desktop, between nav links and CTA)
+- [x] Write vitest test for TTS API validation

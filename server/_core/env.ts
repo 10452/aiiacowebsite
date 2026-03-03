@@ -11,4 +11,6 @@ export const ENV = {
   crmWebhookUrl: process.env.CRM_WEBHOOK_URL ?? "",
   /** Admin console session cookie name */
   adminSessionCookieName: "aiiaco_admin_session",
+  /** ElevenLabs API key for TTS */
+  elevenLabsApiKey: process.env.ELEVENLABS_API_KEY ?? "",
 };

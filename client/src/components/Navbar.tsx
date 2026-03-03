@@ -5,6 +5,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import ReadAloud from "./ReadAloud";
 
 const navLinks = [
   { label: "Platform", href: "#platform", route: "/" },
@@ -98,6 +99,9 @@ export default function Navbar() {
 
             {/* CTA + mobile toggle */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div className="hidden lg:flex">
+                <ReadAloud />
+              </div>
               <button onClick={() => scrollTo("#contact")} className="btn-gold hidden lg:inline-flex" style={{ fontSize: "13px", padding: "10px 20px" }}>
                 Request Upgrade
               </button>

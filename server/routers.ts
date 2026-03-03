@@ -287,6 +287,58 @@ export const appRouter = router({
       }),
   }),
 
+  // ─── Text-to-Speech (ElevenLabs) ────────────────────────────────────────────
+  tts: router({
+    /**
+     * Synthesize text using ElevenLabs Rachel voice.
+     * Returns base64-encoded MP3 audio.
+     * Rate-limited to 3000 chars per request to control API usage.
+     */
+    synthesize: publicProcedure
+      .input(z.object({
+        text: z.string().min(1).max(3000),
+      }))
+      .mutation(async ({ input }) => {
+        const apiKey = ENV.elevenLabsApiKey;
+        if (!apiKey) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "TTS not configured" });
+
+        // Rachel voice ID — warm, authoritative, American
+        const VOICE_ID = "21m00Tcm4TlvDq8ikWAM";
+
+        const response = await fetch(
+          `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
+          {
+            method: "POST",
+            headers: {
+              "xi-api-key": apiKey,
+              "Content-Type": "application/json",
+              "Accept": "audio/mpeg",
+            },
+            body: JSON.stringify({
+              text: input.text,
+              model_id: "eleven_turbo_v2",
+              voice_settings: {
+                stability: 0.45,
+                similarity_boost: 0.80,
+                style: 0.15,
+                use_speaker_boost: true,
+              },
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          const err = await response.text();
+          console.error("[ElevenLabs TTS Error]", err);
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Voice synthesis failed" });
+        }
+
+        const buffer = await response.arrayBuffer();
+        const base64 = Buffer.from(buffer).toString("base64");
+        return { audio: base64, mimeType: "audio/mpeg" };
+      }),
+  }),
+
   // ─── Leads ──────────────────────────────────────────────────────────────────
   leads: router({
     submitCall: publicProcedure
