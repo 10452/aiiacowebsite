@@ -132,3 +132,16 @@
 - [x] Fix punctuation: clean dots/symbols from text before TTS (no literal "dot" spoken)
 - [x] Tune ElevenLabs voice settings for more natural, witty, human delivery
 - [x] Fix brand name pronunciation: AiiACo → "AiiA Co" (not AiiAko)
+
+## Round 23 — Read Aloud Complete Rebuild (Scroll-Sync TTS)
+- [ ] Redesign architecture: sentence-level chunks tied to DOM elements, not page sections
+- [ ] Pre-fetch audio 2-3 sentences ahead to eliminate loading pauses
+- [ ] Scroll-sync: IntersectionObserver tracks which sentence is in viewport, plays that sentence
+- [ ] Word-by-word highlight on screen as Rachel speaks each word
+- [ ] Instant reverse: scrolling up stops current audio and jumps to the sentence now in view
+- [ ] Smooth auto-scroll: page follows along as audio plays (waterfall effect)
+- [ ] Upgrade to eleven_multilingual_v2 with lower stability for more natural delivery
+- [ ] Remove all section-level chunking, replace with sentence-level DOM-mapped approach
+
+## Round 24 — Video Studio Nav Link
+- [x] Add "Video Studio" CTA button in Navbar pointing to aiiaco.com/videostudio
