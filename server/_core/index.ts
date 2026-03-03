@@ -35,6 +35,11 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+
+  // ── Vanity redirects ──────────────────────────────────────────────────────
+  app.get("/videostudio", (_req, res) => {
+    res.redirect(301, "https://aiivideo-zyf9pqt6.manus.space");
+  });
   // tRPC API
   app.use(
     "/api/trpc",

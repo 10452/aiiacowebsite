@@ -145,3 +145,7 @@
 
 ## Round 24 — Video Studio Nav Link
 - [x] Add "Video Studio" CTA button in Navbar pointing to aiiaco.com/videostudio
+
+## Round 25 — Video Studio Redirect & Nav Link
+- [x] Add server-side redirect: GET /videostudio → https://aiivideo-zyf9pqt6.manus.space
+- [x] Update navbar Video Studio button href to /videostudio (relative path)

@@ -104,9 +104,7 @@ export default function Navbar() {
               </div>
               {/* Video Studio CTA */}
               <a
-                href="https://aiiaco.com/videostudio"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/videostudio"
                 className="hidden lg:inline-flex"
                 style={{
                   fontFamily: FF,
@@ -175,9 +173,7 @@ export default function Navbar() {
 
                   {/* Video Studio mobile link */}
                   <a
-                    href="https://aiiaco.com/videostudio"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="/videostudio"
                     style={{
                       fontFamily: FF,
                       fontWeight: 700,
