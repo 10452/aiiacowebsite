@@ -36,9 +36,10 @@ async function startServer() {
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
 
-  // ── Vanity redirects ──────────────────────────────────────────────────────
+  // ── Vanity redirects — registered BEFORE Vite/static middleware so they
+  //    fire even in dev mode before Vite's catch-all intercepts the request.
   app.get("/videostudio", (_req, res) => {
-    res.redirect(301, "https://aiivideo-zyf9pqt6.manus.space");
+    res.redirect(302, "https://aiivideo-zyf9pqt6.manus.space");
   });
   // tRPC API
   app.use(

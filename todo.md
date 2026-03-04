@@ -149,3 +149,6 @@
 ## Round 25 — Video Studio Redirect & Nav Link
 - [x] Add server-side redirect: GET /videostudio → https://aiivideo-zyf9pqt6.manus.space
 - [x] Update navbar Video Studio button href to /videostudio (relative path)
+
+## Round 26 — Fix /videostudio External Redirect
+- [x] Fix /videostudio redirect to properly redirect externally (server-side before SPA catch-all)
