@@ -30,18 +30,19 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
+
+  // ── Vanity redirects ─────────────────────────────────────────────────────
+  // MUST be the very first routes registered — before body parsers, OAuth,
+  // Vite middleware, and the SPA catch-all — so they fire in all environments.
+  app.get("/videostudio", (_req, res) => {
+    res.redirect(302, "https://aiivideo-zyf9pqt6.manus.space");
+  });
+
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
-
-  // ── Vanity redirects ─────────────────────────────────────────────────────
-  // Registered BEFORE Vite/static middleware so they fire in both dev and
-  // production before the SPA catch-all can intercept the request.
-  app.get("/videostudio", (_req, res) => {
-    res.redirect(302, "https://aiivideo-zyf9pqt6.manus.space");
-  });
   // tRPC API
   app.use(
     "/api/trpc",

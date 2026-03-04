@@ -26,6 +26,16 @@ import WorkplacePage from "./pages/WorkplacePage";
 import IndustryMicrosite from "./pages/IndustryMicrosite";
 import AdminLeadsPage from "./pages/AdminLeadsPage";
 import AdminConsolePage from "./pages/AdminConsolePage";
+
+// Immediate external redirect component — fires window.location.href on mount
+// This is the reliable fallback in case the Express server redirect is bypassed
+function VideoStudioRedirect() {
+  useEffect(() => {
+    window.location.href = "https://aiivideo-zyf9pqt6.manus.space";
+  }, []);
+  return null;
+}
+
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
@@ -48,6 +58,7 @@ function Router() {
       <Route path="/industries/:slug" component={IndustryMicrosite} />
       <Route path="/admin/leads" component={AdminLeadsPage} />
       <Route path="/admin-opsteam" component={AdminConsolePage} />
+      <Route path="/videostudio" component={VideoStudioRedirect} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback */}
       <Route component={NotFound} />

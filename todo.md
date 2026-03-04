@@ -161,3 +161,7 @@
 - [x] Update hero KPIs and description to reflect focused niche
 - [x] Update all "20+ industries" references across the site (Footer, TeamSection, AIImplementationPage, AIIntegrationPage, Home.tsx, ResultsPage, StructuredData)
 - [x] Update SEO meta and structured data for focused niche
+
+## Round 29 — Fix /videostudio Redirect (Double Approach)
+- [x] Register /videostudio as absolute first Express route (before all middleware)
+- [x] Add React Router /videostudio route with window.location.href redirect component
