@@ -35,6 +35,9 @@ async function startServer() {
   // MUST be the very first routes registered — before body parsers, OAuth,
   // Vite middleware, and the SPA catch-all — so they fire in all environments.
   app.get("/videostudio", (_req, res) => {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Surrogate-Control", "no-store");
     res.redirect(302, "https://aiivideo-zyf9pqt6.manus.space");
   });
 
