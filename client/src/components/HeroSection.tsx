@@ -57,7 +57,7 @@ function KpiCard({ kpi, delay }: { kpi: { num: string; label: string; sub: strin
 const HERO_BG = "https://private-us-east-1.manuscdn.com/sessionFile/FvSFBd374GXzqjgBtweNkq/sandbox/KV9rHWJ9VYR1NSAlzZrFLI-img-1_1771979979000_na1fn_YWlpYS1nbGFzcy1oZXJv.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvRnZTRkJkMzc0R1h6cWpnQnR3ZU5rcS9zYW5kYm94L0tWOXJIV0o5VllSMU5TQWx6WnJGTEktaW1nLTFfMTc3MTk3OTk3OTAwMF9uYTFmbl9ZV2xwWVMxbmJHRnpjeTFvWlhKdi5wbmc~eC1vc3MtcHJvY2Vzcz1pbWFnZS9yZXNpemUsd18xOTIwLGhfMTkyMC9mb3JtYXQsd2VicC9xdWFsaXR5LHFfODAiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTg3NjE2MDB9fX1dfQ__&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=IIazNlOoHV8170uFXchIaHa34J5vzX23qrQb3LVV9AzF~OiH9Btz6EwN7L0xgFpZUpHLzjZBGC2NCSJn5EmFUhL2xrlVox-b-NOvzv0SO4hPEa18Zl32uzJoHrGaSqeyyyatH2USmFpbJw2xHVVXrhJB3ALS0Xk-uE1E6GVda3za0ztjngT50984lFRGyMW8eHm8hrWKrXimODsn3WolhqTB5aHLxMbD8Pgr-QWkFrVXmyhtWUh-psF3WuzurBLB~FQEs5oh4pQ1csdxuziIv1MoaWyYbJt5e6VFIbCKGhcd6~Hbf4qDtWpuRhknbOX2z2poIASSL5rf7rDsLfB0Pg__";
 
 const kpis = [
-  { num: "20+", label: "Industries Integrated", sub: "Cross-industry deployment capability for high-complexity operations." },
+  { num: "4", label: "Core Sectors", sub: "Real Estate, Mortgage, Commercial Property & Management Consulting." },
   { num: "100%", label: "Managed Execution", sub: "We build, integrate, and run the system. You run the business." },
   { num: "0", label: "Internal Overload", sub: "Outcomes delivered without dumping complexity on your team." },
 ];
@@ -137,8 +137,7 @@ export default function HeroSection() {
             </p>
 
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(15px, 1.5vw, 18px)", lineHeight: 1.65, color: "rgba(200,215,230,0.82)", maxWidth: "52ch", margin: 0 }}>
-              AiiAco is the AI Integration Authority that designs, deploys, and manages your
-              complete AI operational infrastructure — from diagnostics to execution.{" "}
+              AiiAco is the AI Integration Authority for real estate, mortgage, commercial property, and management consulting — designing, deploying, and managing complete AI operational infrastructure from diagnostics to execution.{" "}
               <strong style={{ color: "rgba(255,255,255,0.92)", fontWeight: 700 }}>
                 You do not hire AI tools. You hire AiiAco. AiiAco hires and manages everything else.
               </strong>

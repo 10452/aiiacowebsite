@@ -1,6 +1,6 @@
 /*
- * AiiACo Case Studies — Anonymized, verifiable in structure
- * No client names. No theatre. Operating model improvements only.
+ * AiiACo Case Studies — Focused Niche: Real Estate, Mortgage, CRE, Management Consulting
+ * Anonymized, verifiable in structure. No client names. No theatre.
  */
 
 export type CaseMetric = {
@@ -23,63 +23,6 @@ export type CaseStudy = {
 };
 
 export const caseStudies: CaseStudy[] = [
-  {
-    id: "fs-intake-ops",
-    sector: "Financial Services",
-    type: "Mid-market",
-    situation:
-      "Fragmented intake and underwriting support workflows created delays, inconsistent decision support, and manual reporting overhead.",
-    constraints: [
-      "Auditability required",
-      "Role-based access controls",
-      "Legacy CRM and document systems",
-    ],
-    approach: [
-      "Mapped intake → decision → documentation lifecycle",
-      "Designed KPI framework and acceptance criteria",
-      "Automated routing, summaries, and compliance checkpoints",
-      "Implemented monitoring and escalation logic",
-    ],
-    systemsDeployed: [
-      "Workflow orchestration (intake → routing → status)",
-      "Document automation + structured templates",
-      "KPI dashboarding + automated reporting",
-      "Quality controls + exception handling",
-    ],
-    outcomes: [
-      { label: "Cycle time reduction", value: "30–55%", note: "Varies by product and documentation complexity" },
-      { label: "Manual reporting eliminated", value: "80–95%" },
-      { label: "Consistency improved", value: "Measured via QA sampling + standardized outputs" },
-    ],
-    timeline: "6–10 weeks",
-    governance: ["Permissions + access tiers", "Change logging", "Quality sampling cadence"],
-  },
-  {
-    id: "merchant-compliance",
-    sector: "High-Risk Merchant",
-    type: "Scale-up",
-    situation:
-      "Onboarding and compliance operations were manual-heavy, slow to respond, and inconsistent across teams.",
-    constraints: ["Compliance checkpoints", "Multi-system data inputs", "High-volume support load"],
-    approach: [
-      "Standardized intake + validation rules",
-      "Automated document checks and follow-ups",
-      "Built escalation paths for edge cases",
-    ],
-    systemsDeployed: [
-      "Automated onboarding workflows",
-      "Compliance check orchestration",
-      "Support triage automation",
-      "Unified ops dashboard",
-    ],
-    outcomes: [
-      { label: "Onboarding throughput", value: "2–3x", note: "Without proportional staffing increases" },
-      { label: "Repeated support tasks automated", value: "40–65%" },
-      { label: "Operational visibility", value: "Unified KPI framework established" },
-    ],
-    timeline: "4–8 weeks",
-    governance: ["Audit trail", "Exception handling rules", "Human review gates"],
-  },
   {
     id: "realestate-lead-ops",
     sector: "Real Estate",
@@ -105,32 +48,6 @@ export const caseStudies: CaseStudy[] = [
     ],
     timeline: "3–6 weeks",
     governance: ["Agent override controls", "Compliance review gates", "Activity logging"],
-  },
-  {
-    id: "agency-ops-scale",
-    sector: "Agency Operations",
-    type: "Growth-stage",
-    situation:
-      "Delivery operations were bottlenecked by manual reporting, inconsistent client communication, and reactive project management.",
-    constraints: ["Multiple client environments", "Variable deliverable formats", "Team capacity constraints"],
-    approach: [
-      "Standardized delivery workflows and status reporting",
-      "Automated client update sequences",
-      "Built internal capacity tracking and alert logic",
-    ],
-    systemsDeployed: [
-      "Delivery workflow automation",
-      "Automated client reporting",
-      "Capacity monitoring system",
-      "Internal knowledge base automation",
-    ],
-    outcomes: [
-      { label: "Reporting time per client", value: "Reduced by 70–80%" },
-      { label: "Client communication consistency", value: "Standardized across all accounts" },
-      { label: "Delivery bottlenecks resolved", value: "3 critical friction points eliminated" },
-    ],
-    timeline: "4–7 weeks",
-    governance: ["Client-level access controls", "Escalation logic", "Quality review checkpoints"],
   },
   {
     id: "mortgage-origination",
@@ -164,96 +81,65 @@ export const caseStudies: CaseStudy[] = [
     governance: ["RESPA/TRID compliance gates", "Human review on exception files", "Audit trail on all automated decisions"],
   },
   {
-    id: "insurance-claims-ops",
-    sector: "Insurance",
-    type: "Mid-market carrier",
+    id: "cre-portfolio-ops",
+    sector: "Commercial Real Estate",
+    type: "Property management group",
     situation:
-      "A mid-market P&C carrier was experiencing claims processing backlogs, rising fraud losses, and policyholder satisfaction scores below industry benchmarks.",
+      "A commercial property management group was managing 200+ leases manually — critical dates were missed, tenant communication was reactive, and maintenance was entirely unplanned.",
     constraints: [
-      "State regulatory requirements on claims handling timelines",
-      "Legacy claims management system",
-      "Adjuster workflow integration",
+      "Multiple property management systems",
+      "Tenant data privacy requirements",
+      "Maintenance contractor coordination",
     ],
     approach: [
-      "Mapped claims lifecycle from FNOL to settlement",
-      "Deployed AI triage and routing logic by claim type, complexity, and fraud risk",
-      "Automated policyholder milestone communications",
-      "Built fraud pattern detection layer on historical claims data",
+      "Mapped tenant lifecycle from onboarding to renewal",
+      "Built lease critical date monitoring and automated alert logic",
+      "Deployed tenant communication sequences for maintenance, renewals, and escalations",
+      "Implemented predictive maintenance scheduling from historical work order data",
     ],
     systemsDeployed: [
-      "Claims triage and routing automation",
-      "Fraud detection model (pattern-based)",
-      "Policyholder communication sequences",
-      "Adjuster workload dashboard",
+      "Lease administration intelligence layer",
+      "Tenant communication automation",
+      "Predictive maintenance scheduling",
+      "Portfolio performance dashboard",
     ],
     outcomes: [
-      { label: "Claims processing cycle time", value: "Reduced 55–65%" },
-      { label: "Fraud detection coverage", value: "Expanded to 100% of claims vs. sampled review" },
-      { label: "Policyholder satisfaction", value: "Improved via consistent milestone communication" },
-    ],
-    timeline: "7–10 weeks",
-    governance: ["State compliance review gates", "Adjuster override controls", "Fraud flag audit trail"],
-  },
-  {
-    id: "wealth-client-ops",
-    sector: "Investment & Wealth Management",
-    type: "RIA / multi-family office",
-    situation:
-      "A growing RIA was unable to scale personalized client communication and reporting as AUM grew — advisors were spending 30–40% of their time on administrative tasks.",
-    constraints: [
-      "SEC and FINRA communication compliance",
-      "Custodian data integration",
-      "Advisor adoption and brand consistency",
-    ],
-    approach: [
-      "Audited advisor time allocation and identified highest-leverage automation targets",
-      "Built automated portfolio commentary generation from custodian data feeds",
-      "Deployed client reporting automation with advisor review gate",
-      "Implemented rebalancing signal monitoring with alert logic",
-    ],
-    systemsDeployed: [
-      "Portfolio commentary generation",
-      "Automated client reporting pipeline",
-      "Rebalancing signal monitoring",
-      "Compliance review workflow",
-    ],
-    outcomes: [
-      { label: "Advisor administrative time", value: "Reduced 60–70%" },
-      { label: "Client reporting cycle", value: "From 3–5 days to same-day" },
-      { label: "AUM per advisor capacity", value: "Increased 40–55%" },
+      { label: "Missed lease critical dates", value: "Reduced to zero" },
+      { label: "Tenant communication overhead", value: "Reduced 60–70%" },
+      { label: "Reactive maintenance work orders", value: "Reduced 30–40%" },
     ],
     timeline: "5–8 weeks",
-    governance: ["Advisor review gate on all client-facing outputs", "SEC/FINRA compliance logging", "Custodian data access controls"],
+    governance: ["Tenant data access controls", "Contractor coordination review gates", "Lease change audit trail"],
   },
   {
-    id: "luxury-hospitality-ops",
-    sector: "Luxury & UHNW",
-    type: "Luxury hospitality group",
+    id: "consulting-delivery-ops",
+    sector: "Management Consulting",
+    type: "Mid-market consulting firm",
     situation:
-      "A luxury hospitality group was losing repeat bookings and referrals due to inconsistent guest communication, reactive service recovery, and manual VIP profile management.",
+      "A management consulting firm was losing margin on every engagement due to proposal overhead, inconsistent project monitoring, and institutional knowledge locked in individual consultants.",
     constraints: [
-      "Brand voice and discretion requirements",
-      "PMS and CRM integration",
-      "Staff adoption across properties",
+      "Client confidentiality requirements",
+      "Variable engagement formats",
+      "Consultant adoption risk",
     ],
     approach: [
-      "Mapped guest lifecycle from pre-arrival to post-stay",
-      "Built AI-assisted VIP profile enrichment from interaction history",
-      "Deployed personalized pre-arrival and in-stay communication sequences",
-      "Implemented service recovery detection and escalation logic",
+      "Audited consultant time allocation across proposal, delivery, and admin tasks",
+      "Built AI-assisted proposal and SOW generation from engagement briefs",
+      "Deployed project health monitoring from communication and milestone data",
+      "Implemented AI-powered knowledge base from past engagement materials",
     ],
     systemsDeployed: [
-      "Guest lifecycle communication automation",
-      "VIP profile intelligence layer",
-      "Service recovery detection and escalation",
-      "Post-stay retention sequences",
+      "Proposal and SOW generation automation",
+      "Project risk monitoring system",
+      "Knowledge base intelligence layer",
+      "Account expansion signal detection",
     ],
     outcomes: [
-      { label: "Repeat booking rate", value: "Improved 25–35%" },
-      { label: "Service recovery response time", value: "Reduced from hours to minutes" },
-      { label: "Staff time on manual guest communication", value: "Reduced 60–70%" },
+      { label: "Proposal preparation time", value: "Reduced 55–65%" },
+      { label: "Project overrun rate", value: "Reduced 35–45%" },
+      { label: "Knowledge retrieval time", value: "Reduced from days to minutes" },
     ],
     timeline: "4–7 weeks",
-    governance: ["Brand voice review on all automated outputs", "Staff override controls", "Guest data privacy controls"],
+    governance: ["Client confidentiality controls", "Consultant review gate on all outputs", "Knowledge base access tiers"],
   },
 ];

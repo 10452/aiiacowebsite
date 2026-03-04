@@ -132,7 +132,7 @@ export default function TeamSection() {
               <ExternalLink size={12} />
             </a>
             {" "}— operators, builders, and strategists who have navigated real business challenges
-            across two decades and twenty industries.
+            across two decades in real estate, mortgage, commercial property, and management consulting.
           </p>
         </motion.div>
 

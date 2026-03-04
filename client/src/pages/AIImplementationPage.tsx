@@ -65,7 +65,7 @@ const implFaqs = [
 const differentiators = [
   { label: "Outcome-Oriented", desc: "Every implementation is scoped against measurable KPIs. If the system does not perform, we fix it." },
   { label: "Fully Managed", desc: "You do not manage vendors, prompts, or integrations. AiiAco manages the entire implementation stack." },
-  { label: "Cross-Industry", desc: "Implementation frameworks deployed across 20+ industries — financial services, real estate, energy, healthcare, and more." },
+  { label: "Cross-Industry", desc: "Implementation frameworks deployed across real estate, mortgage lending, commercial property management, and management consulting." },
   { label: "Performance-Based Option", desc: "Qualifying clients can access implementation services with reduced upfront cost and success-linked fees." },
 ];
 

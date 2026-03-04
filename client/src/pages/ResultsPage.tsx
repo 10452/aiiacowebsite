@@ -11,7 +11,7 @@ export default function ResultsPage() {
     <>
       <SEO
         title="AI Integration Results | Proof Without Personalities — AiiAco"
-        description="Measurable outcomes from structured AI integration: cycle time reduction, capacity increase, and operational visibility across 20+ industries."
+        description="Measurable outcomes from structured AI integration: cycle time reduction, capacity increase, and operational visibility across real estate, mortgage, commercial property, and consulting."
         path="/results"
         keywords="AI integration results, AI implementation outcomes, AI automation ROI, operational AI results, AI cycle time reduction, AI capacity increase, measurable AI outcomes"
       />

@@ -36,7 +36,7 @@ export default function Footer() {
               AiiAco is the AI Integration Authority for the Corporate Age. We design, deploy, and manage operational AI infrastructure for businesses that intend to lead.
             </p>
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12.5px", lineHeight: 1.6, color: "rgba(200,215,230,0.32)", margin: "0 0 4px", maxWidth: "42ch" }}>
-              AI integration services across 20+ industries. Performance-based AI consulting available.
+              AI integration services for real estate, mortgage, commercial property, and management consulting. Performance-based AI available.
             </p>
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.28)", margin: 0 }}>www.aiiaco.com</p>
           </div>

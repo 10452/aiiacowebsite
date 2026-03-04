@@ -152,3 +152,12 @@
 
 ## Round 26 — Fix /videostudio External Redirect
 - [x] Fix /videostudio redirect to properly redirect externally (server-side before SPA catch-all)
+
+## Round 28 — Niche Reduction (Real Estate / Mortgages / Brokerage / Management Consulting)
+- [x] Audit all industry microsites and identify which to keep vs remove
+- [x] Reduce industries data to 4 target verticals: Real Estate, Mortgage, CRE, Management Consulting
+- [x] Update Industries homepage section to show only the 4 verticals with cards
+- [x] Update case studies to keep only relevant industry cases (4 focused case studies)
+- [x] Update hero KPIs and description to reflect focused niche
+- [x] Update all "20+ industries" references across the site (Footer, TeamSection, AIImplementationPage, AIIntegrationPage, Home.tsx, ResultsPage, StructuredData)
+- [x] Update SEO meta and structured data for focused niche

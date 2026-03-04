@@ -22,7 +22,7 @@ export default function Home() {
     <>
       <SEO
         title="AiiAco | AI Integration Authority for the Corporate Age"
-        description="AiiAco is the AI Integration Authority for the Corporate Age. We design, deploy, and manage enterprise AI integration, AI implementation services, and managed AI integration for businesses across 20+ industries. Performance-based AI available."
+        description="AiiAco is the AI Integration Authority for the Corporate Age. We design, deploy, and manage AI operational infrastructure for real estate brokerages, mortgage lenders, commercial property managers, and management consulting firms. Performance-based AI available."
         path="/"
         keywords="AI integration authority, enterprise AI integration, AI implementation services, managed AI integration, AI automation for business, operational AI infrastructure, AI workforce, AI director, done-for-you AI, performance-based AI, AI integration services, artificial intelligence consulting, business AI automation, AI strategy, managed AI services"
       />

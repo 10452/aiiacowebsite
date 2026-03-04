@@ -10,10 +10,10 @@ export default function IndustriesPage() {
   return (
     <>
       <SEO
-        title="AI Integration Across Industries | Enterprise Automation"
-        description="AI operational infrastructure for financial services, real estate, insurance, SaaS, energy, and high-complexity industries."
+        title="AI Integration for Real Estate, Mortgage & Consulting | AiiAco"
+        description="AiiAco deploys AI operational infrastructure for real estate brokerages, mortgage lenders, commercial property managers, and management consulting firms."
         path="/industries"
-        keywords="AI integration for financial services, AI integration for real estate, AI integration for insurance, AI integration for SaaS, AI integration for energy, enterprise AI automation, AI integration across industries, industry AI deployment"
+        keywords="AI for real estate, AI for mortgage lending, AI for commercial real estate, AI for management consulting, real estate AI integration, mortgage AI automation, consulting firm AI"
       />
       <div className="min-h-screen flex flex-col" style={{ background: "#03050A" }}>
         <Navbar />

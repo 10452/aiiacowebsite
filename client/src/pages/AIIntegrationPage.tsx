@@ -164,7 +164,7 @@ export default function AIIntegrationPage() {
                 AI Integration Across <span className="accent">Every Sector</span>
               </motion.h2>
               <motion.p variants={fade} className="section-subhead" style={{ marginBottom: "36px" }}>
-                AiiAco has deployed AI integration frameworks across more than 20 industries. The architecture differs by sector; the methodology does not.
+                AiiAco has deployed AI integration frameworks across real estate, mortgage lending, commercial property management, and management consulting. The architecture is tailored per sector; the methodology — diagnostic, blueprint, deployment, optimization — remains consistent.
               </motion.p>
               <motion.div variants={fade} style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                 {industries.map((ind) => (

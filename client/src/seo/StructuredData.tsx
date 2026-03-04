@@ -18,7 +18,7 @@ const organizationSchema = {
     "width": 344,
     "height": 431
   },
-  "description": "AiiAco is the AI Integration Authority for the Corporate Age. We design, deploy, and manage complete AI operational infrastructure for enterprise and mid-market businesses across 20+ industries. Engagements include strategic AI blueprints, full managed integration, and performance-based AI partnerships.",
+  "description": "AiiAco is the AI Integration Authority for real estate, mortgage lending, commercial property management, and management consulting. We design, deploy, and manage complete AI operational infrastructure — from strategic blueprints to full managed integration and performance-based AI partnerships.",
   "foundingDate": "2026",
   "areaServed": "Global",
   "knowsAbout": [
@@ -101,7 +101,7 @@ const websiteSchema = {
   "@type": "WebSite",
   "name": "AiiAco — AI Integration Authority",
   "url": "https://aiiaco.com",
-  "description": "AI Integration Authority for the Corporate Age. Operational AI infrastructure engineered for measurable outcomes across 20+ industries.",
+  "description": "AI Integration Authority for real estate, mortgage, commercial property, and management consulting. Operational AI infrastructure engineered for measurable outcomes.",
   "publisher": {
     "@type": "Organization",
     "name": "AiiAco"
@@ -151,7 +151,7 @@ const faqSchema = {
       "name": "What industries does AiiAco serve?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "AiiAco has deployed AI integration frameworks across 20+ industries including Financial Services, Real Estate, Insurance, Healthcare & Wellness, Manufacturing, Logistics, Energy & Resources, Software & Technology, Automotive, Food & Beverage, Luxury & Lifestyle, Agency Operations, Investment & Capital, and Retail & Commerce. The AI architecture is customized per sector; the integration methodology — diagnostic, blueprint, deployment, optimization — remains consistent."
+        "text": "AiiAco deploys AI integration frameworks across four core sectors: real estate and brokerage, mortgage and lending, commercial real estate and property management, and management consulting. The AI architecture is tailored per sector; the integration methodology — diagnostic, blueprint, deployment, optimization — remains consistent."
       }
     },
     {
