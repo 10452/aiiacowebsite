@@ -36,8 +36,9 @@ async function startServer() {
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
 
-  // ── Vanity redirects — registered BEFORE Vite/static middleware so they
-  //    fire even in dev mode before Vite's catch-all intercepts the request.
+  // ── Vanity redirects ─────────────────────────────────────────────────────
+  // Registered BEFORE Vite/static middleware so they fire in both dev and
+  // production before the SPA catch-all can intercept the request.
   app.get("/videostudio", (_req, res) => {
     res.redirect(302, "https://aiivideo-zyf9pqt6.manus.space");
   });
