@@ -165,3 +165,6 @@
 ## Round 29 — Fix /videostudio Redirect (Double Approach)
 - [x] Register /videostudio as absolute first Express route (before all middleware)
 - [x] Add React Router /videostudio route with window.location.href redirect component
+
+## Round 30 — Netlify _redirects Proxy for /videostudio
+- [x] Add client/public/_redirects with proxy rules for /videostudio → https://aiivideo-zyf9pqt6.manus.space
