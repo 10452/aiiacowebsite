@@ -12,7 +12,7 @@ const leaks = [
     detail:
       "Field teams capture information on their phones, admins re-enter it later, and managers chase updates. The result is slow execution and unnecessary coordination drag.",
     fix: "Streamlined mobile-first workflows that eliminate re-entry and give managers real-time visibility.",
-    icon: "⚙",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-workflow-Esv4ip78di3iemCTSkt2Lo.webp",
   },
   {
     num: "02",
@@ -21,7 +21,7 @@ const leaks = [
     detail:
       "Multiple admins manage tasks, employees follow up instead of executing, and leadership senses inefficiency without clear visibility into where time is actually going.",
     fix: "Automated coordination that removes manual handoffs and gives leadership a clear operational picture.",
-    icon: "⚡",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency-GGHWgMzd5PXNg6Kkkmhabf.webp",
   },
   {
     num: "03",
@@ -30,7 +30,7 @@ const leaks = [
     detail:
       "When leadership cannot trust the numbers, decisions slow down, friction increases, and the business runs on gut feel instead of clarity.",
     fix: "A single source of operational truth — synced, accurate, and available in real time.",
-    icon: "◎",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-data-FwpKNyHQCN6aEgnka2ScVe.webp",
   },
 ];
 
@@ -99,7 +99,7 @@ export default function OperationalLeaks() {
                   alignItems: "flex-start",
                 }}
               >
-                {/* Number badge */}
+                {/* Icon + Number badge */}
                 <div
                   style={{
                     display: "flex",
@@ -109,13 +109,20 @@ export default function OperationalLeaks() {
                     paddingTop: "4px",
                   }}
                 >
+                  <div style={{ width: "52px", height: "52px", marginBottom: "4px" }}>
+                    <img
+                      src={leak.icon}
+                      alt={leak.title}
+                      style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                    />
+                  </div>
                   <div
                     className="phase-badge"
                     style={{
-                      width: "48px",
-                      height: "48px",
-                      fontSize: "13px",
-                      borderRadius: "14px",
+                      width: "36px",
+                      height: "36px",
+                      fontSize: "11px",
+                      borderRadius: "10px",
                     }}
                   >
                     {leak.num}

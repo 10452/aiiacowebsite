@@ -5,41 +5,49 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { Brain, Users, TrendingUp, Zap, Target, Shield } from "lucide-react";
+
+const AIIA_ICONS = {
+  brain: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-brain-CWgsZCkYzJEv6FxB3Yfwc8.webp",
+  target: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-target-dqxhJyKSg7MfTbHzvj5rDu.webp",
+  users: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-users-2bMuFaX3C7Vdxg6U6EEZ3d.webp",
+  efficiency: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency-GGHWgMzd5PXNg6Kkkmhabf.webp",
+  trending: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-trending-P5AiVU9wpxjEjbNci97icg.webp",
+  shield: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-shield-PzXnkJ7jHLALMEdMf5Ehcs.webp",
+};
 
 const pillars = [
   {
-    icon: Brain,
+    icon: AIIA_ICONS.brain,
     title: "She Learns Your Business",
     desc: "AiiA conducts a deep analysis of your goals, your history, your attempts, your competition, and your industry before making a single recommendation.",
     color: "#00E5FF",
   },
   {
-    icon: Target,
+    icon: AIIA_ICONS.target,
     title: "She Builds Your Strategy",
     desc: "A complete, custom AI roadmap — not a generic playbook. Every recommendation is calibrated to your specific business reality and growth targets.",
     color: "#C9A227",
   },
   {
-    icon: Users,
+    icon: AIIA_ICONS.users,
     title: "She Hires Your AI Staff",
     desc: "Instead of you sourcing, vetting, and managing dozens of AI tools and agents, AiiA assembles and manages your entire AI workforce for you.",
     color: "#00E5FF",
   },
   {
-    icon: Zap,
+    icon: AIIA_ICONS.efficiency,
     title: "She Does the Work",
     desc: "We don't just tell you how — we do it for you. Full implementation, integration, and ongoing management. You get results, not a to-do list.",
     color: "#C9A227",
   },
   {
-    icon: TrendingUp,
+    icon: AIIA_ICONS.trending,
     title: "Performance-Based Models",
     desc: "Opt for our success-based pricing — reduced upfront cost, and you only pay more when you hit your targets. We win when you win.",
     color: "#00E5FF",
   },
   {
-    icon: Shield,
+    icon: AIIA_ICONS.shield,
     title: "Powered by AI Acquisition",
     desc: "Built on the AI Acquisition done-for-you package — battle-tested tools, tutorials, and implementation guides from a $24,800 professional program.",
     color: "#C9A227",
@@ -62,15 +70,15 @@ function PillarCard({ pillar, index }: { pillar: typeof pillars[0]; index: numbe
         className="w-12 h-12 rounded-lg flex items-center justify-center"
         style={{ background: `${pillar.color}15`, border: `1px solid ${pillar.color}30` }}
       >
-        <pillar.icon
-          size={22}
-          style={{ color: pillar.color }}
-          className="group-hover:scale-110 transition-transform duration-300"
+        <img
+          src={pillar.icon}
+          alt={pillar.title}
+          className="w-8 h-8 object-contain group-hover:scale-110 transition-transform duration-300"
         />
       </div>
       <h3
         className="font-cinzel text-lg font-semibold"
-        style={{ color: pillar.color === "#00E5FF" ? "#E8F4F8" : "#E8F4F8" }}
+        style={{ color: "#E8F4F8" }}
       >
         {pillar.title}
       </h3>

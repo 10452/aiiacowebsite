@@ -8,28 +8,28 @@ const focusedIndustries = [
   {
     slug: "real-estate-brokerage",
     name: "Real Estate & Brokerage",
-    icon: "🏡",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-real-estate-eLFsjikLi4VrivY6sgDo7a.webp",
     description: "AI lead qualification, automated follow-up, listing content generation, and pipeline intelligence for residential and commercial brokerages.",
     kpis: ["3× Lead Conversion", "70% Less Manual Follow-Up", "60% Faster Listings"],
   },
   {
     slug: "mortgage-lending",
     name: "Mortgage & Lending",
-    icon: "📄",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-mortgage-VpzdYVchK5iwqeGaA97p6D.webp",
     description: "Document extraction, borrower communication automation, compliance monitoring, and pipeline acceleration for mortgage originators and lenders.",
     kpis: ["80% Faster Document Processing", "60% Fewer Status Calls", "40% Faster Clear-to-Close"],
   },
   {
     slug: "commercial-real-estate",
     name: "Commercial Real Estate & Property Management",
-    icon: "🏢",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-cre-2VhR5EaFSXDEPghzGM8MVf.webp",
     description: "Tenant communication automation, lease administration intelligence, predictive maintenance, and portfolio performance dashboards for CRE operators.",
     kpis: ["60% Less Communication Overhead", "0 Missed Lease Dates", "35% Less Reactive Maintenance"],
   },
   {
     slug: "management-consulting",
     name: "Management Consulting",
-    icon: "📊",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-consulting-cESbCqT9osQaRGPpf9hqp6.webp",
     description: "Proposal and deliverable generation, project risk monitoring, knowledge management, and account expansion intelligence for consulting firms.",
     kpis: ["60% Faster Proposals", "40% Fewer Project Overruns", "3× Knowledge Accessibility"],
   },
@@ -124,7 +124,13 @@ export default function Industries() {
                 el.style.transform = "translateY(0)";
               }}
             >
-              <div style={{ fontSize: "32px", marginBottom: "16px" }}>{industry.icon}</div>
+              <div style={{ width: "56px", height: "56px", marginBottom: "16px" }}>
+                <img
+                  src={industry.icon}
+                  alt={industry.name}
+                  style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                />
+              </div>
               <h3 style={{
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
                 fontSize: "18px",

@@ -5,7 +5,9 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import { Check, Zap, Star } from "lucide-react";
+// AiiA proprietary gold icons replace Lucide icons
+const AIIA_ICON_EFFICIENCY = "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency-GGHWgMzd5PXNg6Kkkmhabf.webp";
+const AIIA_ICON_TRENDING = "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-trending-P5AiVU9wpxjEjbNci97icg.webp";
 
 const plans = [
   {
@@ -89,7 +91,7 @@ function PlanCard({ plan, index }: { plan: typeof plans[0]; index: number }) {
       {plan.highlight && (
         <div className="absolute top-0 left-0 right-0 flex justify-center">
           <div className="bg-[#C9A227] text-[#020B18] px-6 py-1 rounded-b-lg flex items-center gap-2">
-            <Star size={12} fill="currentColor" />
+            <img src={AIIA_ICON_TRENDING} alt="Most Popular" style={{ width: "14px", height: "14px", objectFit: "contain" }} />
             <span className="font-rajdhani text-xs font-700 tracking-widest uppercase">Most Popular</span>
           </div>
         </div>
@@ -99,7 +101,7 @@ function PlanCard({ plan, index }: { plan: typeof plans[0]; index: number }) {
         {/* Header */}
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Zap size={16} style={{ color: plan.color }} />
+            <img src={AIIA_ICON_EFFICIENCY} alt="" style={{ width: "18px", height: "18px", objectFit: "contain" }} />
             <span className="label-tag" style={{ color: plan.color }}>{plan.name}</span>
           </div>
           <h3 className="font-cinzel text-2xl font-bold text-white">{plan.tagline}</h3>
@@ -120,7 +122,9 @@ function PlanCard({ plan, index }: { plan: typeof plans[0]; index: number }) {
         <ul className="flex flex-col gap-3 flex-1">
           {plan.features.map((f) => (
             <li key={f} className="flex items-start gap-3">
-              <Check size={14} className="mt-0.5 flex-shrink-0" style={{ color: plan.color }} />
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="mt-0.5 flex-shrink-0" style={{ color: plan.color }}>
+                <path d="M2.5 7L5.5 10L11.5 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               <span className="font-dm text-sm text-[#E8F4F8]/80">{f}</span>
             </li>
           ))}
