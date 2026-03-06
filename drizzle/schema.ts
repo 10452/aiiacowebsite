@@ -34,6 +34,8 @@ export const leads = mysqlTable("leads", {
   engagementModel: varchar("engagementModel", { length: 128 }),
   annualRevenue: varchar("annualRevenue", { length: 64 }),
   message: text("message"),
+  investmentType: varchar("investmentType", { length: 64 }),
+  budgetRange: varchar("budgetRange", { length: 64 }),
   status: mysqlEnum("status", ["new", "reviewed", "contacted", "closed"]).default("new").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

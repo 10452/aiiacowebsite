@@ -115,6 +115,16 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
           </span>
         </td>
         <td style={tdStyle}>
+          <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: lead.investmentType ? "rgba(184,156,74,0.80)" : "rgba(200,215,230,0.35)" }}>
+            {lead.investmentType || "—"}
+          </span>
+        </td>
+        <td style={tdStyle}>
+          <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: lead.budgetRange ? 600 : 400, color: lead.budgetRange ? "rgba(100,220,160,0.85)" : "rgba(200,215,230,0.35)" }}>
+            {lead.budgetRange || "—"}
+          </span>
+        </td>
+        <td style={tdStyle}>
           <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.55)" }}>
             {lead.industry || "—"}
           </span>
@@ -413,7 +423,7 @@ export default function AdminLeadsPage() {
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-                    {["Contact", "Company", "Type", "Industry", "Status", "Date", ""].map((h) => (
+                    {["Contact", "Company", "Type", "Investment", "Budget", "Industry", "Status", "Date", ""].map((h) => (
                       <th
                         key={h}
                         style={{

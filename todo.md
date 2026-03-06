@@ -184,3 +184,8 @@
 - [x] Align Method section to Find → Implement → Measure → Expand (4 phases)
 - [x] Build conversational qualifier booking flow in Contact section (1 question at a time)
 - [x] Update footer tagline to "Operational Intelligence for companies that refuse to let friction run the business"
+
+## Round 33 — Suggestions Implementation
+- [x] Update announcement bar to reflect new positioning
+- [x] Wire qualifier budget/investment answers to admin leads dashboard columns
+- [x] Complete Read Aloud rebuild: scroll-sync, sentence-level chunks, pre-fetch queue, word highlight, instant reverse on scroll

@@ -127,13 +127,12 @@ export default function ContactSection() {
       setError("Please enter your name and email.");
       return;
     }
-    const budgetLabel = data.projectType === "one-time"
-      ? `One-time: ${data.budgetRange}`
-      : `Monthly: ${data.budgetRange}`;
     submitCall.mutate({
       name: data.name,
       email: data.email,
-      message: `${budgetLabel}${data.message ? ` | ${data.message}` : ""}`,
+      investmentType: data.projectType === "one-time" ? "One-time Project" : "Monthly Retainer",
+      budgetRange: data.budgetRange,
+      message: data.message || undefined,
     });
   };
 

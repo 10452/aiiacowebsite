@@ -42,7 +42,7 @@ export default function Navbar() {
     <div style={{ position: "sticky", top: 0, zIndex: 100 }}>
       {/* Announcement bar */}
       <div className="announce-bar">
-        <span className="gold-text">AI Integration Authority for the Corporate Age.</span>
+        <span className="gold-text">Operational Intelligence for Real Estate, Mortgage &amp; Management Consulting.</span>
       </div>
 
       {/* Main navbar */}

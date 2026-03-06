@@ -89,6 +89,8 @@ const callSchema = z.object({
   name: z.string().min(1).max(255),
   email: z.string().email().max(320),
   message: z.string().max(2000).optional(),
+  investmentType: z.string().max(64).optional(),
+  budgetRange: z.string().max(64).optional(),
 });
 
 const intakeSchema = z.object({
@@ -371,12 +373,19 @@ export const appRouter = router({
     submitCall: publicProcedure
       .input(callSchema)
       .mutation(async ({ input }) => {
-        await insertLead({ type: "call", name: input.name, email: input.email });
+        await insertLead({
+          type: "call",
+          name: input.name,
+          email: input.email,
+          message: input.message ?? null,
+          investmentType: input.investmentType ?? null,
+          budgetRange: input.budgetRange ?? null,
+        });
         await notifyOwner({
           title: `New Call Request — ${input.name}`,
-          content: `Name: ${input.name}\nEmail: ${input.email}\nType: Executive Call Request`,
+          content: `Name: ${input.name}\nEmail: ${input.email}\nInvestment Type: ${input.investmentType ?? 'Not specified'}\nBudget Range: ${input.budgetRange ?? 'Not specified'}\nType: Executive Call Request`,
         }).catch(() => {});
-        await fireCrmWebhook({ type: "call_request", name: input.name, email: input.email });
+        await fireCrmWebhook({ type: "call_request", name: input.name, email: input.email, investmentType: input.investmentType, budgetRange: input.budgetRange });
         return { success: true };
       }),
 
