@@ -291,6 +291,60 @@ export default function AdminLeadsPage() {
       : leads.filter((l) => l.status === filter)
     : [];
 
+  function exportToCSV() {
+    if (!leads || leads.length === 0) {
+      toast.error("No leads to export");
+      return;
+    }
+    const headers = [
+      "ID",
+      "Name",
+      "Email",
+      "Phone",
+      "Company",
+      "Industry",
+      "Type",
+      "Investment Type",
+      "Budget Range",
+      "Engagement Model",
+      "Annual Revenue",
+      "Message",
+      "Status",
+      "Date",
+    ];
+    const rows = leads.map((l) => [
+      l.id,
+      l.name,
+      l.email,
+      l.phone || "",
+      l.company || "",
+      l.industry || "",
+      l.type,
+      l.investmentType || "",
+      l.budgetRange || "",
+      l.engagementModel || "",
+      l.annualRevenue || "",
+      (l.message || "").replace(/\n/g, " "),
+      l.status,
+      new Date(l.createdAt).toISOString(),
+    ]);
+    const escape = (v: string | number) => {
+      const s = String(v);
+      return s.includes(",") || s.includes('"') || s.includes("\n")
+        ? `"${s.replace(/"/g, '""')}"`
+        : s;
+    };
+    const csv = [headers, ...rows].map((r) => r.map(escape).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `aiia-leads-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${leads.length} leads to CSV`);
+  }
+
   const counts = leads
     ? {
         all: leads.length,
@@ -330,6 +384,34 @@ export default function AdminLeadsPage() {
             <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.45)" }}>
               {user?.name || user?.email}
             </span>
+            <button
+              onClick={exportToCSV}
+              style={{
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                fontSize: "12px",
+                fontWeight: 700,
+                padding: "7px 16px",
+                borderRadius: "7px",
+                border: "1px solid rgba(184,156,74,0.35)",
+                background: "rgba(184,156,74,0.10)",
+                color: "rgba(184,156,74,0.90)",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                transition: "all 0.15s",
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLButtonElement).style.background = "rgba(184,156,74,0.18)";
+                (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(184,156,74,0.55)";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLButtonElement).style.background = "rgba(184,156,74,0.10)";
+                (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(184,156,74,0.35)";
+              }}
+            >
+              <span>↓</span> Export CSV
+            </button>
             <a href="/" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(184,156,74,0.70)", textDecoration: "none" }}>
               ← Site
             </a>

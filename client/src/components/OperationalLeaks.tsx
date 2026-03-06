@@ -164,38 +164,77 @@ export default function OperationalLeaks() {
                     {leak.detail}
                   </p>
                   {/* Fix pill */}
-                  <div
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      padding: "8px 16px",
-                      background: "rgba(184,156,74,0.07)",
-                      border: "1px solid rgba(184,156,74,0.20)",
-                      borderRadius: "8px",
-                    }}
-                  >
-                    <span
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+                    <div
                       style={{
-                        width: "6px",
-                        height: "6px",
-                        borderRadius: "50%",
-                        background: "#D4A843",
-                        flexShrink: 0,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        padding: "8px 16px",
+                        background: "rgba(184,156,74,0.07)",
+                        border: "1px solid rgba(184,156,74,0.20)",
+                        borderRadius: "8px",
                       }}
-                    />
-                    <span
+                    >
+                      <span
+                        style={{
+                          width: "6px",
+                          height: "6px",
+                          borderRadius: "50%",
+                          background: "#D4A843",
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontFamily:
+                            "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                          fontSize: "13px",
+                          fontWeight: 600,
+                          color: "rgba(212,168,67,0.90)",
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {leak.fix}
+                      </span>
+                    </div>
+                    {/* CTA button */}
+                    <button
+                      onClick={() => {
+                        const el = document.getElementById("contact");
+                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }}
                       style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "8px 18px",
+                        background: "linear-gradient(135deg, rgba(212,168,67,0.18) 0%, rgba(184,140,50,0.12) 100%)",
+                        border: "1px solid rgba(212,168,67,0.45)",
+                        borderRadius: "8px",
+                        cursor: "pointer",
                         fontFamily:
                           "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                         fontSize: "13px",
                         fontWeight: 600,
-                        color: "rgba(212,168,67,0.90)",
-                        lineHeight: 1.4,
+                        color: "#D4A843",
+                        letterSpacing: "0.2px",
+                        transition: "all 0.2s ease",
+                      }}
+                      onMouseEnter={e => {
+                        (e.currentTarget as HTMLButtonElement).style.background =
+                          "linear-gradient(135deg, rgba(212,168,67,0.28) 0%, rgba(184,140,50,0.22) 100%)";
+                        (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(212,168,67,0.70)";
+                      }}
+                      onMouseLeave={e => {
+                        (e.currentTarget as HTMLButtonElement).style.background =
+                          "linear-gradient(135deg, rgba(212,168,67,0.18) 0%, rgba(184,140,50,0.12) 100%)";
+                        (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(212,168,67,0.45)";
                       }}
                     >
-                      {leak.fix}
-                    </span>
+                      <span>→</span>
+                      Does this sound familiar? Let's fix it.
+                    </button>
                   </div>
                 </div>
               </div>

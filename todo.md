@@ -189,3 +189,7 @@
 - [x] Update announcement bar to reflect new positioning
 - [x] Wire qualifier budget/investment answers to admin leads dashboard columns
 - [x] Complete Read Aloud rebuild: scroll-sync, sentence-level chunks, pre-fetch queue, word highlight, instant reverse on scroll
+
+## Round 34 — CTA Buttons & CSV Export
+- [x] Add "Does this sound familiar? Let's fix it." CTA button to each Operational Leaks card (scrolls to contact)
+- [x] Add CSV export button to admin leads dashboard (downloads all leads including budget/investment columns)
