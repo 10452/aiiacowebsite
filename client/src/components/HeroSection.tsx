@@ -58,15 +58,15 @@ const HERO_BG = "https://private-us-east-1.manuscdn.com/sessionFile/FvSFBd374GXz
 
 const kpis = [
   { num: "4", label: "Core Sectors", sub: "Real Estate, Mortgage, Commercial Property & Management Consulting." },
-  { num: "100%", label: "Managed Execution", sub: "We build, integrate, and run the system. You run the business." },
-  { num: "0", label: "Internal Overload", sub: "Outcomes delivered without dumping complexity on your team." },
+  { num: "100%", label: "Managed Execution", sub: "We activate the systems you already have. You run the business." },
+  { num: "0", label: "Coordination Drag", sub: "Outcomes delivered without dumping complexity on your team." },
 ];
 
 const points = [
-  "Business architecture audit: friction, leverage, and exposure",
-  "Custom integration blueprint aligned to measurable ROI",
-  "Deployment + managed optimization without internal overload",
-  "Optional performance alignment: milestones, metrics, and success-linked fees",
+  "Fix the workflows that slow down operations",
+  "Reactivate past client databases and CRM systems",
+  "Automate outreach, follow-up, and lead generation",
+  "Create real-time visibility for leadership and teams",
 ];
 
 export default function HeroSection() {
@@ -125,22 +125,19 @@ export default function HeroSection() {
           >
             <div className="section-pill w-fit">
               <span className="dot" />
-              AI Integration Authority — Not Consulting. Execution.
+              EBITDA Efficiency Partner — Operational Clarity. Real Results.
             </div>
 
             <h1 className="display-headline">
-              Operational AI Integration<br />
-              <span className="gold-line">for the Corporate Age.</span>
+              Remove Operational Friction.<br />
+              <span className="gold-line">Run Your Business Faster.</span>
             </h1>
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(13px, 1.2vw, 15px)", fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", margin: "-8px 0 0" }}>
-              The Corporate Age of AI Has Begun. Upgrade or Fall Behind.
+              Most businesses don't have a technology problem. They have an operational flow problem.
             </p>
 
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(15px, 1.5vw, 18px)", lineHeight: 1.65, color: "rgba(200,215,230,0.82)", maxWidth: "52ch", margin: 0 }}>
-              AiiAco is the AI Integration Authority for real estate, mortgage, commercial property, and management consulting — designing, deploying, and managing complete AI operational infrastructure from diagnostics to execution.{" "}
-              <strong style={{ color: "rgba(255,255,255,0.92)", fontWeight: 700 }}>
-                You do not hire AI tools. You hire AiiAco. AiiAco hires and manages everything else.
-              </strong>
+              AiiA helps growing companies simplify workflows, activate dormant databases, and create clear operational visibility so leadership can move faster and teams execute without coordination drag.
             </p>
 
             <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -154,19 +151,19 @@ export default function HeroSection() {
 
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginTop: "4px" }}>
               <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "15px", padding: "14px 30px" }}>
-                Request Your Upgrade Plan
+                Book an Operational Strategy Call
               </button>
               <button onClick={() => document.querySelector("#method")?.scrollIntoView({ behavior: "smooth" })} className="btn-glass" style={{ fontSize: "15px", padding: "14px 24px" }}>
-                Review the Method
+                See How It Works
               </button>
             </div>
 
             <div style={{ marginTop: "8px", display: "flex", flexDirection: "column", gap: "6px" }}>
               <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12.5px", color: "rgba(200,215,230,0.50)", margin: 0, letterSpacing: "0.1px" }}>
-                Not a consultant. Not a software vendor. The AI Integration Authority that executes.
+                We streamline how work moves through the business and activate the systems you already have.
               </p>
               <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontStyle: "italic", color: "rgba(200,215,230,0.38)", margin: 0 }}>
-                We do not advise. We do not recommend. We build, deploy, and run your AI operation.
+                CRM, email, outreach, and operational workflows — so your company runs faster, cleaner, with less manual coordination.
               </p>
             </div>
           </motion.div>

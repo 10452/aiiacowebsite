@@ -16,13 +16,14 @@ import BuiltForCorporateAge from "@/components/BuiltForCorporateAge";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import SEO from "@/seo/SEO";
+import CredibilityBlock from "@/components/CredibilityBlock";
 
 export default function Home() {
   return (
     <>
       <SEO
-        title="AiiAco | AI Integration Authority for the Corporate Age"
-        description="AiiAco is the AI Integration Authority for the Corporate Age. We design, deploy, and manage AI operational infrastructure for real estate brokerages, mortgage lenders, commercial property managers, and management consulting firms. Performance-based AI available."
+        title="AiiA | Remove Operational Friction. Run Your Business Faster."
+        description="AiiA helps growing companies simplify workflows, activate dormant databases, and create clear operational visibility so leadership can move faster and teams execute without coordination drag. Real estate, mortgage, commercial property, and management consulting."
         path="/"
         keywords="AI integration authority, enterprise AI integration, AI implementation services, managed AI integration, AI automation for business, operational AI infrastructure, AI workforce, AI director, done-for-you AI, performance-based AI, AI integration services, artificial intelligence consulting, business AI automation, AI strategy, managed AI services"
       />
@@ -30,6 +31,7 @@ export default function Home() {
         <Navbar />
         <main className="flex-1">
           <HeroSection />
+          <CredibilityBlock />
           <PlatformSection />
           <MethodSection />
           <AfterUpgradeSection />

@@ -168,3 +168,12 @@
 
 ## Round 30 — Netlify _redirects Proxy for /videostudio
 - [x] Add client/public/_redirects with proxy rules for /videostudio → https://aiivideo-zyf9pqt6.manus.space
+
+## Round 31 — Evolved Positioning Update (EBITDA Efficiency Partner)
+- [x] Update hero headline: "Remove Operational Friction. Run Your Business Faster."
+- [x] Update hero subheadline with new AiiA positioning copy
+- [x] Update hero bullet points (4 new primary points)
+- [x] Update hero short explanation / body copy
+- [x] Update CTA to "Book an Operational Strategy Call"
+- [x] Add 3-line credibility block below hero: "Companies come to AiiA when..."
+- [x] Update page SEO title and description to reflect new positioning
