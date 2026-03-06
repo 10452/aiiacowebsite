@@ -177,3 +177,10 @@
 - [x] Update CTA to "Book an Operational Strategy Call"
 - [x] Add 3-line credibility block below hero: "Companies come to AiiA when..."
 - [x] Update page SEO title and description to reflect new positioning
+
+## Round 32 — Full Operator Brief Site Update
+- [ ] Save checkpoint with hero/credibility block changes from Round 31
+- [ ] Add Three Operational Leaks section (Field Workflow, Payroll Efficiency, Numbers We Don't Trust)
+- [ ] Align Method section to Find → Implement → Measure → Expand framework
+- [ ] Build conversational qualifier booking flow in Contact section (1 question at a time)
+- [ ] Update footer tagline to "Operational Intelligence for companies that refuse to let friction run the business"
