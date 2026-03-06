@@ -7,12 +7,12 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 
 const AIIA_ICONS = {
-  brain: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-brain-CWgsZCkYzJEv6FxB3Yfwc8.webp",
-  target: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-target-dqxhJyKSg7MfTbHzvj5rDu.webp",
-  users: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-users-2bMuFaX3C7Vdxg6U6EEZ3d.webp",
-  efficiency: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency-GGHWgMzd5PXNg6Kkkmhabf.webp",
-  trending: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-trending-P5AiVU9wpxjEjbNci97icg.webp",
-  shield: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-shield-PzXnkJ7jHLALMEdMf5Ehcs.webp",
+  brain: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-brain_44428059.png",
+  target: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-target_497d409f.png",
+  users: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-users_e93f46d8.png",
+  efficiency: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency_6b72c1c5.png",
+  trending: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-trending_e02fc2b1.png",
+  shield: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-shield_a56f54cb.png",
 };
 
 const pillars = [

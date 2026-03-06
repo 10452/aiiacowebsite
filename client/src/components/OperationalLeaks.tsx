@@ -12,7 +12,7 @@ const leaks = [
     detail:
       "Field teams capture information on their phones, admins re-enter it later, and managers chase updates. The result is slow execution and unnecessary coordination drag.",
     fix: "Streamlined mobile-first workflows that eliminate re-entry and give managers real-time visibility.",
-    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-workflow-Esv4ip78di3iemCTSkt2Lo.webp",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-workflow_ecf02123.png",
   },
   {
     num: "02",
@@ -21,7 +21,7 @@ const leaks = [
     detail:
       "Multiple admins manage tasks, employees follow up instead of executing, and leadership senses inefficiency without clear visibility into where time is actually going.",
     fix: "Automated coordination that removes manual handoffs and gives leadership a clear operational picture.",
-    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency-GGHWgMzd5PXNg6Kkkmhabf.webp",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency_6b72c1c5.png",
   },
   {
     num: "03",
@@ -30,7 +30,7 @@ const leaks = [
     detail:
       "When leadership cannot trust the numbers, decisions slow down, friction increases, and the business runs on gut feel instead of clarity.",
     fix: "A single source of operational truth — synced, accurate, and available in real time.",
-    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-data-FwpKNyHQCN6aEgnka2ScVe.webp",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-data_f6db5660.png",
   },
 ];
 

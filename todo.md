@@ -200,3 +200,12 @@
 - [x] Generate 11 total AiiA gold icons: 4 industry sectors + 3 operational leaks + 6 WhatIsAiiA pillars
 - [x] Upload all icons to CDN (webdev static assets, permanent lifecycle)
 - [x] Replace all generic icons/emojis site-wide with proprietary AiiA gold assets (Industries, OperationalLeaks, WhatIsAiiA, Pricing)
+
+## Round 36 — Icon Background Fix
+- [ ] Regenerate workflow icon with fully transparent background (white bg visible on dark site)
+- [ ] Re-upload and update CDN URL in OperationalLeaks component
+
+## Round 36 — Skyline Brand Icon & Icon Background Fix
+- [x] Generate premium AiiA gold skyline icon (Qatar/Dubai ultra-modern tower silhouette)
+- [x] Fix all icon white backgrounds using AI-based rembg batch removal (14/14 icons)
+- [x] Upload all 14 transparent icons to CDN and update all component references (Industries, OperationalLeaks, WhatIsAiiA, Pricing)

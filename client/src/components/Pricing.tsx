@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 // AiiA proprietary gold icons replace Lucide icons
-const AIIA_ICON_EFFICIENCY = "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency-GGHWgMzd5PXNg6Kkkmhabf.webp";
-const AIIA_ICON_TRENDING = "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-trending-P5AiVU9wpxjEjbNci97icg.webp";
+const AIIA_ICON_EFFICIENCY = "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency_6b72c1c5.png";
+const AIIA_ICON_TRENDING = "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-trending_e02fc2b1.png";
 
 const plans = [
   {
