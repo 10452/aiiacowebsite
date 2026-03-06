@@ -7,38 +7,31 @@ import { motion } from "framer-motion";
 const phases = [
   {
     num: "01",
-    title: "Business Intelligence Audit",
-    sub: "Diagnostic Clarity Before Any Recommendation",
-    body: "We conduct a structured audit of your operations: process mapping, data readiness, bottleneck identification, revenue friction, and competitive exposure. No assumptions. No templates.",
-    outputs: ["Process mapping", "Data readiness", "Bottleneck analysis", "Revenue friction", "Risk exposure", "Competitive gaps"],
+    title: "Find the Friction",
+    sub: "Operational Audit — No Assumptions",
+    body: "We analyze how work actually flows through your business — where tasks wait on people, where admins chase updates, where data conflicts, and where coordination is eating margin.",
+    outputs: ["Process mapping", "Bottleneck identification", "Coordination audit", "Data reliability check", "Workflow gaps", "Margin leaks"],
   },
   {
     num: "02",
-    title: "Strategic Architecture",
-    sub: "Precision Before Deployment",
-    body: "We design the integration blueprint: what gets upgraded first, why it matters, how it will be measured, and how it scales.",
-    outputs: ["Integration blueprint", "ROI prioritization", "Governance", "Tooling selection", "Timeline", "Success metrics"],
+    title: "Implement the Fix",
+    sub: "Practical Systems. Real Execution.",
+    body: "We implement streamlined workflows that remove manual coordination, activate dormant CRM and database systems, and automate the handoffs that currently require human follow-up.",
+    outputs: ["Workflow automation", "CRM reactivation", "Outreach automation", "Admin reduction", "Mobile-first capture", "System integration"],
   },
   {
     num: "03",
-    title: "Future State Simulation",
-    sub: "See the Outcome Before Execution",
-    body: "Before implementation, you see the upgraded operating model: workflows, automations, decision loops, and expected outcomes.",
-    outputs: ["Future-state map", "Outcome forecast", "KPI framework", "Investment structure", "Milestones", "Acceptance criteria"],
+    title: "Measure the Improvement",
+    sub: "Numbers You Can Actually Trust",
+    body: "We establish a single source of operational truth — synced, accurate, and available in real time — so leadership can make decisions faster and with confidence.",
+    outputs: ["Real-time dashboards", "Execution speed metrics", "Coordination reduction", "Revenue visibility", "Team performance", "Operational KPIs"],
   },
   {
     num: "04",
-    title: "Deployment & Integration",
-    sub: "We Run It. You Receive Results.",
-    body: "We configure the AI workforce, integrate systems, and operationalize execution. No tool chaos. No internal burden.",
-    outputs: ["Automation build", "Agent orchestration", "Integrations", "Quality controls", "Monitoring", "Documentation"],
-  },
-  {
-    num: "05",
-    title: "Managed Optimization",
-    sub: "Compounding Performance Over Time",
-    body: "We run the system: reporting, improvement cycles, scaling support, and optional milestone-based performance alignment.",
-    outputs: ["Optimization cycles", "Performance reporting", "Scaling", "Governance", "Success-linked fees", "Continuous improvement"],
+    title: "Expand What Works",
+    sub: "Scale Successful Systems Across the Company",
+    body: "Once a module is working, we expand it. The same operational clarity that fixed one department gets applied across the business — compounding efficiency over time.",
+    outputs: ["Cross-department rollout", "Playbook documentation", "Team training", "Scaling roadmap", "Ongoing optimization", "Performance reporting"],
   },
 ];
 
@@ -66,14 +59,14 @@ export default function MethodSection() {
         >
           <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
             <span className="dot" />
-            The AiiAco Execution Method
+            How AiiA Works
           </div>
           <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px" }}>
-            Five Phases. <span className="accent">Zero Guesswork. Irreversible Results.</span>
+            Find. Implement. Measure. <span className="accent">Expand.</span>
           </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
-            This is not a roadmap. It is an execution protocol. AiiAco runs every phase — you receive outcomes at each milestone, not status reports and slide decks.
+            Most operational modules are implemented within 2–4 weeks. We find the friction, build the fix, measure the improvement, and expand what works across the business.
           </p>
         </motion.div>
 

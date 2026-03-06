@@ -17,6 +17,7 @@ import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import SEO from "@/seo/SEO";
 import CredibilityBlock from "@/components/CredibilityBlock";
+import OperationalLeaks from "@/components/OperationalLeaks";
 
 export default function Home() {
   return (
@@ -32,6 +33,7 @@ export default function Home() {
         <main className="flex-1">
           <HeroSection />
           <CredibilityBlock />
+          <OperationalLeaks />
           <PlatformSection />
           <MethodSection />
           <AfterUpgradeSection />

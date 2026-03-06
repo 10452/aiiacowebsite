@@ -33,10 +33,10 @@ export default function Footer() {
               />
             </div>
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.48)", margin: "0 0 8px", maxWidth: "42ch" }}>
-              AiiAco is the AI Integration Authority for the Corporate Age. We design, deploy, and manage operational AI infrastructure for businesses that intend to lead.
+              AiiA is the Operational Intelligence partner for companies that refuse to let friction run the business. We find the leaks, implement the fix, and measure the improvement.
             </p>
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12.5px", lineHeight: 1.6, color: "rgba(200,215,230,0.32)", margin: "0 0 4px", maxWidth: "42ch" }}>
-              AI integration services for real estate, mortgage, commercial property, and management consulting. Performance-based AI available.
+              Serving real estate, mortgage & lending, commercial property, and management consulting firms.
             </p>
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.28)", margin: 0 }}>www.aiiaco.com</p>
           </div>
@@ -78,7 +78,7 @@ export default function Footer() {
             © {new Date().getFullYear()} AiiAco. All rights reserved.
           </p>
           <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.28)", margin: 0 }}>
-            AI Integration Authority · Operational AI Infrastructure · Performance-Based AI Consulting
+            Operational Intelligence · Workflow Automation · Real Estate & Mortgage · Management Consulting
           </p>
         </div>
       </div>

@@ -179,8 +179,8 @@
 - [x] Update page SEO title and description to reflect new positioning
 
 ## Round 32 — Full Operator Brief Site Update
-- [ ] Save checkpoint with hero/credibility block changes from Round 31
-- [ ] Add Three Operational Leaks section (Field Workflow, Payroll Efficiency, Numbers We Don't Trust)
-- [ ] Align Method section to Find → Implement → Measure → Expand framework
-- [ ] Build conversational qualifier booking flow in Contact section (1 question at a time)
-- [ ] Update footer tagline to "Operational Intelligence for companies that refuse to let friction run the business"
+- [x] Save checkpoint with hero/credibility block changes from Round 31
+- [x] Add Three Operational Leaks section (Field Workflow, Payroll Efficiency, Numbers We Don't Trust)
+- [x] Align Method section to Find → Implement → Measure → Expand (4 phases)
+- [x] Build conversational qualifier booking flow in Contact section (1 question at a time)
+- [x] Update footer tagline to "Operational Intelligence for companies that refuse to let friction run the business"

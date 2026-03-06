@@ -88,6 +88,7 @@ async function fireCrmWebhook(payload: Record<string, unknown>): Promise<void> {
 const callSchema = z.object({
   name: z.string().min(1).max(255),
   email: z.string().email().max(320),
+  message: z.string().max(2000).optional(),
 });
 
 const intakeSchema = z.object({
