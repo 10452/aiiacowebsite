@@ -16,6 +16,7 @@
 import { invokeLLM } from "./_core/llm";
 import { notifyOwner } from "./_core/notification";
 import { sendLeadConfirmationEmail } from "./email";
+import { updateLeadById } from "./db";
 import { Lead } from "../drizzle/schema";
 
 // ─── Problem → AiiACo signal mapping ─────────────────────────────────────────
@@ -220,6 +221,23 @@ Internal Signal Mapping:
       sales_call_next_steps: "1. Understand the scope\n2. Identify quick wins\n3. Discuss fit",
       lead_brief: `Thank you for sharing your situation with us. Based on what you've described, we've identified some clear areas where operational improvements could make a meaningful difference for your business. We'll walk you through our findings on the call.`,
     };
+  }
+
+  // ── Step 1b: Persist diagnostic to database for admin panel display ──────────
+  try {
+    const fullDiagnosticText = [
+      `WHO THEY ARE\n${result.recap_snapshot}`,
+      `WHAT THEY TOLD US\n${result.what_they_told_us}`,
+      `FULL DIAGNOSTIC\n${result.full_diagnostic}`,
+      `SOLUTION AREAS\n${result.solution_areas}`,
+      `SALES CALL — NEXT STEPS\n${result.sales_call_next_steps}`,
+    ].join("\n\n");
+    await updateLeadById(lead.id, {
+      diagnosticSnapshot: fullDiagnosticText,
+      leadBrief: result.lead_brief,
+    });
+  } catch (err) {
+    console.error("[LeadDiagnostic] Failed to persist diagnostic to DB:", err);
   }
 
   // ── Step 2: Send owner notification (full report + lead brief preview) ──────

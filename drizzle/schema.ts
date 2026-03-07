@@ -40,6 +40,10 @@ export const leads = mysqlTable("leads", {
   problemDetail: text("problemDetail"),
   callPreference: varchar("callPreference", { length: 128 }),
   leadSource: varchar("leadSource", { length: 128 }),
+  /** AI-generated full diagnostic (owner-only, stored for admin panel display) */
+  diagnosticSnapshot: text("diagnosticSnapshot"),
+  /** AI-generated lead-facing brief (stored for reference) */
+  leadBrief: text("leadBrief"),
   status: mysqlEnum("status", ["new", "reviewed", "contacted", "closed"]).default("new").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

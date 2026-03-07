@@ -272,3 +272,8 @@
 - [x] Generate full diagnostic + lead brief in one structured LLM call (JSON schema response)
 - [x] Owner notification: full report + preview of what the lead will receive
 - [x] Lead email: email confirmation + meeting confirmation + high-level brief only
+
+## Round 48 — Domain Verification, Admin Diagnostic Panel, Retroactive Diagnostic
+- [x] Verify aiiaco.com sending domain in Resend (get DNS records, present to user)
+- [x] Add AI diagnostic display to admin console lead detail panel
+- [x] Run retroactive diagnostic for Maria Luisa (send her confirmation email + owner report)

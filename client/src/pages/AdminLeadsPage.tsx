@@ -218,6 +218,84 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
               )}
             </div>
 
+            {/* AI Diagnostic Panel */}
+            {(lead.diagnosticSnapshot || lead.leadBrief) && (
+              <div style={{ marginTop: "16px", marginBottom: "4px" }}>
+                <div
+                  style={{
+                    borderTop: "1px solid rgba(184,156,74,0.18)",
+                    paddingTop: "16px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "14px",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <span
+                      style={{
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                        fontSize: "10px",
+                        fontWeight: 800,
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        color: "rgba(184,156,74,0.75)",
+                        background: "rgba(184,156,74,0.08)",
+                        border: "1px solid rgba(184,156,74,0.20)",
+                        padding: "3px 10px",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      AI Diagnostic — Owner Only
+                    </span>
+                  </div>
+
+                  {lead.diagnosticSnapshot && (
+                    <div
+                      style={{
+                        background: "rgba(5,8,16,0.70)",
+                        border: "1px solid rgba(184,156,74,0.12)",
+                        borderRadius: "10px",
+                        padding: "16px 20px",
+                      }}
+                    >
+                      <pre
+                        style={{
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                          fontSize: "12px",
+                          lineHeight: 1.7,
+                          color: "rgba(200,215,230,0.80)",
+                          whiteSpace: "pre-wrap",
+                          wordBreak: "break-word",
+                          margin: 0,
+                        }}
+                      >
+                        {lead.diagnosticSnapshot}
+                      </pre>
+                    </div>
+                  )}
+
+                  {lead.leadBrief && (
+                    <div>
+                      <p style={labelStyle}>Preview — What the Lead Received</p>
+                      <p
+                        style={{
+                          ...valueStyle,
+                          fontStyle: "italic",
+                          color: "rgba(184,156,74,0.70)",
+                          lineHeight: 1.6,
+                          borderLeft: "2px solid rgba(184,156,74,0.25)",
+                          paddingLeft: "12px",
+                          margin: "4px 0 0",
+                        }}
+                      >
+                        {lead.leadBrief}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Status controls */}
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
               <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "rgba(200,215,230,0.40)", alignSelf: "center", marginRight: "4px" }}>
