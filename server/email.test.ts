@@ -28,6 +28,7 @@ describe("sendLeadConfirmationEmail", () => {
       email: "alliedbestsellers@gmail.com",
       company: "Alliedbestsellers",
       callPreference: "afternoon",
+      leadBrief: "Your business is growing and we see clear areas to help.",
     });
 
     expect(result).toBe(true);
@@ -57,29 +58,65 @@ describe("sendLeadConfirmationEmail", () => {
     const resendInstance = vi.mocked(Resend).mock.results[0].value;
     const callArgs = resendInstance.emails.send.mock.calls[0][0];
     expect(callArgs.html).toContain("Afternoon — Weekdays 12pm to 5pm");
-    expect(callArgs.text).toContain("Afternoon — Weekdays 12pm to 5pm");
   });
 
-  it("does NOT include any diagnostic content in the email", async () => {
+  it("shows call-back confirmation text for non-Calendly leads", async () => {
+    await sendLeadConfirmationEmail({
+      name: "Test User",
+      email: "test@example.com",
+      callPreference: "morning",
+      isCalendly: false,
+    });
+    const resendInstance = vi.mocked(Resend).mock.results[0].value;
+    const callArgs = resendInstance.emails.send.mock.calls[0][0];
+    expect(callArgs.html).toContain("call-back request has been received");
+  });
+
+  it("shows Calendly confirmation text for Calendly leads", async () => {
+    await sendLeadConfirmationEmail({
+      name: "Test User",
+      email: "test@example.com",
+      callPreference: "Calendly booking",
+      isCalendly: true,
+    });
+    const resendInstance = vi.mocked(Resend).mock.results[0].value;
+    const callArgs = resendInstance.emails.send.mock.calls[0][0];
+    expect(callArgs.html).toContain("Calendly booking is confirmed");
+  });
+
+  it("includes the AI-generated lead brief in the email body", async () => {
+    const brief = "Based on what you've shared, your primary challenge is operational scaling.";
+    await sendLeadConfirmationEmail({
+      name: "Test User",
+      email: "test@example.com",
+      callPreference: "afternoon",
+      leadBrief: brief,
+    });
+    const resendInstance = vi.mocked(Resend).mock.results[0].value;
+    const callArgs = resendInstance.emails.send.mock.calls[0][0];
+    expect(callArgs.html).toContain("INITIAL ASSESSMENT");
+    expect(callArgs.html).toContain(brief);
+    expect(callArgs.text).toContain(brief);
+  });
+
+  it("does NOT include any full diagnostic content in the email", async () => {
     await sendLeadConfirmationEmail({
       name: "Maria L Castronovo",
       email: "alliedbestsellers@gmail.com",
       callPreference: "afternoon",
+      leadBrief: "High-level brief only.",
     });
     const resendInstance = vi.mocked(Resend).mock.results[0].value;
     const callArgs = resendInstance.emails.send.mock.calls[0][0];
-    // Ensure no diagnostic keywords appear in the lead email
-    expect(callArgs.html).not.toContain("CORE OPERATIONAL PROBLEM");
-    expect(callArgs.html).not.toContain("MAPPED AIIACO PILLAR");
-    expect(callArgs.html).not.toContain("NEXT STEPS FOR SALES CALL");
-    expect(callArgs.text).not.toContain("CORE OPERATIONAL PROBLEM");
+    // Ensure no owner-only diagnostic keywords appear in the lead email
+    expect(callArgs.html).not.toContain("FULL DIAGNOSTIC");
+    expect(callArgs.html).not.toContain("SALES CALL — NEXT STEPS");
+    expect(callArgs.html).not.toContain("OWNER ONLY");
+    expect(callArgs.text).not.toContain("FULL DIAGNOSTIC");
   });
 
-  it("returns false and does not throw when Resend returns an error", async () => {
-    const resendInstance = vi.mocked(Resend).mock.results[0]?.value;
-    // Re-mock for this test
-    const { Resend: ResendMock } = await import("resend");
-    vi.mocked(ResendMock).mockImplementationOnce(() => ({
+  it("returns false gracefully when Resend returns an error", async () => {
+    vi.mocked(Resend).mockImplementationOnce(() => ({
       emails: {
         send: vi.fn().mockResolvedValue({ data: null, error: { message: "Invalid API key" } }),
       },

@@ -1,13 +1,21 @@
 /**
- * Lead Diagnostic Engine
+ * AiiACo Lead Diagnostic Engine — v2
  *
- * Generates an AI-powered diagnostic for every completed intake lead.
- * Called from qualifierStep3 (the final step of the intake flow).
- * Fires a rich owner notification with the full lead profile + diagnostic.
+ * Sequence on intake completion:
+ * 1. Generate a structured JSON output from GPT-4o containing:
+ *    a. Full owner diagnostic (who they are, what they said, problem areas, solutions)
+ *    b. Lead-facing brief (high-level, no internal analysis language)
+ *    c. Recap snapshot (one-liner identity + challenge summary)
+ * 2. Send owner notification with the full report + preview of what the lead will receive
+ * 3. Call sendLeadConfirmationEmail() with the generated brief for the lead email
+ *
+ * The lead NEVER sees the full diagnostic. The owner sees everything including
+ * a preview of the exact brief the lead received.
  */
 
 import { invokeLLM } from "./_core/llm";
 import { notifyOwner } from "./_core/notification";
+import { sendLeadConfirmationEmail } from "./email";
 import { Lead } from "../drizzle/schema";
 
 // ─── Problem → AiiACo signal mapping ─────────────────────────────────────────
@@ -72,10 +80,32 @@ const CALL_PREF_LABELS: Record<string, string> = {
   afternoon: "Afternoon (Weekdays 12pm – 5pm)",
   weekdays: "Any Weekday (morning or afternoon)",
   anytime: "Anytime — flexible",
-  "Calendly booking": "Calendly — specific slot",
+  "Calendly booking": "Calendly — specific slot booked",
 };
 
-// ─── Main diagnostic generator ────────────────────────────────────────────────
+// ─── Structured output type ───────────────────────────────────────────────────
+
+export type DiagnosticResult = {
+  /** One-line identity snapshot: who they are + what they do */
+  recap_snapshot: string;
+  /** What the lead told us — their challenge in their own words, contextualised */
+  what_they_told_us: string;
+  /** Full owner-only diagnostic: problem areas, root causes, business impact */
+  full_diagnostic: string;
+  /** High-level solution areas — what AiiACo could do, no pricing or specifics */
+  solution_areas: string;
+  /** 3 specific next steps for the sales call */
+  sales_call_next_steps: string;
+  /**
+   * Lead-facing brief — 3–4 sentences max.
+   * Acknowledges their situation, names the problem area at a high level,
+   * and sets up the call as the place where the full picture will be shared.
+   * NO internal analysis language, NO pricing, NO specifics.
+   */
+  lead_brief: string;
+};
+
+// ─── Main function ────────────────────────────────────────────────────────────
 
 export async function generateAndSendLeadDiagnostic(lead: Lead): Promise<void> {
   const problemCategory = lead.problemCategory ?? "Not specified";
@@ -89,6 +119,8 @@ export async function generateAndSendLeadDiagnostic(lead: Lead): Promise<void> {
   const callPrefLabel =
     CALL_PREF_LABELS[lead.callPreference ?? ""] ?? lead.callPreference ?? "Not specified";
 
+  const isCalendly = (lead.callPreference ?? "") === "Calendly booking";
+
   const submittedAt = lead.createdAt
     ? new Date(lead.createdAt).toLocaleString("en-US", {
         timeZone: "America/New_York",
@@ -97,8 +129,9 @@ export async function generateAndSendLeadDiagnostic(lead: Lead): Promise<void> {
       }) + " EST"
     : "Unknown";
 
-  // ── Generate AI diagnostic ──────────────────────────────────────────────────
-  let diagnostic = "";
+  // ── Step 1: Generate structured diagnostic ──────────────────────────────────
+  let result: DiagnosticResult;
+
   try {
     const response = await invokeLLM({
       messages: [
@@ -109,81 +142,141 @@ export async function generateAndSendLeadDiagnostic(lead: Lead): Promise<void> {
 2. AI Revenue Engine — AI-assisted outbound prospecting, automated follow-up sequencing, lead scoring, and conversion intelligence
 3. Operational AI Systems — custom AI integrations embedded in field operations, communications, reporting, and workflow coordination
 
-Your job is to produce a sharp, concise, investor-grade lead diagnostic for the AiiACo owner (Nemr Hallak) based on a prospect's intake answers. The diagnostic must include:
-- CORE OPERATIONAL PROBLEM: What is actually broken and why it matters
-- BUSINESS IMPACT: The downstream cost of leaving this unresolved
-- MAPPED AIIACO PILLAR(S): Which service(s) directly address this
-- URGENCY AND FIT: How urgent and how strong the fit is
-- NEXT STEPS FOR SALES CALL: 3 specific, actionable questions or actions for the call
+You will produce a structured JSON diagnostic for every completed intake lead. The JSON must contain exactly these fields:
 
-Be direct, confident, and executive in tone. No filler. Every sentence earns its place.
-Format with ALL CAPS section headers. Plain text only — no markdown bullets or asterisks.`,
+recap_snapshot: One sentence. Who this person is and what their company does. Infer from name, company name, and industry context. Be specific and professional.
+
+what_they_told_us: 2–3 sentences. Summarise the challenge they selected and any detail they provided. Write as if briefing a senior partner before a call — factual, no spin.
+
+full_diagnostic: 3–4 paragraphs. Deep analysis for the owner only: what is actually broken, why it matters, the downstream business impact, and how this maps to AiiACo's pillars. Use executive language. Be direct.
+
+solution_areas: 2–3 sentences. High-level areas where AiiACo could intervene. No pricing, no specific deliverables — just the strategic zones.
+
+sales_call_next_steps: Exactly 3 numbered steps. Specific questions or actions for the discovery call to qualify and advance this lead.
+
+lead_brief: 3–4 sentences maximum. Written directly to the lead (use "you" / "your"). Acknowledge their situation warmly but professionally. Name the problem area at a high level (e.g. "operational scaling constraints" not "you can't hire fast enough"). Tell them the call is where the full picture and potential path forward will be shared. Do NOT include any internal analysis, pricing, pillar names, or specifics. Tone: confident, warm, executive.`,
         },
         {
           role: "user",
-          content: `Generate a lead diagnostic for the following prospect:
+          content: `Generate the diagnostic for this lead:
 
-LEAD INFORMATION:
-- Name: ${lead.name}
-- Company: ${lead.company ?? "Not provided"}
-- Email: ${lead.email}
-- Phone: ${lead.phone ?? "Not provided"}
-- Lead Source: ${lead.leadSource ?? "Website"}
-- Call Preference: ${callPrefLabel}
-- Submitted: ${submittedAt}
+Name: ${lead.name}
+Company: ${lead.company ?? "Not provided"}
+Email: ${lead.email}
+Phone: ${lead.phone ?? "Not provided"}
+Source: ${lead.leadSource ?? "Website"}
+Call Preference: ${callPrefLabel}
+Submitted: ${submittedAt}
 
-INTAKE ANSWERS:
-- Primary Challenge: "${problemCategory}"${lead.problemDetail ? `\n- Additional Detail: "${lead.problemDetail}"` : ""}
+Primary Challenge: "${problemCategory}"${lead.problemDetail ? `\nAdditional Detail: "${lead.problemDetail}"` : ""}
 
-INTERNAL SIGNAL MAPPING:
+Internal Signal Mapping:
 - Matched Pillar: ${context.pillar}
 - Operational Signal: ${context.signal}
 - Urgency: ${context.urgency}
-- AiiACo Fit: ${context.aiiaFit}
-
-Generate the diagnostic now.`,
+- AiiACo Fit: ${context.aiiaFit}`,
         },
       ],
-    });
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: "lead_diagnostic",
+          strict: true,
+          schema: {
+            type: "object",
+            properties: {
+              recap_snapshot: { type: "string" },
+              what_they_told_us: { type: "string" },
+              full_diagnostic: { type: "string" },
+              solution_areas: { type: "string" },
+              sales_call_next_steps: { type: "string" },
+              lead_brief: { type: "string" },
+            },
+            required: [
+              "recap_snapshot",
+              "what_they_told_us",
+              "full_diagnostic",
+              "solution_areas",
+              "sales_call_next_steps",
+              "lead_brief",
+            ],
+            additionalProperties: false,
+          },
+        },
+      },
+    } as any);
 
-    diagnostic =
-      (response as any)?.choices?.[0]?.message?.content ??
-      (typeof response === "string" ? response : JSON.stringify(response));
+    const raw =
+      (response as any)?.choices?.[0]?.message?.content ?? "{}";
+    result = JSON.parse(typeof raw === "string" ? raw : JSON.stringify(raw)) as DiagnosticResult;
   } catch (err) {
     console.error("[LeadDiagnostic] LLM call failed:", err);
-    diagnostic = `[Diagnostic generation failed — review lead manually]\n\nPrimary Challenge: ${problemCategory}\nMapped Pillar: ${context.pillar}\nUrgency: ${context.urgency}`;
+    // Fallback — still send both notifications with degraded content
+    result = {
+      recap_snapshot: `${lead.name}${lead.company ? ` — ${lead.company}` : ""}`,
+      what_they_told_us: problemCategory,
+      full_diagnostic: `[Diagnostic generation failed — review lead manually]\n\nPrimary Challenge: ${problemCategory}\nMapped Pillar: ${context.pillar}\nUrgency: ${context.urgency}`,
+      solution_areas: context.aiiaFit,
+      sales_call_next_steps: "1. Understand the scope\n2. Identify quick wins\n3. Discuss fit",
+      lead_brief: `Thank you for sharing your situation with us. Based on what you've described, we've identified some clear areas where operational improvements could make a meaningful difference for your business. We'll walk you through our findings on the call.`,
+    };
   }
 
-  // ── Build notification ──────────────────────────────────────────────────────
-  const title = `NEW LEAD — ${lead.name}${lead.company ? ` (${lead.company})` : ""} | Call: ${callPrefLabel}`;
+  // ── Step 2: Send owner notification (full report + lead brief preview) ──────
+  const ownerNotifTitle = `NEW LEAD — ${lead.name}${lead.company ? ` | ${lead.company}` : ""} | ${callPrefLabel}`;
 
-  const content = [
+  const ownerNotifContent = [
     `LEAD PROFILE`,
-    `Name:     ${lead.name}`,
-    `Company:  ${lead.company ?? "—"}`,
-    `Email:    ${lead.email}`,
-    `Phone:    ${lead.phone ?? "—"}`,
-    `Call:     ${callPrefLabel}`,
-    `Source:   ${lead.leadSource ?? "Website"}`,
+    `Name:      ${lead.name}`,
+    `Company:   ${lead.company ?? "—"}`,
+    `Email:     ${lead.email}`,
+    `Phone:     ${lead.phone ?? "—"}`,
+    `Call:      ${callPrefLabel}`,
+    `Source:    ${lead.leadSource ?? "Website"}`,
     `Submitted: ${submittedAt}`,
     ``,
-    `INTAKE ANSWERS`,
-    `Challenge: ${problemCategory}`,
-    lead.problemDetail ? `Detail:    ${lead.problemDetail}` : null,
+    `WHO THEY ARE`,
+    result.recap_snapshot,
+    ``,
+    `WHAT THEY TOLD US`,
+    result.what_they_told_us,
     ``,
     `─────────────────────────────────────`,
-    `AI DIAGNOSTIC`,
+    `FULL DIAGNOSTIC (OWNER ONLY)`,
     `─────────────────────────────────────`,
     ``,
-    diagnostic,
-  ]
-    .filter((line) => line !== null)
-    .join("\n");
+    result.full_diagnostic,
+    ``,
+    `SOLUTION AREAS`,
+    result.solution_areas,
+    ``,
+    `SALES CALL — NEXT STEPS`,
+    result.sales_call_next_steps,
+    ``,
+    `─────────────────────────────────────`,
+    `PREVIEW — WHAT THE LEAD WILL RECEIVE`,
+    `─────────────────────────────────────`,
+    ``,
+    result.lead_brief,
+  ].join("\n");
 
-  // ── Send notification ───────────────────────────────────────────────────────
   try {
-    await notifyOwner({ title, content });
+    await notifyOwner({ title: ownerNotifTitle, content: ownerNotifContent });
   } catch (err) {
-    console.error("[LeadDiagnostic] Notification failed:", err);
+    console.error("[LeadDiagnostic] Owner notification failed:", err);
+  }
+
+  // ── Step 3: Send lead confirmation email with brief ─────────────────────────
+  try {
+    await sendLeadConfirmationEmail({
+      name: lead.name,
+      email: lead.email,
+      company: lead.company,
+      callPreference: lead.callPreference,
+      isCalendly,
+      leadBrief: result.lead_brief,
+    });
+  } catch (err) {
+    console.error("[LeadDiagnostic] Lead email failed:", err);
   }
 }

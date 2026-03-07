@@ -267,3 +267,8 @@
 ## Round 46 — Lead Confirmation Email + Diagnostic Privacy
 - [x] Send lead a thank-you confirmation email on intake completion (call incoming, no diagnostic details)
 - [x] Ensure AI diagnostic is sent ONLY to owner via Manus notification — never to the lead
+
+## Round 47 — Rebuilt Diagnostic + Email Flow
+- [x] Generate full diagnostic + lead brief in one structured LLM call (JSON schema response)
+- [x] Owner notification: full report + preview of what the lead will receive
+- [x] Lead email: email confirmation + meeting confirmation + high-level brief only
