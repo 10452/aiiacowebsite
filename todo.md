@@ -235,3 +235,16 @@
 ## Round 41 — Admin Dashboard leadSource + Mobile Modal
 - [x] Add leadSource column to admin leads dashboard table (Source badge column + expanded detail panel + CSV export updated)
 - [x] Tighten mobile qualifier modal layout (responsive CSS: single-column grid below 860px, reduced padding, sidebar hidden on mobile)
+
+## Round 42 — Investor-Grade Document Suite
+- [ ] Gather brand assets: logo CDN URL, icon CDN URLs, color palette, font stack
+- [ ] Build AiiACo Overview Brochure (HTML + print CSS, dark gold theme, matches website)
+- [ ] Export brochure to PDF
+- [ ] Build one-page visual architecture diagram (Infrastructure Stack + 3-pillar graphic)
+- [ ] Export architecture diagram to PDF
+
+## Round 42 — Investor-Grade Document Suite
+- [x] Build AiiACo Overview Brochure as premium HTML/PDF matching website design (7-page A4, dark gold theme)
+- [x] Build 3-Pillar Architecture Diagram (Database → Revenue → Operations) as landscape A4 PDF
+- [x] Build AiiACo Infrastructure Stack diagram (5-layer stack + engagement flow + sector map) as landscape A4 PDF
+- [x] All documents use proprietary AiiA gold icons, logo, and brand identity
