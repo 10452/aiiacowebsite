@@ -135,7 +135,7 @@ const whatHappensNext = [
   { n: "04", t: "First operational module scoped and initiated" },
 ];
 
-export default function ContactSection() {
+export default function ContactSection({ leadSource, initialOpen }: { leadSource?: string; initialOpen?: boolean } = {}) {
   const [step, setStep] = useState<Step>("contact");
   const [leadId, setLeadId] = useState<number | null>(null);
   const [error, setError] = useState("");
@@ -186,6 +186,7 @@ export default function ContactSection() {
       company: data.company.trim(),
       email: data.email.trim(),
       phone: data.phone.trim() || undefined,
+      source: leadSource || "Direct",
     });
   };
 
@@ -288,7 +289,7 @@ export default function ContactSection() {
           </motion.div>
           <div style={{ width: "100%", maxWidth: "720px", borderRadius: "16px", overflow: "hidden", border: "1px solid rgba(184,156,74,0.18)", background: "#060B14" }}>
             <iframe
-              src="https://calendly.com/aiiaco/discovery?embed_type=Inline&hide_gdpr_banner=1&background_color=060B14&text_color=d2dceb&primary_color=B89C4A"
+              src="https://calendly.com/aiiaco?embed_type=Inline&hide_gdpr_banner=1&background_color=060B14&text_color=d2dceb&primary_color=B89C4A"
               width="100%" height="580" frameBorder="0"
               title="Schedule a call with AiiA"
               style={{ display: "block" }}

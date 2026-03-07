@@ -36,6 +36,13 @@
       "when": 1772851052243,
       "tag": "0004_productive_bruce_banner",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1772853203140,
+      "tag": "0005_easy_sersi",
+      "breakpoints": true
     }
   ]
 }

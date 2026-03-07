@@ -218,3 +218,9 @@
 - [x] Progressive lead capture: save to DB as soon as name+company captured, update on each subsequent step
 - [x] Integrate Calendly embed for call booking in Step 3
 - [x] Add landmark icons to Method, Industries, Models section headers
+
+## Round 38 — Calendly URL, Qualifier Modal CTAs, Lead Source Tracking
+- [x] Update Calendly URL from calendly.com/aiiaco/discovery to calendly.com/aiiaco
+- [x] Wire Operational Leaks "Does this sound familiar?" CTAs to open qualifier modal directly (not just scroll)
+- [x] Add lead source tracking field to qualifier Step 1 (hidden, captures which CTA triggered it)
+- [x] Pass lead source through all CTA entry points: Hero, Navbar, Operational Leaks cards (3 individual leak titles), ContactSection direct

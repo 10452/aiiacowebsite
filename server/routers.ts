@@ -110,6 +110,7 @@ const qualifierStep1Schema = z.object({
   company: z.string().min(1).max(255),
   email: z.string().email().max(320),
   phone: z.string().max(64).optional(),
+  source: z.string().max(128).optional(),
 });
 
 const qualifierStep2Schema = z.object({
@@ -463,12 +464,13 @@ export const appRouter = router({
           company: input.company,
           email: input.email,
           phone: input.phone ?? null,
+          leadSource: input.source ?? "Direct",
         });
         const leadId = result.insertId;
         // Notify + CRM immediately on first capture
         await notifyOwner({
           title: `New Lead Started — ${input.name} (${input.company})`,
-          content: `Name: ${input.name}\nCompany: ${input.company}\nEmail: ${input.email}\nPhone: ${input.phone ?? 'Not provided'}\nStatus: Step 1 captured`,
+          content: `Name: ${input.name}\nCompany: ${input.company}\nEmail: ${input.email}\nPhone: ${input.phone ?? 'Not provided'}\nSource: ${input.source ?? 'Direct'}\nStatus: Step 1 captured`,
         }).catch(() => {});
         await fireCrmWebhook({
           type: "qualifier_step1",
@@ -476,6 +478,7 @@ export const appRouter = router({
           company: input.company,
           email: input.email,
           phone: input.phone ?? null,
+          leadSource: input.source ?? "Direct",
         });
         return { success: true, leadId };
       }),

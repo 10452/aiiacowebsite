@@ -34,7 +34,7 @@ const leaks = [
   },
 ];
 
-export default function OperationalLeaks() {
+export default function OperationalLeaks({ onOpenQualifier }: { onOpenQualifier?: (source: string) => void } = {}) {
   return (
     <section
       id="operational-leaks"
@@ -208,8 +208,12 @@ export default function OperationalLeaks() {
                     {/* CTA button */}
                     <button
                       onClick={() => {
-                        const el = document.getElementById("contact");
-                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        if (onOpenQualifier) {
+                          onOpenQualifier(`Operational Leaks — ${leak.title}`);
+                        } else {
+                          const el = document.getElementById("contact");
+                          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }
                       }}
                       style={{
                         display: "inline-flex",

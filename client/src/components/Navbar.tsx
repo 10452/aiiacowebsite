@@ -18,7 +18,7 @@ const navLinks = [
 const FF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 const FFD = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
 
-export default function Navbar() {
+export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => void } = {}) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -141,7 +141,7 @@ export default function Navbar() {
                 </svg>
                 Video Studio
               </a>
-              <button onClick={() => scrollTo("#contact")} className="btn-gold hidden lg:inline-flex" style={{ fontSize: "13px", padding: "10px 20px" }}>
+              <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { scrollTo("#contact"); } }} className="btn-gold hidden lg:inline-flex" style={{ fontSize: "13px", padding: "10px 20px" }}>
                 Request Upgrade
               </button>
               <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden" style={{ background: "none", border: "none", color: "rgba(255,255,255,0.80)", padding: "6px", cursor: "pointer" }}>
@@ -202,7 +202,7 @@ export default function Navbar() {
                     Video Studio
                   </a>
 
-                  <button onClick={() => scrollTo("#contact")} className="btn-gold mt-2" style={{ justifyContent: "center" }}>
+                  <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { scrollTo("#contact"); } }} className="btn-gold mt-2" style={{ justifyContent: "center" }}>
                     Request Upgrade
                   </button>
                 </div>

@@ -39,6 +39,7 @@ export const leads = mysqlTable("leads", {
   problemCategory: varchar("problemCategory", { length: 255 }),
   problemDetail: text("problemDetail"),
   callPreference: varchar("callPreference", { length: 128 }),
+  leadSource: varchar("leadSource", { length: 128 }),
   status: mysqlEnum("status", ["new", "reviewed", "contacted", "closed"]).default("new").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

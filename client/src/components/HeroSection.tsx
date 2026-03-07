@@ -69,9 +69,14 @@ const points = [
   "Create real-time visibility for leadership and teams",
 ];
 
-export default function HeroSection() {
-  const scrollToContact = () =>
-    document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () => void } = {}) {
+  const scrollToContact = () => {
+    if (onOpenQualifier) {
+      onOpenQualifier();
+    } else {
+      document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   const scrollToPlatform = () =>
     document.querySelector("#platform")?.scrollIntoView({ behavior: "smooth" });
 
