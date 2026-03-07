@@ -122,11 +122,13 @@ export default function Home() {
               transition={{ duration: 0.25 }}
               style={{
                 width: "100%",
-                maxWidth: "560px",
+                maxWidth: "1100px",
+                maxHeight: "calc(100vh - 80px)",
+                overflowY: "auto",
                 background: "rgba(6,11,20,0.98)",
                 border: "1px solid rgba(184,156,74,0.18)",
                 borderRadius: "20px",
-                overflow: "hidden",
+                scrollbarWidth: "none",
               }}
             >
               <ContactSection leadSource={qualifierSource} />

@@ -227,3 +227,7 @@
 
 ## Round 39 — Broken Icon Fix
 - [x] Re-upload all 3 landmark icons (Method, Industries, Models) to CDN and fix broken URLs in all three components
+
+## Round 40 — Modal Layout Fix + Favicon
+- [x] Fix qualifier modal desktop layout: widened to 1100px max with scrollable container
+- [x] Add AiiA gold favicon with transparent background (rembg processed, all sizes regenerated, cache-busted with ?v=2)
