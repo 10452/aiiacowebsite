@@ -248,3 +248,8 @@
 - [x] Build 3-Pillar Architecture Diagram (Database → Revenue → Operations) as landscape A4 PDF
 - [x] Build AiiACo Infrastructure Stack diagram (5-layer stack + engagement flow + sector map) as landscape A4 PDF
 - [x] All documents use proprietary AiiA gold icons, logo, and brand identity
+
+## Round 43 — Open Graph / Social Share Preview Fix
+- [x] Generate new 1200x630 OG preview image (dark gold, AiiA logo, current tagline)
+- [x] Upload OG image to CDN (permanent webdev lifecycle URL)
+- [x] Update index.html: og:description, og:image, twitter:description, twitter:image all updated
