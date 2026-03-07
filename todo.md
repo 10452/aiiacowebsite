@@ -253,3 +253,7 @@
 - [x] Generate new 1200x630 OG preview image (dark gold, AiiA logo, current tagline)
 - [x] Upload OG image to CDN (permanent webdev lifecycle URL)
 - [x] Update index.html: og:description, og:image, twitter:description, twitter:image all updated
+
+## Round 44 — OG Image Logo Consistency Fix
+- [x] Composite the exact website logo (pure gold chip) into the OG preview image using Python/Pillow
+- [x] Upload new OG image v3 to CDN and update index.html og:image + twitter:image
