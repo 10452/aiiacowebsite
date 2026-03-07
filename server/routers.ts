@@ -6,10 +6,12 @@ import { getSessionCookieOptions, isSecureRequest } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import {
-  insertLead, getAllLeads, updateLeadStatus, updateLeadById,
+  insertLead, getAllLeads, updateLeadStatus, updateLeadById, getLeadById,
   getAdminUserByUsername, getAdminUserById, getAllAdminUsers,
   createAdminUser, deleteAdminUser, updateAdminUserPassword, countAdminUsers,
 } from "./db";
+import { generateAndSendLeadDiagnostic } from "./leadDiagnostic";
+import { sendLeadConfirmationEmail } from "./email";
 import { notifyOwner } from "./_core/notification";
 import { ENV } from "./_core/env";
 import { TRPCError } from "@trpc/server";
@@ -516,6 +518,25 @@ export const appRouter = router({
           leadId: input.leadId,
           callPreference: input.callPreference,
         });
+        // Fire confirmation email to lead + AI diagnostic to owner (both non-blocking)
+        getLeadById(input.leadId)
+          .then((lead) => {
+            if (lead) {
+              // 1. Send thank-you confirmation to the lead (no diagnostic content)
+              sendLeadConfirmationEmail({
+                name: lead.name,
+                email: lead.email,
+                company: lead.company,
+                callPreference: lead.callPreference,
+              }).catch((err) => console.error("[Email] Confirmation error:", err));
+
+              // 2. Send full AI diagnostic exclusively to the owner
+              generateAndSendLeadDiagnostic(lead).catch((err) =>
+                console.error("[LeadDiagnostic] Background error:", err)
+              );
+            }
+          })
+          .catch((err) => console.error("[LeadDiagnostic] getLeadById error:", err));
         return { success: true };
       }),
 

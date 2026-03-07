@@ -257,3 +257,13 @@
 ## Round 44 — OG Image Logo Consistency Fix
 - [x] Composite the exact website logo (pure gold chip) into the OG preview image using Python/Pillow
 - [x] Upload new OG image v3 to CDN and update index.html og:image + twitter:image
+
+## Round 45 — AiiACo Masterpiece Overview Document
+- [x] Read uploaded PDF content and extract all text/structure
+- [x] Generate singular 3D gold masterpiece icon (Arc of the Covenant × Tron circuit board) — aiia-arc-icon-final.png
+- [x] Build premium HTML document with finest paper texture, gold typography, masterpiece icon (4-page A4)
+- [x] Export to PDF and verify quality — 4 pages, clean render, all assets loading
+
+## Round 46 — Lead Confirmation Email + Diagnostic Privacy
+- [x] Send lead a thank-you confirmation email on intake completion (call incoming, no diagnostic details)
+- [x] Ensure AI diagnostic is sent ONLY to owner via Manus notification — never to the lead

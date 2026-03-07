@@ -104,6 +104,13 @@ export async function getAllLeads() {
   return db.select().from(leads).orderBy(desc(leads.createdAt));
 }
 
+export async function getLeadById(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.select().from(leads).where(eq(leads.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
 export async function updateLeadStatus(id: number, status: "new" | "reviewed" | "contacted" | "closed") {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
