@@ -68,7 +68,7 @@ export default function Industries() {
         >
           <div style={{ display: "flex", alignItems: "flex-start", gap: "24px", marginBottom: "28px" }}>
             <img
-              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-landmark-industries_0f78eaa3.png"
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-landmark-industries_345f6f1d.png"
               alt="Industries"
               style={{ width: "96px", height: "96px", objectFit: "contain", flexShrink: 0, marginTop: "4px" }}
             />

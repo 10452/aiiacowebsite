@@ -82,7 +82,7 @@ export default function EngagementModels() {
         >
           <div style={{ display: "flex", alignItems: "flex-start", gap: "24px", marginBottom: "8px" }}>
             <img
-              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-landmark-models_c6b5a5e1.png"
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-landmark-models_23cafdae.png"
               alt="Engagement Models"
               style={{ width: "88px", height: "88px", objectFit: "contain", flexShrink: 0, marginTop: "4px" }}
             />

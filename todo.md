@@ -224,3 +224,6 @@
 - [x] Wire Operational Leaks "Does this sound familiar?" CTAs to open qualifier modal directly (not just scroll)
 - [x] Add lead source tracking field to qualifier Step 1 (hidden, captures which CTA triggered it)
 - [x] Pass lead source through all CTA entry points: Hero, Navbar, Operational Leaks cards (3 individual leak titles), ContactSection direct
+
+## Round 39 — Broken Icon Fix
+- [x] Re-upload all 3 landmark icons (Method, Industries, Models) to CDN and fix broken URLs in all three components
