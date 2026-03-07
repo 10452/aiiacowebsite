@@ -91,11 +91,11 @@ export async function getUserByOpenId(openId: string) {
 
 // ─── Lead helpers ────────────────────────────────────────────────────────────
 
-export async function insertLead(lead: InsertLead) {
+export async function insertLead(lead: InsertLead): Promise<{ insertId: number }> {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const result = await db.insert(leads).values(lead);
-  return result;
+  const [result] = await db.insert(leads).values(lead);
+  return { insertId: (result as any).insertId ?? 0 };
 }
 
 export async function getAllLeads() {
@@ -108,6 +108,16 @@ export async function updateLeadStatus(id: number, status: "new" | "reviewed" | 
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   return db.update(leads).set({ status }).where(eq(leads.id, id));
+}
+
+/**
+ * Partial update for progressive lead capture.
+ * Updates any subset of lead fields by ID.
+ */
+export async function updateLeadById(id: number, patch: Partial<InsertLead>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.update(leads).set({ ...patch, updatedAt: new Date() }).where(eq(leads.id, id));
 }
 
 // ─── Admin user helpers ───────────────────────────────────────────────────────

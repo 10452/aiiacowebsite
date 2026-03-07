@@ -57,13 +57,22 @@ export default function MethodSection() {
           transition={{ duration: 0.6 }}
           style={{ maxWidth: "640px", marginBottom: "72px" }}
         >
-          <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
-            <span className="dot" />
-            How AiiA Works
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "24px", marginBottom: "8px" }}>
+            <img
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-landmark-method_3459d024.png"
+              alt="Method"
+              style={{ width: "88px", height: "88px", objectFit: "contain", flexShrink: 0, marginTop: "4px" }}
+            />
+            <div>
+              <div className="section-pill" style={{ marginBottom: "16px", width: "fit-content" }}>
+                <span className="dot" />
+                How AiiA Works
+              </div>
+              <h2 className="section-headline shimmer-headline" style={{ marginBottom: "0" }}>
+                Find. Implement. Measure. <span className="accent">Expand.</span>
+              </h2>
+            </div>
           </div>
-          <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px" }}>
-            Find. Implement. Measure. <span className="accent">Expand.</span>
-          </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
             Most operational modules are implemented within 2–4 weeks. We find the friction, build the fix, measure the improvement, and expand what works across the business.

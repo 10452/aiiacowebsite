@@ -80,13 +80,22 @@ export default function EngagementModels() {
           transition={{ duration: 0.6 }}
           style={{ maxWidth: "640px", marginBottom: "64px" }}
         >
-          <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
-            <span className="dot" />
-            Engagement Models
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "24px", marginBottom: "8px" }}>
+            <img
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-landmark-models_c6b5a5e1.png"
+              alt="Engagement Models"
+              style={{ width: "88px", height: "88px", objectFit: "contain", flexShrink: 0, marginTop: "4px" }}
+            />
+            <div>
+              <div className="section-pill" style={{ marginBottom: "16px", width: "fit-content" }}>
+                <span className="dot" />
+                Engagement Models
+              </div>
+              <h2 className="section-headline shimmer-headline" style={{ marginBottom: "0" }}>
+                You Choose the Structure. <span className="accent">AiiAco Delivers the Outcome.</span>
+              </h2>
+            </div>
           </div>
-          <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px" }}>
-            You Choose the Structure. <span className="accent">AiiAco Delivers the Outcome.</span>
-          </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
             Three engagement structures. One non-negotiable standard: measurable, operational results. The model you select determines how the investment is structured — not what gets built, not how it is executed, and not what you receive.

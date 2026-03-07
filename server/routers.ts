@@ -6,7 +6,7 @@ import { getSessionCookieOptions, isSecureRequest } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import {
-  insertLead, getAllLeads, updateLeadStatus,
+  insertLead, getAllLeads, updateLeadStatus, updateLeadById,
   getAdminUserByUsername, getAdminUserById, getAllAdminUsers,
   createAdminUser, deleteAdminUser, updateAdminUserPassword, countAdminUsers,
 } from "./db";
@@ -102,6 +102,25 @@ const intakeSchema = z.object({
   engagementModel: z.string().max(128).optional(),
   annualRevenue: z.string().max(64).optional(),
   message: z.string().max(5000).optional(),
+});
+
+// New 3-step qualifier schemas
+const qualifierStep1Schema = z.object({
+  name: z.string().min(1).max(255),
+  company: z.string().min(1).max(255),
+  email: z.string().email().max(320),
+  phone: z.string().max(64).optional(),
+});
+
+const qualifierStep2Schema = z.object({
+  leadId: z.number().int().positive(),
+  problemCategory: z.string().max(255),
+  problemDetail: z.string().max(5000).optional(),
+});
+
+const qualifierStep3Schema = z.object({
+  leadId: z.number().int().positive(),
+  callPreference: z.string().max(128),
 });
 
 // ─── Router ───────────────────────────────────────────────────────────────────
@@ -427,6 +446,72 @@ export const appRouter = router({
           engagementModel: input.engagementModel ?? null,
           annualRevenue: input.annualRevenue ?? null,
           message: input.message ?? null,
+        });
+        return { success: true };
+      }),
+
+    /**
+     * Step 1: Save name + company + email + phone immediately.
+     * Returns leadId for subsequent steps.
+     */
+    qualifierStep1: publicProcedure
+      .input(qualifierStep1Schema)
+      .mutation(async ({ input }) => {
+        const result = await insertLead({
+          type: "intake",
+          name: input.name,
+          company: input.company,
+          email: input.email,
+          phone: input.phone ?? null,
+        });
+        const leadId = result.insertId;
+        // Notify + CRM immediately on first capture
+        await notifyOwner({
+          title: `New Lead Started — ${input.name} (${input.company})`,
+          content: `Name: ${input.name}\nCompany: ${input.company}\nEmail: ${input.email}\nPhone: ${input.phone ?? 'Not provided'}\nStatus: Step 1 captured`,
+        }).catch(() => {});
+        await fireCrmWebhook({
+          type: "qualifier_step1",
+          name: input.name,
+          company: input.company,
+          email: input.email,
+          phone: input.phone ?? null,
+        });
+        return { success: true, leadId };
+      }),
+
+    /**
+     * Step 2: Update lead with problem category + detail.
+     */
+    qualifierStep2: publicProcedure
+      .input(qualifierStep2Schema)
+      .mutation(async ({ input }) => {
+        await updateLeadById(input.leadId, {
+          problemCategory: input.problemCategory,
+          problemDetail: input.problemDetail ?? null,
+        });
+        await fireCrmWebhook({
+          type: "qualifier_step2",
+          leadId: input.leadId,
+          problemCategory: input.problemCategory,
+          problemDetail: input.problemDetail ?? null,
+        });
+        return { success: true };
+      }),
+
+    /**
+     * Step 3: Update lead with call preference. Sends full notification.
+     */
+    qualifierStep3: publicProcedure
+      .input(qualifierStep3Schema)
+      .mutation(async ({ input }) => {
+        await updateLeadById(input.leadId, {
+          callPreference: input.callPreference,
+        });
+        await fireCrmWebhook({
+          type: "qualifier_complete",
+          leadId: input.leadId,
+          callPreference: input.callPreference,
         });
         return { success: true };
       }),

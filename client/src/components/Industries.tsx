@@ -8,7 +8,7 @@ const focusedIndustries = [
   {
     slug: "real-estate-brokerage",
     name: "Real Estate & Brokerage",
-    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-real-estate_c129ef43.png",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-skyline-v1_b078c165.png",
     description: "AI lead qualification, automated follow-up, listing content generation, and pipeline intelligence for residential and commercial brokerages.",
     kpis: ["3× Lead Conversion", "70% Less Manual Follow-Up", "60% Faster Listings"],
   },
@@ -66,14 +66,23 @@ export default function Industries() {
           transition={{ duration: 0.6 }}
           style={{ maxWidth: "640px", marginBottom: "64px" }}
         >
-          <div className="section-pill" style={{ marginBottom: "20px", width: "fit-content" }}>
-            <span className="dot" />
-            Industries
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "24px", marginBottom: "28px" }}>
+            <img
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-landmark-industries_0f78eaa3.png"
+              alt="Industries"
+              style={{ width: "96px", height: "96px", objectFit: "contain", flexShrink: 0, marginTop: "4px" }}
+            />
+            <div>
+              <div className="section-pill" style={{ marginBottom: "16px", width: "fit-content" }}>
+                <span className="dot" />
+                Industries
+              </div>
+              <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px" }}>
+                Built for Real Estate,<br />
+                <span className="accent">Lending & Consulting.</span>
+              </h2>
+            </div>
           </div>
-          <h2 className="section-headline shimmer-headline" style={{ marginBottom: "20px" }}>
-            Built for Real Estate,<br />
-            <span className="accent">Lending & Consulting.</span>
-          </h2>
           <div className="gold-divider" style={{ marginBottom: "20px" }} />
           <p className="section-subhead">
             AiiAco operates at the intersection of real estate, mortgage lending, commercial property, and management consulting — the four sectors where AI integration delivers the fastest, most measurable operational returns.

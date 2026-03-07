@@ -209,3 +209,12 @@
 - [x] Generate premium AiiA gold skyline icon (Qatar/Dubai ultra-modern tower silhouette)
 - [x] Fix all icon white backgrounds using AI-based rembg batch removal (14/14 icons)
 - [x] Upload all 14 transparent icons to CDN and update all component references (Industries, OperationalLeaks, WhatIsAiiA, Pricing)
+
+## Round 37 — Qualifier Flow Redesign, Skyline Icon, Landmark Icons
+- [x] Audit current contact/qualifier form components and DB schema
+- [x] Generate 3 large landmark section icons (Method, Industries, Models)
+- [x] Swap Real Estate card icon to Dubai/Qatar skyline silhouette
+- [x] Redesign qualifier into 3-step form: Step 1 (name/company/email/phone), Step 2 (problem dropdown with 10 options + free text), Step 3 (call booking: time preference or Calendly)
+- [x] Progressive lead capture: save to DB as soon as name+company captured, update on each subsequent step
+- [x] Integrate Calendly embed for call booking in Step 3
+- [x] Add landmark icons to Method, Industries, Models section headers
