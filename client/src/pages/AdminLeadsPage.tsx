@@ -98,6 +98,34 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
             {lead.company || "—"}
           </span>
         </td>
+        {/* Source column */}
+        <td style={tdStyle}>
+          {lead.leadSource ? (
+            <span
+              style={{
+                display: "inline-block",
+                padding: "2px 8px",
+                borderRadius: "4px",
+                fontSize: "10px",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                background: "rgba(120,100,200,0.10)",
+                color: "rgba(160,140,255,0.85)",
+                border: "1px solid rgba(120,100,200,0.20)",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                maxWidth: "120px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+              title={lead.leadSource}
+            >
+              {lead.leadSource}
+            </span>
+          ) : (
+            <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.25)" }}>—</span>
+          )}
+        </td>
         <td style={tdStyle}>
           <span
             style={{
@@ -144,12 +172,30 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
 
       {expanded && (
         <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-          <td colSpan={7} style={{ padding: "0 16px 20px", background: "rgba(184,156,74,0.03)" }}>
+          <td colSpan={10} style={{ padding: "0 16px 20px", background: "rgba(184,156,74,0.03)" }}>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "12px", padding: "16px 0 12px" }}>
               {lead.phone && (
                 <div>
                   <p style={labelStyle}>Phone</p>
                   <p style={valueStyle}>{lead.phone}</p>
+                </div>
+              )}
+              {lead.leadSource && (
+                <div>
+                  <p style={labelStyle}>Lead Source</p>
+                  <p style={{ ...valueStyle, color: "rgba(160,140,255,0.85)" }}>{lead.leadSource}</p>
+                </div>
+              )}
+              {lead.problemCategory && (
+                <div>
+                  <p style={labelStyle}>Problem / Challenge</p>
+                  <p style={{ ...valueStyle, color: "rgba(184,156,74,0.85)" }}>{lead.problemCategory}</p>
+                </div>
+              )}
+              {lead.callPreference && (
+                <div>
+                  <p style={labelStyle}>Call Preference</p>
+                  <p style={valueStyle}>{lead.callPreference}</p>
                 </div>
               )}
               {lead.engagementModel && (
@@ -166,7 +212,7 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
               )}
               {lead.message && (
                 <div style={{ gridColumn: "1 / -1" }}>
-                  <p style={labelStyle}>Message</p>
+                  <p style={labelStyle}>Message / Problem Detail</p>
                   <p style={{ ...valueStyle, whiteSpace: "pre-wrap", lineHeight: 1.6 }}>{lead.message}</p>
                 </div>
               )}
@@ -303,6 +349,9 @@ export default function AdminLeadsPage() {
       "Phone",
       "Company",
       "Industry",
+      "Lead Source",
+      "Problem / Challenge",
+      "Call Preference",
       "Type",
       "Investment Type",
       "Budget Range",
@@ -319,6 +368,9 @@ export default function AdminLeadsPage() {
       l.phone || "",
       l.company || "",
       l.industry || "",
+      l.leadSource || "",
+      l.problemCategory || "",
+      l.callPreference || "",
       l.type,
       l.investmentType || "",
       l.budgetRange || "",
@@ -505,7 +557,7 @@ export default function AdminLeadsPage() {
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-                    {["Contact", "Company", "Type", "Investment", "Budget", "Industry", "Status", "Date", ""].map((h) => (
+                    {["Contact", "Company", "Source", "Type", "Investment", "Budget", "Industry", "Status", "Date", ""].map((h) => (
                       <th
                         key={h}
                         style={{

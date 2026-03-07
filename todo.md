@@ -231,3 +231,7 @@
 ## Round 40 — Modal Layout Fix + Favicon
 - [x] Fix qualifier modal desktop layout: widened to 1100px max with scrollable container
 - [x] Add AiiA gold favicon with transparent background (rembg processed, all sizes regenerated, cache-busted with ?v=2)
+
+## Round 41 — Admin Dashboard leadSource + Mobile Modal
+- [x] Add leadSource column to admin leads dashboard table (Source badge column + expanded detail panel + CSV export updated)
+- [x] Tighten mobile qualifier modal layout (responsive CSS: single-column grid below 860px, reduced padding, sidebar hidden on mobile)

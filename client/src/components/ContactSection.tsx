@@ -229,6 +229,40 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
         overflow: "hidden",
       }}
     >
+      <style>{`
+        .aiia-contact-grid {
+          display: grid;
+          grid-template-columns: 1fr 380px;
+          gap: 80px;
+          align-items: start;
+        }
+        .aiia-contact-outer {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 32px;
+        }
+        @media (max-width: 860px) {
+          .aiia-contact-grid {
+            grid-template-columns: 1fr;
+            gap: 40px;
+          }
+          .aiia-contact-outer {
+            padding: 0 20px;
+          }
+          .aiia-contact-form-card {
+            padding: 24px !important;
+          }
+          .aiia-contact-section {
+            padding: 60px 0 60px !important;
+          }
+          .aiia-contact-header {
+            margin-bottom: 40px !important;
+          }
+          .aiia-contact-sidebar {
+            display: none;
+          }
+        }
+      `}</style>
       {/* Background accent */}
       <div
         style={{
@@ -298,7 +332,7 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
         </motion.div>
       )}
 
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 32px" }}>
+        <div className="aiia-contact-outer">
         {/* Header */}
         <div style={{ marginBottom: "64px" }}>
           <div
@@ -325,7 +359,7 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "80px", alignItems: "start" }}>
+        <div className="aiia-contact-grid">
           {/* Left — Form */}
           <div>
             {/* Progress indicator */}
@@ -373,6 +407,7 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
 
             {/* Step panels */}
             <div
+              className="aiia-contact-form-card"
               style={{
                 background: "rgba(255,255,255,0.025)",
                 border: "1px solid rgba(184,156,74,0.12)",
@@ -631,7 +666,7 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
           </div>
 
           {/* Right — What Happens Next */}
-          <div style={{ paddingTop: "80px" }}>
+          <div className="aiia-contact-sidebar" style={{ paddingTop: "80px" }}>
             <div
               style={{
                 background: "rgba(255,255,255,0.02)",
