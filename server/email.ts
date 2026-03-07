@@ -226,7 +226,7 @@ aiiaco.com`;
   try {
     const resend = getResend();
     const result = await resend.emails.send({
-      from: "AiiACo <onboarding@resend.dev>",
+      from: "AiiACo <team@aiiaco.com>",
       to: [email],
       subject: `${firstName}, your AiiACo request is confirmed`,
       html,

@@ -340,7 +340,7 @@ if (!RESEND_KEY) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "AiiACo <onboarding@resend.dev>",
+      from: "AiiACo <team@aiiaco.com>",
       to: [lead.email],
       subject: `${firstName}, your AiiACo request is confirmed`,
       html: htmlBody,
