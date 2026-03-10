@@ -283,3 +283,15 @@
 - [ ] Add all 20 missing industry slugs to industries.ts data file
 - [ ] Verify IndustryMicrosite renders correctly for all slugs
 - [ ] Update sitemap.xml to include all industry pages
+
+## Round 50 — Full Audit Fix Run
+- [x] Bug #1: Fix Calendly nemr1 link in IndustryMicrosite.tsx
+- [x] Bug #2: Fix workflow icon white background in OperationalLeaks
+- [x] Bug #3: Fix email sending domain to resend.aiiaco.com
+- [ ] Improvement #1: Add Re-run Diagnostic button to admin leads panel
+- [ ] Improvement #2: Lead status auto-progression to diagnostic_ready
+- [ ] Improvement #3: Google Business Profile setup guide
+- [ ] Improvement #4: AiiA Voice sentence-level sync (8 items)
+- [ ] Improvement #5: Fix pre-existing leads.test.ts failure
+- [ ] Improvement #6: Build AiiACo Overview Brochure PDF
+- [ ] Improvement #7: Build Architecture Diagram PDF
