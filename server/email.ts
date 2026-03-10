@@ -26,6 +26,37 @@ function getResend(): Resend {
   return new Resend(key);
 }
 
+/**
+ * Generic email sender — used by webhooks and other server-side code.
+ */
+export async function sendEmail(params: {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+}): Promise<boolean> {
+  const { to, subject, html, text } = params;
+  try {
+    const resend = getResend();
+    const result = await resend.emails.send({
+      from: "AiiACo <team@resend.aiiaco.com>",
+      to: [to],
+      subject,
+      html,
+      text,
+    });
+    if (result.error) {
+      console.error("[Email] Resend error:", result.error);
+      return false;
+    }
+    console.log("[Email] Sent to:", to, "| id:", result.data?.id);
+    return true;
+  } catch (err) {
+    console.error("[Email] Failed to send:", err);
+    return false;
+  }
+}
+
 export async function sendLeadConfirmationEmail(params: {
   name: string;
   email: string;

@@ -158,6 +158,14 @@ export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () 
               <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "15px", padding: "14px 30px" }}>
                 Book an Operational Strategy Call
               </button>
+              <a
+                href="tel:+18888080001"
+                className="btn-glass"
+                style={{ fontSize: "15px", padding: "14px 24px", display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}
+              >
+                <span style={{ fontSize: "16px" }}>📞</span>
+                Call Now — 888-808-0001
+              </a>
               <button onClick={() => document.querySelector("#method")?.scrollIntoView({ behavior: "smooth" })} className="btn-glass" style={{ fontSize: "15px", padding: "14px 24px" }}>
                 See How It Works
               </button>

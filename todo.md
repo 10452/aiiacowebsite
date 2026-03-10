@@ -314,3 +314,11 @@
 - [x] Notes preview (first ~60 chars) in collapsed lead row
 - [x] Lead age colour-coded chip (green <3d, amber 3-7d, red >7d)
 - [x] Calendly webhook: /api/webhooks/calendly → match email → auto-move lead to contacted
+
+## Round 55 — AI Phone Diagnostic System
+- [x] Research ElevenLabs Conversational AI API (agents, phone numbers, webhooks)
+- [x] Design diagnostic agent prompt and 3-track routing logic
+- [x] Build server: ElevenLabs agent creation/config endpoint + post-call webhook (lead capture)
+- [x] Add Call Now CTA (+1 888-808-0001) to hero, navbar, contact sections
+- [x] Build /admin/agent page: view/edit agent script and routing logic
+- [x] Write tests for webhook lead capture

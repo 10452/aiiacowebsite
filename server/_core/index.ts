@@ -8,6 +8,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { handleCalendlyWebhook } from "../webhooks/calendly";
+import { handleElevenLabsWebhook } from "../webhooks/elevenlabs";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -58,6 +59,23 @@ async function startServer() {
       next();
     },
     handleCalendlyWebhook
+  );
+
+  // ── ElevenLabs post-call webhook ─────────────────────────────────────────
+  app.post(
+    "/api/webhooks/elevenlabs",
+    express.raw({ type: "application/json", limit: "5mb" }),
+    (req, _res, next) => {
+      const rawText = (req.body as Buffer).toString("utf8");
+      (req as any).rawBodyText = rawText;
+      try {
+        req.body = JSON.parse(rawText);
+      } catch {
+        req.body = {};
+      }
+      next();
+    },
+    handleElevenLabsWebhook
   );
 
   // Configure body parser with larger size limit for file uploads

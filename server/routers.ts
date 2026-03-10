@@ -15,6 +15,14 @@ import { sendLeadConfirmationEmail } from "./email";
 import { notifyOwner } from "./_core/notification";
 import { ENV } from "./_core/env";
 import { TRPCError } from "@trpc/server";
+import {
+  AGENT_CONFIG,
+  AGENT_SYSTEM_PROMPT,
+  createDiagnosticAgent,
+  listAgents,
+  getAgent,
+  updateAgentPrompt,
+} from "./aiAgent";
 
 // ─── Admin Session JWT helpers ────────────────────────────────────────────────
 
@@ -126,10 +134,82 @@ const qualifierStep3Schema = z.object({
   callPreference: z.string().max(128),
 });
 
+// ─── Agent Management Router ──────────────────────────────────────────────────
+
+const agentRouter = router({
+  /**
+   * Get the current agent configuration (prompt + first message).
+   * Falls back to the default config if no agent ID is stored.
+   */
+  getConfig: adminAuthedProcedure.query(async () => {
+    const agentId = process.env.ELEVENLABS_AGENT_ID;
+    if (!agentId) {
+      return {
+        agentId: null,
+        systemPrompt: AGENT_CONFIG.systemPrompt,
+        firstMessage: AGENT_CONFIG.firstMessage,
+        voiceId: AGENT_CONFIG.voiceId,
+        isLive: false,
+      };
+    }
+    try {
+      const agent = await getAgent(agentId) as Record<string, unknown>;
+      const config = (agent.conversation_config as Record<string, unknown>) ?? {};
+      const agentSection = (config.agent as Record<string, unknown>) ?? {};
+      const prompt = (agentSection.prompt as Record<string, unknown>) ?? {};
+      return {
+        agentId,
+        systemPrompt: (prompt.prompt as string) ?? AGENT_CONFIG.systemPrompt,
+        firstMessage: (agentSection.first_message as string) ?? AGENT_CONFIG.firstMessage,
+        voiceId: AGENT_CONFIG.voiceId,
+        isLive: true,
+      };
+    } catch (err) {
+      console.error("[Agent] Failed to fetch agent config:", err);
+      return {
+        agentId,
+        systemPrompt: AGENT_CONFIG.systemPrompt,
+        firstMessage: AGENT_CONFIG.firstMessage,
+        voiceId: AGENT_CONFIG.voiceId,
+        isLive: false,
+      };
+    }
+  }),
+
+  updateConfig: adminAuthedProcedure
+    .input(z.object({
+      systemPrompt: z.string().min(100).max(20000),
+      firstMessage: z.string().min(10).max(1000),
+    }))
+    .mutation(async ({ input }) => {
+      const agentId = process.env.ELEVENLABS_AGENT_ID;
+      if (!agentId) {
+        throw new TRPCError({
+          code: "PRECONDITION_FAILED",
+          message: "ELEVENLABS_AGENT_ID is not configured. Create the agent first.",
+        });
+      }
+      await updateAgentPrompt(agentId, input.systemPrompt, input.firstMessage);
+      return { success: true };
+    }),
+
+  createAgent: adminAuthedProcedure
+    .input(z.object({ webhookUrl: z.string().url() }))
+    .mutation(async ({ input }) => {
+      const agentId = await createDiagnosticAgent(input.webhookUrl);
+      return { agentId };
+    }),
+
+  listAgents: adminAuthedProcedure.query(async () => {
+    return listAgents();
+  }),
+});
+
 // ─── Router ───────────────────────────────────────────────────────────────────
 
 export const appRouter = router({
   system: systemRouter,
+  agent: agentRouter,
 
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

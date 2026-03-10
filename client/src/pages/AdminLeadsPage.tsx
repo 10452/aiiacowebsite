@@ -723,6 +723,9 @@ export default function AdminLeadsPage() {
             >
               <span>↓</span> Export CSV
             </button>
+            <a href="/admin/agent" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 600, color: "rgba(200,215,230,0.60)", textDecoration: "none", display: "flex", alignItems: "center", gap: "5px" }}>
+              🤖 Agent Config
+            </a>
             <a href="/" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(184,156,74,0.70)", textDecoration: "none" }}>
               ← Site
             </a>
