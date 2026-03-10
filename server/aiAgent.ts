@@ -122,7 +122,7 @@ export async function createDiagnosticAgent(webhookUrl: string): Promise<string>
       },
       tts: {
         voice_id: AGENT_CONFIG.voiceId,
-        model_id: "eleven_turbo_v2_5",
+        model_id: "eleven_turbo_v2",
       },
       asr: {
         quality: "high",
