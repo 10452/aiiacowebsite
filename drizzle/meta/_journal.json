@@ -57,6 +57,13 @@
       "when": 1773177694077,
       "tag": "0007_futuristic_nicolaos",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1773180188663,
+      "tag": "0008_wild_crystal",
+      "breakpoints": true
     }
   ]
 }

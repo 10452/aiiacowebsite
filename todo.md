@@ -305,3 +305,7 @@
 - [x] Lead status auto-progression: move lead to diagnostic_ready after GPT-4o diagnostic completes
 - [x] Re-run Diagnostic button: loading spinner + disabled state during mutation
 - [x] Verify resend.aiiaco.com DNS and provide Namecheap CNAME setup guidance
+
+## Round 53 — Admin Panel Enhancements
+- [x] Add diagnostic_ready count badge to admin navbar header
+- [x] Add per-lead notes field: DB schema migration, saveNotes tRPC procedure, notes textarea in expanded lead row

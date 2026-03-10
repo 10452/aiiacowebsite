@@ -567,6 +567,20 @@ export const appRouter = router({
         await updateLeadStatus(input.id, input.status);
         return { success: true };
       }),
+
+    /**
+     * Save admin-only internal notes for a lead.
+     * Notes are free-text and stored in the adminNotes column.
+     */
+    saveNotes: adminAuthedProcedure
+      .input(z.object({
+        id: z.number().int().positive(),
+        notes: z.string().max(10000),
+      }))
+      .mutation(async ({ input }) => {
+        await updateLeadById(input.id, { adminNotes: input.notes });
+        return { success: true };
+      }),
   }),
 });
 

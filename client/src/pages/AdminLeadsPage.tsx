@@ -80,6 +80,16 @@ function StatusBadge({ status }: { status: Lead["status"] }) {
 function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onStatusChange: (id: number, status: Lead["status"]) => void; onRerunDiagnostic: (id: number) => Promise<unknown> }) {
   const [expanded, setExpanded] = useState(false);
   const [isRerunning, setIsRerunning] = useState(false);
+  const [notes, setNotes] = useState(lead.adminNotes ?? "");
+  const [notesSaved, setNotesSaved] = useState(false);
+
+  const saveNotes = trpc.leads.saveNotes.useMutation({
+    onSuccess: () => {
+      setNotesSaved(true);
+      setTimeout(() => setNotesSaved(false), 2000);
+    },
+    onError: () => toast.error("Failed to save notes"),
+  });
 
   async function handleRerun(id: number) {
     setIsRerunning(true);
@@ -362,6 +372,57 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onSt
               </button>
             </div>
 
+            {/* Admin Notes */}
+            <div style={{ paddingTop: "16px", paddingBottom: "4px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(200,215,230,0.40)", margin: "0 0 8px" }}>
+                Internal Notes
+              </p>
+              <textarea
+                value={notes}
+                onChange={(e) => { setNotes(e.target.value); setNotesSaved(false); }}
+                onClick={(e) => e.stopPropagation()}
+                placeholder="Call outcomes, follow-up dates, internal context…"
+                rows={3}
+                style={{
+                  width: "100%",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.09)",
+                  borderRadius: "8px",
+                  padding: "10px 12px",
+                  color: "rgba(200,215,230,0.85)",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                  fontSize: "13px",
+                  lineHeight: 1.55,
+                  resize: "vertical",
+                  outline: "none",
+                  boxSizing: "border-box",
+                  transition: "border-color 0.15s",
+                }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(184,156,74,0.35)"; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)"; }}
+              />
+              <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "6px" }}>
+                <button
+                  onClick={(e) => { e.stopPropagation(); saveNotes.mutate({ id: lead.id, notes }); }}
+                  disabled={saveNotes.isPending}
+                  style={{
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    padding: "5px 14px",
+                    borderRadius: "6px",
+                    border: notesSaved ? "1px solid rgba(80,220,150,0.35)" : "1px solid rgba(255,255,255,0.12)",
+                    background: notesSaved ? "rgba(80,220,150,0.08)" : "rgba(255,255,255,0.05)",
+                    color: notesSaved ? "rgba(80,220,150,0.90)" : "rgba(200,215,230,0.65)",
+                    cursor: saveNotes.isPending ? "not-allowed" : "pointer",
+                    transition: "all 0.15s",
+                  }}
+                >
+                  {saveNotes.isPending ? "Saving…" : notesSaved ? "✓ Saved" : "Save Notes"}
+                </button>
+              </div>
+            </div>
+
             {/* Status controls */}
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
               <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "rgba(200,215,230,0.40)", alignSelf: "center", marginRight: "4px" }}>
@@ -586,6 +647,27 @@ export default function AdminLeadsPage() {
             </span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            {/* Diagnostic Ready badge — only shown when there are leads awaiting review */}
+            {counts.diagnostic_ready > 0 && (
+              <div
+                title={`${counts.diagnostic_ready} lead${counts.diagnostic_ready > 1 ? "s" : ""} with completed diagnostics awaiting review`}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "5px 11px",
+                  borderRadius: "999px",
+                  background: "rgba(120,200,255,0.10)",
+                  border: "1px solid rgba(120,200,255,0.28)",
+                  cursor: "default",
+                }}
+              >
+                <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "rgba(120,200,255,0.90)", boxShadow: "0 0 6px rgba(120,200,255,0.55)", flexShrink: 0, display: "inline-block", animation: "pulse-dot 2s ease-in-out infinite" }} />
+                <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 700, color: "rgba(120,200,255,0.90)" }}>
+                  {counts.diagnostic_ready} Diagnostic{counts.diagnostic_ready > 1 ? "s" : ""} Ready
+                </span>
+              </div>
+            )}
             <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.45)" }}>
               {user?.name || user?.email}
             </span>
