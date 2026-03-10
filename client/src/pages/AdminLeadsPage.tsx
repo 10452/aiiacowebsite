@@ -13,6 +13,7 @@ import type { Lead } from "../../../drizzle/schema";
 
 const STATUS_LABELS: Record<Lead["status"], string> = {
   new: "New",
+  diagnostic_ready: "Diagnostic Ready",
   reviewed: "Reviewed",
   contacted: "Contacted",
   closed: "Closed",
@@ -23,6 +24,11 @@ const STATUS_COLORS: Record<Lead["status"], { bg: string; text: string; border: 
     bg: "rgba(184,156,74,0.12)",
     text: "rgba(184,156,74,0.95)",
     border: "rgba(184,156,74,0.30)",
+  },
+  diagnostic_ready: {
+    bg: "rgba(120,200,255,0.10)",
+    text: "rgba(120,200,255,0.92)",
+    border: "rgba(120,200,255,0.28)",
   },
   reviewed: {
     bg: "rgba(100,160,255,0.10)",
@@ -45,6 +51,8 @@ const TYPE_LABELS: Record<Lead["type"], string> = {
   call: "Call Request",
   intake: "Full Intake",
 };
+
+const ALL_STATUSES: Lead["status"][] = ["new", "diagnostic_ready", "reviewed", "contacted", "closed"];
 
 function StatusBadge({ status }: { status: Lead["status"] }) {
   const c = STATUS_COLORS[status];
@@ -69,8 +77,18 @@ function StatusBadge({ status }: { status: Lead["status"] }) {
   );
 }
 
-function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onStatusChange: (id: number, status: Lead["status"]) => void; onRerunDiagnostic: (id: number) => void }) {
+function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onStatusChange: (id: number, status: Lead["status"]) => void; onRerunDiagnostic: (id: number) => Promise<unknown> }) {
   const [expanded, setExpanded] = useState(false);
+  const [isRerunning, setIsRerunning] = useState(false);
+
+  async function handleRerun(id: number) {
+    setIsRerunning(true);
+    try {
+      await onRerunDiagnostic(id);
+    } finally {
+      setIsRerunning(false);
+    }
+  }
 
   return (
     <>
@@ -301,33 +319,46 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onSt
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  onRerunDiagnostic(lead.id);
+                  if (!isRerunning) handleRerun(lead.id);
                 }}
+                disabled={isRerunning}
                 style={{
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
                   fontSize: "12px",
                   fontWeight: 700,
                   padding: "7px 16px",
                   borderRadius: "7px",
-                  border: "1px solid rgba(184,156,74,0.35)",
-                  background: "rgba(184,156,74,0.08)",
-                  color: "rgba(184,156,74,0.90)",
-                  cursor: "pointer",
+                  border: `1px solid ${isRerunning ? "rgba(184,156,74,0.18)" : "rgba(184,156,74,0.35)"}`,
+                  background: isRerunning ? "rgba(184,156,74,0.04)" : "rgba(184,156,74,0.08)",
+                  color: isRerunning ? "rgba(184,156,74,0.45)" : "rgba(184,156,74,0.90)",
+                  cursor: isRerunning ? "not-allowed" : "pointer",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "6px",
                   transition: "all 0.15s",
+                  opacity: isRerunning ? 0.7 : 1,
                 }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(184,156,74,0.16)";
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(184,156,74,0.55)";
+                  if (!isRerunning) {
+                    (e.currentTarget as HTMLButtonElement).style.background = "rgba(184,156,74,0.16)";
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(184,156,74,0.55)";
+                  }
                 }}
                 onMouseLeave={e => {
-                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(184,156,74,0.08)";
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(184,156,74,0.35)";
+                  if (!isRerunning) {
+                    (e.currentTarget as HTMLButtonElement).style.background = "rgba(184,156,74,0.08)";
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(184,156,74,0.35)";
+                  }
                 }}
               >
-                ↺ Re-run Diagnostic
+                {isRerunning ? (
+                  <>
+                    <span style={{ display: "inline-block", animation: "spin 1s linear infinite", fontSize: "13px" }}>↺</span>
+                    Running…
+                  </>
+                ) : (
+                  <>↺ Re-run Diagnostic</>
+                )}
               </button>
             </div>
 
@@ -336,7 +367,7 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onSt
               <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "rgba(200,215,230,0.40)", alignSelf: "center", marginRight: "4px" }}>
                 Move to:
               </span>
-              {(["new", "reviewed", "contacted", "closed"] as Lead["status"][]).map((s) => (
+              {ALL_STATUSES.map((s) => (
                 <button
                   key={s}
                   onClick={(e) => {
@@ -522,11 +553,12 @@ export default function AdminLeadsPage() {
     ? {
         all: leads.length,
         new: leads.filter((l) => l.status === "new").length,
+        diagnostic_ready: leads.filter((l) => l.status === "diagnostic_ready").length,
         reviewed: leads.filter((l) => l.status === "reviewed").length,
         contacted: leads.filter((l) => l.status === "contacted").length,
         closed: leads.filter((l) => l.status === "closed").length,
       }
-    : { all: 0, new: 0, reviewed: 0, contacted: 0, closed: 0 };
+    : { all: 0, new: 0, diagnostic_ready: 0, reviewed: 0, contacted: 0, closed: 0 };
 
   return (
     <div style={{ background: "#03050A", minHeight: "100vh" }}>
@@ -610,7 +642,7 @@ export default function AdminLeadsPage() {
 
           {/* Stat cards */}
           <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "28px" }}>
-            {(["all", "new", "reviewed", "contacted", "closed"] as const).map((s) => (
+            {(["all", ...ALL_STATUSES] as const).map((s) => (
               <button
                 key={s}
                 onClick={() => setFilter(s)}
@@ -704,7 +736,7 @@ export default function AdminLeadsPage() {
                       key={lead.id}
                       lead={lead}
                       onStatusChange={(id, status) => updateStatus.mutate({ id, status })}
-                      onRerunDiagnostic={(id) => rerunDiagnostic.mutate({ id })}
+                      onRerunDiagnostic={(id) => rerunDiagnostic.mutateAsync({ id })}
                     />
                   ))}
                 </tbody>

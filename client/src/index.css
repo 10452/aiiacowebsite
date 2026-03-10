@@ -597,3 +597,9 @@
   opacity: 0.80;
   animation: glass-float-3 14s ease-in-out infinite;
 }
+
+/* Spin animation (Re-run Diagnostic) */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

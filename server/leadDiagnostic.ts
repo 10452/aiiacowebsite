@@ -223,7 +223,7 @@ Internal Signal Mapping:
     };
   }
 
-  // ── Step 1b: Persist diagnostic to database for admin panel display ──────────
+  // ── Step 1b: Persist diagnostic to database + auto-progress status ──────────
   try {
     const fullDiagnosticText = [
       `WHO THEY ARE\n${result.recap_snapshot}`,
@@ -235,7 +235,10 @@ Internal Signal Mapping:
     await updateLeadById(lead.id, {
       diagnosticSnapshot: fullDiagnosticText,
       leadBrief: result.lead_brief,
+      // Auto-progress: move lead from "new" to "diagnostic_ready" once diagnostic is saved
+      ...(lead.status === "new" ? { status: "diagnostic_ready" as const } : {}),
     });
+    console.log(`[LeadDiagnostic] Lead #${lead.id} status → diagnostic_ready`);
   } catch (err) {
     console.error("[LeadDiagnostic] Failed to persist diagnostic to DB:", err);
   }

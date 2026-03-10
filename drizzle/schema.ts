@@ -44,7 +44,7 @@ export const leads = mysqlTable("leads", {
   diagnosticSnapshot: text("diagnosticSnapshot"),
   /** AI-generated lead-facing brief (stored for reference) */
   leadBrief: text("leadBrief"),
-  status: mysqlEnum("status", ["new", "reviewed", "contacted", "closed"]).default("new").notNull(),
+  status: mysqlEnum("status", ["new", "diagnostic_ready", "reviewed", "contacted", "closed"]).default("new").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

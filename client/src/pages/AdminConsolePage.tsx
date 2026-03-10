@@ -69,13 +69,14 @@ const btnDanger: React.CSSProperties = {
 
 const STATUS_COLORS: Record<Lead["status"], { bg: string; text: string; border: string }> = {
   new: { bg: "rgba(184,156,74,0.14)", text: "rgba(212,180,80,1)", border: "rgba(184,156,74,0.35)" },
+  diagnostic_ready: { bg: "rgba(120,200,255,0.10)", text: "rgba(120,200,255,0.92)", border: "rgba(120,200,255,0.28)" },
   reviewed: { bg: "rgba(100,160,255,0.12)", text: "rgba(120,175,255,1)", border: "rgba(100,160,255,0.30)" },
   contacted: { bg: "rgba(80,220,150,0.12)", text: "rgba(80,220,150,1)", border: "rgba(80,220,150,0.30)" },
   closed: { bg: "rgba(255,255,255,0.05)", text: "rgba(200,215,230,0.40)", border: "rgba(255,255,255,0.10)" },
 };
 
 const STATUS_LABELS: Record<Lead["status"], string> = {
-  new: "New", reviewed: "Reviewed", contacted: "Contacted", closed: "Closed",
+  new: "New", diagnostic_ready: "Diagnostic Ready", reviewed: "Reviewed", contacted: "Contacted", closed: "Closed",
 };
 
 const TYPE_LABELS: Record<Lead["type"], string> = {

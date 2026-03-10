@@ -111,7 +111,7 @@ export async function getLeadById(id: number) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-export async function updateLeadStatus(id: number, status: "new" | "reviewed" | "contacted" | "closed") {
+export async function updateLeadStatus(id: number, status: "new" | "diagnostic_ready" | "reviewed" | "contacted" | "closed") {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   return db.update(leads).set({ status }).where(eq(leads.id, id));

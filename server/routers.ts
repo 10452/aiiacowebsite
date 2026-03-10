@@ -561,7 +561,7 @@ export const appRouter = router({
     updateStatus: adminAuthedProcedure
       .input(z.object({
         id: z.number().int().positive(),
-        status: z.enum(["new", "reviewed", "contacted", "closed"]),
+        status: z.enum(["new", "diagnostic_ready", "reviewed", "contacted", "closed"]),
       }))
       .mutation(async ({ input }) => {
         await updateLeadStatus(input.id, input.status);

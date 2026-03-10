@@ -300,3 +300,8 @@
 - [x] Add Re-run Diagnostic button to admin leads panel (regenerate GPT-4o diagnostic + re-send owner notification)
 - [x] Fix leads.test.ts admin auth mock (inject valid JWT token into tRPC context)
 - [x] Google Search Console indexing guidance for top 4 industry pages
+
+## Round 52 — Polish & Infrastructure
+- [x] Lead status auto-progression: move lead to diagnostic_ready after GPT-4o diagnostic completes
+- [x] Re-run Diagnostic button: loading spinner + disabled state during mutation
+- [x] Verify resend.aiiaco.com DNS and provide Namecheap CNAME setup guidance
