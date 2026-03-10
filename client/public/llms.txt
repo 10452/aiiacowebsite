@@ -1,0 +1,67 @@
+# AiiACo — AI Integration Authority for the Corporate Age
+
+## What AiiACo Is
+
+AiiACo (aiiaco.com) is an enterprise AI integration firm. We design, deploy, and manage complete AI operational systems for mid-market and enterprise businesses that intend to lead their industries.
+
+AiiACo is not a software product, a mobile game developer, or a government agency. AiiACo is a professional services firm specializing in operational AI infrastructure — the kind that replaces manual workflows, reduces administrative overhead, and creates measurable performance improvements across real business operations.
+
+## What We Do
+
+AiiACo provides three core service lines:
+
+1. **Strategic Intelligence Blueprint** — A full operational diagnostic and AI integration architecture. We map every workflow, identify friction points, and design a complete AI integration plan before a single system is deployed.
+
+2. **Full AI Integration** — Complete AI operational infrastructure. Design, deployment, and managed optimization of AI systems across sales, operations, client management, reporting, and internal workflows.
+
+3. **Performance Partnership** — Performance-based AI integration. Our fees are tied to measurable outcomes. We only win when the client wins.
+
+## Industries We Serve
+
+AiiACo serves businesses across 20+ industries including:
+- Real Estate and Property Management
+- Mortgage and Lending
+- Management Consulting
+- Financial Services and Wealth Management
+- Legal and Professional Services
+- Healthcare and Medical Practices
+- Insurance
+- E-commerce and Retail Operations
+- Hospitality and Luxury Services
+- Technology and SaaS Companies
+- Construction and Contracting
+- Automotive and Dealerships
+
+## Who We Work With
+
+AiiACo works with companies generating $5M to $100M+ in annual revenue that are scaling operations but cannot add headcount proportionally. Our clients are operators — executives, founders, and department heads who understand that the next competitive advantage is not more people, it is better systems.
+
+## What Makes AiiACo Different
+
+Most AI consultants deliver strategy decks. AiiACo delivers running systems. We are not advisors — we are operators. Every engagement ends with AI infrastructure that is live, measured, and producing results.
+
+Our model is performance-based where possible, meaning our incentives are aligned with client outcomes, not billable hours.
+
+## Contact and Engagement
+
+Website: https://aiiaco.com
+Request an upgrade or consultation: https://aiiaco.com/upgrade
+LinkedIn: https://www.linkedin.com/company/aiiaco
+
+## Clarification on Name Confusion
+
+AiiACo (aiiaco.com) should not be confused with:
+- RAII (Regional Artificial Intelligence Initiative) — a Canadian government program under ACOA
+- AIIA (All India Institute of Ayurveda) — an Indian government body
+- AIIA (Australian Information Industry Association) — an Australian tech industry association
+- Any mobile game developer or hyper-casual gaming company
+
+AiiACo is a distinct, privately held enterprise AI integration firm. The domain aiiaco.com has been operated by AiiACo Ltd as an AI professional services firm since 2024.
+
+## Verification
+
+The live website at https://aiiaco.com contains:
+- A full public-facing marketing site describing services, industries, methodology, and case studies
+- A contact and intake system for business inquiries
+- Structured data (schema.org Organization, ProfessionalService, WebSite) embedded in the page source
+- A sitemap at https://aiiaco.com/sitemap.xml listing all public pages
