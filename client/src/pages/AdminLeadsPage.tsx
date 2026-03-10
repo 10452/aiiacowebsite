@@ -69,7 +69,7 @@ function StatusBadge({ status }: { status: Lead["status"] }) {
   );
 }
 
-function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: number, status: Lead["status"]) => void }) {
+function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onStatusChange: (id: number, status: Lead["status"]) => void; onRerunDiagnostic: (id: number) => void }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -296,6 +296,41 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
               </div>
             )}
 
+            {/* Re-run Diagnostic button */}
+            <div style={{ paddingTop: "12px", paddingBottom: "12px" }}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRerunDiagnostic(lead.id);
+                }}
+                style={{
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  padding: "7px 16px",
+                  borderRadius: "7px",
+                  border: "1px solid rgba(184,156,74,0.35)",
+                  background: "rgba(184,156,74,0.08)",
+                  color: "rgba(184,156,74,0.90)",
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  transition: "all 0.15s",
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(184,156,74,0.16)";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(184,156,74,0.55)";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(184,156,74,0.08)";
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(184,156,74,0.35)";
+                }}
+              >
+                ↺ Re-run Diagnostic
+              </button>
+            </div>
+
             {/* Status controls */}
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
               <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "rgba(200,215,230,0.40)", alignSelf: "center", marginRight: "4px" }}>
@@ -370,6 +405,14 @@ export default function AdminLeadsPage() {
       toast.success("Status updated");
     },
     onError: () => toast.error("Failed to update status"),
+  });
+
+  const rerunDiagnostic = trpc.leads.rerunDiagnostic.useMutation({
+    onSuccess: () => {
+      refetch();
+      toast.success("Diagnostic re-run complete — owner notified");
+    },
+    onError: (err) => toast.error(`Re-run failed: ${err.message}`),
   });
 
   // Auth guard
@@ -661,6 +704,7 @@ export default function AdminLeadsPage() {
                       key={lead.id}
                       lead={lead}
                       onStatusChange={(id, status) => updateStatus.mutate({ id, status })}
+                      onRerunDiagnostic={(id) => rerunDiagnostic.mutate({ id })}
                     />
                   ))}
                 </tbody>

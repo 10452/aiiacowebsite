@@ -544,6 +544,20 @@ export const appRouter = router({
       return getAllLeads();
     }),
 
+    /**
+     * Re-run the AI diagnostic for an existing lead.
+     * Regenerates the GPT-4o diagnostic, updates the DB, and re-sends the owner notification.
+     * Does NOT re-send the lead confirmation email (to avoid spamming the lead).
+     */
+    rerunDiagnostic: adminAuthedProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .mutation(async ({ input }) => {
+        const lead = await getLeadById(input.id);
+        if (!lead) throw new TRPCError({ code: "NOT_FOUND", message: "Lead not found" });
+        await generateAndSendLeadDiagnostic(lead);
+        return { success: true };
+      }),
+
     updateStatus: adminAuthedProcedure
       .input(z.object({
         id: z.number().int().positive(),

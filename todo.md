@@ -295,3 +295,8 @@
 - [ ] Improvement #5: Fix pre-existing leads.test.ts failure
 - [ ] Improvement #6: Build AiiACo Overview Brochure PDF
 - [ ] Improvement #7: Build Architecture Diagram PDF
+
+## Round 51 — Next Steps Implementation
+- [x] Add Re-run Diagnostic button to admin leads panel (regenerate GPT-4o diagnostic + re-send owner notification)
+- [x] Fix leads.test.ts admin auth mock (inject valid JWT token into tRPC context)
+- [x] Google Search Console indexing guidance for top 4 industry pages

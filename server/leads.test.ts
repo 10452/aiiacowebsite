@@ -1,43 +1,71 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { describe, expect, it, vi, beforeAll } from "vitest";
+import { SignJWT } from "jose";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
-// Mock the db and notification modules
+// ─── Module mocks ─────────────────────────────────────────────────────────────
+
 vi.mock("./db", () => ({
-  insertLead: vi.fn().mockResolvedValue(undefined),
+  insertLead: vi.fn().mockResolvedValue({ insertId: 1 }),
   getAllLeads: vi.fn().mockResolvedValue([]),
   updateLeadStatus: vi.fn().mockResolvedValue(undefined),
+  updateLeadById: vi.fn().mockResolvedValue(undefined),
+  getLeadById: vi.fn().mockResolvedValue(null),
 }));
 
 vi.mock("./_core/notification", () => ({
   notifyOwner: vi.fn().mockResolvedValue(true),
 }));
 
+vi.mock("./email", () => ({
+  sendLeadConfirmationEmail: vi.fn().mockResolvedValue(true),
+}));
+
+vi.mock("./leadDiagnostic", () => ({
+  generateAndSendLeadDiagnostic: vi.fn().mockResolvedValue(undefined),
+}));
+
+// ─── Context factories ────────────────────────────────────────────────────────
+
 function createPublicCtx(): TrpcContext {
   return {
     user: null,
-    req: { protocol: "https", headers: {} } as TrpcContext["req"],
+    req: { protocol: "https", headers: {}, cookies: {} } as TrpcContext["req"],
     res: { clearCookie: vi.fn() } as unknown as TrpcContext["res"],
   };
 }
 
-function createAuthCtx(): TrpcContext {
+/**
+ * Creates a context that passes the adminAuthedProcedure middleware.
+ * The middleware reads from ctx.req.headers["x-admin-token"], so we sign
+ * a valid JWT with the same secret the server uses (ENV.cookieSecret + "_admin").
+ */
+let adminToken: string;
+
+beforeAll(async () => {
+  // JWT_SECRET defaults to "" in test env — mirror what ENV.cookieSecret resolves to
+  const cookieSecret = process.env.JWT_SECRET ?? "";
+  const secret = new TextEncoder().encode(cookieSecret + "_admin");
+  adminToken = await new SignJWT({ id: 1, username: "owner", role: "owner" })
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("8h")
+    .setIssuedAt()
+    .sign(secret);
+});
+
+function createAdminCtx(): TrpcContext {
   return {
-    user: {
-      id: 1,
-      openId: "owner-id",
-      email: "owner@aiiaco.com",
-      name: "Owner",
-      loginMethod: "manus",
-      role: "admin",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      lastSignedIn: new Date(),
-    },
-    req: { protocol: "https", headers: {} } as TrpcContext["req"],
+    user: null,
+    req: {
+      protocol: "https",
+      headers: { "x-admin-token": adminToken },
+      cookies: {},
+    } as unknown as TrpcContext["req"],
     res: { clearCookie: vi.fn() } as unknown as TrpcContext["res"],
   };
 }
+
+// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe("leads.submitCall", () => {
   it("accepts a valid call request and returns success", async () => {
@@ -69,9 +97,26 @@ describe("leads.submitIntake", () => {
 });
 
 describe("leads.list", () => {
-  it("returns leads list for authenticated users", async () => {
-    const caller = appRouter.createCaller(createAuthCtx());
+  it("returns leads list for admin-authenticated users", async () => {
+    const caller = appRouter.createCaller(createAdminCtx());
     const result = await caller.leads.list();
     expect(Array.isArray(result)).toBe(true);
+  });
+});
+
+describe("leads.updateStatus", () => {
+  it("updates lead status for admin-authenticated users", async () => {
+    const caller = appRouter.createCaller(createAdminCtx());
+    const result = await caller.leads.updateStatus({ id: 1, status: "reviewed" });
+    expect(result).toEqual({ success: true });
+  });
+});
+
+describe("leads.rerunDiagnostic", () => {
+  it("returns NOT_FOUND when lead does not exist", async () => {
+    const caller = appRouter.createCaller(createAdminCtx());
+    await expect(caller.leads.rerunDiagnostic({ id: 9999 })).rejects.toMatchObject({
+      code: "NOT_FOUND",
+    });
   });
 });
