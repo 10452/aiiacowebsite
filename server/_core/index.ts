@@ -7,6 +7,7 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import { handleCalendlyWebhook } from "../webhooks/calendly";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -40,6 +41,24 @@ async function startServer() {
     res.setHeader("Surrogate-Control", "no-store");
     res.redirect(302, "https://aiivideo-zyf9pqt6.manus.space");
   });
+
+  // ── Calendly webhook — must use raw body for HMAC verification ────────────
+  // Register BEFORE the global json() middleware so we can capture the raw buffer.
+  app.post(
+    "/api/webhooks/calendly",
+    express.raw({ type: "application/json", limit: "1mb" }),
+    (req, _res, next) => {
+      // Store raw buffer for signature verification, then parse JSON for handler
+      (req as any).rawBody = req.body as Buffer;
+      try {
+        req.body = JSON.parse((req.body as Buffer).toString("utf8"));
+      } catch {
+        req.body = {};
+      }
+      next();
+    },
+    handleCalendlyWebhook
+  );
 
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));

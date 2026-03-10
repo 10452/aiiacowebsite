@@ -111,6 +111,17 @@ export async function getLeadById(id: number) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+/**
+ * Find the most recent lead by email address.
+ * Used by the Calendly webhook to match an invitee to a lead.
+ */
+export async function getLeadByEmail(email: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.select().from(leads).where(eq(leads.email, email)).orderBy(desc(leads.createdAt)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
 export async function updateLeadStatus(id: number, status: "new" | "diagnostic_ready" | "reviewed" | "contacted" | "closed") {
   const db = await getDb();
   if (!db) throw new Error("Database not available");

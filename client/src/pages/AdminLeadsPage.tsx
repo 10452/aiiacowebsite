@@ -120,6 +120,12 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onSt
           <a href={`mailto:${lead.email}`} style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(184,156,74,0.75)", textDecoration: "none" }}>
             {lead.email}
           </a>
+          {/* Notes preview — only shown when there are saved notes */}
+          {lead.adminNotes && (
+            <div style={{ marginTop: "4px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", color: "rgba(200,215,230,0.40)", fontStyle: "italic", maxWidth: "220px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={lead.adminNotes}>
+              ✏️ {lead.adminNotes.length > 60 ? lead.adminNotes.slice(0, 60) + "…" : lead.adminNotes}
+            </div>
+          )}
         </td>
         <td style={tdStyle}>
           <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.60)" }}>
@@ -189,9 +195,27 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onSt
           <StatusBadge status={lead.status} />
         </td>
         <td style={tdStyle}>
-          <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", color: "rgba(200,215,230,0.40)" }}>
-            {new Date(lead.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-          </span>
+          {/* Age chip */}
+          {(() => {
+            const ageMs = Date.now() - new Date(lead.createdAt).getTime();
+            const ageDays = Math.floor(ageMs / (1000 * 60 * 60 * 24));
+            const ageLabel = ageDays === 0 ? "Today" : ageDays === 1 ? "1d" : `${ageDays}d`;
+            const chipColor = ageDays < 3
+              ? { bg: "rgba(80,220,150,0.10)", text: "rgba(80,220,150,0.90)", border: "rgba(80,220,150,0.25)" }
+              : ageDays < 7
+              ? { bg: "rgba(255,180,60,0.10)", text: "rgba(255,180,60,0.90)", border: "rgba(255,180,60,0.25)" }
+              : { bg: "rgba(255,80,80,0.10)", text: "rgba(255,100,100,0.90)", border: "rgba(255,80,80,0.25)" };
+            return (
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <span style={{ display: "inline-block", padding: "2px 7px", borderRadius: "4px", fontSize: "11px", fontWeight: 700, background: chipColor.bg, color: chipColor.text, border: `1px solid ${chipColor.border}`, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", width: "fit-content" }}>
+                  {ageLabel}
+                </span>
+                <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", color: "rgba(200,215,230,0.35)" }}>
+                  {new Date(lead.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                </span>
+              </div>
+            );
+          })()}
         </td>
         <td style={{ ...tdStyle, textAlign: "right" }}>
           <span style={{ color: "rgba(200,215,230,0.35)", fontSize: "12px" }}>{expanded ? "▲" : "▼"}</span>

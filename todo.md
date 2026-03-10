@@ -309,3 +309,8 @@
 ## Round 53 — Admin Panel Enhancements
 - [x] Add diagnostic_ready count badge to admin navbar header
 - [x] Add per-lead notes field: DB schema migration, saveNotes tRPC procedure, notes textarea in expanded lead row
+
+## Round 54 — Pipeline Intelligence
+- [x] Notes preview (first ~60 chars) in collapsed lead row
+- [x] Lead age colour-coded chip (green <3d, amber 3-7d, red >7d)
+- [x] Calendly webhook: /api/webhooks/calendly → match email → auto-move lead to contacted
