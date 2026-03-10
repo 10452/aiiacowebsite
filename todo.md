@@ -277,3 +277,9 @@
 - [x] Verify aiiaco.com sending domain in Resend (get DNS records, present to user)
 - [x] Add AI diagnostic display to admin console lead detail panel
 - [x] Run retroactive diagnostic for Maria Luisa (send her confirmation email + owner report)
+
+## Round 50 — Logo in Google + Industry Pages
+- [ ] Fix Google site icon — regenerate favicon from AiiA logo with clean transparent background
+- [ ] Add all 20 missing industry slugs to industries.ts data file
+- [ ] Verify IndustryMicrosite renders correctly for all slugs
+- [ ] Update sitemap.xml to include all industry pages
