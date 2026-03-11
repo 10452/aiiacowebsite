@@ -2,8 +2,8 @@ export { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 
 // Phone number — update this single constant when the Telnyx number is provisioned
 // Set to null to fall back to Calendly booking link automatically
-export const PHONE_NUMBER: string | null = null; // e.g. "+15551234567"
-export const PHONE_NUMBER_DISPLAY: string | null = null; // e.g. "555-123-4567"
+export const PHONE_NUMBER: string | null = "+18884960152";
+export const PHONE_NUMBER_DISPLAY: string | null = "+1 (888) 496-0152";
 export const CALENDLY_URL = "https://calendly.com/aiiaco";
 
 // Generate login URL at runtime so redirect URI reflects the current origin.

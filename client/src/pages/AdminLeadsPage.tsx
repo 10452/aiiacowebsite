@@ -77,6 +77,60 @@ function StatusBadge({ status }: { status: Lead["status"] }) {
   );
 }
 
+const TRACK_COLORS: Record<string, { bg: string; text: string; border: string }> = {
+  operator: { bg: "rgba(184,156,74,0.10)", text: "rgba(184,156,74,0.90)", border: "rgba(184,156,74,0.25)" },
+  agent: { bg: "rgba(120,200,255,0.10)", text: "rgba(120,200,255,0.90)", border: "rgba(120,200,255,0.25)" },
+  corporate: { bg: "rgba(160,120,255,0.10)", text: "rgba(160,120,255,0.90)", border: "rgba(160,120,255,0.25)" },
+  unknown: { bg: "rgba(255,255,255,0.05)", text: "rgba(200,215,230,0.45)", border: "rgba(255,255,255,0.10)" },
+};
+
+function CallTranscriptViewer({ transcript, track }: { transcript: string; track?: string }) {
+  const [open, setOpen] = useState(false);
+  const trackKey = (track ?? "unknown").toLowerCase();
+  const tc = TRACK_COLORS[trackKey] ?? TRACK_COLORS.unknown;
+  const lines = transcript.split("\n").filter(Boolean);
+  return (
+    <div style={{ paddingTop: "16px", paddingBottom: "4px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: open ? "12px" : 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(200,215,230,0.40)", margin: 0 }}>
+            Call Transcript
+          </p>
+          {track && (
+            <span style={{ display: "inline-block", padding: "2px 8px", borderRadius: "999px", fontSize: "10px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", background: tc.bg, color: tc.text, border: `1px solid ${tc.border}`, fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+              {track} track
+            </span>
+          )}
+        </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); setOpen(!open); }}
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 600, padding: "4px 10px", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.10)", background: "rgba(255,255,255,0.04)", color: "rgba(200,215,230,0.60)", cursor: "pointer" }}
+        >
+          {open ? "Hide" : "View"}
+        </button>
+      </div>
+      {open && (
+        <div style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "10px", padding: "14px 16px", maxHeight: "320px", overflowY: "auto" }}>
+          {lines.map((line, i) => {
+            const isAiiA = line.startsWith("AiiA:");
+            const isCaller = line.startsWith("Caller:");
+            return (
+              <div key={i} style={{ marginBottom: "8px", display: "flex", gap: "8px", alignItems: "flex-start" }}>
+                <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: isAiiA ? "rgba(184,156,74,0.80)" : isCaller ? "rgba(120,200,255,0.80)" : "rgba(200,215,230,0.35)", minWidth: "48px", paddingTop: "1px" }}>
+                  {isAiiA ? "AiiA" : isCaller ? "Caller" : ""}
+                </span>
+                <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.55, color: isAiiA ? "rgba(200,215,230,0.75)" : "rgba(200,215,230,0.90)" }}>
+                  {line.replace(/^(AiiA:|Caller:)\s*/, "")}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onStatusChange: (id: number, status: Lead["status"]) => void; onRerunDiagnostic: (id: number) => Promise<unknown> }) {
   const [expanded, setExpanded] = useState(false);
   const [isRerunning, setIsRerunning] = useState(false);
@@ -395,6 +449,11 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onSt
                 )}
               </button>
             </div>
+
+            {/* Call Transcript */}
+            {lead.callTranscript && (
+              <CallTranscriptViewer transcript={lead.callTranscript} track={lead.callTrack ?? undefined} />
+            )}
 
             {/* Admin Notes */}
             <div style={{ paddingTop: "16px", paddingBottom: "4px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>

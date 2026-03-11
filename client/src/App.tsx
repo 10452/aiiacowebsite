@@ -27,6 +27,7 @@ import IndustryMicrosite from "./pages/IndustryMicrosite";
 import AdminLeadsPage from "./pages/AdminLeadsPage";
 import AdminConsolePage from "./pages/AdminConsolePage";
 import AdminAgentPage from "./pages/AdminAgentPage";
+import CorporatePage from "./pages/CorporatePage";
 
 // Immediate external redirect component — fires window.location.href on mount
 // This is the reliable fallback in case the Express server redirect is bypassed
@@ -49,6 +50,7 @@ function Router() {
       <Route path="/case-studies" component={CaseStudiesPage} />
       <Route path="/results" component={ResultsPage} />
       <Route path="/upgrade" component={UpgradePage} />
+      <Route path="/corporate" component={CorporatePage} />
       <Route path="/privacy" component={PrivacyPage} />
       <Route path="/terms" component={TermsPage} />
       <Route path="/ai-integration" component={AIIntegrationPage} />

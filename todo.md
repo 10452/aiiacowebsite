@@ -333,3 +333,8 @@
 - [x] Pre-build complete Telnyx provisioning script (number purchase + SIP trunk + ElevenLabs import)
 - [ ] Run provisioning script once Telnyx Level 2 verification propagates (~30-60 min)
 - [ ] Update site CTAs with real phone number
+
+## Round 57 — Corporate Package, Transcript Viewer, Auto-Provisioning
+- [x] Build /corporate page: modular AI rollout sequence (Cold Email → SDR+Website+Receptionist → Agent/Operator → Paid Ads → Podcast/Social)
+- [x] Add call transcript viewer to admin expanded lead row (ElevenLabs post-call transcript inline)
+- [x] Build automated Telnyx verification poller: polls every 30 min, runs provision-phone.mjs when Level 2 approved

@@ -13,6 +13,7 @@ const navLinks = [
   { label: "Method", href: "#method", route: "/method" },
   { label: "Industries", href: "#industries", route: "/industries" },
   { label: "Models", href: "#models", route: "/models" },
+  { label: "Corporate", href: "/corporate", route: "/corporate" },
   { label: "Upgrade", href: "#contact", route: "/upgrade" },
 ];
 

@@ -46,6 +46,10 @@ export const leads = mysqlTable("leads", {
   leadBrief: text("leadBrief"),
   /** Admin-only internal notes (call outcomes, follow-up dates, context) */
   adminNotes: text("adminNotes"),
+  /** Full call transcript from ElevenLabs post-call webhook */
+  callTranscript: text("callTranscript"),
+  /** Detected call track: operator | agent | corporate */
+  callTrack: varchar("callTrack", { length: 32 }),
   status: mysqlEnum("status", ["new", "diagnostic_ready", "reviewed", "contacted", "closed"]).default("new").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

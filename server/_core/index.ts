@@ -9,6 +9,7 @@ import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { handleCalendlyWebhook } from "../webhooks/calendly";
 import { handleElevenLabsWebhook } from "../webhooks/elevenlabs";
+import { startTelnyxPoller } from "../telnyxPoller";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -107,6 +108,8 @@ async function startServer() {
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
+    // Start Telnyx verification poller (auto-provisions phone number when Level 2 is approved)
+    startTelnyxPoller();
   });
 }
 

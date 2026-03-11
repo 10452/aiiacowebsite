@@ -155,6 +155,8 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
             existing.adminNotes,
             `📞 AI Call (${summary.conversationId}): Track → ${summary.track}${summary.painPoint ? ` | Pain: ${summary.painPoint}` : ""}${summary.budgetSignal ? ` | Budget: ${summary.budgetSignal}` : ""}`,
           ].filter(Boolean).join("\n\n"),
+          callTranscript: summary.transcriptText ?? undefined,
+          callTrack: summary.track,
           status: existing.status === "new" ? "diagnostic_ready" : existing.status,
         });
         leadId = existing.id;
@@ -168,6 +170,8 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
           message: summary.painPoint ?? undefined,
           budgetRange: summary.budgetSignal ?? undefined,
           leadSource: `AI Phone Call — ${summary.track} track`,
+          callTranscript: summary.transcriptText ?? undefined,
+          callTrack: summary.track,
           status: "diagnostic_ready",
         });
         leadId = result.insertId;
