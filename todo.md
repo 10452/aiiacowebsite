@@ -338,3 +338,11 @@
 - [x] Build /corporate page: modular AI rollout sequence (Cold Email → SDR+Website+Receptionist → Agent/Operator → Paid Ads → Podcast/Social)
 - [x] Add call transcript viewer to admin expanded lead row (ElevenLabs post-call transcript inline)
 - [x] Build automated Telnyx verification poller: polls every 30 min, runs provision-phone.mjs when Level 2 approved
+
+## Round 58 — Voice Widget & Agent Optimization
+- [x] Add floating gold microphone widget to site (bottom-right) for browser-based AiiA testing
+- [x] Install @11labs/react and @elevenlabs/client SDKs
+- [x] Update ElevenLabs agent: voice → Sarah (confident/professional), turn_eagerness → eager, speculative_turn → true
+- [x] Rewrite agent prompt with natural contractions, short sentences, and proper routing logic
+- [x] Fix wrong phone number in agent prompt (888-808-0001 → removed)
+- [x] Remove 888 phone number from website (Calendly shown instead while number propagates)

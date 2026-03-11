@@ -28,6 +28,7 @@ import AdminLeadsPage from "./pages/AdminLeadsPage";
 import AdminConsolePage from "./pages/AdminConsolePage";
 import AdminAgentPage from "./pages/AdminAgentPage";
 import CorporatePage from "./pages/CorporatePage";
+import AiiAVoiceWidget from "./components/AiiAVoiceWidget";
 
 // Immediate external redirect component — fires window.location.href on mount
 // This is the reliable fallback in case the Express server redirect is bypassed
@@ -84,6 +85,7 @@ function App() {
           <StructuredData />
           <Toaster />
           <Router />
+          <AiiAVoiceWidget />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
