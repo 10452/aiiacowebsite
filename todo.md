@@ -374,3 +374,23 @@
 - [x] Owner notification enriched with full intelligence summary + bullet lists
 - [x] Write vitest tests for parseCallWebhook (11 tests) and extractConversationIntelligence (3 tests)
 - [x] All 47 tests passing (7 test files)
+
+## Round 61 — MaryLou Call Bug Fix
+- [x] Bug: AiiA did not prioritize collecting name/company/email/phone at start of call
+  - ROOT CAUSE: Live ElevenLabs agent still had OLD prompt (no smart intake). Code was updated but never pushed to ElevenLabs API.
+  - FIX: Pushed new prompt with Phase 1 Smart Intake flow via scripts/push-agent-config.mjs
+- [x] Bug: AiiA never asked for phone number during call
+  - ROOT CAUSE: Same — old prompt had no phone collection step
+  - FIX: New prompt includes phone as 4th intake field
+- [x] Bug: No email sent to client (mlcastronovo@gmail.com) after call
+  - ROOT CAUSE: Webhook URL was NOT SET on ElevenLabs workspace. post_call_webhook_id was null.
+  - FIX: Created workspace webhook via POST /v1/workspace/webhooks, assigned via PATCH /v1/convai/settings
+- [x] Bug: No email sent to admin/owner after call
+  - ROOT CAUSE: Same — no webhook = no post-call event = no processing at all
+  - FIX: Same webhook fix. Webhook now points to https://aiiaco.com/api/webhooks/elevenlabs
+- [x] Investigate webhook logs for MaryLou's call — no logs found (webhook was never configured)
+- [x] Investigate DB records for MaryLou's lead — no record found (webhook never fired)
+- [x] Fix agent prompt to enforce contact collection priority — pushed to live agent
+- [x] Fix post-call email pipeline — webhook created (cc0c8ef3) and assigned to workspace
+- [x] Updated ELEVENLABS_WEBHOOK_SECRET env var with new HMAC secret
+- [x] All 47 tests passing (7 test files)
