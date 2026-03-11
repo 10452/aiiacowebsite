@@ -5,21 +5,22 @@
  *
  * Receives post_call_transcription events from ElevenLabs after each call
  * to the AiiA Diagnostic Agent. Processes the transcript to:
- *   1. Extract caller info (email, name, company, pain point, budget, track)
- *   2. Create or update a lead in the DB
- *   3. Send a track-specific follow-up email to the caller
- *   4. Send an owner notification with the call summary
+ *   1. Extract caller info (email, name, company, phone, pain point, budget, track)
+ *   2. Run LLM-powered conversation intelligence extraction (pain points, wants, current solutions, summary)
+ *   3. Create or update a lead in the DB with full transcript + intelligence
+ *   4. Send a track-specific follow-up email to the caller
+ *   5. Send an owner notification with the call summary + extracted intelligence
  */
 
 import type { Request, Response } from "express";
-import { verifyElevenLabsSignature, parseCallWebhook, type TrackType } from "../aiAgent";
+import { verifyElevenLabsSignature, parseCallWebhook, extractConversationIntelligence, type TrackType } from "../aiAgent";
 import { insertLead, getLeadByEmail, updateLeadById } from "../db";
 import { notifyOwner } from "../_core/notification";
 import { sendEmail } from "../email";
 
 const WEBHOOK_SECRET = process.env.ELEVENLABS_WEBHOOK_SECRET ?? "";
 
-// ─── Track-specific email content ────────────────────────────────────────────
+// ── Track-specific email content ────────────────────────────────────────────
 
 function getTrackEmail(track: TrackType, callerName: string | null): {
   subject: string;
@@ -116,7 +117,7 @@ function getTrackEmail(track: TrackType, callerName: string | null): {
   return trackContent[track] ?? trackContent.unknown;
 }
 
-// ─── Webhook handler ──────────────────────────────────────────────────────────
+// ── Webhook handler ──────────────────────────────────────────────────────────
 
 export async function handleElevenLabsWebhook(req: Request, res: Response): Promise<void> {
   const rawBody: string = (req as any).rawBodyText ?? JSON.stringify(req.body);
@@ -141,22 +142,46 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
 
     console.log(`[ElevenLabsWebhook] Call ${summary.conversationId} — track: ${summary.track}, email: ${summary.callerEmail ?? "none"}, duration: ${summary.durationSeconds}s`);
 
+    // ── Extract conversation intelligence via LLM ───────────────────────────
+    const intelligence = await extractConversationIntelligence(summary.transcriptText);
+    console.log(`[ElevenLabsWebhook] Intelligence extracted: ${intelligence.painPoints.length} pain points, ${intelligence.wants.length} wants, ${intelligence.currentSolutions.length} current solutions`);
+
+    // Use LLM-extracted contact info as fallback/override for regex-extracted data
+    const callerEmail = summary.callerEmail ?? intelligence.callerEmail;
+    const callerName = summary.callerName ?? intelligence.callerName;
+    const companyName = summary.companyName ?? intelligence.companyName;
+    const callerPhone = summary.callerPhone ?? intelligence.callerPhone;
+
     // ── Save lead to DB ────────────────────────────────────────────────────
     let leadId: number | null = null;
 
-    if (summary.callerEmail) {
+    // Shared intelligence fields for DB storage
+    const intelligenceFields = {
+      painPoints: intelligence.painPoints.length > 0 ? JSON.stringify(intelligence.painPoints) : null,
+      wants: intelligence.wants.length > 0 ? JSON.stringify(intelligence.wants) : null,
+      currentSolutions: intelligence.currentSolutions.length > 0 ? JSON.stringify(intelligence.currentSolutions) : null,
+      conversationSummary: intelligence.conversationSummary !== "Transcript analysis unavailable." ? intelligence.conversationSummary : null,
+      callDurationSeconds: summary.durationSeconds || null,
+      conversationId: summary.conversationId || null,
+    };
+
+    if (callerEmail) {
       // Check if lead already exists (e.g. from a form submission)
-      const existing = await getLeadByEmail(summary.callerEmail);
+      const existing = await getLeadByEmail(callerEmail);
 
       if (existing) {
-        // Update existing lead with call data
+        // Update existing lead with call data + intelligence
         await updateLeadById(existing.id, {
+          name: callerName ?? existing.name,
+          company: companyName ?? existing.company ?? undefined,
+          phone: callerPhone ?? existing.phone ?? undefined,
           adminNotes: [
             existing.adminNotes,
             `📞 AI Call (${summary.conversationId}): Track → ${summary.track}${summary.painPoint ? ` | Pain: ${summary.painPoint}` : ""}${summary.budgetSignal ? ` | Budget: ${summary.budgetSignal}` : ""}`,
           ].filter(Boolean).join("\n\n"),
           callTranscript: summary.transcriptText ?? undefined,
           callTrack: summary.track,
+          ...intelligenceFields,
           status: existing.status === "new" ? "diagnostic_ready" : existing.status,
         });
         leadId = existing.id;
@@ -164,14 +189,16 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
         // Create new lead from call
         const result = await insertLead({
           type: "call",
-          name: summary.callerName ?? "Phone Caller",
-          email: summary.callerEmail,
-          company: summary.companyName ?? undefined,
+          name: callerName ?? "Phone Caller",
+          email: callerEmail,
+          company: companyName ?? undefined,
+          phone: callerPhone ?? undefined,
           message: summary.painPoint ?? undefined,
           budgetRange: summary.budgetSignal ?? undefined,
           leadSource: `AI Phone Call — ${summary.track} track`,
           callTranscript: summary.transcriptText ?? undefined,
           callTrack: summary.track,
+          ...intelligenceFields,
           status: "diagnostic_ready",
         });
         leadId = result.insertId;
@@ -179,33 +206,38 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
     }
 
     // ── Send follow-up email to caller ─────────────────────────────────────
-    if (summary.callerEmail) {
-      const emailContent = getTrackEmail(summary.track, summary.callerName);
+    if (callerEmail) {
+      const emailContent = getTrackEmail(summary.track, callerName);
       try {
         await sendEmail({
-          to: summary.callerEmail,
+          to: callerEmail,
           subject: emailContent.subject,
           html: emailContent.html,
           text: emailContent.text,
         });
-        console.log(`[ElevenLabsWebhook] Follow-up email sent to ${summary.callerEmail}`);
+        console.log(`[ElevenLabsWebhook] Follow-up email sent to ${callerEmail}`);
       } catch (emailErr) {
         console.error("[ElevenLabsWebhook] Failed to send follow-up email:", emailErr);
       }
     }
 
-    // ── Notify owner ───────────────────────────────────────────────────────
+    // ── Notify owner (with intelligence summary) ───────────────────────────
     const trackLabel = summary.track === "unknown" ? "Unrouted" : summary.track.charAt(0).toUpperCase() + summary.track.slice(1);
     await notifyOwner({
-      title: `📞 AI CALL — ${trackLabel} Track${summary.callerName ? ` | ${summary.callerName}` : ""}${summary.companyName ? ` @ ${summary.companyName}` : ""}`,
+      title: `📞 AI CALL — ${trackLabel} Track${callerName ? ` | ${callerName}` : ""}${companyName ? ` @ ${companyName}` : ""}`,
       content: [
         `Conversation ID: ${summary.conversationId}`,
         `Duration: ${summary.durationSeconds}s`,
         `Track: ${trackLabel}`,
-        summary.callerEmail ? `Email: ${summary.callerEmail}` : null,
+        callerEmail ? `Email: ${callerEmail}` : null,
+        callerPhone ? `Phone: ${callerPhone}` : null,
         summary.painPoint ? `Pain point: ${summary.painPoint}` : null,
         summary.budgetSignal ? `Budget signal: ${summary.budgetSignal}` : null,
-        leadId ? `Lead #${leadId} saved to pipeline` : "No email captured — lead not saved",
+        intelligence.conversationSummary !== "Transcript analysis unavailable." ? `\nSUMMARY\n${intelligence.conversationSummary}` : null,
+        intelligence.painPoints.length > 0 ? `\nPAIN POINTS\n${intelligence.painPoints.map(p => `• ${p}`).join("\n")}` : null,
+        intelligence.wants.length > 0 ? `\nWANTS & WISHES\n${intelligence.wants.map(w => `• ${w}`).join("\n")}` : null,
+        intelligence.currentSolutions.length > 0 ? `\nCURRENT SOLUTIONS\n${intelligence.currentSolutions.map(s => `• ${s}`).join("\n")}` : null,
+        leadId ? `\nLead #${leadId} saved to pipeline` : "No email captured — lead not saved",
       ].filter(Boolean).join("\n"),
     });
 

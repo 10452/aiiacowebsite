@@ -50,6 +50,18 @@ export const leads = mysqlTable("leads", {
   callTranscript: text("callTranscript"),
   /** Detected call track: operator | agent | corporate */
   callTrack: varchar("callTrack", { length: 32 }),
+  /** AI-extracted pain points from voice conversation */
+  painPoints: text("painPoints"),
+  /** AI-extracted wants/wishes from voice conversation */
+  wants: text("wants"),
+  /** AI-extracted current solutions/attempts from voice conversation */
+  currentSolutions: text("currentSolutions"),
+  /** AI-generated conversation summary */
+  conversationSummary: text("conversationSummary"),
+  /** Duration of the voice call in seconds */
+  callDurationSeconds: int("callDurationSeconds"),
+  /** ElevenLabs conversation ID */
+  conversationId: varchar("conversationId", { length: 128 }),
   status: mysqlEnum("status", ["new", "diagnostic_ready", "reviewed", "contacted", "closed"]).default("new").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

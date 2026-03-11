@@ -1,13 +1,15 @@
 /**
  * AiiAVoiceWidget — Floating voice chat button that connects directly to the
  * AiiA Diagnostic Agent via ElevenLabs Conversational AI SDK.
- * Renders as a pulsing gold orb in the bottom-right corner.
+ * Renders as a gold circuit-wired microphone artifact in the bottom-right corner.
  */
 import { useState, useCallback } from "react";
 import { useConversation } from "@11labs/react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const AGENT_ID: string = import.meta.env.VITE_ELEVENLABS_AGENT_ID ?? "";
+const MIC_ICON_URL =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_gold_microphone_v2-cZjuNxwT4CHFwbMHWYwnRS.webp";
 
 type ConvStatus = "idle" | "connecting" | "connected" | "error";
 
@@ -182,28 +184,30 @@ export default function AiiAVoiceWidget() {
         )}
       </AnimatePresence>
 
-      {/* Main orb button */}
+      {/* Main artifact button — gold circuit-wired microphone */}
       <motion.button
         onClick={isActive ? endConversation : startConversation}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
         style={{
-          width: "62px",
-          height: "62px",
+          width: "72px",
+          height: "72px",
           borderRadius: "50%",
           border: "none",
           cursor: "pointer",
           position: "relative",
           background: isActive
-            ? "radial-gradient(circle at 35% 35%, #e8c060, #B89C4A 60%, #8a6e2a)"
-            : "radial-gradient(circle at 35% 35%, #c8a840, #8a6e2a 60%, #5a4a1a)",
+            ? "radial-gradient(circle at 40% 35%, rgba(232,192,96,0.25), rgba(184,156,74,0.15) 60%, rgba(138,110,42,0.1))"
+            : "radial-gradient(circle at 40% 35%, rgba(200,168,64,0.12), rgba(138,110,42,0.08) 60%, transparent)",
           boxShadow: isActive
-            ? "0 0 0 3px rgba(212,168,67,0.4), 0 0 30px rgba(212,168,67,0.5), 0 4px 20px rgba(0,0,0,0.6)"
-            : "0 0 0 2px rgba(212,168,67,0.2), 0 4px 20px rgba(0,0,0,0.5)",
+            ? "0 0 0 3px rgba(212,168,67,0.35), 0 0 35px rgba(212,168,67,0.45), 0 4px 24px rgba(0,0,0,0.5)"
+            : "0 0 0 2px rgba(212,168,67,0.15), 0 4px 20px rgba(0,0,0,0.4)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           transition: "box-shadow 0.3s ease",
+          overflow: "hidden",
+          padding: 0,
         }}
         title={isActive ? "End conversation" : "Talk to AiiA"}
       >
@@ -220,21 +224,29 @@ export default function AiiAVoiceWidget() {
             transition={{ repeat: Infinity, duration: 1.5, ease: "easeOut" }}
           />
         )}
-        {/* Icon */}
+        {/* Gold microphone artifact icon */}
         {isActive ? (
-          /* Phone hang-up icon */
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="rgba(3,5,10,0.9)">
-            <path d="M20.84 22.73l-4.86-4.86-1.81 1.81c-.78.78-2.05.78-2.83 0l-3.03-3.03c-.78-.78-.78-2.05 0-2.83l1.81-1.81L5.27 7.16C3.27 9.16 2 11.94 2 15c0 3.87 3.13 7 7 7 3.06 0 5.84-1.27 7.84-3.27zM12 2C8.94 2 6.16 3.27 4.16 5.27l4.86 4.86 1.81-1.81c.78-.78 2.05-.78 2.83 0l3.03 3.03c.78.78.78 2.05 0 2.83l-1.81 1.81 4.86 4.86C21.73 17.84 23 15.06 23 12c0-5.52-4.48-10-11-10z" />
+          /* End call X icon */
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4A843" strokeWidth="2.5" strokeLinecap="round">
+            <line x1="6" y1="6" x2="18" y2="18" />
+            <line x1="18" y1="6" x2="6" y2="18" />
           </svg>
         ) : (
-          /* Microphone icon */
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="rgba(3,5,10,0.9)">
-            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
-          </svg>
+          <img
+            src={MIC_ICON_URL}
+            alt="Talk to AiiA"
+            style={{
+              width: "52px",
+              height: "52px",
+              objectFit: "contain",
+              filter: "drop-shadow(0 2px 6px rgba(212,168,67,0.4))",
+              pointerEvents: "none",
+            }}
+          />
         )}
       </motion.button>
 
-      {/* Tooltip on first render */}
+      {/* Tooltip on idle */}
       {status === "idle" && (
         <motion.div
           initial={{ opacity: 0, y: 4 }}

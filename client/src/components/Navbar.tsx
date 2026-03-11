@@ -104,45 +104,7 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
               <div className="hidden lg:flex">
                 <ReadAloud />
               </div>
-              {/* Video Studio CTA */}
-              <a
-                href="/videostudio"
-                className="hidden lg:inline-flex"
-                style={{
-                  fontFamily: FF,
-                  fontWeight: 700,
-                  fontSize: "12.5px",
-                  letterSpacing: "0.04em",
-                  color: "#FFD700",
-                  background: "rgba(184,134,11,0.12)",
-                  border: "1px solid rgba(255,215,0,0.30)",
-                  borderRadius: "20px",
-                  padding: "8px 16px",
-                  textDecoration: "none",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  transition: "background 0.15s, border-color 0.15s, color 0.15s",
-                  backdropFilter: "blur(8px)",
-                  WebkitBackdropFilter: "blur(8px)",
-                  whiteSpace: "nowrap",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(184,134,11,0.22)"; e.currentTarget.style.borderColor = "rgba(255,215,0,0.55)"; e.currentTarget.style.color = "#FFF0A0"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(184,134,11,0.12)"; e.currentTarget.style.borderColor = "rgba(255,215,0,0.30)"; e.currentTarget.style.color = "#FFD700"; }}
-              >
-                {/* Film icon */}
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18" />
-                  <line x1="7" y1="2" x2="7" y2="22" />
-                  <line x1="17" y1="2" x2="17" y2="22" />
-                  <line x1="2" y1="12" x2="22" y2="12" />
-                  <line x1="2" y1="7" x2="7" y2="7" />
-                  <line x1="2" y1="17" x2="7" y2="17" />
-                  <line x1="17" y1="17" x2="22" y2="17" />
-                  <line x1="17" y1="7" x2="22" y2="7" />
-                </svg>
-                Video Studio
-              </a>
+
               <CallNowButton
                 variant="outline"
                 size="sm"
@@ -191,36 +153,6 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                     </button>
                   ))}
 
-                  {/* Video Studio mobile link */}
-                  <a
-                    href="/videostudio"
-                    style={{
-                      fontFamily: FF,
-                      fontWeight: 700,
-                      fontSize: "15px",
-                      color: "#FFD700",
-                      background: "rgba(184,134,11,0.10)",
-                      border: "1px solid rgba(255,215,0,0.25)",
-                      borderRadius: "10px",
-                      padding: "10px 8px",
-                      textDecoration: "none",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                    }}
-                  >
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18" />
-                      <line x1="7" y1="2" x2="7" y2="22" />
-                      <line x1="17" y1="2" x2="17" y2="22" />
-                      <line x1="2" y1="12" x2="22" y2="12" />
-                      <line x1="2" y1="7" x2="7" y2="7" />
-                      <line x1="2" y1="17" x2="7" y2="17" />
-                      <line x1="17" y1="17" x2="22" y2="17" />
-                      <line x1="17" y1="7" x2="22" y2="7" />
-                    </svg>
-                    Video Studio
-                  </a>
 
                   <CallNowButton
                     variant="outline"

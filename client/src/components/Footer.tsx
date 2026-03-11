@@ -22,7 +22,7 @@ export default function Footer() {
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(184,156,74,0.50), transparent)" }} />
 
       <div className="container">
-        <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 1fr", gap: "40px", alignItems: "flex-start", marginBottom: "48px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 0.7fr 1fr", gap: "40px", alignItems: "flex-start", marginBottom: "48px" }}>
           {/* Brand */}
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
@@ -58,6 +58,12 @@ export default function Footer() {
             <a href="/industries" style={linkStyle}>Industries Served</a>
             <a href="/results" style={linkStyle}>Results & Outcomes</a>
             <a href="/case-studies" style={linkStyle}>Case Studies</a>
+          </nav>
+
+          {/* Tools & Utilities */}
+          <nav aria-label="Tools navigation">
+            <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.65)", marginBottom: "14px" }}>Tools</p>
+            <a href="/videostudio" style={linkStyle}>Video Studio</a>
           </nav>
 
           {/* Company links */}

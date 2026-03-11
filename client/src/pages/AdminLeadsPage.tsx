@@ -84,6 +84,138 @@ const TRACK_COLORS: Record<string, { bg: string; text: string; border: string }>
   unknown: { bg: "rgba(255,255,255,0.05)", text: "rgba(200,215,230,0.45)", border: "rgba(255,255,255,0.10)" },
 };
 
+/** Helper to safely parse JSON arrays stored as strings in the DB */
+function parseJsonArray(raw: string | null | undefined): string[] {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Conversation Intelligence Panel — shows AI-extracted insights from voice calls */
+function ConversationIntelligencePanel({ lead }: { lead: Lead }) {
+  const [open, setOpen] = useState(true);
+  const painPoints = parseJsonArray(lead.painPoints);
+  const wants = parseJsonArray(lead.wants);
+  const currentSolutions = parseJsonArray(lead.currentSolutions);
+  const hasSummary = !!lead.conversationSummary;
+  const hasIntelligence = painPoints.length > 0 || wants.length > 0 || currentSolutions.length > 0 || hasSummary;
+
+  if (!hasIntelligence) return null;
+
+  const sectionHeader: React.CSSProperties = {
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+    fontSize: "10px",
+    fontWeight: 800,
+    letterSpacing: "0.10em",
+    textTransform: "uppercase",
+    margin: "0 0 8px",
+  };
+
+  const bulletStyle: React.CSSProperties = {
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+    fontSize: "13px",
+    lineHeight: 1.6,
+    color: "rgba(200,215,230,0.85)",
+    margin: "0 0 6px",
+    paddingLeft: "16px",
+    position: "relative" as const,
+  };
+
+  return (
+    <div style={{ paddingTop: "16px", paddingBottom: "4px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: open ? "14px" : 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <span
+            style={{
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+              fontSize: "10px",
+              fontWeight: 800,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "rgba(120,200,255,0.80)",
+              background: "rgba(120,200,255,0.08)",
+              border: "1px solid rgba(120,200,255,0.20)",
+              padding: "3px 10px",
+              borderRadius: "4px",
+            }}
+          >
+            Conversation Intelligence
+          </span>
+          {lead.callDurationSeconds && lead.callDurationSeconds > 0 && (
+            <span style={{ fontSize: "11px", color: "rgba(200,215,230,0.40)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+              {Math.floor(lead.callDurationSeconds / 60)}m {lead.callDurationSeconds % 60}s
+            </span>
+          )}
+        </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); setOpen(!open); }}
+          style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 600, padding: "4px 10px", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.10)", background: "rgba(255,255,255,0.04)", color: "rgba(200,215,230,0.60)", cursor: "pointer" }}
+        >
+          {open ? "Hide" : "View"}
+        </button>
+      </div>
+      {open && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          {/* Conversation Summary */}
+          {hasSummary && (
+            <div style={{ background: "rgba(120,200,255,0.04)", border: "1px solid rgba(120,200,255,0.12)", borderRadius: "10px", padding: "14px 18px" }}>
+              <p style={{ ...sectionHeader, color: "rgba(120,200,255,0.70)" }}>Summary</p>
+              <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.65, color: "rgba(200,215,230,0.85)", margin: 0 }}>
+                {lead.conversationSummary}
+              </p>
+            </div>
+          )}
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px" }}>
+            {/* Pain Points */}
+            {painPoints.length > 0 && (
+              <div style={{ background: "rgba(220,80,80,0.04)", border: "1px solid rgba(220,80,80,0.12)", borderRadius: "10px", padding: "14px 16px" }}>
+                <p style={{ ...sectionHeader, color: "rgba(220,100,100,0.80)" }}>Pain Points</p>
+                {painPoints.map((p, i) => (
+                  <p key={i} style={bulletStyle}>
+                    <span style={{ position: "absolute", left: 0, color: "rgba(220,100,100,0.60)" }}>&bull;</span>
+                    {p}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            {/* Wants & Wishes */}
+            {wants.length > 0 && (
+              <div style={{ background: "rgba(100,220,160,0.04)", border: "1px solid rgba(100,220,160,0.12)", borderRadius: "10px", padding: "14px 16px" }}>
+                <p style={{ ...sectionHeader, color: "rgba(100,220,160,0.80)" }}>Wants &amp; Wishes</p>
+                {wants.map((w, i) => (
+                  <p key={i} style={bulletStyle}>
+                    <span style={{ position: "absolute", left: 0, color: "rgba(100,220,160,0.60)" }}>&bull;</span>
+                    {w}
+                  </p>
+                ))}
+              </div>
+            )}
+
+            {/* Current Solutions */}
+            {currentSolutions.length > 0 && (
+              <div style={{ background: "rgba(184,156,74,0.04)", border: "1px solid rgba(184,156,74,0.12)", borderRadius: "10px", padding: "14px 16px" }}>
+                <p style={{ ...sectionHeader, color: "rgba(184,156,74,0.80)" }}>Current Solutions</p>
+                {currentSolutions.map((s, i) => (
+                  <p key={i} style={bulletStyle}>
+                    <span style={{ position: "absolute", left: 0, color: "rgba(184,156,74,0.60)" }}>&bull;</span>
+                    {s}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function CallTranscriptViewer({ transcript, track }: { transcript: string; track?: string }) {
   const [open, setOpen] = useState(false);
   const trackKey = (track ?? "unknown").toLowerCase();
@@ -449,6 +581,9 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onSt
                 )}
               </button>
             </div>
+
+            {/* Conversation Intelligence */}
+            <ConversationIntelligencePanel lead={lead} />
 
             {/* Call Transcript */}
             {lead.callTranscript && (

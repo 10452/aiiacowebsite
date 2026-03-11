@@ -346,3 +346,31 @@
 - [x] Rewrite agent prompt with natural contractions, short sentences, and proper routing logic
 - [x] Fix wrong phone number in agent prompt (888-808-0001 → removed)
 - [x] Remove 888 phone number from website (Calendly shown instead while number propagates)
+
+## Round 59 — Navbar Cleanup & AiiA Voice Hardening
+- [ ] Remove Video Studio CTA button from navbar
+- [ ] Create a tucked-away Tools/Utilities section (footer or dropdown) for Video Studio and future tools
+- [ ] Upgrade AiiA voice agent prompt: wit, humor, adversarial resilience, unmanipulable persona
+- [ ] AiiA should handle testers trying to break her with charm and intelligence
+- [ ] Generate solid gold circuit-wired microphone artifact icon for voice widget
+- [ ] Replace generic microphone SVG with custom AiiA gold artifact icon
+
+## Round 59 — Navbar Cleanup (completed)
+- [x] Remove Video Studio CTA button from navbar (desktop + mobile)
+- [x] Add Video Studio link to footer Tools section
+- [x] Fix @elevenlabs/client Vite dependency optimization error
+
+## Round 60 — Conversation Intelligence System
+- [x] Add transcript and intelligence columns to leads DB schema (painPoints, wants, currentSolutions, conversationSummary, callDurationSeconds, conversationId, phone)
+- [x] Push DB migration for new fields
+- [x] Update ElevenLabs agent prompt: smart intake flow (name → company → email → phone → topic)
+- [x] Agent should be flexible but make effort to collect all 4 contact fields before diving into business
+- [x] Capture full conversation transcript from ElevenLabs post-call webhook
+- [x] Build LLM-powered intelligence extraction: pain points, wants/wishes, current solutions, conversation summary
+- [x] Store extracted intelligence in leads table (JSON arrays for pain points/wants/solutions, text for summary)
+- [x] LLM-extracted contact info used as fallback/override for regex-extracted data
+- [x] Build ConversationIntelligencePanel in admin console: summary, pain points (red), wants (green), current solutions (gold) — 3-column grid
+- [x] Panel shows call duration, collapsible, auto-open by default
+- [x] Owner notification enriched with full intelligence summary + bullet lists
+- [x] Write vitest tests for parseCallWebhook (11 tests) and extractConversationIntelligence (3 tests)
+- [x] All 47 tests passing (7 test files)
