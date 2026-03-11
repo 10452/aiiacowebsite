@@ -11,6 +11,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { trpc } from "@/lib/trpc";
+import CallNowButton from "@/components/CallNowButton";
 
 type Step = "contact" | "problem" | "booking" | "done";
 
@@ -358,31 +359,20 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
             Three questions. Two minutes. We'll reach out with a direct response aligned to your situation.
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-            <a
-              href="tel:+18888080001"
+            <CallNowButton
+              variant="outline"
+              size="md"
               style={{
                 ...SF,
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                fontSize: "15px",
-                fontWeight: 700,
                 color: "rgba(200,215,230,0.90)",
                 background: "rgba(255,255,255,0.05)",
                 border: "1px solid rgba(255,255,255,0.14)",
                 borderRadius: "12px",
                 padding: "12px 20px",
-                textDecoration: "none",
                 backdropFilter: "blur(8px)",
                 WebkitBackdropFilter: "blur(8px)",
-                transition: "background 0.15s, border-color 0.15s",
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.09)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)"; }}
-            >
-              <span style={{ fontSize: "18px" }}>📞</span>
-              <span>Call Now &mdash; <strong style={{ color: "#D4A843" }}>888-808-0001</strong></span>
-            </a>
+            />
             <span style={{ ...SF, fontSize: "13px", color: "rgba(200,215,230,0.35)" }}>AI answers 24/7 &middot; routes you to the right program</span>
           </div>
         </div>

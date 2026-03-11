@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import ReadAloud from "./ReadAloud";
+import CallNowButton from "@/components/CallNowButton";
 
 const navLinks = [
   { label: "Platform", href: "#platform", route: "/" },
@@ -141,12 +142,12 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                 </svg>
                 Video Studio
               </a>
-              <a
-                href="tel:+18888080001"
+              <CallNowButton
+                variant="outline"
+                size="sm"
                 className="hidden lg:inline-flex"
                 style={{
                   fontFamily: FF,
-                  fontWeight: 700,
                   fontSize: "13px",
                   letterSpacing: "0.02em",
                   color: "rgba(200,215,230,0.85)",
@@ -154,21 +155,11 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                   border: "1px solid rgba(255,255,255,0.12)",
                   borderRadius: "20px",
                   padding: "9px 16px",
-                  textDecoration: "none",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  transition: "background 0.15s, border-color 0.15s",
                   backdropFilter: "blur(8px)",
                   WebkitBackdropFilter: "blur(8px)",
                   whiteSpace: "nowrap",
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; }}
-              >
-                <span style={{ fontSize: "13px" }}>📞</span>
-                888-808-0001
-              </a>
+              />
               <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { scrollTo("#contact"); } }} className="btn-gold hidden lg:inline-flex" style={{ fontSize: "13px", padding: "10px 20px" }}>
                 Request Upgrade
               </button>
@@ -230,26 +221,21 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                     Video Studio
                   </a>
 
-                  <a
-                    href="tel:+18888080001"
+                  <CallNowButton
+                    variant="outline"
+                    size="md"
                     style={{
                       fontFamily: FF,
-                      fontWeight: 700,
                       fontSize: "15px",
                       color: "rgba(200,215,230,0.85)",
                       background: "rgba(255,255,255,0.04)",
                       border: "1px solid rgba(255,255,255,0.12)",
                       borderRadius: "10px",
                       padding: "10px 8px",
-                      textDecoration: "none",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
+                      width: "100%",
+                      justifyContent: "center",
                     }}
-                  >
-                    <span style={{ fontSize: "16px" }}>📞</span>
-                    Call Now — 888-808-0001
-                  </a>
+                  />
                   <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { scrollTo("#contact"); } }} className="btn-gold mt-2" style={{ justifyContent: "center" }}>
                     Request Upgrade
                   </button>

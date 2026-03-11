@@ -322,3 +322,14 @@
 - [x] Add Call Now CTA (+1 888-808-0001) to hero, navbar, contact sections
 - [x] Build /admin/agent page: view/edit agent script and routing logic
 - [x] Write tests for webhook lead capture
+
+## Round 56 — ElevenLabs Phone Number
+- [ ] Research ElevenLabs phone number provisioning API
+- [ ] Acquire new number directly from ElevenLabs and assign to AiiA Diagnostic Agent
+- [ ] Update all Call Now CTAs on site with new number
+
+## Round 56 — Phone Number Provisioning (Telnyx)
+- [x] Update Call Now CTAs with smart Calendly fallback while Telnyx verification propagates
+- [x] Pre-build complete Telnyx provisioning script (number purchase + SIP trunk + ElevenLabs import)
+- [ ] Run provisioning script once Telnyx Level 2 verification propagates (~30-60 min)
+- [ ] Update site CTAs with real phone number
