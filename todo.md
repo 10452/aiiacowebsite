@@ -603,3 +603,12 @@
 - [x] Fix: only NEW leads (isNewLead=true) get follow-up emails and owner notifications
 - [x] Cleaned up garbage placeholder leads (voice-*@aiiaco.com) — marked as abandoned
 - [x] All 100/101 tests pass (1 pre-existing TTS API failure)
+
+## Round 76 — Change Arabic voice to female Lebanese accent
+- [x] Search ElevenLabs Voice Library for female Arabic voice (Lebanese accent, professional, warm)
+- [x] Generated 4 voice previews: Laloosh, Salma Professional, Salma Customer Care, Farah
+- [x] User chose #3: Salma Customer Care (Levantine, friendly, clear, reassuring)
+- [x] Added Salma Customer Care (B5xxC4eQoOFJnY4R5XkI) to ElevenLabs voice library
+- [x] Updated Arabic language preset: voice_id switched from Sultan to Salma Customer Care
+- [x] Verified: voice_id persisted in agent config
+- NOTE: first_message_translation field not persisting via API (ElevenLabs limitation) — voice switch is the critical change
