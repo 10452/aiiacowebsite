@@ -562,3 +562,13 @@
 - [ ] Update website widget to NOT show language selector — rely on auto-detection
 - [ ] Test Arabic language switching with live call
 - NOTE: TTS model stays eleven_turbo_v2 (English-only) for default — ElevenLabs constraint: "English agents must use turbo or flash v2". Arabic preset overrides voice when language switches.
+
+## Round 72 — CRITICAL: AiiA Agent Broken (Hangs Up + Arabic Not Working)
+- [x] Diagnose: AiiA stops responding and hangs up after caller says their name
+- [x] Diagnose: Arabic language not responding at all
+- [x] Root cause: language_presets was placed at wrong path (agent level vs conversation_config level), tools at agent.tools vs agent.prompt.tools
+- [x] Fix agent configuration: language_presets at conversation_config level, tools at agent.prompt.tools
+- [x] Verified: Arabic preset persisted with Sultan voice + Arabic first message
+- [x] Verified: language_detection system tool persisted
+- [ ] Verify English flow works end-to-end (awaiting user test call)
+- [ ] Verify Arabic flow works (awaiting user test call)
