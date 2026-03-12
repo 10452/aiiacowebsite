@@ -39,7 +39,7 @@ export async function sendEmail(params: {
   try {
     const resend = getResend();
     const result = await resend.emails.send({
-      from: "AiiACo <team@resend.aiiaco.com>",
+      from: "AiiACo <team@aiiaco.com>",
       to: [to],
       subject,
       html,
@@ -257,7 +257,7 @@ aiiaco.com`;
   try {
     const resend = getResend();
     const result = await resend.emails.send({
-      from: "AiiACo <team@resend.aiiaco.com>",
+      from: "AiiACo <team@aiiaco.com>",
       to: [email],
       subject: `${firstName}, your AiiACo request is confirmed`,
       html,

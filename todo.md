@@ -531,6 +531,13 @@
 - [x] Add "Re-send Email" button to admin console (retry failed follow-up emails)
 - [x] Unify email templates: poller uses same rich track-specific emails as webhook handler
 - [x] Add Conversation Poller as 7th vital in health monitor
-- [ ] Fix Resend domain verification issue (resend.aiiaco.com not verified — needs DNS TXT record)
+- [x] Fix Resend email delivery (root cause: from address used unverified subdomain resend.aiiaco.com — fixed to use verified aiiaco.com)
 - [x] Write vitest tests for conversation poller
 - [x] Update all tests to pass (101/101)
+
+## Round 70 — Fix Resend Email Delivery
+- [x] Check Resend API for domain verification status and required DNS records
+- [x] Discovered: aiiaco.com already verified with all 3 DNS records (DKIM, SPF MX, SPF TXT)
+- [x] Root cause: emails sent from team@resend.aiiaco.com (unverified subdomain) instead of team@aiiaco.com (verified domain)
+- [x] Fixed both from addresses in server/email.ts to use team@aiiaco.com
+- [x] Test email delivered successfully (Resend status: delivered, id: ed937821)
