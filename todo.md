@@ -413,3 +413,20 @@
 - [x] pushToAgent rebuilds full prompt from base template + active entries and pushes to ElevenLabs
 - [x] Write vitest tests for knowledge base (13 tests in knowledge.test.ts)
 - [x] All 60 tests passing (8 test files)
+
+## Round 63 — AiiA Stopped Talking Bug
+- [ ] Investigate: AiiA suddenly stopped responding during calls
+- [ ] Check live agent config and prompt on ElevenLabs
+- [ ] Check prompt size limits (may have exceeded max)
+- [ ] Check server logs for errors
+- [ ] Fix root cause and verify AiiA responds again
+
+## Round 63 — Fixes Applied
+- [x] ROOT CAUSE 1: max_duration was 300 seconds (5 min default) — both recent calls hit 301s and were cut off mid-sentence
+  - FIX: Increased to 900 seconds (15 minutes)
+- [x] ROOT CAUSE 2: Webhook was failing with 401 (HMAC secret mismatch) — old webhook had stale secret
+  - FIX: Created new webhook (93dc634b) with fresh HMAC secret, assigned to workspace, updated env var
+- [x] ROOT CAUSE 3: Webhook assignment was using wrong API structure (conversation vs webhooks key)
+  - FIX: Corrected to use webhooks.post_call_webhook_id in PATCH /v1/convai/settings
+- [x] Verified: Agent max_duration now 900s, webhook active and assigned, no failures
+- [x] Note: 2 test conversations (Namadou + Nimmer) were lost — transcripts exist in ElevenLabs but were never processed
