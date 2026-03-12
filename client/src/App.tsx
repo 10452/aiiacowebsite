@@ -30,6 +30,7 @@ import AdminAgentPage from "./pages/AdminAgentPage";
 import AdminKnowledgePage from "./pages/AdminKnowledgePage";
 import AdminAnalyticsPage from "./pages/AdminAnalyticsPage";
 import CorporatePage from "./pages/CorporatePage";
+import DiagnosticDemoPage from "./pages/DiagnosticDemoPage";
 import AiiAVoiceWidget from "./components/AiiAVoiceWidget";
 
 // Immediate external redirect component — fires window.location.href on mount
@@ -67,6 +68,7 @@ function Router() {
       <Route path="/admin/knowledge" component={AdminKnowledgePage} />
       <Route path="/admin/analytics" component={AdminAnalyticsPage} />
       <Route path="/admin-opsteam" component={AdminConsolePage} />
+      <Route path="/demo" component={DiagnosticDemoPage} />
       <Route path="/videostudio" component={VideoStudioRedirect} />
       <Route path="/404" component={NotFound} />
       {/* Final fallback */}

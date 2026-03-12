@@ -10,6 +10,7 @@ import { serveStatic, setupVite } from "./vite";
 import { handleCalendlyWebhook } from "../webhooks/calendly";
 import { handleElevenLabsWebhook } from "../webhooks/elevenlabs";
 import { startTelnyxPoller } from "../telnyxPoller";
+import { startHealthScheduler } from "../healthScheduler";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -110,6 +111,8 @@ async function startServer() {
     console.log(`Server running on http://localhost:${port}/`);
     // Start Telnyx verification poller (auto-provisions phone number when Level 2 is approved)
     startTelnyxPoller();
+    // Start periodic health checks (every 5 min, first check after 30s)
+    startHealthScheduler();
   });
 }
 

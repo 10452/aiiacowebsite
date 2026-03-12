@@ -64,6 +64,7 @@ export default function Footer() {
           <nav aria-label="Tools navigation">
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.65)", marginBottom: "14px" }}>Tools</p>
             <a href="/videostudio" style={linkStyle}>Video Studio</a>
+            <a href="/demo" style={linkStyle}>Diagnostic Intelligence</a>
           </nav>
 
           {/* Company links */}

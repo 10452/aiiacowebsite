@@ -25,6 +25,7 @@ import {
   listAgents,
   getAgent,
   updateAgentPrompt,
+  extractConversationIntelligence,
 } from "./aiAgent";
 import { runHealthCheck } from "./healthMonitor";
 
@@ -806,6 +807,44 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         await updateLeadStatus(input.id, input.status);
         return { success: true };
+      }),
+
+    /**
+     * Re-analyze a lead's transcript with LLM to extract/refresh conversation intelligence.
+     * Useful for leads captured before the intelligence system existed, or to refresh stale analysis.
+     */
+    reanalyzeTranscript: adminAuthedProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .mutation(async ({ input }) => {
+        const lead = await getLeadById(input.id);
+        if (!lead) throw new TRPCError({ code: "NOT_FOUND", message: "Lead not found" });
+
+        const transcript = lead.callTranscript;
+        if (!transcript || transcript.trim().length < 20) {
+          throw new TRPCError({ code: "BAD_REQUEST", message: "Lead has no transcript to analyze" });
+        }
+
+        const intelligence = await extractConversationIntelligence(transcript);
+
+        await updateLeadById(input.id, {
+          painPoints: intelligence.painPoints.length > 0 ? JSON.stringify(intelligence.painPoints) : null,
+          wants: intelligence.wants.length > 0 ? JSON.stringify(intelligence.wants) : null,
+          currentSolutions: intelligence.currentSolutions.length > 0 ? JSON.stringify(intelligence.currentSolutions) : null,
+          conversationSummary: intelligence.conversationSummary || null,
+          // Also update contact info if LLM found better data
+          ...(intelligence.callerName && !lead.name ? { name: intelligence.callerName } : {}),
+          ...(intelligence.callerEmail && !lead.email ? { email: intelligence.callerEmail } : {}),
+          ...(intelligence.companyName && !lead.company ? { company: intelligence.companyName } : {}),
+          ...(intelligence.callerPhone && !lead.phone ? { phone: intelligence.callerPhone } : {}),
+        });
+
+        return {
+          success: true,
+          painPoints: intelligence.painPoints,
+          wants: intelligence.wants,
+          currentSolutions: intelligence.currentSolutions,
+          summary: intelligence.conversationSummary,
+        };
       }),
 
     /**

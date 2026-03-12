@@ -8,92 +8,88 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // ─── Mock external dependencies ──────────────────────────────────────────────
 
-// Mock the LLM module
 vi.mock("./_core/llm", () => ({
   invokeLLM: vi.fn().mockResolvedValue({
     choices: [{ message: { content: "OK" } }],
   }),
 }));
 
-// Mock the notification module
 vi.mock("./_core/notification", () => ({
   notifyOwner: vi.fn().mockResolvedValue(true),
 }));
 
-// Mock the db module
 vi.mock("./db", () => ({
   getDb: vi.fn().mockResolvedValue({
     execute: vi.fn().mockResolvedValue([{ health_check: 1 }]),
   }),
 }));
 
-// Mock the aiAgent module
 vi.mock("./aiAgent", () => ({
   getAgent: vi.fn().mockResolvedValue({
     conversation_config: {
       agent: {
         prompt: {
-          prompt: "A".repeat(5000), // Simulates a healthy prompt
+          prompt: "A".repeat(5000),
         },
       },
     },
   }),
 }));
 
-// Mock fetch for ElevenLabs and Resend API calls
 const mockFetch = vi.fn();
 vi.stubGlobal("fetch", mockFetch);
 
-// Set env vars for tests
 process.env.ELEVENLABS_AGENT_ID = "test_agent_id";
 process.env.ELEVENLABS_API_KEY = "test_api_key";
 process.env.RESEND_API_KEY = "test_resend_key";
 process.env.BUILT_IN_FORGE_API_URL = "https://forge.test.com";
 process.env.BUILT_IN_FORGE_API_KEY = "test_forge_key";
 
-import { runHealthCheck, quickHealthCheck, type HealthReport, type VitalStatus } from "./healthMonitor";
+import { runHealthCheck, quickHealthCheck } from "./healthMonitor";
+
+function setupHealthyMocks() {
+  mockFetch.mockImplementation((url: string) => {
+    if (url.includes("/convai/settings")) {
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({
+          webhooks: { post_call_webhook_id: "webhook_123" },
+        }),
+      });
+    }
+    if (url.includes("/workspace/webhooks")) {
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({
+          webhooks: [{
+            webhook_id: "webhook_123",
+            most_recent_failure_timestamp: null,
+            is_disabled: false,
+            is_auto_disabled: false,
+          }],
+        }),
+      });
+    }
+    if (url.includes("resend.com/domains")) {
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({
+          data: [{ name: "aiiaco.com", status: "verified" }],
+        }),
+      });
+    }
+    if (url.includes("forge.test.com")) {
+      return Promise.resolve({ ok: true });
+    }
+    return Promise.resolve({ ok: true });
+  });
+}
 
 describe("Health Monitor", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-
-    // Default mock: all external APIs return healthy
-    mockFetch.mockImplementation((url: string, opts?: any) => {
-      // ElevenLabs workspace settings
-      if (url.includes("/convai/settings")) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({
-            webhooks: { post_call_webhook_id: "webhook_123" },
-          }),
-        });
-      }
-      // ElevenLabs webhook details
-      if (url.includes("/workspace/webhooks/")) {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({
-            webhook_id: "webhook_123",
-            most_recent_failure: null,
-          }),
-        });
-      }
-      // Resend domains
-      if (url.includes("resend.com/domains")) {
-        return Promise.resolve({
-          ok: true,
-          status: 200,
-          json: () => Promise.resolve({
-            data: [{ name: "aiiaco.com", status: "verified" }],
-          }),
-        });
-      }
-      // Forge API health
-      if (url.includes("forge.test.com")) {
-        return Promise.resolve({ ok: true });
-      }
-      return Promise.resolve({ ok: true });
-    });
+    setupHealthyMocks();
   });
 
   describe("runHealthCheck", () => {
@@ -149,12 +145,17 @@ describe("Health Monitor", () => {
             }),
           });
         }
-        if (url.includes("/workspace/webhooks/")) {
+        if (url.includes("/workspace/webhooks")) {
           return Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-              webhook_id: "webhook_123",
-              most_recent_failure: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+              webhooks: [{
+                webhook_id: "webhook_123",
+                most_recent_failure_timestamp: Math.floor(Date.now() / 1000) - 2 * 3600,
+                most_recent_failure_error_code: 401,
+                is_disabled: false,
+                is_auto_disabled: false,
+              }],
             }),
           });
         }
@@ -163,6 +164,9 @@ describe("Health Monitor", () => {
             ok: true, status: 200,
             json: () => Promise.resolve({ data: [{ name: "aiiaco.com", status: "verified" }] }),
           });
+        }
+        if (url.includes("forge.test.com")) {
+          return Promise.resolve({ ok: true });
         }
         return Promise.resolve({ ok: true });
       });
@@ -189,6 +193,9 @@ describe("Health Monitor", () => {
             json: () => Promise.resolve({ data: [{ name: "aiiaco.com", status: "verified" }] }),
           });
         }
+        if (url.includes("forge.test.com")) {
+          return Promise.resolve({ ok: true });
+        }
         return Promise.resolve({ ok: true });
       });
 
@@ -206,7 +213,7 @@ describe("Health Monitor", () => {
           return Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-              webhooks: { post_call_webhook_id: null }, // webhook down
+              webhooks: { post_call_webhook_id: null },
             }),
           });
         }
@@ -215,6 +222,9 @@ describe("Health Monitor", () => {
             ok: true, status: 200,
             json: () => Promise.resolve({ data: [{ name: "aiiaco.com", status: "verified" }] }),
           });
+        }
+        if (url.includes("forge.test.com")) {
+          return Promise.resolve({ ok: true });
         }
         return Promise.resolve({ ok: true });
       });
@@ -230,7 +240,6 @@ describe("Health Monitor", () => {
 
     it("calculates weighted score correctly", async () => {
       const report = await runHealthCheck();
-      // All healthy = 100
       expect(report.score).toBe(100);
       expect(report.score).toBeGreaterThanOrEqual(0);
       expect(report.score).toBeLessThanOrEqual(100);
@@ -259,11 +268,16 @@ describe("Health Monitor", () => {
             json: () => Promise.resolve({ webhooks: { post_call_webhook_id: "wh_123" } }),
           });
         }
-        if (url.includes("/workspace/webhooks/")) {
+        if (url.includes("/workspace/webhooks")) {
           return Promise.resolve({
             ok: true,
-            json: () => Promise.resolve({ webhook_id: "wh_123", most_recent_failure: null }),
+            json: () => Promise.resolve({
+              webhooks: [{ webhook_id: "wh_123", most_recent_failure_timestamp: null, is_disabled: false, is_auto_disabled: false }],
+            }),
           });
+        }
+        if (url.includes("forge.test.com")) {
+          return Promise.resolve({ ok: true });
         }
         return Promise.resolve({ ok: true });
       });
@@ -288,11 +302,16 @@ describe("Health Monitor", () => {
             json: () => Promise.resolve({ webhooks: { post_call_webhook_id: "wh_123" } }),
           });
         }
-        if (url.includes("/workspace/webhooks/")) {
+        if (url.includes("/workspace/webhooks")) {
           return Promise.resolve({
             ok: true,
-            json: () => Promise.resolve({ webhook_id: "wh_123", most_recent_failure: null }),
+            json: () => Promise.resolve({
+              webhooks: [{ webhook_id: "wh_123", most_recent_failure_timestamp: null, is_disabled: false, is_auto_disabled: false }],
+            }),
           });
+        }
+        if (url.includes("forge.test.com")) {
+          return Promise.resolve({ ok: true });
         }
         return Promise.resolve({ ok: true });
       });

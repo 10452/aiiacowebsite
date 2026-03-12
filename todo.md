@@ -482,3 +482,20 @@
   - [x] AgentConfigEditor: collapsible prompt/first-message editor with push-to-ElevenLabs
 - [x] Write 11 vitest tests for health monitoring (health.test.ts)
 - [x] All 86 tests passing (10 test files)
+
+## Round 67 — Scheduled Health Checks, Re-analyze Button, Demo Page
+- [x] Build health scheduler (server/healthScheduler.ts): runs every 5 minutes via setInterval
+- [x] Initial check after 30s delay, then every 300s (5 min)
+- [x] Auto-alerts owner if any vital is DOWN (proactive, not just on admin page visit)
+- [x] Detailed logging: score, healthy count, and per-vital status for degraded/down vitals
+- [x] Health scheduler registered in server/_core/index.ts on startup
+- [x] Add "Re-analyze Transcript" button on older leads in admin console
+- [x] Backend: leads.reanalyzeTranscript tRPC endpoint runs extractConversationIntelligence on existing transcript
+- [x] Frontend: button in ConversationIntelligencePanel with loading state and success toast
+- [x] Build client-facing demo page at /demo showcasing the diagnostic agent service
+- [x] Demo page: hero, 8-step diagnostic chain visualization, 6-capability grid, use cases (LRMB voice booking), CTA
+- [x] Link demo page from footer Tools section ONLY — "Diagnostic Intelligence" link, no CTA on main page
+- [x] Added /demo route to App.tsx
+- [x] Fixed health monitor tests: updated webhook mocks to match list API structure (webhooks array, most_recent_failure_timestamp)
+- [x] Updated Resend API key with fresh key from user
+- [x] All 86 tests passing (10 test files)

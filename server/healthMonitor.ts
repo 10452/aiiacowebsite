@@ -92,22 +92,31 @@ async function checkElevenLabsWebhook(): Promise<VitalCheck> {
       return { name, status: "down", latencyMs: Date.now() - start, details: "No post-call webhook assigned to workspace", checkedAt: new Date().toISOString() };
     }
 
-    // Check the webhook itself for recent failures
-    const whRes = await fetch(`${EL_BASE}/workspace/webhooks/${postCallId}`, {
+    // Check the webhook itself for recent failures via the list endpoint
+    const whRes = await fetch(`${EL_BASE}/workspace/webhooks`, {
       headers: { "xi-api-key": EL_API_KEY },
     });
     if (!whRes.ok) {
-      return { name, status: "degraded", latencyMs: Date.now() - start, details: `Webhook ${postCallId} assigned but couldn't fetch details (${whRes.status})`, checkedAt: new Date().toISOString() };
+      return { name, status: "degraded", latencyMs: Date.now() - start, details: `Webhook ${postCallId.slice(0, 8)} assigned but couldn't fetch webhook list (${whRes.status})`, checkedAt: new Date().toISOString() };
     }
-    const whData = await whRes.json() as Record<string, unknown>;
-    const recentFailure = whData.most_recent_failure as string | null;
+    const whListData = await whRes.json() as { webhooks?: Array<Record<string, unknown>> };
+    const webhookList = whListData.webhooks ?? [];
+    const activeWebhook = webhookList.find(w => w.webhook_id === postCallId);
 
-    if (recentFailure) {
-      // Check if failure is recent (within last 24 hours)
-      const failDate = new Date(recentFailure);
-      const hoursSinceFailure = (Date.now() - failDate.getTime()) / (1000 * 60 * 60);
+    if (!activeWebhook) {
+      return { name, status: "degraded", latencyMs: Date.now() - start, details: `Webhook ${postCallId.slice(0, 8)} assigned but not found in workspace list`, checkedAt: new Date().toISOString() };
+    }
+
+    if (activeWebhook.is_disabled || activeWebhook.is_auto_disabled) {
+      return { name, status: "down", latencyMs: Date.now() - start, details: `Webhook ${postCallId.slice(0, 8)} is disabled`, checkedAt: new Date().toISOString() };
+    }
+
+    const failureTimestamp = activeWebhook.most_recent_failure_timestamp as number | null;
+    if (failureTimestamp) {
+      const hoursSinceFailure = (Date.now() / 1000 - failureTimestamp) / 3600;
       if (hoursSinceFailure < 24) {
-        return { name, status: "degraded", latencyMs: Date.now() - start, details: `Webhook assigned but had a failure ${Math.round(hoursSinceFailure)}h ago`, checkedAt: new Date().toISOString() };
+        const failCode = activeWebhook.most_recent_failure_error_code as number | null;
+        return { name, status: "degraded", latencyMs: Date.now() - start, details: `Webhook active but had a ${failCode ?? "unknown"} failure ${Math.round(hoursSinceFailure)}h ago`, checkedAt: new Date().toISOString() };
       }
     }
 
@@ -138,9 +147,9 @@ async function checkEmailService(): Promise<VitalCheck> {
   const start = Date.now();
   const name = "Email Service (Resend)";
   try {
-    const key = process.env.RESEND_API_KEY;
+    const key = process.env.RESEND_API_KEY || process.env.RESEND_FULL_ACCESS_KEY;
     if (!key) {
-      return { name, status: "down", latencyMs: Date.now() - start, details: "RESEND_API_KEY not configured", checkedAt: new Date().toISOString() };
+      return { name, status: "down", latencyMs: Date.now() - start, details: "No Resend API key configured", checkedAt: new Date().toISOString() };
     }
     // Check Resend API health by fetching domains
     const res = await fetch("https://api.resend.com/domains", {

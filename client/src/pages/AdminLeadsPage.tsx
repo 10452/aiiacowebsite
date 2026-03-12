@@ -96,15 +96,18 @@ function parseJsonArray(raw: string | null | undefined): string[] {
 }
 
 /** Conversation Intelligence Panel — shows AI-extracted insights from voice calls */
-function ConversationIntelligencePanel({ lead }: { lead: Lead }) {
+function ConversationIntelligencePanel({ lead, onReanalyze }: { lead: Lead; onReanalyze?: (id: number) => Promise<unknown> }) {
   const [open, setOpen] = useState(true);
+  const [isReanalyzing, setIsReanalyzing] = useState(false);
   const painPoints = parseJsonArray(lead.painPoints);
   const wants = parseJsonArray(lead.wants);
   const currentSolutions = parseJsonArray(lead.currentSolutions);
   const hasSummary = !!lead.conversationSummary;
   const hasIntelligence = painPoints.length > 0 || wants.length > 0 || currentSolutions.length > 0 || hasSummary;
+  const hasTranscript = !!lead.callTranscript && lead.callTranscript.trim().length >= 20;
 
-  if (!hasIntelligence) return null;
+  // Show the panel if there's intelligence OR if there's a transcript that can be analyzed
+  if (!hasIntelligence && !hasTranscript) return null;
 
   const sectionHeader: React.CSSProperties = {
     fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
@@ -145,6 +148,45 @@ function ConversationIntelligencePanel({ lead }: { lead: Lead }) {
           >
             Conversation Intelligence
           </span>
+          {/* Re-analyze button */}
+          {hasTranscript && onReanalyze && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isReanalyzing) {
+                  setIsReanalyzing(true);
+                  onReanalyze(lead.id)
+                    .then(() => toast.success("Transcript re-analyzed successfully"))
+                    .catch((err: any) => toast.error(`Re-analysis failed: ${err.message}`))
+                    .finally(() => setIsReanalyzing(false));
+                }
+              }}
+              disabled={isReanalyzing}
+              style={{
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                fontSize: "10px",
+                fontWeight: 700,
+                padding: "3px 10px",
+                borderRadius: "4px",
+                border: `1px solid ${isReanalyzing ? "rgba(160,120,255,0.15)" : "rgba(160,120,255,0.30)"}`,
+                background: isReanalyzing ? "rgba(160,120,255,0.04)" : "rgba(160,120,255,0.08)",
+                color: isReanalyzing ? "rgba(160,120,255,0.45)" : "rgba(160,120,255,0.80)",
+                cursor: isReanalyzing ? "not-allowed" : "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                transition: "all 0.15s",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+              }}
+            >
+              {isReanalyzing ? (
+                <><span style={{ display: "inline-block", animation: "spin 1s linear infinite" }}>↺</span> Analyzing…</>
+              ) : (
+                <>🔄 {hasIntelligence ? "Re-analyze" : "Analyze Transcript"}</>
+              )}
+            </button>
+          )}
           {lead.callDurationSeconds && lead.callDurationSeconds > 0 && (
             <span style={{ fontSize: "11px", color: "rgba(200,215,230,0.40)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
               {Math.floor(lead.callDurationSeconds / 60)}m {lead.callDurationSeconds % 60}s
@@ -337,7 +379,7 @@ function CallTranscriptViewer({ transcript, structuredTranscript, track, duratio
   );
 }
 
-function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onStatusChange: (id: number, status: Lead["status"]) => void; onRerunDiagnostic: (id: number) => Promise<unknown> }) {
+function LeadRow({ lead, onStatusChange, onRerunDiagnostic, onReanalyze }: { lead: Lead; onStatusChange: (id: number, status: Lead["status"]) => void; onRerunDiagnostic: (id: number) => Promise<unknown>; onReanalyze: (id: number) => Promise<unknown> }) {
   const [expanded, setExpanded] = useState(false);
   const [isRerunning, setIsRerunning] = useState(false);
   const [notes, setNotes] = useState(lead.adminNotes ?? "");
@@ -657,7 +699,7 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onSt
             </div>
 
             {/* Conversation Intelligence */}
-            <ConversationIntelligencePanel lead={lead} />
+            <ConversationIntelligencePanel lead={lead} onReanalyze={onReanalyze} />
 
             {/* Call Transcript */}
             {lead.callTranscript && (
@@ -798,6 +840,12 @@ export default function AdminLeadsPage() {
       toast.success("Diagnostic re-run complete — owner notified");
     },
     onError: (err) => toast.error(`Re-run failed: ${err.message}`),
+  });
+
+  const reanalyzeTranscript = trpc.leads.reanalyzeTranscript.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
   });
 
   // Auth guard
@@ -1150,6 +1198,7 @@ export default function AdminLeadsPage() {
                       lead={lead}
                       onStatusChange={(id, status) => updateStatus.mutate({ id, status })}
                       onRerunDiagnostic={(id) => rerunDiagnostic.mutateAsync({ id })}
+                      onReanalyze={(id) => reanalyzeTranscript.mutateAsync({ id })}
                     />
                   ))}
                 </tbody>
