@@ -233,6 +233,36 @@ async function checkNotificationService(): Promise<VitalCheck> {
   }
 }
 
+/** 7. Check Conversation Poller status */
+async function checkConversationPoller(): Promise<VitalCheck> {
+  const start = Date.now();
+  const name = "Conversation Poller";
+  try {
+    // The poller is a safety net — check that the required env vars are set
+    // and that the ElevenLabs conversations API is reachable
+    if (!EL_API_KEY) {
+      return { name, status: "down", latencyMs: Date.now() - start, details: "ELEVENLABS_API_KEY not configured — poller cannot run", checkedAt: new Date().toISOString() };
+    }
+    const agentId = process.env.ELEVENLABS_AGENT_ID;
+    if (!agentId) {
+      return { name, status: "down", latencyMs: Date.now() - start, details: "ELEVENLABS_AGENT_ID not configured — poller cannot run", checkedAt: new Date().toISOString() };
+    }
+    // Test the conversations list endpoint (same one the poller uses)
+    const res = await fetch(
+      `${EL_BASE}/convai/conversations?agent_id=${agentId}&page_size=1`,
+      { headers: { "xi-api-key": EL_API_KEY }, signal: AbortSignal.timeout(10000) }
+    );
+    if (!res.ok) {
+      return { name, status: "degraded", latencyMs: Date.now() - start, details: `Conversations API returned ${res.status} — poller may fail`, checkedAt: new Date().toISOString() };
+    }
+    const data = await res.json() as { conversations?: unknown[] };
+    const count = data.conversations?.length ?? 0;
+    return { name, status: "healthy", latencyMs: Date.now() - start, details: `Conversations API reachable, poller operational (${count} recent)`, checkedAt: new Date().toISOString() };
+  } catch (err: any) {
+    return { name, status: "degraded", latencyMs: Date.now() - start, details: `Poller check failed: ${err.message?.slice(0, 200)}`, checkedAt: new Date().toISOString() };
+  }
+}
+
 // ─── Aggregate Health Check ──────────────────────────────────────────────────
 
 /**
@@ -246,6 +276,7 @@ export async function runHealthCheck(): Promise<HealthReport> {
     checkEmailService(),
     checkLLMService(),
     checkNotificationService(),
+    checkConversationPoller(),
   ]);
 
   // Calculate score: healthy=100, degraded=50, down=0
@@ -256,6 +287,7 @@ export async function runHealthCheck(): Promise<HealthReport> {
     "Email Service (Resend)": 15,
     "LLM (Intelligence Extraction)": 10,
     "Owner Notifications": 10,
+    "Conversation Poller": 10,
   };
 
   let totalWeight = 0;

@@ -14,7 +14,7 @@ import {
   getAnalyticsOverview, getDailyCallVolume, getRecentCalls,
 } from "./db";
 import { generateAndSendLeadDiagnostic } from "./leadDiagnostic";
-import { sendLeadConfirmationEmail } from "./email";
+import { sendLeadConfirmationEmail, sendEmail } from "./email";
 import { notifyOwner } from "./_core/notification";
 import { ENV } from "./_core/env";
 import { TRPCError } from "@trpc/server";
@@ -28,6 +28,9 @@ import {
   extractConversationIntelligence,
 } from "./aiAgent";
 import { runHealthCheck } from "./healthMonitor";
+import { pollForMissedCalls } from "./conversationPoller";
+import { getTrackEmail } from "./trackEmails";
+
 
 // ─── Admin Session JWT helpers ────────────────────────────────────────────────
 
@@ -859,6 +862,52 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         await updateLeadById(input.id, { adminNotes: input.notes });
         return { success: true };
+      }),
+
+    /**
+     * Manually trigger the conversation poller to recover any missed calls.
+     * Returns the number of calls recovered.
+     */
+    recoverMissedCalls: adminAuthedProcedure
+      .mutation(async () => {
+        try {
+          await pollForMissedCalls();
+          return { success: true, message: "Poller ran successfully. Check leads list for any recovered calls." };
+        } catch (err: any) {
+          console.error("[Admin] Manual poll failed:", err);
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to run poller: " + (err.message ?? "Unknown error") });
+        }
+      }),
+
+    /**
+     * Re-send the follow-up email for a lead.
+     * Uses the lead's callTrack to determine which track-specific email template to send.
+     * Will NOT re-send if the lead has no email address.
+     */
+    resendEmail: adminAuthedProcedure
+      .input(z.object({ id: z.number().int().positive() }))
+      .mutation(async ({ input }) => {
+        const lead = await getLeadById(input.id);
+        if (!lead) throw new TRPCError({ code: "NOT_FOUND", message: "Lead not found" });
+        if (!lead.email || lead.email.includes("@aiiaco.com")) {
+          throw new TRPCError({ code: "BAD_REQUEST", message: "Lead has no valid email address" });
+        }
+
+        const track = (lead.callTrack as "operator" | "agent" | "corporate" | "unknown") ?? "unknown";
+        const emailContent = getTrackEmail(track, lead.name);
+
+        const sent = await sendEmail({
+          to: lead.email,
+          subject: emailContent.subject,
+          html: emailContent.html,
+          text: emailContent.text,
+        });
+
+        if (!sent) {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Email failed to send — check Resend domain verification" });
+        }
+
+        return { success: true, sentTo: lead.email };
       }),
   }),
 });

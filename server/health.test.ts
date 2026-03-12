@@ -82,6 +82,12 @@ function setupHealthyMocks() {
     if (url.includes("forge.test.com")) {
       return Promise.resolve({ ok: true });
     }
+    if (url.includes("/convai/conversations")) {
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ conversations: [] }),
+      });
+    }
     return Promise.resolve({ ok: true });
   });
 }
@@ -103,9 +109,9 @@ describe("Health Monitor", () => {
       expect(Array.isArray(report.vitals)).toBe(true);
     });
 
-    it("checks all 6 vitals in the diagnostic chain", async () => {
+    it("checks all 7 vitals in the diagnostic chain", async () => {
       const report = await runHealthCheck();
-      expect(report.vitals.length).toBe(6);
+      expect(report.vitals.length).toBe(7);
       const names = report.vitals.map(v => v.name);
       expect(names).toContain("ElevenLabs Agent");
       expect(names).toContain("ElevenLabs Webhook");
@@ -113,6 +119,7 @@ describe("Health Monitor", () => {
       expect(names).toContain("Email Service (Resend)");
       expect(names).toContain("LLM (Intelligence Extraction)");
       expect(names).toContain("Owner Notifications");
+      expect(names).toContain("Conversation Poller");
     });
 
     it("returns healthy when all vitals are up", async () => {

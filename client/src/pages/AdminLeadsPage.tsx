@@ -379,7 +379,7 @@ function CallTranscriptViewer({ transcript, structuredTranscript, track, duratio
   );
 }
 
-function LeadRow({ lead, onStatusChange, onRerunDiagnostic, onReanalyze }: { lead: Lead; onStatusChange: (id: number, status: Lead["status"]) => void; onRerunDiagnostic: (id: number) => Promise<unknown>; onReanalyze: (id: number) => Promise<unknown> }) {
+function LeadRow({ lead, onStatusChange, onRerunDiagnostic, onReanalyze, onResendEmail }: { lead: Lead; onStatusChange: (id: number, status: Lead["status"]) => void; onRerunDiagnostic: (id: number) => Promise<unknown>; onReanalyze: (id: number) => Promise<unknown>; onResendEmail: (id: number) => Promise<unknown> }) {
   const [expanded, setExpanded] = useState(false);
   const [isRerunning, setIsRerunning] = useState(false);
   const [notes, setNotes] = useState(lead.adminNotes ?? "");
@@ -696,6 +696,41 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic, onReanalyze }: { lea
                   <>↺ Re-run Diagnostic</>
                 )}
               </button>
+              {/* Re-send Email button */}
+              {lead.email && !lead.email.includes("@aiiaco.com") && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onResendEmail(lead.id);
+                  }}
+                  style={{
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    padding: "7px 16px",
+                    borderRadius: "7px",
+                    border: "1px solid rgba(120,200,255,0.30)",
+                    background: "rgba(120,200,255,0.06)",
+                    color: "rgba(120,200,255,0.85)",
+                    cursor: "pointer",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    transition: "all 0.15s",
+                    marginLeft: "8px",
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = "rgba(120,200,255,0.14)";
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(120,200,255,0.50)";
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLButtonElement).style.background = "rgba(120,200,255,0.06)";
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(120,200,255,0.30)";
+                  }}
+                >
+                  ✉️ Re-send Email
+                </button>
+              )}
             </div>
 
             {/* Conversation Intelligence */}
@@ -846,6 +881,21 @@ export default function AdminLeadsPage() {
     onSuccess: () => {
       refetch();
     },
+  });
+
+  const recoverMissedCalls = trpc.leads.recoverMissedCalls.useMutation({
+    onSuccess: (data) => {
+      refetch();
+      toast.success(data.message);
+    },
+    onError: (err) => toast.error(`Recovery failed: ${err.message}`),
+  });
+
+  const resendEmail = trpc.leads.resendEmail.useMutation({
+    onSuccess: (data) => {
+      toast.success(`Email re-sent to ${data.sentTo}`);
+    },
+    onError: (err) => toast.error(`Email failed: ${err.message}`),
   });
 
   // Auth guard
@@ -1088,18 +1138,41 @@ export default function AdminLeadsPage() {
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 24px" }}>
         {/* Title + stats */}
         <div style={{ marginBottom: "32px" }}>
-          <h1
-            style={{
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
-              fontSize: "clamp(28px, 4vw, 40px)",
-              fontWeight: 700,
-              color: "rgba(255,255,255,0.92)",
-              letterSpacing: "-0.02em",
-              marginBottom: "24px",
-            }}
-          >
-            Lead Pipeline
-          </h1>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px", flexWrap: "wrap", gap: "12px" }}>
+            <h1
+              style={{
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
+                fontSize: "clamp(28px, 4vw, 40px)",
+                fontWeight: 700,
+                color: "rgba(255,255,255,0.92)",
+                letterSpacing: "-0.02em",
+                margin: 0,
+              }}
+            >
+              Lead Pipeline
+            </h1>
+            <button
+              onClick={() => {
+                recoverMissedCalls.mutate();
+              }}
+              disabled={recoverMissedCalls.isPending}
+              style={{
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                fontSize: "13px",
+                fontWeight: 600,
+                padding: "10px 20px",
+                borderRadius: "8px",
+                border: "1px solid rgba(184,156,74,0.30)",
+                background: recoverMissedCalls.isPending ? "rgba(184,156,74,0.20)" : "rgba(184,156,74,0.08)",
+                color: "rgba(184,156,74,0.90)",
+                cursor: recoverMissedCalls.isPending ? "wait" : "pointer",
+                transition: "all 0.15s",
+                letterSpacing: "0.02em",
+              }}
+            >
+              {recoverMissedCalls.isPending ? "Scanning..." : "🔄 Recover Missed Calls"}
+            </button>
+          </div>
 
           {/* Stat cards */}
           <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "28px" }}>
@@ -1199,6 +1272,7 @@ export default function AdminLeadsPage() {
                       onStatusChange={(id, status) => updateStatus.mutate({ id, status })}
                       onRerunDiagnostic={(id) => rerunDiagnostic.mutateAsync({ id })}
                       onReanalyze={(id) => reanalyzeTranscript.mutateAsync({ id })}
+                      onResendEmail={(id) => resendEmail.mutateAsync({ id })}
                     />
                   ))}
                 </tbody>

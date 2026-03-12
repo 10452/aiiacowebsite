@@ -34,7 +34,7 @@ async function runScheduledCheck(): Promise<void> {
     const statusEmoji = report.overall === "healthy" ? "✅" : report.overall === "degraded" ? "⚠️" : "❌";
     console.log(
       `[HealthScheduler] ${statusEmoji} Score: ${report.score}/100 | ` +
-      `${report.vitals.filter(v => v.status === "healthy").length}/6 healthy | ` +
+      `${report.vitals.filter(v => v.status === "healthy").length}/7 healthy | ` +
       `Alerts sent: ${report.alertsSent}`
     );
     // Log non-healthy vitals for debugging

@@ -11,6 +11,7 @@ import { handleCalendlyWebhook } from "../webhooks/calendly";
 import { handleElevenLabsWebhook } from "../webhooks/elevenlabs";
 import { startTelnyxPoller } from "../telnyxPoller";
 import { startHealthScheduler } from "../healthScheduler";
+import { startConversationPoller } from "../conversationPoller";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -113,6 +114,8 @@ async function startServer() {
     startTelnyxPoller();
     // Start periodic health checks (every 5 min, first check after 30s)
     startHealthScheduler();
+    // Start conversation poller — safety net to catch any missed webhook calls
+    startConversationPoller();
   });
 }
 

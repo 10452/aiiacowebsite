@@ -499,3 +499,38 @@
 - [x] Fixed health monitor tests: updated webhook mocks to match list API structure (webhooks array, most_recent_failure_timestamp)
 - [x] Updated Resend API key with fresh key from user
 - [x] All 86 tests passing (10 test files)
+
+## Round 68 — AiiA Calendly Booking Integration
+- [ ] Research Calendly API: availability checking, booking creation, event types
+- [ ] Build Calendly API client (server-side) for checking available slots
+- [ ] Build Calendly booking endpoint that creates scheduled events
+- [ ] Configure ElevenLabs agent with tool/function calling for Calendly
+- [ ] AiiA should be able to check available times and book calls during voice conversations
+- [ ] Update agent prompt with Calendly booking instructions
+- [ ] Push updated agent config (prompt + tools) to live ElevenLabs agent
+- [ ] Write vitest tests for Calendly integration
+
+## Round 68 — Fix Email Pipeline + Calendly Integration
+- [ ] Bug: No email sent after long AiiA call — investigate and fix
+- [ ] Check webhook logs for recent call
+- [ ] Check lead records for recent call
+- [ ] Fix email sending pipeline
+- [ ] Save Calendly API key as env secret
+- [ ] Build Calendly API client (event types, availability, booking)
+- [ ] Build Express endpoints for AiiA to call during voice conversations
+- [ ] Register Calendly tools on ElevenLabs agent
+- [ ] Update AiiA prompt with booking instructions
+- [ ] Write vitest tests
+
+## Round 69 — Diagnostic Intelligence Agent Service Audit & Resilience
+- [x] Audit full diagnostic chain architecture (webhook → poller → re-analyze → admin tools)
+- [x] Fix webhook HMAC: never drop leads on signature mismatch (log warning, process anyway)
+- [x] Build conversation poller (server/conversationPoller.ts): polls ElevenLabs API every 5 min
+- [x] Wire poller into server startup (server/_core/index.ts)
+- [x] Add "Recover Missed Calls" button to admin console (manual poller trigger)
+- [x] Add "Re-send Email" button to admin console (retry failed follow-up emails)
+- [x] Unify email templates: poller uses same rich track-specific emails as webhook handler
+- [x] Add Conversation Poller as 7th vital in health monitor
+- [ ] Fix Resend domain verification issue (resend.aiiaco.com not verified — needs DNS TXT record)
+- [x] Write vitest tests for conversation poller
+- [x] Update all tests to pass (101/101)
