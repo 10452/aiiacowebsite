@@ -6,6 +6,8 @@
  *
  * RULE: No REAL call is ever lost. If the webhook fails, the poller catches it.
  * RULE: Abandoned/spam calls are silently dropped — no lead, no email, no notification.
+ * RULE: Each conversation is processed EXACTLY ONCE — deduplication via in-memory set + DB check.
+ * RULE: If a lead already exists (by email), update the lead but NEVER re-send email or re-notify.
  */
 
 import { parseCallWebhook, extractConversationIntelligence } from "./aiAgent";
@@ -21,6 +23,11 @@ const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY ?? "";
 const ELEVENLABS_AGENT_ID = process.env.ELEVENLABS_AGENT_ID ?? "";
 const POLL_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
 const INITIAL_DELAY_MS = 60 * 1000; // 1 minute after startup
+
+// ── In-memory deduplication set ─────────────────────────────────────────────
+// Tracks every conversation ID we've ever seen (processed OR skipped).
+// Survives across poll cycles. Cleared only on server restart.
+const processedConversationIds = new Set<string>();
 
 interface ElevenLabsConversation {
   conversation_id: string;
@@ -84,7 +91,7 @@ async function fetchConversationDetail(conversationId: string): Promise<ElevenLa
 
 // ── Check if a conversation is already captured in our DB ──────────────────
 
-async function isConversationCaptured(conversationId: string): Promise<boolean> {
+async function isConversationInDb(conversationId: string): Promise<boolean> {
   try {
     const db = await getDb();
     if (!db) return false;
@@ -96,6 +103,33 @@ async function isConversationCaptured(conversationId: string): Promise<boolean> 
     return rows.length > 0;
   } catch {
     return false;
+  }
+}
+
+// ── Seed the in-memory set from DB on first run ────────────────────────────
+// This prevents re-processing conversations that were already captured before
+// the current server process started.
+
+let seeded = false;
+
+async function seedProcessedIds(): Promise<void> {
+  if (seeded) return;
+  try {
+    const db = await getDb();
+    if (!db) return;
+    const rows = await db
+      .select({ conversationId: leads.conversationId })
+      .from(leads)
+      .where(sql`${leads.conversationId} IS NOT NULL`);
+    for (const row of rows) {
+      if (row.conversationId) {
+        processedConversationIds.add(row.conversationId);
+      }
+    }
+    console.log(`[ConversationPoller] Seeded ${processedConversationIds.size} known conversation IDs from DB`);
+    seeded = true;
+  } catch (err) {
+    console.error("[ConversationPoller] Failed to seed processed IDs:", err);
   }
 }
 
@@ -163,19 +197,25 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
     };
 
     let leadId: number | null = null;
+    let isNewLead = false;
+
     if (callerEmail && !callerEmail.includes("@aiiaco.com")) {
       const existing = await getLeadByEmail(callerEmail);
       if (existing) {
         leadId = existing.id;
+        // Update existing lead with call data but DON'T re-email or re-notify
         await updateLeadById(existing.id, {
           callTranscript: summary.transcriptText,
           ...intelligenceFields,
           phone: callerPhone ?? existing.phone,
           name: callerName ?? existing.name,
           company: companyName ?? existing.company,
-          status: assessment.suggestedStatus,
+          // Don't change status if it's already been progressed
+          status: (existing.status === "new" || existing.status === "incomplete")
+            ? assessment.suggestedStatus
+            : existing.status,
         });
-        console.log(`[ConversationPoller] Updated existing lead ${existing.id}`);
+        console.log(`[ConversationPoller] Updated existing lead ${existing.id} (no re-email, no re-notify)`);
       }
     }
 
@@ -197,14 +237,16 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
           ...intelligenceFields,
         });
         leadId = result.insertId;
-        console.log(`[ConversationPoller] Created lead ${leadId} (quality: ${assessment.quality})`);
+        isNewLead = true;
+        console.log(`[ConversationPoller] Created NEW lead ${leadId} (quality: ${assessment.quality})`);
       } catch (insertErr) {
         console.error("[ConversationPoller] Failed to insert lead:", insertErr);
       }
     }
 
-    // ── Send follow-up email ONLY for complete leads with real email ─────
-    if (assessment.shouldEmail && callerEmail && leadId) {
+    // ── Send follow-up email ONLY for NEW complete leads with real email ──
+    // NEVER re-email existing leads — they already got their email from the webhook
+    if (isNewLead && assessment.shouldEmail && callerEmail && leadId) {
       try {
         const trackEmail = getTrackEmail(summary.track, callerName);
         const emailSent = await sendEmail({
@@ -219,12 +261,13 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
         console.error(`[ConversationPoller] Failed to send follow-up email:`, emailErr);
         if (leadId) await updateLeadEmailStatus(leadId, "failed").catch(() => {});
       }
-    } else if (leadId) {
+    } else if (leadId && isNewLead) {
       await updateLeadEmailStatus(leadId, "not_applicable").catch(() => {});
     }
 
-    // ── Notify owner ONLY for complete leads ────────────────────────────
-    if (assessment.shouldNotifyOwner) {
+    // ── Notify owner ONLY for NEW complete leads ─────────────────────────
+    // NEVER re-notify for existing leads
+    if (isNewLead && assessment.shouldNotifyOwner) {
       try {
         const summaryLines = [
           `📞 **Recovered Missed Call** (via poller)`,
@@ -244,7 +287,7 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
       }
     }
 
-    console.log(`[ConversationPoller] ✅ Processed ${detail.conversation_id} (quality: ${assessment.quality})`);
+    console.log(`[ConversationPoller] ✅ Processed ${detail.conversation_id} (quality: ${assessment.quality}, new: ${isNewLead})`);
   } catch (err) {
     console.error(`[ConversationPoller] Failed to process conversation ${detail.conversation_id}:`, err);
   }
@@ -255,6 +298,9 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
 async function pollForMissedCalls(): Promise<void> {
   console.log("[ConversationPoller] Checking for missed calls...");
 
+  // Seed the in-memory set from DB on first run
+  await seedProcessedIds();
+
   try {
     const conversations = await fetchRecentConversations();
 
@@ -263,37 +309,55 @@ async function pollForMissedCalls(): Promise<void> {
       (c) => c.status === "done" && c.agent_id === ELEVENLABS_AGENT_ID
     );
 
-    // Pre-filter: skip obviously abandoned calls before fetching details
-    const worthChecking = completedCalls.filter((c) => {
-      if (c.call_duration_secs !== undefined && c.call_duration_secs < 30) {
-        console.log(`[ConversationPoller] ⏭ Skipping ${c.conversation_id} — too short (${c.call_duration_secs}s)`);
-        return false;
-      }
-      return true;
-    });
-
     let recovered = 0;
-    let skipped = 0;
-    for (const call of worthChecking) {
-      const alreadyCaptured = await isConversationCaptured(call.conversation_id);
-      if (alreadyCaptured) continue;
+    let alreadyKnown = 0;
+    let abandoned = 0;
+
+    for (const call of completedCalls) {
+      // ── DEDUP CHECK 1: In-memory set (fast, survives across poll cycles) ──
+      if (processedConversationIds.has(call.conversation_id)) {
+        alreadyKnown++;
+        continue;
+      }
+
+      // ── Pre-filter: skip obviously abandoned calls ────────────────────────
+      if (call.call_duration_secs !== undefined && call.call_duration_secs < 30) {
+        processedConversationIds.add(call.conversation_id); // Remember so we don't check again
+        abandoned++;
+        continue;
+      }
+
+      // ── DEDUP CHECK 2: DB check (catches leads from before this server started) ──
+      const inDb = await isConversationInDb(call.conversation_id);
+      if (inDb) {
+        processedConversationIds.add(call.conversation_id); // Cache for future cycles
+        alreadyKnown++;
+        continue;
+      }
 
       // Fetch full details and process
       const detail = await fetchConversationDetail(call.conversation_id);
-      if (!detail || !detail.transcript || detail.transcript.length === 0) continue;
+      if (!detail || !detail.transcript || detail.transcript.length === 0) {
+        processedConversationIds.add(call.conversation_id); // Don't retry empty conversations
+        continue;
+      }
 
       await processMissedConversation(detail);
+
+      // Mark as processed regardless of outcome
+      processedConversationIds.add(call.conversation_id);
       recovered++;
 
       // Small delay between processing to avoid rate limits
       await new Promise((resolve) => setTimeout(resolve, 2000));
     }
 
-    const totalSkipped = completedCalls.length - worthChecking.length;
-    if (recovered > 0 || totalSkipped > 0) {
-      console.log(`[ConversationPoller] ✅ Recovered ${recovered}, skipped ${totalSkipped} abandoned call(s)`);
+    if (recovered > 0 || abandoned > 0) {
+      console.log(`[ConversationPoller] ✅ Recovered ${recovered} new, skipped ${alreadyKnown} known + ${abandoned} abandoned`);
+    } else if (alreadyKnown > 0) {
+      console.log(`[ConversationPoller] All ${alreadyKnown} conversations already processed`);
     } else {
-      console.log("[ConversationPoller] No missed calls found");
+      console.log("[ConversationPoller] No conversations found");
     }
   } catch (err) {
     console.error("[ConversationPoller] Poll error:", err);

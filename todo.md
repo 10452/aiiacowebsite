@@ -593,3 +593,13 @@
 - [x] Added "incomplete" and "abandoned" status values to schema + admin UI (both pages)
 - [x] DB migration pushed for new status enum values
 - [x] All quality gate tests pass (100/101 — 1 pre-existing TTS API failure)
+
+## Round 75 — CRITICAL: Poller flooding with duplicate recovery emails
+- [x] Diagnose: poller had NO deduplication — same conversations processed every 5 min cycle
+- [x] Root cause: isConversationCaptured checked DB but lead was stored under different conversationId (email match updated existing lead, not creating new one with new convId)
+- [x] Fix: added in-memory processedConversationIds set that persists across poll cycles
+- [x] Fix: added seedProcessedIds() that loads all known conversationIds from DB on first run
+- [x] Fix: existing leads found by email are updated but NEVER re-emailed or re-notified
+- [x] Fix: only NEW leads (isNewLead=true) get follow-up emails and owner notifications
+- [x] Cleaned up garbage placeholder leads (voice-*@aiiaco.com) — marked as abandoned
+- [x] All 100/101 tests pass (1 pre-existing TTS API failure)
