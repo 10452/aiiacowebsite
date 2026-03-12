@@ -394,3 +394,22 @@
 - [x] Fix post-call email pipeline — webhook created (cc0c8ef3) and assigned to workspace
 - [x] Updated ELEVENLABS_WEBHOOK_SECRET env var with new HMAC secret
 - [x] All 47 tests passing (7 test files)
+
+## Round 62 — AiiA Knowledge Base & Auto-Update System
+- [x] Extract content from RE Agent intro offer PDF
+- [x] Extract content from Operator intro offer PDF
+- [x] Extract content from AiiACo Overview PDF
+- [x] Extract content from aiia-overview-masterpiece.html
+- [x] Extract content from aiia-one-pager.html
+- [x] Build comprehensive knowledge base document covering Agent, Operator, and Corporate/Enterprise packages
+- [x] Corporate package = RE Agent + Operator packages combined + ongoing maintenance (cold email, corporate image, operational infrastructure)
+- [x] Update AiiA agent prompt with deep product knowledge (11,643 chars pushed to live agent)
+- [x] Push updated prompt to live ElevenLabs agent (verified: Agent, Operator, Corporate all present)
+- [x] Build knowledge_base DB table (10 columns: id, title, content, category, source, sourceFile, isActive, lastPushedAt, createdAt, updatedAt)
+- [x] Build knowledge base CRUD API (list, get, create, update, delete, toggleActive, pushToAgent)
+- [x] Build /admin/knowledge page: category filters, expand/collapse entries, edit/create modal, push-to-AiiA button
+- [x] Stale detection: entries updated after last push show "Stale" badge
+- [x] Seed 7 initial knowledge entries from all 5 documents (18,000+ chars total)
+- [x] pushToAgent rebuilds full prompt from base template + active entries and pushes to ElevenLabs
+- [x] Write vitest tests for knowledge base (13 tests in knowledge.test.ts)
+- [x] All 60 tests passing (8 test files)

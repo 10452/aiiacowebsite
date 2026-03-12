@@ -87,3 +87,25 @@ export const adminUsers = mysqlTable("admin_users", {
 
 export type AdminUser = typeof adminUsers.$inferSelect;
 export type InsertAdminUser = typeof adminUsers.$inferInsert;
+
+/**
+ * Knowledge base entries — AiiA's knowledge that gets pushed to the ElevenLabs agent prompt.
+ * Each entry is a named piece of knowledge (e.g., "Agent Package Details", "Company Overview").
+ * source: where the knowledge came from (document, website, conversation, manual)
+ * category: organizational grouping (packages, company, processes, faq)
+ */
+export const knowledgeBase = mysqlTable("knowledge_base", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  content: text("content").notNull(),
+  category: mysqlEnum("category", ["packages", "company", "processes", "faq", "other"]).default("other").notNull(),
+  source: mysqlEnum("source", ["document", "website", "conversation", "manual"]).default("manual").notNull(),
+  sourceFile: varchar("sourceFile", { length: 512 }),
+  isActive: int("isActive").default(1).notNull(),
+  lastPushedAt: timestamp("lastPushedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type KnowledgeEntry = typeof knowledgeBase.$inferSelect;
+export type InsertKnowledgeEntry = typeof knowledgeBase.$inferInsert;

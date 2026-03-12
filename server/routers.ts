@@ -9,6 +9,8 @@ import {
   insertLead, getAllLeads, updateLeadStatus, updateLeadById, getLeadById,
   getAdminUserByUsername, getAdminUserById, getAllAdminUsers,
   createAdminUser, deleteAdminUser, updateAdminUserPassword, countAdminUsers,
+  getAllKnowledgeEntries, getActiveKnowledgeEntries, getKnowledgeEntryById,
+  insertKnowledgeEntry, updateKnowledgeEntry, deleteKnowledgeEntry, markKnowledgePushed,
 } from "./db";
 import { generateAndSendLeadDiagnostic } from "./leadDiagnostic";
 import { sendLeadConfirmationEmail } from "./email";
@@ -205,11 +207,133 @@ const agentRouter = router({
   }),
 });
 
-// ─── Router ───────────────────────────────────────────────────────────────────
+// ─── Knowledge Base Router ────────────────────────────────────────────────────────────
+
+const knowledgeRouter = router({
+  /** List all knowledge entries */
+  list: adminAuthedProcedure.query(async () => {
+    return getAllKnowledgeEntries();
+  }),
+
+  /** Get a single entry by ID */
+  get: adminAuthedProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .query(async ({ input }) => {
+      const entry = await getKnowledgeEntryById(input.id);
+      if (!entry) throw new TRPCError({ code: "NOT_FOUND", message: "Knowledge entry not found" });
+      return entry;
+    }),
+
+  /** Create a new knowledge entry */
+  create: adminAuthedProcedure
+    .input(z.object({
+      title: z.string().min(1).max(255),
+      content: z.string().min(1).max(50000),
+      category: z.enum(["packages", "company", "processes", "faq", "other"]).default("other"),
+      source: z.enum(["document", "website", "conversation", "manual"]).default("manual"),
+      sourceFile: z.string().max(512).optional(),
+    }))
+    .mutation(async ({ input }) => {
+      const result = await insertKnowledgeEntry({
+        title: input.title,
+        content: input.content,
+        category: input.category,
+        source: input.source,
+        sourceFile: input.sourceFile ?? null,
+      });
+      return { success: true, id: result.insertId };
+    }),
+
+  /** Update an existing entry */
+  update: adminAuthedProcedure
+    .input(z.object({
+      id: z.number().int().positive(),
+      title: z.string().min(1).max(255).optional(),
+      content: z.string().min(1).max(50000).optional(),
+      category: z.enum(["packages", "company", "processes", "faq", "other"]).optional(),
+      source: z.enum(["document", "website", "conversation", "manual"]).optional(),
+      isActive: z.number().min(0).max(1).optional(),
+    }))
+    .mutation(async ({ input }) => {
+      const { id, ...patch } = input;
+      await updateKnowledgeEntry(id, patch);
+      return { success: true };
+    }),
+
+  /** Delete an entry */
+  delete: adminAuthedProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .mutation(async ({ input }) => {
+      await deleteKnowledgeEntry(input.id);
+      return { success: true };
+    }),
+
+  /** Toggle active/inactive */
+  toggleActive: adminAuthedProcedure
+    .input(z.object({ id: z.number().int().positive(), isActive: z.number().min(0).max(1) }))
+    .mutation(async ({ input }) => {
+      await updateKnowledgeEntry(input.id, { isActive: input.isActive });
+      return { success: true };
+    }),
+
+  /**
+   * Push all active knowledge entries to the ElevenLabs agent prompt.
+   * Rebuilds the full prompt from the base template + all active knowledge entries,
+   * then pushes it to the live agent.
+   */
+  pushToAgent: adminAuthedProcedure.mutation(async () => {
+    const agentId = process.env.ELEVENLABS_AGENT_ID;
+    if (!agentId) {
+      throw new TRPCError({ code: "PRECONDITION_FAILED", message: "ELEVENLABS_AGENT_ID not configured" });
+    }
+
+    // Get all active knowledge entries
+    const entries = await getActiveKnowledgeEntries();
+
+    // Build the knowledge section from active entries
+    const knowledgeSection = entries.map(e => {
+      return `### ${e.title}\n${e.content}`;
+    }).join("\n\n");
+
+    // Build the full prompt: base prompt structure + dynamic knowledge
+    // We inject the knowledge into the "Deep Company Knowledge" section
+    const basePrompt = AGENT_SYSTEM_PROMPT;
+    
+    // Find the Deep Company Knowledge section and replace/append
+    const knowledgeMarker = "## Deep Company Knowledge";
+    const nextSectionMarker = "## Identity & Adversarial Resilience";
+    
+    let fullPrompt: string;
+    if (basePrompt.includes(knowledgeMarker) && basePrompt.includes(nextSectionMarker)) {
+      // Replace the knowledge section with dynamic content
+      const beforeKnowledge = basePrompt.split(knowledgeMarker)[0];
+      const afterKnowledge = basePrompt.split(nextSectionMarker).slice(1).join(nextSectionMarker);
+      fullPrompt = `${beforeKnowledge}${knowledgeMarker}\n\nYou know AiiACo inside and out. Use this knowledge naturally in conversation when relevant — don't dump it all at once.\n\n${knowledgeSection}\n\n${nextSectionMarker}${afterKnowledge}`;
+    } else {
+      // Fallback: append knowledge at the end
+      fullPrompt = `${basePrompt}\n\n## Additional Knowledge\n\n${knowledgeSection}`;
+    }
+
+    // Push to ElevenLabs
+    await updateAgentPrompt(agentId, fullPrompt, AGENT_CONFIG.firstMessage);
+
+    // Mark all entries as pushed
+    await markKnowledgePushed(entries.map(e => e.id));
+
+    return {
+      success: true,
+      entriesPushed: entries.length,
+      promptLength: fullPrompt.length,
+    };
+  }),
+});
+
+// ─── Router ───────────────────────────────────────────────────────────────────────────
 
 export const appRouter = router({
   system: systemRouter,
   agent: agentRouter,
+  knowledge: knowledgeRouter,
 
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

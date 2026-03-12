@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertLead, InsertUser, leads, users, adminUsers, InsertAdminUser } from "../drizzle/schema";
+import { InsertLead, InsertUser, leads, users, adminUsers, InsertAdminUser, knowledgeBase, InsertKnowledgeEntry } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -193,4 +193,52 @@ export async function countAdminUsers() {
   if (!db) throw new Error("Database not available");
   const result = await db.select().from(adminUsers);
   return result.length;
+}
+
+// ─── Knowledge Base helpers ─────────────────────────────────────────────────
+
+export async function getAllKnowledgeEntries() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.select().from(knowledgeBase).orderBy(desc(knowledgeBase.updatedAt));
+}
+
+export async function getActiveKnowledgeEntries() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.select().from(knowledgeBase).where(eq(knowledgeBase.isActive, 1)).orderBy(desc(knowledgeBase.updatedAt));
+}
+
+export async function getKnowledgeEntryById(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.select().from(knowledgeBase).where(eq(knowledgeBase.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function insertKnowledgeEntry(entry: InsertKnowledgeEntry): Promise<{ insertId: number }> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const [result] = await db.insert(knowledgeBase).values(entry);
+  return { insertId: (result as any).insertId ?? 0 };
+}
+
+export async function updateKnowledgeEntry(id: number, patch: Partial<InsertKnowledgeEntry>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.update(knowledgeBase).set({ ...patch }).where(eq(knowledgeBase.id, id));
+}
+
+export async function deleteKnowledgeEntry(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.delete(knowledgeBase).where(eq(knowledgeBase.id, id));
+}
+
+export async function markKnowledgePushed(ids: number[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  for (const id of ids) {
+    await db.update(knowledgeBase).set({ lastPushedAt: new Date() }).where(eq(knowledgeBase.id, id));
+  }
 }
