@@ -460,3 +460,25 @@
 - [x] Added /admin/analytics route and 📊 Analytics link to admin header nav (Leads + Analytics + Knowledge + Agent Config)
 - [x] Write 12 vitest tests for analytics endpoints (overview, dailyVolume, recentCalls)
 - [x] All 75 tests passing (9 test files)
+
+## Round 66 — Health Monitoring, Call Ending, Pronunciation, Agent Page Redesign
+- [x] Build health monitoring module (server/healthMonitor.ts): 6 vitals checked in parallel
+- [x] Chain checks: ElevenLabs Agent (25%) → ElevenLabs Webhook (20%) → Database (20%) → Email/Resend (15%) → LLM (10%) → Owner Notifications (10%)
+- [x] Weighted health score (0-100) with overall status (healthy/degraded/down)
+- [x] Auto-alerts owner when any vital is DOWN (via notifyOwner)
+- [x] Health router: admin-only tRPC endpoint (health.check) returns full HealthReport
+- [x] Update agent prompt: name pronunciation "Ay-yah" (like Aya from the Quran — a sign, a miracle)
+- [x] Add Phase 4: Clean Call Ending — standard close, closing punchline, early hangup, silent caller flows
+- [x] Closing punchline: "The companies that integrate AI first don't just win. They make it impossible for everyone else to catch up."
+- [x] Never end a call without: confirming next steps, giving callback info, memorable closing line
+- [x] Call time limit increased from 5 to 10 minutes
+- [x] Pushed updated prompt to live ElevenLabs agent (13,213 chars, verified: Phase 4, Ay-yah, punchline all present)
+- [x] Redesigned /admin/agent page as "AiiA Diagnostic Intelligence" dashboard:
+  - [x] HealthVitals panel: auto-checks every 60s, color-coded vital cards, re-check button, alert indicator
+  - [x] ServiceOfferingBanner: positions this as corporate intelligence diagnostic service for clients
+  - [x] LRMB example: "could have one that books everything for you with voice"
+  - [x] 6-capability grid: Voice AI Agent, Intelligence Extraction, Lead Pipeline, Automated Follow-up, Health Monitoring, Website Integration
+  - [x] DiagnosticChainDiagram: 8-step visual flow from widget click to owner notification
+  - [x] AgentConfigEditor: collapsible prompt/first-message editor with push-to-ElevenLabs
+- [x] Write 11 vitest tests for health monitoring (health.test.ts)
+- [x] All 86 tests passing (10 test files)

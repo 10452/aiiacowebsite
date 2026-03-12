@@ -26,6 +26,7 @@ import {
   getAgent,
   updateAgentPrompt,
 } from "./aiAgent";
+import { runHealthCheck } from "./healthMonitor";
 
 // ─── Admin Session JWT helpers ────────────────────────────────────────────────
 
@@ -158,6 +159,15 @@ const analyticsRouter = router({
     .query(async ({ input }) => {
       return getRecentCalls(input?.limit ?? 10);
     }),
+});
+
+// ─── Health Monitor Router ───────────────────────────────────────────────────
+
+const healthRouter = router({
+  /** Run full diagnostic chain health check */
+  check: adminAuthedProcedure.query(async () => {
+    return runHealthCheck();
+  }),
 });
 
 // ─── Agent Management Router ──────────────────────────────────────────────────
@@ -357,6 +367,7 @@ const knowledgeRouter = router({
 export const appRouter = router({
   system: systemRouter,
   agent: agentRouter,
+  health: healthRouter,
   knowledge: knowledgeRouter,
   analytics: analyticsRouter,
 
