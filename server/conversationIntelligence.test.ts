@@ -140,6 +140,35 @@ describe("parseCallWebhook", () => {
     expect(result.conversationId).toBe("");
     expect(result.durationSeconds).toBe(0);
     expect(result.transcriptText).toBe("");
+    expect(result.structuredTranscript).toEqual([]);
+  });
+
+  it("builds structured transcript with roles and timing", () => {
+    const turnsWithTime = [
+      { role: "agent", message: "Hello!", time_in_call_secs: 0 },
+      { role: "user", message: "Hi there.", time_in_call_secs: 2 },
+      { role: "agent", message: "How can I help?", time_in_call_secs: 5 },
+    ];
+    const payload = buildWebhookPayload(turnsWithTime);
+    const result = parseCallWebhook(payload as any);
+    expect(result.structuredTranscript).toHaveLength(3);
+    expect(result.structuredTranscript[0]).toEqual({ role: "agent", message: "Hello!", time_in_call_secs: 0 });
+    expect(result.structuredTranscript[1]).toEqual({ role: "user", message: "Hi there.", time_in_call_secs: 2 });
+    expect(result.structuredTranscript[2]).toEqual({ role: "agent", message: "How can I help?", time_in_call_secs: 5 });
+  });
+
+  it("builds structured transcript without timing when not provided", () => {
+    const payload = buildWebhookPayload(SAMPLE_TRANSCRIPT_TURNS);
+    const result = parseCallWebhook(payload as any);
+    expect(result.structuredTranscript.length).toBeGreaterThan(0);
+    expect(result.structuredTranscript[0].role).toBe("agent");
+    expect(result.structuredTranscript[0].message).toBeTruthy();
+  });
+
+  it("returns empty structured transcript for empty turns", () => {
+    const payload = buildWebhookPayload([]);
+    const result = parseCallWebhook(payload as any);
+    expect(result.structuredTranscript).toEqual([]);
   });
 });
 

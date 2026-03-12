@@ -156,6 +156,9 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
     let leadId: number | null = null;
 
     // Shared intelligence fields for DB storage
+    const structuredTranscriptJson = summary.structuredTranscript.length > 0
+      ? JSON.stringify(summary.structuredTranscript)
+      : null;
     const intelligenceFields = {
       painPoints: intelligence.painPoints.length > 0 ? JSON.stringify(intelligence.painPoints) : null,
       wants: intelligence.wants.length > 0 ? JSON.stringify(intelligence.wants) : null,
@@ -163,6 +166,7 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
       conversationSummary: intelligence.conversationSummary !== "Transcript analysis unavailable." ? intelligence.conversationSummary : null,
       callDurationSeconds: summary.durationSeconds || null,
       conversationId: summary.conversationId || null,
+      structuredTranscript: structuredTranscriptJson,
     };
 
     if (callerEmail) {

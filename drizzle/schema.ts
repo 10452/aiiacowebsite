@@ -48,6 +48,8 @@ export const leads = mysqlTable("leads", {
   adminNotes: text("adminNotes"),
   /** Full call transcript from ElevenLabs post-call webhook */
   callTranscript: text("callTranscript"),
+  /** Structured transcript JSON: Array<{role: 'agent'|'user', message: string, time_in_call_secs?: number}> */
+  structuredTranscript: text("structuredTranscript"),
   /** Detected call track: operator | agent | corporate */
   callTrack: varchar("callTrack", { length: 32 }),
   /** AI-extracted pain points from voice conversation */

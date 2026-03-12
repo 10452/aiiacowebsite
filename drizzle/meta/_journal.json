@@ -85,6 +85,13 @@
       "when": 1773272175006,
       "tag": "0011_tranquil_daredevil",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "5",
+      "when": 1773293397483,
+      "tag": "0012_typical_beast",
+      "breakpoints": true
     }
   ]
 }

@@ -216,11 +216,45 @@ function ConversationIntelligencePanel({ lead }: { lead: Lead }) {
   );
 }
 
-function CallTranscriptViewer({ transcript, track }: { transcript: string; track?: string }) {
+/** Format seconds into m:ss */
+function formatCallTime(secs: number | undefined): string {
+  if (secs === undefined || secs < 0) return "";
+  const m = Math.floor(secs / 60);
+  const s = Math.floor(secs % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+/** Parse structured transcript JSON, falling back to plain-text lines */
+function parseTranscript(structuredJson: string | null | undefined, plainText: string): Array<{ role: "agent" | "user"; message: string; time?: number }> {
+  if (structuredJson) {
+    try {
+      const parsed = JSON.parse(structuredJson);
+      if (Array.isArray(parsed)) {
+        return parsed.map((t: any) => ({
+          role: t.role === "agent" ? "agent" as const : "user" as const,
+          message: t.message ?? "",
+          time: t.time_in_call_secs,
+        }));
+      }
+    } catch { /* fall through to plain text */ }
+  }
+  // Fallback: parse plain text lines
+  return plainText.split("\n").filter(Boolean).map((line) => {
+    const isAgent = line.startsWith("AiiA:");
+    return {
+      role: isAgent ? "agent" as const : "user" as const,
+      message: line.replace(/^(AiiA:|Caller:)\s*/, ""),
+    };
+  });
+}
+
+function CallTranscriptViewer({ transcript, structuredTranscript, track, durationSeconds }: { transcript: string; structuredTranscript?: string | null; track?: string; durationSeconds?: number | null }) {
   const [open, setOpen] = useState(false);
   const trackKey = (track ?? "unknown").toLowerCase();
   const tc = TRACK_COLORS[trackKey] ?? TRACK_COLORS.unknown;
-  const lines = transcript.split("\n").filter(Boolean);
+  const turns = parseTranscript(structuredTranscript, transcript);
+  const totalDuration = durationSeconds ?? 0;
+
   return (
     <div style={{ paddingTop: "16px", paddingBottom: "4px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: open ? "12px" : 0 }}>
@@ -233,6 +267,9 @@ function CallTranscriptViewer({ transcript, track }: { transcript: string; track
               {track} track
             </span>
           )}
+          <span style={{ fontSize: "11px", color: "rgba(200,215,230,0.35)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+            {turns.length} messages{totalDuration > 0 ? ` · ${formatCallTime(totalDuration)}` : ""}
+          </span>
         </div>
         <button
           onClick={(e) => { e.stopPropagation(); setOpen(!open); }}
@@ -242,18 +279,55 @@ function CallTranscriptViewer({ transcript, track }: { transcript: string; track
         </button>
       </div>
       {open && (
-        <div style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "10px", padding: "14px 16px", maxHeight: "320px", overflowY: "auto" }}>
-          {lines.map((line, i) => {
-            const isAiiA = line.startsWith("AiiA:");
-            const isCaller = line.startsWith("Caller:");
+        <div style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "12px", padding: "16px", maxHeight: "480px", overflowY: "auto" }}>
+          {turns.map((turn, i) => {
+            const isAgent = turn.role === "agent";
             return (
-              <div key={i} style={{ marginBottom: "8px", display: "flex", gap: "8px", alignItems: "flex-start" }}>
-                <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: isAiiA ? "rgba(184,156,74,0.80)" : isCaller ? "rgba(120,200,255,0.80)" : "rgba(200,215,230,0.35)", minWidth: "48px", paddingTop: "1px" }}>
-                  {isAiiA ? "AiiA" : isCaller ? "Caller" : ""}
-                </span>
-                <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", lineHeight: 1.55, color: isAiiA ? "rgba(200,215,230,0.75)" : "rgba(200,215,230,0.90)" }}>
-                  {line.replace(/^(AiiA:|Caller:)\s*/, "")}
-                </span>
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: isAgent ? "flex-start" : "flex-end",
+                  marginBottom: "12px",
+                }}
+              >
+                {/* Speaker label + timestamp */}
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+                  <span
+                    style={{
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase",
+                      color: isAgent ? "rgba(184,156,74,0.75)" : "rgba(120,200,255,0.75)",
+                    }}
+                  >
+                    {isAgent ? "AiiA" : "Caller"}
+                  </span>
+                  {turn.time !== undefined && (
+                    <span style={{ fontSize: "10px", color: "rgba(200,215,230,0.25)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>
+                      {formatCallTime(turn.time)}
+                    </span>
+                  )}
+                </div>
+                {/* Chat bubble */}
+                <div
+                  style={{
+                    maxWidth: "85%",
+                    padding: "10px 14px",
+                    borderRadius: isAgent ? "2px 12px 12px 12px" : "12px 2px 12px 12px",
+                    background: isAgent ? "rgba(184,156,74,0.08)" : "rgba(120,200,255,0.06)",
+                    border: `1px solid ${isAgent ? "rgba(184,156,74,0.15)" : "rgba(120,200,255,0.12)"}`,
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                    fontSize: "13px",
+                    lineHeight: 1.6,
+                    color: "rgba(200,215,230,0.88)",
+                  }}
+                >
+                  {turn.message}
+                </div>
               </div>
             );
           })}
@@ -587,7 +661,7 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic }: { lead: Lead; onSt
 
             {/* Call Transcript */}
             {lead.callTranscript && (
-              <CallTranscriptViewer transcript={lead.callTranscript} track={lead.callTrack ?? undefined} />
+              <CallTranscriptViewer transcript={lead.callTranscript} structuredTranscript={lead.structuredTranscript} track={lead.callTrack ?? undefined} durationSeconds={lead.callDurationSeconds} />
             )}
 
             {/* Admin Notes */}
@@ -707,6 +781,7 @@ export default function AdminLeadsPage() {
 
   const { data: leads, isLoading, refetch } = trpc.leads.list.useQuery(undefined, {
     enabled: isAuthenticated,
+    refetchInterval: 15_000, // Auto-refresh every 15 seconds for real-time updates
   });
 
   const updateStatus = trpc.leads.updateStatus.useMutation({
@@ -865,6 +940,35 @@ export default function AdminLeadsPage() {
             </span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            {/* New Calls badge — shows count of recent voice calls (last 24h) */}
+            {(() => {
+              const recentCalls = leads?.filter(l => {
+                if (!l.callTranscript) return false;
+                const age = Date.now() - new Date(l.createdAt).getTime();
+                return age < 24 * 60 * 60 * 1000; // last 24 hours
+              }).length ?? 0;
+              if (recentCalls === 0) return null;
+              return (
+                <div
+                  title={`${recentCalls} voice call${recentCalls > 1 ? "s" : ""} in the last 24 hours`}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    padding: "5px 11px",
+                    borderRadius: "999px",
+                    background: "rgba(100,220,160,0.10)",
+                    border: "1px solid rgba(100,220,160,0.28)",
+                    cursor: "default",
+                  }}
+                >
+                  <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "rgba(100,220,160,0.90)", boxShadow: "0 0 6px rgba(100,220,160,0.55)", flexShrink: 0, display: "inline-block", animation: "pulse-dot 2s ease-in-out infinite" }} />
+                  <span style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 700, color: "rgba(100,220,160,0.90)" }}>
+                    {recentCalls} Live Call{recentCalls > 1 ? "s" : ""}
+                  </span>
+                </div>
+              );
+            })()}
             {/* Diagnostic Ready badge — only shown when there are leads awaiting review */}
             {counts.diagnostic_ready > 0 && (
               <div
@@ -917,6 +1021,9 @@ export default function AdminLeadsPage() {
             >
               <span>↓</span> Export CSV
             </button>
+            <a href="/admin/knowledge" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 600, color: "rgba(200,215,230,0.60)", textDecoration: "none", display: "flex", alignItems: "center", gap: "5px" }}>
+              📚 Knowledge
+            </a>
             <a href="/admin/agent" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 600, color: "rgba(200,215,230,0.60)", textDecoration: "none", display: "flex", alignItems: "center", gap: "5px" }}>
               🤖 Agent Config
             </a>

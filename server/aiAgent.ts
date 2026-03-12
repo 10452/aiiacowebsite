@@ -338,6 +338,13 @@ export function verifyElevenLabsSignature(
 
 export type TrackType = "operator" | "agent" | "corporate" | "unknown";
 
+/** Individual transcript turn with timing */
+export interface TranscriptTurn {
+  role: "agent" | "user";
+  message: string;
+  time_in_call_secs?: number;
+}
+
 export interface CallSummary {
   track: TrackType;
   callerEmail: string | null;
@@ -347,6 +354,8 @@ export interface CallSummary {
   painPoint: string | null;
   budgetSignal: string | null;
   transcriptText: string;
+  /** Structured transcript with per-turn timing */
+  structuredTranscript: TranscriptTurn[];
   conversationId: string;
   durationSeconds: number;
 }
@@ -372,9 +381,14 @@ export function parseCallWebhook(payload: Record<string, unknown>): CallSummary 
   const conversationId = (data.conversation_id as string) ?? "";
   const durationSeconds = (data.metadata as Record<string, unknown>)?.call_duration_secs as number ?? 0;
 
-  // Build plain-text transcript
-  const turns = (data.transcript as Array<{ role: string; message: string }>) ?? [];
-  const transcriptText = turns
+  // Build structured + plain-text transcript
+  const rawTurns = (data.transcript as Array<{ role: string; message: string; time_in_call_secs?: number }>) ?? [];
+  const structuredTranscript: TranscriptTurn[] = rawTurns.map((t) => ({
+    role: t.role === "agent" ? "agent" as const : "user" as const,
+    message: t.message,
+    time_in_call_secs: t.time_in_call_secs,
+  }));
+  const transcriptText = rawTurns
     .map((t) => `${t.role === "agent" ? "AiiA" : "Caller"}: ${t.message}`)
     .join("\n");
 
@@ -422,6 +436,7 @@ export function parseCallWebhook(payload: Record<string, unknown>): CallSummary 
     painPoint,
     budgetSignal,
     transcriptText,
+    structuredTranscript,
     conversationId,
     durationSeconds,
   };

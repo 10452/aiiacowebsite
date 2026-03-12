@@ -430,3 +430,18 @@
   - FIX: Corrected to use webhooks.post_call_webhook_id in PATCH /v1/convai/settings
 - [x] Verified: Agent max_duration now 900s, webhook active and assigned, no failures
 - [x] Note: 2 test conversations (Namadou + Nimmer) were lost — transcripts exist in ElevenLabs but were never processed
+
+## Round 64 — Real-Time Call Transcripts in Admin Console
+- [x] Add structuredTranscript column to leads DB schema (JSON array of {role, message, time_in_call_secs})
+- [x] Push DB migration for new column
+- [x] Update parseCallWebhook to build structured transcript with per-turn timing from ElevenLabs data
+- [x] Webhook handler stores both plain-text and structured JSON transcript
+- [x] Auto-polling: leads list query refetches every 15 seconds for real-time updates
+- [x] Enhanced transcript viewer: chat-bubble UI with AiiA (gold, left-aligned) vs Caller (blue, right-aligned)
+- [x] Per-message timestamps (m:ss format) from structured transcript
+- [x] Message count + total call duration shown in transcript header
+- [x] Fallback: gracefully degrades to plain-text parsing for older leads without structured data
+- [x] "Live Calls" green badge in admin header showing voice calls from last 24 hours
+- [x] Added 📚 Knowledge link to admin header nav (alongside Agent Config)
+- [x] Write 3 new vitest tests for structuredTranscript (roles+timing, without timing, empty)
+- [x] All 63 tests passing (8 test files)
