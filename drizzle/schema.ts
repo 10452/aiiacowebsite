@@ -64,6 +64,10 @@ export const leads = mysqlTable("leads", {
   callDurationSeconds: int("callDurationSeconds"),
   /** ElevenLabs conversation ID */
   conversationId: varchar("conversationId", { length: 128 }),
+  /** Email delivery status: pending (not sent yet), sent, failed, not_applicable (no email on file) */
+  emailStatus: mysqlEnum("emailStatus", ["pending", "sent", "failed", "not_applicable"]).default("pending").notNull(),
+  /** Timestamp of last email send attempt */
+  emailSentAt: timestamp("emailSentAt"),
   status: mysqlEnum("status", ["new", "diagnostic_ready", "reviewed", "contacted", "closed"]).default("new").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

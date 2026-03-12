@@ -9,7 +9,7 @@
 
 import { parseCallWebhook, extractConversationIntelligence } from "./aiAgent";
 import { getTrackEmail } from "./trackEmails";
-import { insertLead, getLeadByEmail, updateLeadById, getDb } from "./db";
+import { insertLead, getLeadByEmail, updateLeadById, updateLeadEmailStatus, getDb } from "./db";
 import { notifyOwner } from "./_core/notification";
 import { sendEmail } from "./email";
 import { leads } from "../drizzle/schema";
@@ -177,19 +177,23 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
     }
 
     // Send follow-up email if we have an email
-    if (callerEmail && !callerEmail.includes("@aiiaco.com")) {
+    if (callerEmail && !callerEmail.includes("@aiiaco.com") && leadId) {
       try {
         const trackEmail = getTrackEmail(summary.track, callerName);
-        await sendEmail({
+        const emailSent = await sendEmail({
           to: callerEmail,
           subject: trackEmail.subject,
           html: trackEmail.html,
           text: trackEmail.text,
         });
-        console.log(`[ConversationPoller] Follow-up email sent to ${callerEmail}`);
+        await updateLeadEmailStatus(leadId, emailSent ? "sent" : "failed");
+        console.log(`[ConversationPoller] Follow-up email ${emailSent ? "sent" : "FAILED"} to ${callerEmail}`);
       } catch (emailErr) {
         console.error(`[ConversationPoller] Failed to send follow-up email:`, emailErr);
+        if (leadId) await updateLeadEmailStatus(leadId, "failed").catch(() => {});
       }
+    } else if (leadId && (!callerEmail || callerEmail.includes("@aiiaco.com"))) {
+      await updateLeadEmailStatus(leadId, "not_applicable").catch(() => {});
     }
 
     // Notify owner

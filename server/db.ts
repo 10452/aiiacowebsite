@@ -138,6 +138,22 @@ export async function updateLeadById(id: number, patch: Partial<InsertLead>) {
   return db.update(leads).set({ ...patch, updatedAt: new Date() }).where(eq(leads.id, id));
 }
 
+/**
+ * Update email delivery status for a lead.
+ */
+export async function updateLeadEmailStatus(
+  id: number,
+  emailStatus: "pending" | "sent" | "failed" | "not_applicable",
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const patch: Record<string, unknown> = { emailStatus, updatedAt: new Date() };
+  if (emailStatus === "sent" || emailStatus === "failed") {
+    patch.emailSentAt = new Date();
+  }
+  return db.update(leads).set(patch).where(eq(leads.id, id));
+}
+
 // ─── Admin user helpers ───────────────────────────────────────────────────────
 
 export async function getAdminUserByUsername(username: string) {

@@ -15,7 +15,7 @@
 import type { Request, Response } from "express";
 import { verifyElevenLabsSignature, parseCallWebhook, extractConversationIntelligence } from "../aiAgent";
 import { getTrackEmail } from "../trackEmails";
-import { insertLead, getLeadByEmail, updateLeadById } from "../db";
+import { insertLead, getLeadByEmail, updateLeadById, updateLeadEmailStatus } from "../db";
 import { notifyOwner } from "../_core/notification";
 import { sendEmail } from "../email";
 
@@ -116,19 +116,23 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
     }
 
     // ── Send follow-up email to caller ─────────────────────────────────────
-    if (callerEmail) {
+    if (callerEmail && leadId) {
       const emailContent = getTrackEmail(summary.track, callerName);
       try {
-        await sendEmail({
+        const emailSent = await sendEmail({
           to: callerEmail,
           subject: emailContent.subject,
           html: emailContent.html,
           text: emailContent.text,
         });
-        console.log(`[ElevenLabsWebhook] Follow-up email sent to ${callerEmail}`);
+        await updateLeadEmailStatus(leadId, emailSent ? "sent" : "failed");
+        console.log(`[ElevenLabsWebhook] Follow-up email ${emailSent ? "sent" : "FAILED"} to ${callerEmail}`);
       } catch (emailErr) {
         console.error("[ElevenLabsWebhook] Failed to send follow-up email:", emailErr);
+        await updateLeadEmailStatus(leadId, "failed").catch(() => {});
       }
+    } else if (leadId && !callerEmail) {
+      await updateLeadEmailStatus(leadId, "not_applicable").catch(() => {});
     }
 
     // ── Notify owner (with intelligence summary) ───────────────────────────

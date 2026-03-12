@@ -77,6 +77,38 @@ function StatusBadge({ status }: { status: Lead["status"] }) {
   );
 }
 
+const EMAIL_STATUS_COLORS: Record<string, { bg: string; text: string; border: string; label: string; icon: string }> = {
+  pending: { bg: "rgba(255,180,60,0.10)", text: "rgba(255,180,60,0.90)", border: "rgba(255,180,60,0.25)", label: "Email Pending", icon: "⏳" },
+  sent: { bg: "rgba(80,220,150,0.10)", text: "rgba(80,220,150,0.90)", border: "rgba(80,220,150,0.25)", label: "Email Sent", icon: "✉️" },
+  failed: { bg: "rgba(255,80,80,0.10)", text: "rgba(255,100,100,0.90)", border: "rgba(255,80,80,0.25)", label: "Email Failed", icon: "❌" },
+  not_applicable: { bg: "rgba(255,255,255,0.03)", text: "rgba(200,215,230,0.35)", border: "rgba(255,255,255,0.08)", label: "No Email", icon: "—" },
+};
+
+function EmailStatusBadge({ status }: { status: string | null }) {
+  const s = status ?? "pending";
+  const c = EMAIL_STATUS_COLORS[s] ?? EMAIL_STATUS_COLORS.pending;
+  return (
+    <span
+      title={c.label}
+      style={{
+        display: "inline-block",
+        padding: "2px 7px",
+        borderRadius: "999px",
+        fontSize: "10px",
+        fontWeight: 600,
+        letterSpacing: "0.04em",
+        background: c.bg,
+        color: c.text,
+        border: `1px solid ${c.border}`,
+        marginLeft: "6px",
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+      }}
+    >
+      {c.icon} {c.label}
+    </span>
+  );
+}
+
 const TRACK_COLORS: Record<string, { bg: string; text: string; border: string }> = {
   operator: { bg: "rgba(184,156,74,0.10)", text: "rgba(184,156,74,0.90)", border: "rgba(184,156,74,0.25)" },
   agent: { bg: "rgba(120,200,255,0.10)", text: "rgba(120,200,255,0.90)", border: "rgba(120,200,255,0.25)" },
@@ -495,6 +527,7 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic, onReanalyze, onResen
         </td>
         <td style={tdStyle}>
           <StatusBadge status={lead.status} />
+          <EmailStatusBadge status={(lead as any).emailStatus} />
         </td>
         <td style={tdStyle}>
           {/* Age chip */}

@@ -541,3 +541,24 @@
 - [x] Root cause: emails sent from team@resend.aiiaco.com (unverified subdomain) instead of team@aiiaco.com (verified domain)
 - [x] Fixed both from addresses in server/email.ts to use team@aiiaco.com
 - [x] Test email delivered successfully (Resend status: delivered, id: ed937821)
+
+## Round 71 — Email Delivery Tracking + Reply-To Address
+- [x] Add go@aiiaco.com as reply-to on all outbound emails (email.ts)
+- [x] Add emailStatus + emailSentAt columns to leads schema
+- [x] Push DB migration for emailStatus
+- [x] Add updateLeadEmailStatus helper to db.ts
+- [x] Update webhook handler to record email status after sending
+- [x] Update poller to record email status after sending
+- [x] Update resendEmail admin endpoint to record email status
+- [x] Show email delivery status badge per lead in admin console
+- [ ] Monitor live test call end-to-end
+- [x] All 101 tests pass
+
+## Round 71 — Arabic Language + Auto-Detection
+- [x] Find Arabic male voice: Sultan (8KMBeKnOSHXjLqGuWsAE) — Saudi/Khaliji, authoritative, wise
+- [x] Add Arabic language preset to AiiA agent with translated first message
+- [x] Set Sultan voice on Arabic preset
+- [x] Add language_detection system tool for auto-detection (no selector)
+- [ ] Update website widget to NOT show language selector — rely on auto-detection
+- [ ] Test Arabic language switching with live call
+- NOTE: TTS model stays eleven_turbo_v2 (English-only) for default — ElevenLabs constraint: "English agents must use turbo or flash v2". Arabic preset overrides voice when language switches.

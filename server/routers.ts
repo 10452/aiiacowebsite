@@ -7,6 +7,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import {
   insertLead, getAllLeads, updateLeadStatus, updateLeadById, getLeadById,
+  updateLeadEmailStatus,
   getAdminUserByUsername, getAdminUserById, getAllAdminUsers,
   createAdminUser, deleteAdminUser, updateAdminUserPassword, countAdminUsers,
   getAllKnowledgeEntries, getActiveKnowledgeEntries, getKnowledgeEntryById,
@@ -902,6 +903,8 @@ export const appRouter = router({
           html: emailContent.html,
           text: emailContent.text,
         });
+
+        await updateLeadEmailStatus(input.id, sent ? "sent" : "failed");
 
         if (!sent) {
           throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Email failed to send — check Resend domain verification" });

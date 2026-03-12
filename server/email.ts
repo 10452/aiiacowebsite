@@ -40,6 +40,7 @@ export async function sendEmail(params: {
     const resend = getResend();
     const result = await resend.emails.send({
       from: "AiiACo <team@aiiaco.com>",
+      replyTo: "go@aiiaco.com",
       to: [to],
       subject,
       html,
@@ -258,6 +259,7 @@ aiiaco.com`;
     const resend = getResend();
     const result = await resend.emails.send({
       from: "AiiACo <team@aiiaco.com>",
+      replyTo: "go@aiiaco.com",
       to: [email],
       subject: `${firstName}, your AiiACo request is confirmed`,
       html,
