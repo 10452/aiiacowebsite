@@ -242,3 +242,132 @@ export async function markKnowledgePushed(ids: number[]) {
     await db.update(knowledgeBase).set({ lastPushedAt: new Date() }).where(eq(knowledgeBase.id, id));
   }
 }
+
+// ─── Analytics helpers ──────────────────────────────────────────────────────
+
+export interface AnalyticsOverview {
+  totalLeads: number;
+  totalVoiceCalls: number;
+  avgCallDurationSeconds: number;
+  callsToday: number;
+  callsThisWeek: number;
+  callsThisMonth: number;
+  conversionRate: number; // % of leads that reached contacted/closed
+  byStatus: Record<string, number>;
+  byTrack: Record<string, number>;
+  byType: Record<string, number>;
+}
+
+export interface DailyCallVolume {
+  date: string; // YYYY-MM-DD
+  count: number;
+  avgDuration: number;
+}
+
+export async function getAnalyticsOverview(): Promise<AnalyticsOverview> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const allLeads = await db.select().from(leads).orderBy(desc(leads.createdAt));
+
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const weekStart = new Date(todayStart);
+  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const voiceCalls = allLeads.filter(l => l.callTranscript || l.conversationId);
+  const durations = voiceCalls.map(l => l.callDurationSeconds ?? 0).filter(d => d > 0);
+  const avgDuration = durations.length > 0 ? durations.reduce((a, b) => a + b, 0) / durations.length : 0;
+
+  const callsToday = voiceCalls.filter(l => l.createdAt >= todayStart).length;
+  const callsThisWeek = voiceCalls.filter(l => l.createdAt >= weekStart).length;
+  const callsThisMonth = voiceCalls.filter(l => l.createdAt >= monthStart).length;
+
+  const contacted = allLeads.filter(l => l.status === "contacted" || l.status === "closed").length;
+  const conversionRate = allLeads.length > 0 ? (contacted / allLeads.length) * 100 : 0;
+
+  const byStatus: Record<string, number> = {};
+  const byTrack: Record<string, number> = {};
+  const byType: Record<string, number> = {};
+
+  for (const lead of allLeads) {
+    byStatus[lead.status] = (byStatus[lead.status] ?? 0) + 1;
+    const track = lead.callTrack ?? "untracked";
+    byTrack[track] = (byTrack[track] ?? 0) + 1;
+    byType[lead.type] = (byType[lead.type] ?? 0) + 1;
+  }
+
+  return {
+    totalLeads: allLeads.length,
+    totalVoiceCalls: voiceCalls.length,
+    avgCallDurationSeconds: Math.round(avgDuration),
+    callsToday,
+    callsThisWeek,
+    callsThisMonth,
+    conversionRate: Math.round(conversionRate * 10) / 10,
+    byStatus,
+    byTrack,
+    byType,
+  };
+}
+
+export async function getDailyCallVolume(days: number = 30): Promise<DailyCallVolume[]> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const allLeads = await db.select().from(leads).orderBy(desc(leads.createdAt));
+  const voiceCalls = allLeads.filter(l => l.callTranscript || l.conversationId);
+
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - days);
+
+  // Group by date
+  const byDate: Record<string, { count: number; totalDuration: number }> = {};
+
+  // Pre-fill all dates in range
+  for (let i = 0; i < days; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0, 10);
+    byDate[key] = { count: 0, totalDuration: 0 };
+  }
+
+  for (const call of voiceCalls) {
+    if (call.createdAt < cutoff) continue;
+    const key = call.createdAt.toISOString().slice(0, 10);
+    if (!byDate[key]) byDate[key] = { count: 0, totalDuration: 0 };
+    byDate[key].count++;
+    byDate[key].totalDuration += call.callDurationSeconds ?? 0;
+  }
+
+  return Object.entries(byDate)
+    .map(([date, data]) => ({
+      date,
+      count: data.count,
+      avgDuration: data.count > 0 ? Math.round(data.totalDuration / data.count) : 0,
+    }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+export async function getRecentCalls(limit: number = 10) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const allLeads = await db.select({
+    id: leads.id,
+    name: leads.name,
+    email: leads.email,
+    company: leads.company,
+    callTrack: leads.callTrack,
+    callDurationSeconds: leads.callDurationSeconds,
+    status: leads.status,
+    conversationSummary: leads.conversationSummary,
+    createdAt: leads.createdAt,
+  }).from(leads).orderBy(desc(leads.createdAt));
+
+  // Filter to voice calls and limit
+  return allLeads
+    .filter(l => l.callDurationSeconds != null && l.callDurationSeconds > 0)
+    .slice(0, limit);
+}

@@ -1021,6 +1021,9 @@ export default function AdminLeadsPage() {
             >
               <span>↓</span> Export CSV
             </button>
+            <a href="/admin/analytics" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 600, color: "rgba(200,215,230,0.60)", textDecoration: "none", display: "flex", alignItems: "center", gap: "5px" }}>
+              📊 Analytics
+            </a>
             <a href="/admin/knowledge" style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", fontWeight: 600, color: "rgba(200,215,230,0.60)", textDecoration: "none", display: "flex", alignItems: "center", gap: "5px" }}>
               📚 Knowledge
             </a>

@@ -445,3 +445,18 @@
 - [x] Added 📚 Knowledge link to admin header nav (alongside Agent Config)
 - [x] Write 3 new vitest tests for structuredTranscript (roles+timing, without timing, empty)
 - [x] All 63 tests passing (8 test files)
+
+## Round 65 — Call Analytics Dashboard
+- [x] Build analytics tRPC endpoints: overview (KPIs), dailyVolume (time series), recentCalls (table data)
+- [x] Analytics overview: totalLeads, totalVoiceCalls, avgCallDuration, callsToday/Week/Month, conversionRate, byStatus/Track/Type
+- [x] Daily call volume: configurable range (7/14/30/60 days), pre-filled date gaps, avg duration per day
+- [x] Recent calls: filtered to voice calls only, includes track/status/duration/company
+- [x] Build AdminAnalyticsPage with 4 KPI cards (Total Leads, Voice Calls, Avg Duration, Conversion Rate)
+- [x] Call volume bar chart with recharts (gold bars, day range selector, custom tooltip)
+- [x] Track distribution donut chart (Operator=blue, Agent=green, Corporate=gold, Unknown=gray)
+- [x] Pipeline status horizontal bar chart with percentage labels
+- [x] Conversion funnel visualization: New → Diagnostic Ready → Reviewed → Contacted → Closed (color-coded stages)
+- [x] Recent voice calls table with caller, company, track badge, duration, status badge, time ago
+- [x] Added /admin/analytics route and 📊 Analytics link to admin header nav (Leads + Analytics + Knowledge + Agent Config)
+- [x] Write 12 vitest tests for analytics endpoints (overview, dailyVolume, recentCalls)
+- [x] All 75 tests passing (9 test files)

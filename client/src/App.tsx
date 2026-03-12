@@ -28,6 +28,7 @@ import AdminLeadsPage from "./pages/AdminLeadsPage";
 import AdminConsolePage from "./pages/AdminConsolePage";
 import AdminAgentPage from "./pages/AdminAgentPage";
 import AdminKnowledgePage from "./pages/AdminKnowledgePage";
+import AdminAnalyticsPage from "./pages/AdminAnalyticsPage";
 import CorporatePage from "./pages/CorporatePage";
 import AiiAVoiceWidget from "./components/AiiAVoiceWidget";
 
@@ -64,6 +65,7 @@ function Router() {
       <Route path="/admin/leads" component={AdminLeadsPage} />
       <Route path="/admin/agent" component={AdminAgentPage} />
       <Route path="/admin/knowledge" component={AdminKnowledgePage} />
+      <Route path="/admin/analytics" component={AdminAnalyticsPage} />
       <Route path="/admin-opsteam" component={AdminConsolePage} />
       <Route path="/videostudio" component={VideoStudioRedirect} />
       <Route path="/404" component={NotFound} />

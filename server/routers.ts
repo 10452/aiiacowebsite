@@ -11,6 +11,7 @@ import {
   createAdminUser, deleteAdminUser, updateAdminUserPassword, countAdminUsers,
   getAllKnowledgeEntries, getActiveKnowledgeEntries, getKnowledgeEntryById,
   insertKnowledgeEntry, updateKnowledgeEntry, deleteKnowledgeEntry, markKnowledgePushed,
+  getAnalyticsOverview, getDailyCallVolume, getRecentCalls,
 } from "./db";
 import { generateAndSendLeadDiagnostic } from "./leadDiagnostic";
 import { sendLeadConfirmationEmail } from "./email";
@@ -134,6 +135,29 @@ const qualifierStep2Schema = z.object({
 const qualifierStep3Schema = z.object({
   leadId: z.number().int().positive(),
   callPreference: z.string().max(128),
+});
+
+// ─── Analytics Router ────────────────────────────────────────────────────────
+
+const analyticsRouter = router({
+  /** Overview KPIs: total leads, voice calls, avg duration, conversion rate, breakdowns */
+  overview: adminAuthedProcedure.query(async () => {
+    return getAnalyticsOverview();
+  }),
+
+  /** Daily call volume for the last N days (default 30) */
+  dailyVolume: adminAuthedProcedure
+    .input(z.object({ days: z.number().int().min(7).max(90).default(30) }).optional())
+    .query(async ({ input }) => {
+      return getDailyCallVolume(input?.days ?? 30);
+    }),
+
+  /** Recent calls with key metrics */
+  recentCalls: adminAuthedProcedure
+    .input(z.object({ limit: z.number().int().min(1).max(50).default(10) }).optional())
+    .query(async ({ input }) => {
+      return getRecentCalls(input?.limit ?? 10);
+    }),
 });
 
 // ─── Agent Management Router ──────────────────────────────────────────────────
@@ -334,6 +358,7 @@ export const appRouter = router({
   system: systemRouter,
   agent: agentRouter,
   knowledge: knowledgeRouter,
+  analytics: analyticsRouter,
 
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
