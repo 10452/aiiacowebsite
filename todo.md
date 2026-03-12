@@ -572,3 +572,24 @@
 - [x] Verified: language_detection system tool persisted
 - [ ] Verify English flow works end-to-end (awaiting user test call)
 - [ ] Verify Arabic flow works (awaiting user test call)
+
+## Round 73 — CRITICAL: AiiA hangs up when interrupted with Arabic during first message
+- [x] Check failed call log: error 1002 "agent owner doesn't have access to required voice"
+- [x] Root cause: Sultan voice (8KMBeKnOSHXjLqGuWsAE) was NOT in the ElevenLabs voice library
+- [x] Added Sultan voice to library via POST /v1/voices/add/{public_owner_id}/{voice_id}
+- [x] Verified: Sultan now in library (22 voices total)
+- [x] Verified: language_presets and language_detection tool still configured correctly
+- [ ] Verify fix with test call (awaiting user test)
+
+## Round 74 — CRITICAL: Anti-spam + Lead Quality Gates + Email Suppression
+- [x] Create shared leadQualityGate.ts module with all quality rules
+- [x] Anti-spam: reject calls <30s duration or <2 user turns as "abandoned"
+- [x] Minimum viable lead: require name + (email OR phone) to be treated as complete lead
+- [x] Incomplete leads: still save to DB but mark status="incomplete" (no email, no owner notification)
+- [x] Email suppression: NEVER send follow-up email unless lead has real email + name
+- [x] Owner notification suppression: only notify for complete leads (name + contact info)
+- [x] Poller: skip failed calls entirely, apply same quality gates as webhook
+- [x] Webhook: apply quality gates before email/notification
+- [x] Added "incomplete" and "abandoned" status values to schema + admin UI (both pages)
+- [x] DB migration pushed for new status enum values
+- [x] All quality gate tests pass (100/101 — 1 pre-existing TTS API failure)

@@ -4,12 +4,13 @@
  * Endpoint: POST /api/webhooks/elevenlabs
  *
  * Receives post_call_transcription events from ElevenLabs after each call
- * to the AiiA Diagnostic Agent. Processes the transcript to:
- *   1. Extract caller info (email, name, company, phone, pain point, budget, track)
- *   2. Run LLM-powered conversation intelligence extraction (pain points, wants, current solutions, summary)
- *   3. Create or update a lead in the DB with full transcript + intelligence
- *   4. Send a track-specific follow-up email to the caller
- *   5. Send an owner notification with the call summary + extracted intelligence
+ * to the AiiA Diagnostic Agent. Processes the transcript through:
+ *   1. Quality gate (anti-spam + minimum viable lead check)
+ *   2. Extract caller info (email, name, company, phone, pain point, budget, track)
+ *   3. Run LLM-powered conversation intelligence extraction
+ *   4. Create or update a lead in the DB with full transcript + intelligence
+ *   5. Send a track-specific follow-up email (ONLY for complete leads with real email)
+ *   6. Send an owner notification (ONLY for complete leads)
  */
 
 import type { Request, Response } from "express";
@@ -18,6 +19,7 @@ import { getTrackEmail } from "../trackEmails";
 import { insertLead, getLeadByEmail, updateLeadById, updateLeadEmailStatus } from "../db";
 import { notifyOwner } from "../_core/notification";
 import { sendEmail } from "../email";
+import { assessLeadQuality, countUserTurns, type CallMetrics } from "../leadQualityGate";
 
 const WEBHOOK_SECRET = process.env.ELEVENLABS_WEBHOOK_SECRET ?? "";
 
@@ -58,6 +60,28 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
     const companyName = summary.companyName ?? intelligence.companyName;
     const callerPhone = summary.callerPhone ?? intelligence.callerPhone;
 
+    // ── QUALITY GATE ────────────────────────────────────────────────────────
+    const rawTranscript = (req.body as any)?.data?.transcript;
+    const userTurnCount = countUserTurns(rawTranscript);
+    const callMetrics: CallMetrics = {
+      durationSeconds: summary.durationSeconds,
+      userTurnCount,
+      totalTurnCount: rawTranscript?.length ?? 0,
+      callerName,
+      callerEmail,
+      callerPhone,
+      conversationId: summary.conversationId,
+    };
+
+    const assessment = assessLeadQuality(callMetrics);
+    console.log(`[ElevenLabsWebhook] Quality: ${assessment.quality} — ${assessment.reason} (duration: ${summary.durationSeconds}s, user turns: ${userTurnCount})`);
+
+    if (!assessment.shouldSave) {
+      console.log(`[ElevenLabsWebhook] ⏭ Skipping ${summary.conversationId} — ${assessment.reason}`);
+      res.status(200).json({ received: true, processed: false, reason: assessment.reason, quality: assessment.quality });
+      return;
+    }
+
     // ── Save lead to DB ────────────────────────────────────────────────────
     let leadId: number | null = null;
 
@@ -75,7 +99,7 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
       structuredTranscript: structuredTranscriptJson,
     };
 
-    if (callerEmail) {
+    if (callerEmail && !callerEmail.includes("@aiiaco.com")) {
       // Check if lead already exists (e.g. from a form submission)
       const existing = await getLeadByEmail(callerEmail);
 
@@ -92,7 +116,7 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
           callTranscript: summary.transcriptText ?? undefined,
           callTrack: summary.track,
           ...intelligenceFields,
-          status: existing.status === "new" ? "diagnostic_ready" : existing.status,
+          status: existing.status === "new" ? assessment.suggestedStatus : existing.status,
         });
         leadId = existing.id;
       } else {
@@ -109,14 +133,32 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
           callTranscript: summary.transcriptText ?? undefined,
           callTrack: summary.track,
           ...intelligenceFields,
-          status: "diagnostic_ready",
+          status: assessment.suggestedStatus,
         });
         leadId = result.insertId;
       }
+    } else {
+      // No real email — create with placeholder but use quality-gated status
+      const emailForLead = `voice-${summary.conversationId}@aiiaco.com`;
+      const result = await insertLead({
+        type: "call",
+        name: callerName ?? "Voice Caller",
+        email: emailForLead,
+        company: companyName ?? undefined,
+        phone: callerPhone ?? undefined,
+        message: summary.painPoint ?? undefined,
+        budgetRange: summary.budgetSignal ?? undefined,
+        leadSource: `AI Phone Call — ${summary.track} track`,
+        callTranscript: summary.transcriptText ?? undefined,
+        callTrack: summary.track,
+        ...intelligenceFields,
+        status: assessment.suggestedStatus,
+      });
+      leadId = result.insertId;
     }
 
-    // ── Send follow-up email to caller ─────────────────────────────────────
-    if (callerEmail && leadId) {
+    // ── Send follow-up email ONLY for complete leads with real email ───────
+    if (assessment.shouldEmail && callerEmail && leadId) {
       const emailContent = getTrackEmail(summary.track, callerName);
       try {
         const emailSent = await sendEmail({
@@ -131,31 +173,35 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
         console.error("[ElevenLabsWebhook] Failed to send follow-up email:", emailErr);
         await updateLeadEmailStatus(leadId, "failed").catch(() => {});
       }
-    } else if (leadId && !callerEmail) {
+    } else if (leadId) {
       await updateLeadEmailStatus(leadId, "not_applicable").catch(() => {});
     }
 
-    // ── Notify owner (with intelligence summary) ───────────────────────────
-    const trackLabel = summary.track === "unknown" ? "Unrouted" : summary.track.charAt(0).toUpperCase() + summary.track.slice(1);
-    await notifyOwner({
-      title: `📞 AI CALL — ${trackLabel} Track${callerName ? ` | ${callerName}` : ""}${companyName ? ` @ ${companyName}` : ""}`,
-      content: [
-        `Conversation ID: ${summary.conversationId}`,
-        `Duration: ${summary.durationSeconds}s`,
-        `Track: ${trackLabel}`,
-        callerEmail ? `Email: ${callerEmail}` : null,
-        callerPhone ? `Phone: ${callerPhone}` : null,
-        summary.painPoint ? `Pain point: ${summary.painPoint}` : null,
-        summary.budgetSignal ? `Budget signal: ${summary.budgetSignal}` : null,
-        intelligence.conversationSummary !== "Transcript analysis unavailable." ? `\nSUMMARY\n${intelligence.conversationSummary}` : null,
-        intelligence.painPoints.length > 0 ? `\nPAIN POINTS\n${intelligence.painPoints.map(p => `• ${p}`).join("\n")}` : null,
-        intelligence.wants.length > 0 ? `\nWANTS & WISHES\n${intelligence.wants.map(w => `• ${w}`).join("\n")}` : null,
-        intelligence.currentSolutions.length > 0 ? `\nCURRENT SOLUTIONS\n${intelligence.currentSolutions.map(s => `• ${s}`).join("\n")}` : null,
-        leadId ? `\nLead #${leadId} saved to pipeline` : "No email captured — lead not saved",
-      ].filter(Boolean).join("\n"),
-    });
+    // ── Notify owner ONLY for complete leads ──────────────────────────────
+    if (assessment.shouldNotifyOwner) {
+      const trackLabel = summary.track === "unknown" ? "Unrouted" : summary.track.charAt(0).toUpperCase() + summary.track.slice(1);
+      await notifyOwner({
+        title: `📞 AI CALL — ${trackLabel} Track${callerName ? ` | ${callerName}` : ""}${companyName ? ` @ ${companyName}` : ""}`,
+        content: [
+          `Conversation ID: ${summary.conversationId}`,
+          `Duration: ${summary.durationSeconds}s`,
+          `Track: ${trackLabel}`,
+          callerEmail ? `Email: ${callerEmail}` : null,
+          callerPhone ? `Phone: ${callerPhone}` : null,
+          summary.painPoint ? `Pain point: ${summary.painPoint}` : null,
+          summary.budgetSignal ? `Budget signal: ${summary.budgetSignal}` : null,
+          intelligence.conversationSummary !== "Transcript analysis unavailable." ? `\nSUMMARY\n${intelligence.conversationSummary}` : null,
+          intelligence.painPoints.length > 0 ? `\nPAIN POINTS\n${intelligence.painPoints.map(p => `• ${p}`).join("\n")}` : null,
+          intelligence.wants.length > 0 ? `\nWANTS & WISHES\n${intelligence.wants.map(w => `• ${w}`).join("\n")}` : null,
+          intelligence.currentSolutions.length > 0 ? `\nCURRENT SOLUTIONS\n${intelligence.currentSolutions.map(s => `• ${s}`).join("\n")}` : null,
+          leadId ? `\nLead #${leadId} saved to pipeline (quality: ${assessment.quality})` : null,
+        ].filter(Boolean).join("\n"),
+      });
+    } else {
+      console.log(`[ElevenLabsWebhook] ⏭ Skipping owner notification — quality: ${assessment.quality} (${assessment.reason})`);
+    }
 
-    res.status(200).json({ received: true, processed: true, leadId });
+    res.status(200).json({ received: true, processed: true, leadId, quality: assessment.quality });
   } catch (err) {
     console.error("[ElevenLabsWebhook] Error processing webhook:", err);
     res.status(500).json({ error: "Internal server error" });

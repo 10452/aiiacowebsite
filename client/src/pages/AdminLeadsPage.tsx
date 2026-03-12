@@ -17,6 +17,8 @@ const STATUS_LABELS: Record<Lead["status"], string> = {
   reviewed: "Reviewed",
   contacted: "Contacted",
   closed: "Closed",
+  incomplete: "Incomplete",
+  abandoned: "Abandoned",
 };
 
 const STATUS_COLORS: Record<Lead["status"], { bg: string; text: string; border: string }> = {
@@ -45,6 +47,16 @@ const STATUS_COLORS: Record<Lead["status"], { bg: string; text: string; border: 
     text: "rgba(200,215,230,0.45)",
     border: "rgba(255,255,255,0.10)",
   },
+  incomplete: {
+    bg: "rgba(255,180,60,0.10)",
+    text: "rgba(255,180,60,0.90)",
+    border: "rgba(255,180,60,0.25)",
+  },
+  abandoned: {
+    bg: "rgba(255,80,80,0.08)",
+    text: "rgba(255,80,80,0.65)",
+    border: "rgba(255,80,80,0.18)",
+  },
 };
 
 const TYPE_LABELS: Record<Lead["type"], string> = {
@@ -52,7 +64,7 @@ const TYPE_LABELS: Record<Lead["type"], string> = {
   intake: "Full Intake",
 };
 
-const ALL_STATUSES: Lead["status"][] = ["new", "diagnostic_ready", "reviewed", "contacted", "closed"];
+const ALL_STATUSES: Lead["status"][] = ["new", "diagnostic_ready", "reviewed", "contacted", "closed", "incomplete", "abandoned"];
 
 function StatusBadge({ status }: { status: Lead["status"] }) {
   const c = STATUS_COLORS[status];
@@ -1042,8 +1054,10 @@ export default function AdminLeadsPage() {
         reviewed: leads.filter((l) => l.status === "reviewed").length,
         contacted: leads.filter((l) => l.status === "contacted").length,
         closed: leads.filter((l) => l.status === "closed").length,
+        incomplete: leads.filter((l) => l.status === "incomplete").length,
+        abandoned: leads.filter((l) => l.status === "abandoned").length,
       }
-    : { all: 0, new: 0, diagnostic_ready: 0, reviewed: 0, contacted: 0, closed: 0 };
+    : { all: 0, new: 0, diagnostic_ready: 0, reviewed: 0, contacted: 0, closed: 0, incomplete: 0, abandoned: 0 };
 
   return (
     <div style={{ background: "#03050A", minHeight: "100vh" }}>

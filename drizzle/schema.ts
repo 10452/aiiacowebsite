@@ -68,7 +68,7 @@ export const leads = mysqlTable("leads", {
   emailStatus: mysqlEnum("emailStatus", ["pending", "sent", "failed", "not_applicable"]).default("pending").notNull(),
   /** Timestamp of last email send attempt */
   emailSentAt: timestamp("emailSentAt"),
-  status: mysqlEnum("status", ["new", "diagnostic_ready", "reviewed", "contacted", "closed"]).default("new").notNull(),
+  status: mysqlEnum("status", ["new", "diagnostic_ready", "reviewed", "contacted", "closed", "incomplete", "abandoned"]).default("new").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

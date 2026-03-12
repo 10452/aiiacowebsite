@@ -4,7 +4,8 @@
  * Polls the ElevenLabs conversations API every 5 minutes to catch any calls
  * that the webhook missed (due to HMAC failures, network issues, downtime, etc.)
  *
- * RULE: No call is ever lost. If the webhook fails, the poller catches it.
+ * RULE: No REAL call is ever lost. If the webhook fails, the poller catches it.
+ * RULE: Abandoned/spam calls are silently dropped — no lead, no email, no notification.
  */
 
 import { parseCallWebhook, extractConversationIntelligence } from "./aiAgent";
@@ -12,6 +13,7 @@ import { getTrackEmail } from "./trackEmails";
 import { insertLead, getLeadByEmail, updateLeadById, updateLeadEmailStatus, getDb } from "./db";
 import { notifyOwner } from "./_core/notification";
 import { sendEmail } from "./email";
+import { assessLeadQuality, countUserTurns, type CallMetrics } from "./leadQualityGate";
 import { leads } from "../drizzle/schema";
 import { sql } from "drizzle-orm";
 
@@ -35,6 +37,7 @@ interface ElevenLabsConversationDetail {
   transcript: Array<{ role: string; message: string; time_in_call_secs?: number }>;
   metadata?: Record<string, unknown>;
   analysis?: Record<string, unknown>;
+  call_duration_secs?: number;
 }
 
 // ── Fetch recent conversations from ElevenLabs API ─────────────────────────
@@ -124,6 +127,28 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
     const companyName = summary.companyName ?? intelligence.companyName;
     const callerPhone = summary.callerPhone ?? intelligence.callerPhone;
 
+    // ── QUALITY GATE ─────────────────────────────────────────────────────
+    const userTurnCount = countUserTurns(detail.transcript);
+    const callMetrics: CallMetrics = {
+      durationSeconds: summary.durationSeconds ?? detail.call_duration_secs,
+      userTurnCount,
+      totalTurnCount: detail.transcript?.length ?? 0,
+      callerName,
+      callerEmail,
+      callerPhone,
+      conversationId: summary.conversationId,
+      callStatus: detail.status,
+    };
+
+    const assessment = assessLeadQuality(callMetrics);
+    console.log(`[ConversationPoller] Quality: ${assessment.quality} — ${assessment.reason} (duration: ${callMetrics.durationSeconds}s, user turns: ${userTurnCount})`);
+
+    if (!assessment.shouldSave) {
+      console.log(`[ConversationPoller] ⏭ Skipping ${detail.conversation_id} — ${assessment.reason}`);
+      return;
+    }
+
+    // ── Save lead ────────────────────────────────────────────────────────
     const structuredTranscriptJson = summary.structuredTranscript.length > 0
       ? JSON.stringify(summary.structuredTranscript)
       : null;
@@ -137,9 +162,8 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
       conversationId: summary.conversationId ?? null,
     };
 
-    // Check if lead already exists by email
     let leadId: number | null = null;
-    if (callerEmail) {
+    if (callerEmail && !callerEmail.includes("@aiiaco.com")) {
       const existing = await getLeadByEmail(callerEmail);
       if (existing) {
         leadId = existing.id;
@@ -149,14 +173,17 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
           phone: callerPhone ?? existing.phone,
           name: callerName ?? existing.name,
           company: companyName ?? existing.company,
+          status: assessment.suggestedStatus,
         });
-        console.log(`[ConversationPoller] Updated existing lead ${existing.id} with missed call data`);
+        console.log(`[ConversationPoller] Updated existing lead ${existing.id}`);
       }
     }
 
     if (!leadId) {
       try {
-        const emailForLead = callerEmail ?? `voice-${summary.conversationId}@aiiaco.com`;
+        const emailForLead = (callerEmail && !callerEmail.includes("@aiiaco.com"))
+          ? callerEmail
+          : `voice-${summary.conversationId}@aiiaco.com`;
         const result = await insertLead({
           type: "call",
           email: emailForLead,
@@ -165,19 +192,19 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
           phone: callerPhone ?? undefined,
           callTrack: summary.track,
           leadSource: "voice",
-          status: "new",
+          status: assessment.suggestedStatus,
           callTranscript: summary.transcriptText,
           ...intelligenceFields,
         });
         leadId = result.insertId;
-        console.log(`[ConversationPoller] Created new lead ${leadId} from missed call`);
+        console.log(`[ConversationPoller] Created lead ${leadId} (quality: ${assessment.quality})`);
       } catch (insertErr) {
         console.error("[ConversationPoller] Failed to insert lead:", insertErr);
       }
     }
 
-    // Send follow-up email if we have an email
-    if (callerEmail && !callerEmail.includes("@aiiaco.com") && leadId) {
+    // ── Send follow-up email ONLY for complete leads with real email ─────
+    if (assessment.shouldEmail && callerEmail && leadId) {
       try {
         const trackEmail = getTrackEmail(summary.track, callerName);
         const emailSent = await sendEmail({
@@ -192,30 +219,32 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
         console.error(`[ConversationPoller] Failed to send follow-up email:`, emailErr);
         if (leadId) await updateLeadEmailStatus(leadId, "failed").catch(() => {});
       }
-    } else if (leadId && (!callerEmail || callerEmail.includes("@aiiaco.com"))) {
+    } else if (leadId) {
       await updateLeadEmailStatus(leadId, "not_applicable").catch(() => {});
     }
 
-    // Notify owner
-    try {
-      const summaryLines = [
-        `📞 **Recovered Missed Call** (via poller)`,
-        `Caller: ${callerName ?? "Unknown"} (${callerEmail ?? "no email"})`,
-        `Company: ${companyName ?? "Unknown"}`,
-        `Track: ${summary.track}`,
-        `Duration: ${summary.durationSeconds ?? 0}s`,
-        intelligence.conversationSummary ? `\nSummary: ${intelligence.conversationSummary}` : "",
-      ].filter(Boolean).join("\n");
+    // ── Notify owner ONLY for complete leads ────────────────────────────
+    if (assessment.shouldNotifyOwner) {
+      try {
+        const summaryLines = [
+          `📞 **Recovered Missed Call** (via poller)`,
+          `Caller: ${callerName ?? "Unknown"} (${callerEmail ?? "no email"})`,
+          `Company: ${companyName ?? "Unknown"}`,
+          `Track: ${summary.track}`,
+          `Duration: ${summary.durationSeconds ?? 0}s`,
+          intelligence.conversationSummary ? `\nSummary: ${intelligence.conversationSummary}` : "",
+        ].filter(Boolean).join("\n");
 
-      await notifyOwner({
-        title: `🔄 Recovered Call: ${callerName ?? callerEmail ?? "Unknown"}`,
-        content: summaryLines,
-      });
-    } catch (notifyErr) {
-      console.error(`[ConversationPoller] Failed to notify owner:`, notifyErr);
+        await notifyOwner({
+          title: `🔄 Recovered Call: ${callerName ?? callerEmail ?? "Unknown"}`,
+          content: summaryLines,
+        });
+      } catch (notifyErr) {
+        console.error(`[ConversationPoller] Failed to notify owner:`, notifyErr);
+      }
     }
 
-    console.log(`[ConversationPoller] ✅ Successfully recovered conversation ${detail.conversation_id}`);
+    console.log(`[ConversationPoller] ✅ Processed ${detail.conversation_id} (quality: ${assessment.quality})`);
   } catch (err) {
     console.error(`[ConversationPoller] Failed to process conversation ${detail.conversation_id}:`, err);
   }
@@ -228,16 +257,28 @@ async function pollForMissedCalls(): Promise<void> {
 
   try {
     const conversations = await fetchRecentConversations();
+
+    // Only process "done" calls — skip "failed" entirely
     const completedCalls = conversations.filter(
       (c) => c.status === "done" && c.agent_id === ELEVENLABS_AGENT_ID
     );
 
+    // Pre-filter: skip obviously abandoned calls before fetching details
+    const worthChecking = completedCalls.filter((c) => {
+      if (c.call_duration_secs !== undefined && c.call_duration_secs < 30) {
+        console.log(`[ConversationPoller] ⏭ Skipping ${c.conversation_id} — too short (${c.call_duration_secs}s)`);
+        return false;
+      }
+      return true;
+    });
+
     let recovered = 0;
-    for (const call of completedCalls) {
+    let skipped = 0;
+    for (const call of worthChecking) {
       const alreadyCaptured = await isConversationCaptured(call.conversation_id);
       if (alreadyCaptured) continue;
 
-      // This is a missed call — fetch full details and process
+      // Fetch full details and process
       const detail = await fetchConversationDetail(call.conversation_id);
       if (!detail || !detail.transcript || detail.transcript.length === 0) continue;
 
@@ -248,8 +289,9 @@ async function pollForMissedCalls(): Promise<void> {
       await new Promise((resolve) => setTimeout(resolve, 2000));
     }
 
-    if (recovered > 0) {
-      console.log(`[ConversationPoller] ✅ Recovered ${recovered} missed call(s)`);
+    const totalSkipped = completedCalls.length - worthChecking.length;
+    if (recovered > 0 || totalSkipped > 0) {
+      console.log(`[ConversationPoller] ✅ Recovered ${recovered}, skipped ${totalSkipped} abandoned call(s)`);
     } else {
       console.log("[ConversationPoller] No missed calls found");
     }

@@ -122,7 +122,7 @@ export async function getLeadByEmail(email: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-export async function updateLeadStatus(id: number, status: "new" | "diagnostic_ready" | "reviewed" | "contacted" | "closed") {
+export async function updateLeadStatus(id: number, status: "new" | "diagnostic_ready" | "reviewed" | "contacted" | "closed" | "incomplete" | "abandoned") {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   return db.update(leads).set({ status }).where(eq(leads.id, id));

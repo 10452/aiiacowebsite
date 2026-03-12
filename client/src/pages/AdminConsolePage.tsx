@@ -73,10 +73,12 @@ const STATUS_COLORS: Record<Lead["status"], { bg: string; text: string; border: 
   reviewed: { bg: "rgba(100,160,255,0.12)", text: "rgba(120,175,255,1)", border: "rgba(100,160,255,0.30)" },
   contacted: { bg: "rgba(80,220,150,0.12)", text: "rgba(80,220,150,1)", border: "rgba(80,220,150,0.30)" },
   closed: { bg: "rgba(255,255,255,0.05)", text: "rgba(200,215,230,0.40)", border: "rgba(255,255,255,0.10)" },
+  incomplete: { bg: "rgba(255,180,60,0.10)", text: "rgba(255,180,60,0.90)", border: "rgba(255,180,60,0.25)" },
+  abandoned: { bg: "rgba(255,80,80,0.08)", text: "rgba(255,80,80,0.65)", border: "rgba(255,80,80,0.18)" },
 };
 
 const STATUS_LABELS: Record<Lead["status"], string> = {
-  new: "New", diagnostic_ready: "Diagnostic Ready", reviewed: "Reviewed", contacted: "Contacted", closed: "Closed",
+  new: "New", diagnostic_ready: "Diagnostic Ready", reviewed: "Reviewed", contacted: "Contacted", closed: "Closed", incomplete: "Incomplete", abandoned: "Abandoned",
 };
 
 const TYPE_LABELS: Record<Lead["type"], string> = {
