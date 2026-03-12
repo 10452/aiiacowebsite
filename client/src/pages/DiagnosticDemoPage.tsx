@@ -9,6 +9,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEO from "@/seo/SEO";
+import { CALENDLY_URL } from "@/const";
 
 const sf = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 const sfDisplay = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
@@ -145,7 +146,9 @@ export default function DiagnosticDemoPage() {
                 follow-up pipeline. Your brand's voice. Your rules. Our infrastructure.
               </p>
               <a
-                href="/#contact"
+                href={CALENDLY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{
                   display: "inline-block", fontFamily: sf, fontSize: "13px", fontWeight: 700,
                   letterSpacing: "0.08em", textTransform: "uppercase",
@@ -163,7 +166,7 @@ export default function DiagnosticDemoPage() {
                   (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(184,156,74,0.35)";
                 }}
               >
-                Build Yours
+                Book a Strategy Call
               </a>
             </div>
           </section>
@@ -322,7 +325,9 @@ export default function DiagnosticDemoPage() {
               You focus on closing deals. We handle the infrastructure.
             </p>
             <a
-              href="/#contact"
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 display: "inline-block", fontFamily: sf, fontSize: "13px", fontWeight: 700,
                 letterSpacing: "0.08em", textTransform: "uppercase",
@@ -340,7 +345,7 @@ export default function DiagnosticDemoPage() {
                 (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(184,156,74,0.35)";
               }}
             >
-              Let's Talk
+              Book a Strategy Call
             </a>
           </section>
 

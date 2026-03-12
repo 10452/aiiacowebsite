@@ -612,3 +612,14 @@
 - [x] Updated Arabic language preset: voice_id switched from Sultan to Salma Customer Care
 - [x] Verified: voice_id persisted in agent config
 - NOTE: first_message_translation field not persisting via API (ElevenLabs limitation) — voice switch is the critical change
+
+## Round 77 — Fix CTA routing: action CTAs should go to call booking, not homepage
+- [x] Found Calendly URL: https://calendly.com/aiiaco (in client/src/const.ts)
+- [x] Audited ALL CTA buttons across every page for logical routing
+- [x] Fixed DiagnosticDemoPage: 2 CTAs ("Build Yours" + "Let's Talk") → Calendly ("Book a Strategy Call")
+- [x] Fixed IndustryMicrosite: 2 CTAs ("Start Your Integration" + "Request Your Audit") → Calendly
+- [x] Fixed WorkplacePage: 1 CTA ("Work With Us" href=/contact) → Calendly
+- [x] CorporatePage already correct (already links to calendly.com/aiiaco)
+- [x] All CTAs now use CALENDLY_URL from const.ts with target=_blank
+- [x] Zero remaining /#contact or /contact links in CTA buttons
+- [x] TypeScript compiles cleanly

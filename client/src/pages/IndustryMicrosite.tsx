@@ -11,6 +11,7 @@ import { caseStudies } from "@/components/caseStudies/caseStudies.data";
 import SEO from "@/seo/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { CALENDLY_URL } from "@/const";
 
 const fade = {
   hidden: { opacity: 0, y: 24 },
@@ -215,11 +216,13 @@ export default function IndustryMicrosite() {
 
               <motion.div variants={fade} style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
                 <a
-                  href="/#contact"
+                  href={CALENDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-gold"
                   style={{ textDecoration: "none" }}
                 >
-                  Start Your Integration
+                  Book a Strategy Call
                 </a>
                 <a
                   href="/#models"
@@ -770,8 +773,8 @@ export default function IndustryMicrosite() {
                 </div>
               ) : (
                 <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
-                  <a href="/#contact" className="btn-gold" style={{ textDecoration: "none" }}>
-                    Request Your Audit
+                  <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="btn-gold" style={{ textDecoration: "none" }}>
+                    Book Your Audit Call
                   </a>
                   <a
                     href="/#industries"

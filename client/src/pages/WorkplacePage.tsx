@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEO from "@/seo/SEO";
+import { CALENDLY_URL } from "@/const";
 
 const FF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 const FFD = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
@@ -248,7 +249,9 @@ export default function WorkplacePage() {
 
               <motion.div variants={fade} style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
                 <a
-                  href="/contact"
+                  href={CALENDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
                     fontFamily: FF,
                     fontSize: "14px",
