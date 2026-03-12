@@ -639,3 +639,13 @@ Voice assignments:
 - Korean: Jini (0oqpliV6dVSr9XomngOW) — Warm & intelligent professional
 - Russian: Marusya G (sNQyZH8Wfcnv7zh3rHxR) — Trusted customer care
 - Japanese: Harune (c2XJrw7TvNGtOc6r0ijG) — Professional narration, calm clarity
+
+## Round 79 — Fix AiiA phone number pronunciation
+- [x] Find phone number 8888080001 in agent prompt
+- [x] Reformat with proper spacing/grouping for natural TTS pronunciation (8-8-8... 8-0-8... 0-0-0-1 + pronunciation guide)
+- [x] Update agent config via API
+- [x] Verify pronunciation fix (0 old format, 4 new format occurrences confirmed)
+
+## Round 79b — Fix Marc Sleiman lead name
+- [x] Update lead 90011 name from "is regarding" to "Marc Sleiman"
+- [x] Update lead 90011 phone from 888-808-0001 (AiiA's own number) to null
