@@ -623,3 +623,19 @@
 - [x] All CTAs now use CALENDLY_URL from const.ts with target=_blank
 - [x] Zero remaining /#contact or /contact links in CTA buttons
 - [x] TypeScript compiles cleanly
+
+## Round 78 — Clean up garbage leads + Enable 6 remaining languages
+- [x] Clean up garbage/placeholder leads — marked transcript-fragment names as abandoned, fixed bad email
+- [x] Marked duplicate MLCastronovo lead (90008) as abandoned
+- [x] Found female voices for all 6 languages matching AiiA's character
+- [x] Added all 6 voices to ElevenLabs library (32 total voices)
+- [x] Configured all 7 language presets (ar, fr, es, zh, ko, ru, ja) with translated first messages + language-specific prompts
+- [x] Verified: all 7 presets persisted, language_detection tool active
+
+Voice assignments:
+- French: AudIA (lvQdCgwZfBuOzxyV5pxu) — Parisian, professional customer support
+- Spanish: Veronica (Obg6KIFo8Md4PUo1m2mR) — Latin American, warm corporate
+- Chinese: Anna Su (r6qgCCGI7RWKXCagm158) — Taiwan Mandarin, trustworthy & clear
+- Korean: Jini (0oqpliV6dVSr9XomngOW) — Warm & intelligent professional
+- Russian: Marusya G (sNQyZH8Wfcnv7zh3rHxR) — Trusted customer care
+- Japanese: Harune (c2XJrw7TvNGtOc6r0ijG) — Professional narration, calm clarity
