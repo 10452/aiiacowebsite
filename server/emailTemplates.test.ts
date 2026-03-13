@@ -272,3 +272,106 @@ describe("buildCallerSummaryEmail", () => {
     expect(corpResult.html).toContain("Corporate Program");
   });
 });
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 3. Continue Conversation Email (Short/Abandoned Calls)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+import { buildContinueConversationEmail } from "./emailTemplates";
+
+describe("buildContinueConversationEmail", () => {
+  const baseData = {
+    name: "Alan Dourado",
+    email: "adourado@lrmb.com",
+    company: "Luxury Rentals Miami Beach",
+    industry: null,
+  };
+
+  it("generates subject line with first name and 'pick up where we left off'", () => {
+    const result = buildContinueConversationEmail(baseData);
+    expect(result.subject).toContain("Alan");
+    expect(result.subject).toContain("pick up where we left off");
+  });
+
+  it("addresses the caller by first name in the greeting", () => {
+    const result = buildContinueConversationEmail(baseData);
+    expect(result.html).toContain("Alan, great connecting with you");
+  });
+
+  it("includes the company name when provided", () => {
+    const result = buildContinueConversationEmail(baseData);
+    expect(result.html).toContain("Luxury Rentals Miami Beach");
+  });
+
+  it("includes the 'what we'd cover' section with 4 bullet points", () => {
+    const result = buildContinueConversationEmail(baseData);
+    expect(result.html).toContain("On a 15-minute call");
+    expect(result.html).toContain("tasks that don't generate revenue");
+    expect(result.html).toContain("automation potential");
+    expect(result.html).toContain("diagnostic of your current systems");
+    expect(result.html).toContain("Whether there's a fit");
+  });
+
+  it("includes a CTA button to pick a time", () => {
+    const result = buildContinueConversationEmail(baseData);
+    expect(result.html).toContain("calendly.com/aiiaco");
+    expect(result.html).toContain("Pick a Time That Works");
+  });
+
+  it("does NOT include diagnostic content, pain points, or track info", () => {
+    const result = buildContinueConversationEmail(baseData);
+    expect(result.html).not.toContain("FULL DIAGNOSTIC");
+    expect(result.html).not.toContain("PILOT BRIEF");
+    expect(result.html).not.toContain("KEY AREAS");
+    expect(result.html).not.toContain("SUGGESTED PROGRAM");
+    expect(result.html).not.toContain("Operator Program");
+    expect(result.html).not.toContain("Agent Program");
+  });
+
+  it("uses brand colors and typography", () => {
+    const result = buildContinueConversationEmail(baseData);
+    expect(result.html).toContain("#0A0804"); // void black
+    expect(result.html).toContain("#C9A84C"); // gold
+    expect(result.html).toContain("#F8F3E8"); // warm paper
+    expect(result.html).toContain("Cormorant Garamond");
+    expect(result.html).toContain("Inter");
+  });
+
+  it("includes the AiiACo logo", () => {
+    const result = buildContinueConversationEmail(baseData);
+    expect(result.html).toContain("cloudfront.net");
+  });
+
+  it("handles missing company gracefully", () => {
+    const result = buildContinueConversationEmail({
+      name: "there",
+      email: "test@example.com",
+    });
+    expect(result.html).toContain("great connecting with you");
+    expect(result.html).not.toContain("undefined");
+    expect(result.html).not.toContain("null");
+    expect(result.text.length).toBeGreaterThan(0);
+  });
+
+  it("generates a plain text fallback", () => {
+    const result = buildContinueConversationEmail(baseData);
+    expect(result.text).toContain("Alan");
+    expect(result.text).toContain("Luxury Rentals Miami Beach");
+    expect(result.text).toContain("calendly.com/aiiaco");
+    expect(result.text).toContain("15-MINUTE CALL");
+  });
+
+  it("HTML-escapes user content to prevent XSS", () => {
+    const result = buildContinueConversationEmail({
+      ...baseData,
+      name: "<script>alert('xss')</script>",
+      company: "Evil & Co <b>bold</b>",
+    });
+    // Name goes through esc() so script tags should be escaped
+    expect(result.html).not.toContain("<script>");
+    expect(result.html).toContain("&lt;script&gt;");
+    // Company goes through esc() too
+    expect(result.html).toContain("Evil &amp; Co");
+  });
+});

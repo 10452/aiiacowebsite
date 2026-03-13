@@ -113,7 +113,10 @@ describe("Webhook Handler uses new email templates", () => {
   it("should import buildCallerSummaryEmail and buildOwnerPilotBriefEmail from emailTemplates", async () => {
     const fs = await import("fs");
     const content = fs.readFileSync("./server/webhooks/elevenlabs.ts", "utf-8");
-    expect(content).toContain('import { buildCallerSummaryEmail, buildOwnerPilotBriefEmail } from "../emailTemplates"');
+    expect(content).toContain('buildCallerSummaryEmail');
+    expect(content).toContain('buildOwnerPilotBriefEmail');
+    expect(content).toContain('buildContinueConversationEmail');
+    expect(content).toContain('from "../emailTemplates"');
     // Should NOT contain old getTrackEmail import
     expect(content).not.toContain("getTrackEmail");
   });
@@ -123,7 +126,10 @@ describe("Conversation Poller uses new email templates", () => {
   it("should import buildCallerSummaryEmail and buildOwnerPilotBriefEmail from emailTemplates", async () => {
     const fs = await import("fs");
     const content = fs.readFileSync("./server/conversationPoller.ts", "utf-8");
-    expect(content).toContain('import { buildCallerSummaryEmail, buildOwnerPilotBriefEmail } from "./emailTemplates"');
+    expect(content).toContain('buildCallerSummaryEmail');
+    expect(content).toContain('buildOwnerPilotBriefEmail');
+    expect(content).toContain('buildContinueConversationEmail');
+    expect(content).toContain('from "./emailTemplates"');
     // Should NOT contain old getTrackEmail import
     expect(content).not.toContain("getTrackEmail");
   });

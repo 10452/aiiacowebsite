@@ -418,9 +418,33 @@ export function parseCallWebhook(payload: Record<string, unknown>): CallSummary 
   const emailMatch = transcriptText.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/);
   const callerEmail = emailMatch ? emailMatch[0].toLowerCase() : null;
 
-  // Extract caller name from agent's confirmation line
-  const nameMatch = transcriptText.match(/(?:your name is|I have|noted for|speaking with)\s+([A-Z][a-z]+(?: [A-Z][a-z]+)?)/i);
-  const callerName = nameMatch ? nameMatch[1] : null;
+  // Extract caller name from transcript — multiple patterns
+  // Pattern 1: AiiA confirms the name ("thanks Jennifer", "Perfect, thanks Tone")
+  // Pattern 2: Caller introduces themselves ("My name is X", "I'm X", "This is X")
+  // Pattern 3: AiiA addresses them by name after intake
+  let callerName: string | null = null;
+  const namePatterns = [
+    // AiiA confirms: "Perfect, thanks Jennifer" or "Thanks, Tone"
+    /(?:thanks|thank you),?\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    // Caller self-identifies: "My name is X" or "I'm X" or "This is X"
+    /Caller:\s*(?:My name is|I'm|This is|I am|It's)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    // AiiA uses their name mid-conversation: "So [Name]," or "[Name], that's"
+    /AiiA:.*?(?:So|Now|Alright|Great|Perfect)\s*,?\s+([A-Z][a-z]{2,}(?:\s+[A-Z][a-z]+)?),/i,
+    // Original fallback patterns
+    /(?:your name is|noted for|speaking with)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+  ];
+  for (const pattern of namePatterns) {
+    const match = transcriptText.match(pattern);
+    if (match && match[1]) {
+      // Validate: must be 2+ chars, not a common filler word
+      const candidate = match[1].trim();
+      const fillerWords = new Set(["So", "Now", "Well", "Great", "Sure", "Yes", "Yeah", "Right", "Okay", "Hey", "Hi", "Hello", "Thanks", "Thank"]);
+      if (candidate.length >= 2 && !fillerWords.has(candidate)) {
+        callerName = candidate;
+        break;
+      }
+    }
+  }
 
   // Determine track from agent's routing statement
   let track: TrackType = "unknown";
@@ -508,10 +532,10 @@ current_solutions: Array of strings. What they've already tried, what tools/syst
 
 conversation_summary: A 3-5 sentence executive summary of the entire conversation. Who called, what they need, what was discussed, and what track they were routed to. Write it as if briefing a senior executive before a follow-up call.
 
-caller_name: The caller's full name if mentioned, or null.
-company_name: The company/business name if mentioned, or null.
-caller_email: The caller's email address if mentioned, or null.
-caller_phone: The caller's phone number if mentioned, or null.
+caller_name: The caller's ACTUAL PERSONAL NAME (first name, or first + last name). Look for where the caller introduces themselves ("My name is...", "I'm...", "This is...") or where AiiA addresses them by name ("Thanks Jennifer", "So Tone,..."). This MUST be a real human name — never a random word from the transcript, never a fragment of a sentence, never a verb or adjective. If you cannot confidently identify the caller's name, return null. Examples of CORRECT names: "Jennifer Jingco", "Tone", "Alan", "Marc Sleiman". Examples of WRONG values: "that perfectly", "is regarding", "paid and", "it exactly".
+company_name: The company/business name if mentioned, or null. Look for where the caller says "I'm with [company]" or "my company is [company]".
+caller_email: The caller's email address if mentioned, or null. Must be a valid email format with @ symbol.
+caller_phone: The caller's phone number if mentioned, or null. Must be digits that form a phone number, NOT AiiACo's own number (888-808-0001).
 
 If a field has no data, use an empty array [] for arrays, null for strings.`,
         },

@@ -1,9 +1,10 @@
 /**
  * AiiACo Email Templates — v3 (Magnificent Edition)
  *
- * Two templates:
+ * Three templates:
  * 1. Owner Pilot Brief — full brand-book styled HTML document with all intelligence
  * 2. Caller Summary — personalized, intelligence-driven follow-up with conversation insights
+ * 3. Continue Conversation — warm follow-up for short/abandoned calls (< 90s)
  *
  * Both use the AiiA brand system: void black (#0A0804), gold accents (#C9A84C / #F5D77A),
  * Cormorant Garamond + Inter typography, warm paper (#F8F3E8) for content sections.
@@ -732,6 +733,158 @@ export function buildCallerSummaryEmail(data: CallerSummaryData): {
   ]
     .filter(Boolean)
     .join("\n");
+
+  return { subject, html, text };
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 3. CONTINUE CONVERSATION — Warm follow-up for short/abandoned calls (< 90s)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export interface ContinueConversationData {
+  name: string;
+  email: string;
+  company?: string | null;
+  industry?: string | null;
+}
+
+export function buildContinueConversationEmail(data: ContinueConversationData): {
+  subject: string;
+  html: string;
+  text: string;
+} {
+  const firstName = data.name.split(" ")[0] ?? data.name;
+  const companyRef = data.company
+    ? ` at <strong style="color: #1A1508;">${esc(data.company)}</strong>`
+    : "";
+  const companyRefPlain = data.company ? ` at ${data.company}` : "";
+
+  const subject = `${firstName}, let's pick up where we left off`;
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Continue the Conversation — AiiACo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body style="margin: 0; padding: 0; background-color: #0A0804; font-family: 'Inter', -apple-system, BlinkMacSystemFont, Arial, sans-serif;">
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #0A0804;">
+    <tr><td align="center" style="padding: 40px 16px;">
+
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%;">
+
+        <!-- Logo header -->
+        <tr><td style="padding: 32px 40px 24px 40px; text-align: center;">
+          <img src="${LOGO_URL}" alt="AiiA" width="48" height="48" style="display: block; margin: 0 auto 16px auto; width: 48px; height: 48px;" />
+          <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 11px; font-weight: 700; letter-spacing: 0.25em; color: rgba(201,168,76,0.70); text-transform: uppercase;">AI Integration Authority</div>
+        </td></tr>
+
+        <!-- Gold divider -->
+        <tr><td style="padding: 0 40px;">
+          <div style="height: 1px; background: linear-gradient(90deg, transparent, #C9A84C, transparent);"></div>
+        </td></tr>
+
+        <!-- Main content on warm paper -->
+        <tr><td style="padding: 0 40px;">
+          <div style="background-color: #F8F3E8; border-radius: 0 0 8px 8px; padding: 40px 36px;">
+
+            <p style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; font-weight: 600; color: #1A1508; margin: 0 0 20px 0; line-height: 1.3;">
+              ${esc(firstName)}, great connecting with you.
+            </p>
+
+            <p style="font-family: 'Inter', Arial, sans-serif; font-size: 15px; line-height: 1.75; color: #3D3520; margin: 0 0 20px 0;">
+              It sounds like we got cut short before we could really dig into what's happening${companyRef}. No worries — that happens.
+            </p>
+
+            <p style="font-family: 'Inter', Arial, sans-serif; font-size: 15px; line-height: 1.75; color: #3D3520; margin: 0 0 20px 0;">
+              We help companies eliminate the operational friction that eats into margins — things like manual coordination overhead, administrative bottleneck, and workflow gaps that slow teams down.
+            </p>
+
+            <!-- What we'd cover -->
+            <div style="background-color: rgba(201,168,76,0.08); border-left: 3px solid #C9A84C; border-radius: 0 6px 6px 0; padding: 20px 24px; margin: 28px 0;">
+              <p style="font-family: 'Inter', Arial, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; color: #8B7A3A; text-transform: uppercase; margin: 0 0 12px 0;">
+                On a 15-minute call, we'd cover
+              </p>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr><td style="padding: 5px 0; font-family: 'Inter', Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #3D3520;">
+                  <span style="color: #C9A84C; margin-right: 8px;">&#9670;</span> Where your team is spending time on tasks that don't generate revenue
+                </td></tr>
+                <tr><td style="padding: 5px 0; font-family: 'Inter', Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #3D3520;">
+                  <span style="color: #C9A84C; margin-right: 8px;">&#9670;</span> Which operational workflows have the highest automation potential
+                </td></tr>
+                <tr><td style="padding: 5px 0; font-family: 'Inter', Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #3D3520;">
+                  <span style="color: #C9A84C; margin-right: 8px;">&#9670;</span> A quick diagnostic of your current systems and where AI fits in
+                </td></tr>
+                <tr><td style="padding: 5px 0; font-family: 'Inter', Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #3D3520;">
+                  <span style="color: #C9A84C; margin-right: 8px;">&#9670;</span> Whether there's a fit — and if not, we'll tell you straight
+                </td></tr>
+              </table>
+            </div>
+
+            <p style="font-family: 'Inter', Arial, sans-serif; font-size: 15px; line-height: 1.75; color: #3D3520; margin: 0 0 28px 0;">
+              No pitch deck, no pressure. Just a focused conversation about what's actually possible for your operation.
+            </p>
+
+            <!-- CTA Button -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr><td align="center" style="padding: 8px 0 32px 0;">
+                <a href="${CALENDLY_URL}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #C9A84C, #E8D48B); color: #1A1508; font-family: 'Inter', Arial, sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0.06em; text-decoration: none; padding: 14px 36px; border-radius: 6px; text-transform: uppercase;">
+                  Pick a Time That Works
+                </a>
+              </td></tr>
+            </table>
+
+            <p style="font-family: 'Inter', Arial, sans-serif; font-size: 13px; line-height: 1.6; color: rgba(61,53,32,0.50); margin: 0; text-align: center;">
+              Or just reply to this email and we'll coordinate directly.
+            </p>
+
+          </div>
+        </td></tr>
+
+        <!-- Footer -->
+        <tr><td style="padding: 32px 40px 40px 40px; text-align: center;">
+          <p style="font-family: 'Inter', Arial, sans-serif; font-size: 12px; color: rgba(201,168,76,0.35); margin: 0 0 6px 0;">
+            AiiACo &middot; AI Integration Authority for the Corporate Age
+          </p>
+          <p style="font-family: 'Inter', Arial, sans-serif; font-size: 11px; color: rgba(200,215,230,0.20); margin: 0;">
+            <a href="https://aiiaco.com" style="color: rgba(201,168,76,0.40); text-decoration: none;">aiiaco.com</a>
+            &nbsp;&middot;&nbsp; 888-808-0001
+          </p>
+        </td></tr>
+
+      </table>
+
+    </td></tr>
+  </table>
+
+</body>
+</html>`;
+
+  const text = `${firstName}, great connecting with you.
+
+It sounds like we got cut short before we could really dig into what's happening${companyRefPlain}. No worries — that happens.
+
+We help companies eliminate the operational friction that eats into margins — things like manual coordination overhead, administrative bottleneck, and workflow gaps that slow teams down.
+
+ON A 15-MINUTE CALL, WE'D COVER:
+  • Where your team is spending time on tasks that don't generate revenue
+  • Which operational workflows have the highest automation potential
+  • A quick diagnostic of your current systems and where AI fits in
+  • Whether there's a fit — and if not, we'll tell you straight
+
+No pitch deck, no pressure. Just a focused conversation about what's actually possible for your operation.
+
+Book a time: ${CALENDLY_URL}
+
+Or just reply to this email and we'll coordinate directly.
+
+— AiiACo
+AI Integration Authority for the Corporate Age
+aiiaco.com | 888-808-0001`;
 
   return { subject, html, text };
 }

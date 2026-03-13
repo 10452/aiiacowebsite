@@ -11,7 +11,7 @@
  */
 
 import { parseCallWebhook, extractConversationIntelligence } from "./aiAgent";
-import { buildCallerSummaryEmail, buildOwnerPilotBriefEmail } from "./emailTemplates";
+import { buildCallerSummaryEmail, buildOwnerPilotBriefEmail, buildContinueConversationEmail } from "./emailTemplates";
 import { insertLead, getLeadByEmail, updateLeadById, updateLeadEmailStatus, getDb } from "./db";
 import { notifyOwner } from "./_core/notification";
 import { sendEmail, sendOwnerPilotBrief } from "./email";
@@ -248,18 +248,29 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
     // NEVER re-email existing leads — they already got their email from the webhook
     if (isNewLead && assessment.shouldEmail && callerEmail && leadId) {
       try {
-        const callerEmailContent = buildCallerSummaryEmail({
-          name: callerName ?? "there",
-          email: callerEmail,
-          company: companyName,
-          track: summary.track,
-          conversationSummary: intelligenceFields.conversationSummary,
-          painPoints: intelligenceFields.painPoints,
-          wants: intelligenceFields.wants,
-          leadBrief: intelligence.conversationSummary !== "Transcript analysis unavailable."
-            ? intelligence.conversationSummary
-            : null,
-        });
+        // Use "continue conversation" template for short calls with thin intelligence
+        const hasMeaningfulIntelligence = intelligence.painPoints.length >= 2 && intelligence.conversationSummary !== "Transcript analysis unavailable.";
+        const isShortCall = (summary.durationSeconds ?? 0) < 90;
+
+        const callerEmailContent = (isShortCall && !hasMeaningfulIntelligence)
+          ? buildContinueConversationEmail({
+              name: callerName ?? "there",
+              email: callerEmail,
+              company: companyName,
+              industry: null,
+            })
+          : buildCallerSummaryEmail({
+              name: callerName ?? "there",
+              email: callerEmail,
+              company: companyName,
+              track: summary.track,
+              conversationSummary: intelligenceFields.conversationSummary,
+              painPoints: intelligenceFields.painPoints,
+              wants: intelligenceFields.wants,
+              leadBrief: intelligence.conversationSummary !== "Transcript analysis unavailable."
+                ? intelligence.conversationSummary
+                : null,
+            });
         const emailSent = await sendEmail({
           to: callerEmail,
           subject: callerEmailContent.subject,

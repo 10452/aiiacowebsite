@@ -666,3 +666,17 @@ Voice assignments:
 - [x] Send Jennifer the new caller summary email via Resend (id: a437953c)
 - [x] Build and send Alan a polished "we'd love to continue" email (id: 5f7678ef)
 - [x] Fix from domain: resend.aiiaco.com → aiiaco.com (verified domain) across all email.ts functions
+
+## Round 82 — Create Post-Call Email Skill
+- [x] Initialize skill via skill-creator
+- [x] Write reference files (pipeline-architecture.md, brand-email-tokens.md)
+- [x] Write SKILL.md with full workflow
+- [x] Validate and deliver
+
+## Round 83 — Three Suggested Tasks + Skill Creation
+- [x] Add permanent buildContinueConversationEmail() template to emailTemplates.ts for short/abandoned calls
+- [x] Wire continue-conversation template into webhook/poller for calls < 90s with thin intelligence
+- [x] Run diagnostics for Jennifer Jingco (120001) and Tone (90012) — both emailed
+- [x] Fix name extraction bug — improved regex (multi-pattern + filler filter) + strengthened LLM prompt (positive/negative examples)
+- [x] Write tests for continue-conversation template (11 tests) + fix import tests
+- [x] Build aiia-post-call-emails skill (SKILL.md + 2 reference files, validated)
