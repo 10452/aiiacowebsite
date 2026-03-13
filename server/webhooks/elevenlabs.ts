@@ -9,16 +9,17 @@
  *   2. Extract caller info (email, name, company, phone, pain point, budget, track)
  *   3. Run LLM-powered conversation intelligence extraction
  *   4. Create or update a lead in the DB with full transcript + intelligence
- *   5. Send a track-specific follow-up email (ONLY for complete leads with real email)
- *   6. Send an owner notification (ONLY for complete leads)
+ *   5. Send a personalized caller summary email (with conversation intelligence)
+ *   6. Send a magnificent pilot brief email to the owner (with full intelligence)
+ *   7. Send an owner notification (Manus push — plain text fallback)
  */
 
 import type { Request, Response } from "express";
 import { verifyElevenLabsSignature, parseCallWebhook, extractConversationIntelligence } from "../aiAgent";
-import { getTrackEmail } from "../trackEmails";
+import { buildCallerSummaryEmail, buildOwnerPilotBriefEmail } from "../emailTemplates";
 import { insertLead, getLeadByEmail, updateLeadById, updateLeadEmailStatus } from "../db";
 import { notifyOwner } from "../_core/notification";
-import { sendEmail } from "../email";
+import { sendEmail, sendOwnerPilotBrief } from "../email";
 import { assessLeadQuality, countUserTurns, type CallMetrics } from "../leadQualityGate";
 
 const WEBHOOK_SECRET = process.env.ELEVENLABS_WEBHOOK_SECRET ?? "";
@@ -157,28 +158,68 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
       leadId = result.insertId;
     }
 
-    // ── Send follow-up email ONLY for complete leads with real email ───────
+    // ── Send personalized caller summary email ──────────────────────────────
     if (assessment.shouldEmail && callerEmail && leadId) {
-      const emailContent = getTrackEmail(summary.track, callerName);
+      const callerEmailContent = buildCallerSummaryEmail({
+        name: callerName ?? "there",
+        email: callerEmail,
+        company: companyName,
+        track: summary.track,
+        conversationSummary: intelligenceFields.conversationSummary,
+        painPoints: intelligenceFields.painPoints,
+        wants: intelligenceFields.wants,
+        leadBrief: intelligence.conversationSummary !== "Transcript analysis unavailable."
+          ? intelligence.conversationSummary
+          : null,
+      });
       try {
         const emailSent = await sendEmail({
           to: callerEmail,
-          subject: emailContent.subject,
-          html: emailContent.html,
-          text: emailContent.text,
+          subject: callerEmailContent.subject,
+          html: callerEmailContent.html,
+          text: callerEmailContent.text,
         });
         await updateLeadEmailStatus(leadId, emailSent ? "sent" : "failed");
-        console.log(`[ElevenLabsWebhook] Follow-up email ${emailSent ? "sent" : "FAILED"} to ${callerEmail}`);
+        console.log(`[ElevenLabsWebhook] Caller summary email ${emailSent ? "sent" : "FAILED"} to ${callerEmail}`);
       } catch (emailErr) {
-        console.error("[ElevenLabsWebhook] Failed to send follow-up email:", emailErr);
+        console.error("[ElevenLabsWebhook] Failed to send caller summary email:", emailErr);
         await updateLeadEmailStatus(leadId, "failed").catch(() => {});
       }
     } else if (leadId) {
       await updateLeadEmailStatus(leadId, "not_applicable").catch(() => {});
     }
 
-    // ── Notify owner ONLY for complete leads ──────────────────────────────
-    if (assessment.shouldNotifyOwner) {
+    // ── Send magnificent pilot brief email to owner ─────────────────────────
+    if (assessment.shouldNotifyOwner && leadId) {
+      const pilotBrief = buildOwnerPilotBriefEmail({
+        leadId,
+        name: callerName ?? "Voice Caller",
+        email: callerEmail ?? `voice-${summary.conversationId}@aiiaco.com`,
+        company: companyName,
+        phone: callerPhone,
+        leadSource: `AI Phone Call — ${summary.track} track`,
+        track: summary.track,
+        callDurationSeconds: summary.durationSeconds,
+        conversationId: summary.conversationId,
+        conversationSummary: intelligenceFields.conversationSummary,
+        painPoints: intelligenceFields.painPoints,
+        wants: intelligenceFields.wants,
+        currentSolutions: intelligenceFields.currentSolutions,
+        quality: assessment.quality,
+      });
+
+      try {
+        const briefSent = await sendOwnerPilotBrief({
+          subject: pilotBrief.subject,
+          html: pilotBrief.html,
+          text: pilotBrief.text,
+        });
+        console.log(`[ElevenLabsWebhook] Owner pilot brief ${briefSent ? "sent" : "FAILED"}`);
+      } catch (briefErr) {
+        console.error("[ElevenLabsWebhook] Failed to send owner pilot brief:", briefErr);
+      }
+
+      // Also send Manus push notification as fallback
       const trackLabel = summary.track === "unknown" ? "Unrouted" : summary.track.charAt(0).toUpperCase() + summary.track.slice(1);
       await notifyOwner({
         title: `📞 AI CALL — ${trackLabel} Track${callerName ? ` | ${callerName}` : ""}${companyName ? ` @ ${companyName}` : ""}`,
@@ -195,6 +236,7 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
           intelligence.wants.length > 0 ? `\nWANTS & WISHES\n${intelligence.wants.map(w => `• ${w}`).join("\n")}` : null,
           intelligence.currentSolutions.length > 0 ? `\nCURRENT SOLUTIONS\n${intelligence.currentSolutions.map(s => `• ${s}`).join("\n")}` : null,
           leadId ? `\nLead #${leadId} saved to pipeline (quality: ${assessment.quality})` : null,
+          `\n📧 Full pilot brief also emailed to go@aiiaco.com`,
         ].filter(Boolean).join("\n"),
       });
     } else {

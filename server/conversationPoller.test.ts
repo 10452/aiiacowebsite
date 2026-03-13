@@ -109,23 +109,22 @@ describe("Email Module", () => {
 
 // ─── Webhook Handler Tests ──────────────────────────────────────────────────
 
-describe("Webhook Handler uses shared track emails", () => {
-  it("should import getTrackEmail from trackEmails module", async () => {
-    // Verify the webhook handler file imports from the shared module
+describe("Webhook Handler uses new email templates", () => {
+  it("should import buildCallerSummaryEmail and buildOwnerPilotBriefEmail from emailTemplates", async () => {
     const fs = await import("fs");
     const content = fs.readFileSync("./server/webhooks/elevenlabs.ts", "utf-8");
-    expect(content).toContain('import { getTrackEmail } from "../trackEmails"');
-    // Should NOT contain inline track email templates
-    expect(content).not.toContain("function getTrackEmail");
+    expect(content).toContain('import { buildCallerSummaryEmail, buildOwnerPilotBriefEmail } from "../emailTemplates"');
+    // Should NOT contain old getTrackEmail import
+    expect(content).not.toContain("getTrackEmail");
   });
 });
 
-describe("Conversation Poller uses shared track emails", () => {
-  it("should import getTrackEmail from trackEmails module", async () => {
+describe("Conversation Poller uses new email templates", () => {
+  it("should import buildCallerSummaryEmail and buildOwnerPilotBriefEmail from emailTemplates", async () => {
     const fs = await import("fs");
     const content = fs.readFileSync("./server/conversationPoller.ts", "utf-8");
-    expect(content).toContain('import { getTrackEmail } from "./trackEmails"');
-    // Should NOT contain inline simplified templates
-    expect(content).not.toContain("getTrackEmailForPoller");
+    expect(content).toContain('import { buildCallerSummaryEmail, buildOwnerPilotBriefEmail } from "./emailTemplates"');
+    // Should NOT contain old getTrackEmail import
+    expect(content).not.toContain("getTrackEmail");
   });
 });

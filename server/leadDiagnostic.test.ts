@@ -26,6 +26,7 @@ vi.mock("./_core/notification", () => ({
 
 vi.mock("./email", () => ({
   sendLeadConfirmationEmail: vi.fn().mockResolvedValue(true),
+  sendOwnerPilotBrief: vi.fn().mockResolvedValue(true),
 }));
 
 import { generateAndSendLeadDiagnostic } from "./leadDiagnostic";
@@ -99,11 +100,13 @@ describe("generateAndSendLeadDiagnostic", () => {
     expect(notifArgs.content).toContain("WHAT THEY TOLD US");
   });
 
-  it("includes a preview of the lead brief in the owner notification", async () => {
+  it("includes a reference to the pilot brief email in the owner notification", async () => {
     await generateAndSendLeadDiagnostic(mockLead);
     const notifArgs = vi.mocked(notifyOwner).mock.calls[0][0];
-    expect(notifArgs.content).toContain("PREVIEW — WHAT THE LEAD WILL RECEIVE");
-    expect(notifArgs.content).toContain("growth inflection point");
+    // The Manus push notification now references the pilot brief email instead of inlining the lead brief
+    expect(notifArgs.content).toContain("Full pilot brief also emailed to go@aiiaco.com");
+    // Still includes the full diagnostic content
+    expect(notifArgs.content).toContain("FULL DIAGNOSTIC");
   });
 
   it("passes the generated lead brief to the lead email", async () => {

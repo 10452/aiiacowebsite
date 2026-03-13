@@ -15,7 +15,8 @@
 
 import { invokeLLM } from "./_core/llm";
 import { notifyOwner } from "./_core/notification";
-import { sendLeadConfirmationEmail } from "./email";
+import { sendLeadConfirmationEmail, sendOwnerPilotBrief } from "./email";
+import { buildOwnerPilotBriefEmail } from "./emailTemplates";
 import { updateLeadById } from "./db";
 import { Lead } from "../drizzle/schema";
 
@@ -243,9 +244,47 @@ Internal Signal Mapping:
     console.error("[LeadDiagnostic] Failed to persist diagnostic to DB:", err);
   }
 
-  // ── Step 2: Send owner notification (full report + lead brief preview) ──────
-  const ownerNotifTitle = `NEW LEAD — ${lead.name}${lead.company ? ` | ${lead.company}` : ""} | ${callPrefLabel}`;
+  // ── Step 2: Send magnificent pilot brief email + Manus push notification ────
 
+  // 2a: Send pilot brief email to owner (go@aiiaco.com)
+  try {
+    const pilotBrief = buildOwnerPilotBriefEmail({
+      leadId: lead.id,
+      name: lead.name,
+      email: lead.email,
+      company: lead.company,
+      phone: lead.phone,
+      industry: lead.industry,
+      leadSource: lead.leadSource,
+      callPreference: callPrefLabel,
+      submittedAt,
+      track: (lead.callTrack as "operator" | "agent" | "corporate" | "unknown") ?? "unknown",
+      callDurationSeconds: lead.callDurationSeconds,
+      conversationId: lead.conversationId,
+      conversationSummary: lead.conversationSummary,
+      painPoints: lead.painPoints,
+      wants: lead.wants,
+      currentSolutions: lead.currentSolutions,
+      recapSnapshot: result.recap_snapshot,
+      whatTheyToldUs: result.what_they_told_us,
+      fullDiagnostic: result.full_diagnostic,
+      solutionAreas: result.solution_areas,
+      salesCallNextSteps: result.sales_call_next_steps,
+      leadBrief: result.lead_brief,
+      quality: lead.status,
+    });
+    const briefSent = await sendOwnerPilotBrief({
+      subject: pilotBrief.subject,
+      html: pilotBrief.html,
+      text: pilotBrief.text,
+    });
+    console.log(`[LeadDiagnostic] Owner pilot brief email ${briefSent ? "sent" : "FAILED"}`);
+  } catch (err) {
+    console.error("[LeadDiagnostic] Owner pilot brief email failed:", err);
+  }
+
+  // 2b: Also send Manus push notification as fallback
+  const ownerNotifTitle = `NEW LEAD — ${lead.name}${lead.company ? ` | ${lead.company}` : ""} | ${callPrefLabel}`;
   const ownerNotifContent = [
     `LEAD PROFILE`,
     `Name:      ${lead.name}`,
@@ -262,10 +301,7 @@ Internal Signal Mapping:
     `WHAT THEY TOLD US`,
     result.what_they_told_us,
     ``,
-    `─────────────────────────────────────`,
     `FULL DIAGNOSTIC (OWNER ONLY)`,
-    `─────────────────────────────────────`,
-    ``,
     result.full_diagnostic,
     ``,
     `SOLUTION AREAS`,
@@ -274,11 +310,7 @@ Internal Signal Mapping:
     `SALES CALL — NEXT STEPS`,
     result.sales_call_next_steps,
     ``,
-    `─────────────────────────────────────`,
-    `PREVIEW — WHAT THE LEAD WILL RECEIVE`,
-    `─────────────────────────────────────`,
-    ``,
-    result.lead_brief,
+    `📧 Full pilot brief also emailed to go@aiiaco.com`,
   ].join("\n");
 
   try {

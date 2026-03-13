@@ -30,7 +30,7 @@ import {
 } from "./aiAgent";
 import { runHealthCheck } from "./healthMonitor";
 import { pollForMissedCalls } from "./conversationPoller";
-import { getTrackEmail } from "./trackEmails";
+import { buildCallerSummaryEmail } from "./emailTemplates";
 
 
 // ─── Admin Session JWT helpers ────────────────────────────────────────────────
@@ -895,7 +895,16 @@ export const appRouter = router({
         }
 
         const track = (lead.callTrack as "operator" | "agent" | "corporate" | "unknown") ?? "unknown";
-        const emailContent = getTrackEmail(track, lead.name);
+        const emailContent = buildCallerSummaryEmail({
+          name: lead.name,
+          email: lead.email,
+          company: lead.company,
+          track,
+          conversationSummary: lead.conversationSummary,
+          painPoints: lead.painPoints,
+          wants: lead.wants,
+          leadBrief: lead.leadBrief ?? lead.conversationSummary,
+        });
 
         const sent = await sendEmail({
           to: lead.email,

@@ -649,3 +649,14 @@ Voice assignments:
 ## Round 79b — Fix Marc Sleiman lead name
 - [x] Update lead 90011 name from "is regarding" to "Marc Sleiman"
 - [x] Update lead 90011 phone from 888-808-0001 (AiiA's own number) to null
+
+## Round 80 — Magnificent Post-Call Email Redesign
+- [x] Build owner pilot brief email: full brand-book styled HTML document with gold frames, Cormorant Garamond headings, warm paper background, structured intelligence sections (Lead Profile, What They Told Us, Full Diagnostic, Solution Areas, Sales Call Next Steps, Lead Brief Preview)
+- [x] Build caller summary email: polished branded HTML with personalized conversation recap, track-specific value proposition, and Calendly CTA — no attachments, all inline
+- [x] Replace generic track emails (trackEmails.ts) with new intelligence-driven caller email that uses actual conversation data (pain points, wants, summary)
+- [x] Update owner notification from plain text notifyOwner() to magnificent HTML email via Resend (go@aiiaco.com)
+- [x] Wire new templates into webhook handler (elevenlabs.ts) and conversation poller
+- [x] Wire new templates into leadDiagnostic.ts for form-based leads
+- [x] Update admin resendEmail to use new templates
+- [x] Write vitest tests for new email templates (30 tests passing)
+- [x] Verify email rendering — TypeScript clean, all tests passing

@@ -11,10 +11,10 @@
  */
 
 import { parseCallWebhook, extractConversationIntelligence } from "./aiAgent";
-import { getTrackEmail } from "./trackEmails";
+import { buildCallerSummaryEmail, buildOwnerPilotBriefEmail } from "./emailTemplates";
 import { insertLead, getLeadByEmail, updateLeadById, updateLeadEmailStatus, getDb } from "./db";
 import { notifyOwner } from "./_core/notification";
-import { sendEmail } from "./email";
+import { sendEmail, sendOwnerPilotBrief } from "./email";
 import { assessLeadQuality, countUserTurns, type CallMetrics } from "./leadQualityGate";
 import { leads } from "../drizzle/schema";
 import { sql } from "drizzle-orm";
@@ -244,30 +244,70 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
       }
     }
 
-    // ── Send follow-up email ONLY for NEW complete leads with real email ──
+    // ── Send personalized caller summary email ONLY for NEW complete leads ──
     // NEVER re-email existing leads — they already got their email from the webhook
     if (isNewLead && assessment.shouldEmail && callerEmail && leadId) {
       try {
-        const trackEmail = getTrackEmail(summary.track, callerName);
+        const callerEmailContent = buildCallerSummaryEmail({
+          name: callerName ?? "there",
+          email: callerEmail,
+          company: companyName,
+          track: summary.track,
+          conversationSummary: intelligenceFields.conversationSummary,
+          painPoints: intelligenceFields.painPoints,
+          wants: intelligenceFields.wants,
+          leadBrief: intelligence.conversationSummary !== "Transcript analysis unavailable."
+            ? intelligence.conversationSummary
+            : null,
+        });
         const emailSent = await sendEmail({
           to: callerEmail,
-          subject: trackEmail.subject,
-          html: trackEmail.html,
-          text: trackEmail.text,
+          subject: callerEmailContent.subject,
+          html: callerEmailContent.html,
+          text: callerEmailContent.text,
         });
         await updateLeadEmailStatus(leadId, emailSent ? "sent" : "failed");
-        console.log(`[ConversationPoller] Follow-up email ${emailSent ? "sent" : "FAILED"} to ${callerEmail}`);
+        console.log(`[ConversationPoller] Caller summary email ${emailSent ? "sent" : "FAILED"} to ${callerEmail}`);
       } catch (emailErr) {
-        console.error(`[ConversationPoller] Failed to send follow-up email:`, emailErr);
+        console.error(`[ConversationPoller] Failed to send caller summary email:`, emailErr);
         if (leadId) await updateLeadEmailStatus(leadId, "failed").catch(() => {});
       }
     } else if (leadId && isNewLead) {
       await updateLeadEmailStatus(leadId, "not_applicable").catch(() => {});
     }
 
-    // ── Notify owner ONLY for NEW complete leads ─────────────────────────
+    // ── Send owner pilot brief + Manus notification ONLY for NEW complete leads ──
     // NEVER re-notify for existing leads
-    if (isNewLead && assessment.shouldNotifyOwner) {
+    if (isNewLead && assessment.shouldNotifyOwner && leadId) {
+      // Send magnificent pilot brief email
+      try {
+        const pilotBrief = buildOwnerPilotBriefEmail({
+          leadId,
+          name: callerName ?? "Voice Caller",
+          email: callerEmail ?? `voice-${summary.conversationId}@aiiaco.com`,
+          company: companyName,
+          phone: callerPhone,
+          leadSource: "voice (recovered by poller)",
+          track: summary.track,
+          callDurationSeconds: summary.durationSeconds,
+          conversationId: summary.conversationId,
+          conversationSummary: intelligenceFields.conversationSummary,
+          painPoints: intelligenceFields.painPoints,
+          wants: intelligenceFields.wants,
+          currentSolutions: intelligenceFields.currentSolutions,
+          quality: assessment.quality,
+        });
+        const briefSent = await sendOwnerPilotBrief({
+          subject: pilotBrief.subject,
+          html: pilotBrief.html,
+          text: pilotBrief.text,
+        });
+        console.log(`[ConversationPoller] Owner pilot brief ${briefSent ? "sent" : "FAILED"}`);
+      } catch (briefErr) {
+        console.error(`[ConversationPoller] Failed to send owner pilot brief:`, briefErr);
+      }
+
+      // Also send Manus push notification as fallback
       try {
         const summaryLines = [
           `📞 **Recovered Missed Call** (via poller)`,
@@ -276,6 +316,7 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
           `Track: ${summary.track}`,
           `Duration: ${summary.durationSeconds ?? 0}s`,
           intelligence.conversationSummary ? `\nSummary: ${intelligence.conversationSummary}` : "",
+          `\n📧 Full pilot brief also emailed to go@aiiaco.com`,
         ].filter(Boolean).join("\n");
 
         await notifyOwner({
