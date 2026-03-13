@@ -2,7 +2,7 @@ import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, Legend,
+  PieChart, Pie, Cell, Legend, AreaChart, Area,
 } from "recharts";
 
 // ── Design tokens (matching AdminLeadsPage) ──────────────────────────────────
@@ -115,6 +115,8 @@ export default function AdminAnalyticsPage() {
   const { data: overview, isLoading: loadingOverview } = trpc.analytics.overview.useQuery();
   const { data: dailyVolume, isLoading: loadingDaily } = trpc.analytics.dailyVolume.useQuery({ days: dayRange });
   const { data: recentCalls, isLoading: loadingRecent } = trpc.analytics.recentCalls.useQuery({ limit: 10 });
+  const { data: emailEngagement, isLoading: loadingEmail } = trpc.analytics.emailEngagement.useQuery();
+  const { data: recentEmailEvents, isLoading: loadingEmailEvents } = trpc.analytics.recentEmailEvents.useQuery({ limit: 15 });
 
   const isLoading = loadingOverview || loadingDaily || loadingRecent;
 
@@ -437,13 +439,152 @@ export default function AdminAnalyticsPage() {
               )}
             </div>
 
-            {/* Recent Calls Table */}
+            {/* Email Engagement Section */}
             <div style={{
               background: BG_CARD,
               border: `1px solid ${BORDER}`,
               borderRadius: "12px",
               padding: "24px",
+              marginBottom: "32px",
             }}>
+              <h2 style={{ fontFamily: FONT_DISPLAY, fontSize: "16px", fontWeight: 700, color: TEXT_PRIMARY, margin: "0 0 20px 0" }}>
+                Email Engagement
+              </h2>
+              {loadingEmail ? (
+                <div style={{ textAlign: "center", padding: "40px 0", color: TEXT_SECONDARY, fontFamily: FONT, fontSize: "13px" }}>
+                  Loading email metrics...
+                </div>
+              ) : emailEngagement && emailEngagement.totalSent > 0 ? (
+                <>
+                  <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "24px" }}>
+                    <KpiCard label="Emails Sent" value={emailEngagement.totalSent} sub={`${emailEngagement.totalDelivered} delivered`} accent={TEXT_PRIMARY} />
+                    <KpiCard label="Open Rate" value={`${emailEngagement.openRate}%`} sub={`${emailEngagement.totalOpened} opened`} accent="#34D399" />
+                    <KpiCard label="Click Rate" value={`${emailEngagement.clickRate}%`} sub={`${emailEngagement.totalClicked} clicked`} accent={GOLD} />
+                    <KpiCard label="Bounce Rate" value={`${emailEngagement.bounceRate}%`} sub={`${emailEngagement.totalBounced} bounced`} accent={emailEngagement.bounceRate > 5 ? "#EF4444" : TEXT_SECONDARY} />
+                  </div>
+
+                  {/* Email funnel visualization */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "4px", justifyContent: "center" }}>
+                    {[
+                      { label: "Sent", count: emailEngagement.totalSent, color: "#60A5FA" },
+                      { label: "Delivered", count: emailEngagement.totalDelivered, color: "#818CF8" },
+                      { label: "Opened", count: emailEngagement.totalOpened, color: "#34D399" },
+                      { label: "Clicked", count: emailEngagement.totalClicked, color: GOLD },
+                    ].map((stage, i, arr) => (
+                      <div key={stage.label} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                        <div style={{
+                          background: `${stage.color}15`,
+                          border: `1px solid ${stage.color}40`,
+                          borderRadius: "10px",
+                          padding: "14px 20px",
+                          textAlign: "center",
+                          minWidth: "100px",
+                        }}>
+                          <div style={{ fontFamily: FONT_DISPLAY, fontSize: "24px", fontWeight: 700, color: stage.color, lineHeight: 1.1 }}>
+                            {stage.count}
+                          </div>
+                          <div style={{ fontFamily: FONT, fontSize: "11px", color: TEXT_SECONDARY, marginTop: "4px" }}>
+                            {stage.label}
+                          </div>
+                        </div>
+                        {i < arr.length - 1 && (
+                          <span style={{ fontFamily: FONT, fontSize: "18px", color: "rgba(255,255,255,0.15)", padding: "0 4px" }}>→</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div style={{ textAlign: "center", padding: "40px 0", color: TEXT_SECONDARY, fontFamily: FONT, fontSize: "13px" }}>
+                  No email tracking data yet. Events will appear here once Resend webhooks are configured.
+                </div>
+              )}
+            </div>
+
+            {/* Recent Email Events + Recent Calls side by side */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "32px" }}>
+              {/* Recent Email Events */}
+              <div style={{
+                background: BG_CARD,
+                border: `1px solid ${BORDER}`,
+                borderRadius: "12px",
+                padding: "24px",
+              }}>
+                <h2 style={{ fontFamily: FONT_DISPLAY, fontSize: "16px", fontWeight: 700, color: TEXT_PRIMARY, margin: "0 0 20px 0" }}>
+                  Recent Email Activity
+                </h2>
+                {loadingEmailEvents ? (
+                  <div style={{ textAlign: "center", padding: "40px 0", color: TEXT_SECONDARY, fontFamily: FONT, fontSize: "13px" }}>
+                    Loading...
+                  </div>
+                ) : recentEmailEvents && recentEmailEvents.length > 0 ? (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+                    {recentEmailEvents.map((ev: any) => {
+                      const eventLabels: Record<string, { icon: string; label: string; color: string }> = {
+                        "email.sent": { icon: "✉️", label: "Sent", color: "#60A5FA" },
+                        "email.delivered": { icon: "✅", label: "Delivered", color: "#818CF8" },
+                        "email.opened": { icon: "👁️", label: "Opened", color: "#34D399" },
+                        "email.clicked": { icon: "🔗", label: "Clicked", color: GOLD },
+                        "email.bounced": { icon: "⚠️", label: "Bounced", color: "#EF4444" },
+                        "email.complained": { icon: "🚩", label: "Complained", color: "#EF4444" },
+                        "email.delivery_delayed": { icon: "⏳", label: "Delayed", color: "#FBBF24" },
+                      };
+                      const info = eventLabels[ev.eventType] ?? { icon: "•", label: ev.eventType, color: TEXT_SECONDARY };
+                      return (
+                        <div
+                          key={ev.id}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            padding: "8px 0",
+                            borderBottom: `1px solid ${BORDER}`,
+                          }}
+                        >
+                          <span style={{ fontSize: "14px", width: "22px", textAlign: "center" }}>{info.icon}</span>
+                          <span style={{
+                            fontFamily: FONT,
+                            fontSize: "11px",
+                            fontWeight: 600,
+                            color: info.color,
+                            padding: "2px 8px",
+                            borderRadius: "4px",
+                            background: `${info.color}15`,
+                            border: `1px solid ${info.color}30`,
+                            minWidth: "70px",
+                            textAlign: "center",
+                          }}>
+                            {info.label}
+                          </span>
+                          <span style={{ fontFamily: FONT, fontSize: "12px", color: TEXT_PRIMARY, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            {ev.recipientEmail}
+                          </span>
+                          {ev.clickedLink && (
+                            <span style={{ fontFamily: FONT, fontSize: "10px", color: GOLD_DIM, maxWidth: "120px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={ev.clickedLink}>
+                              {ev.clickedLink.replace(/^https?:\/\//, "").split("/").pop() || "link"}
+                            </span>
+                          )}
+                          <span style={{ fontFamily: FONT, fontSize: "10px", color: TEXT_SECONDARY, whiteSpace: "nowrap" }}>
+                            {ev.createdAt ? timeAgo(ev.createdAt) : ""}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <div style={{ textAlign: "center", padding: "40px 0", color: TEXT_SECONDARY, fontFamily: FONT, fontSize: "13px" }}>
+                    No email events yet.
+                  </div>
+                )}
+              </div>
+
+              {/* Recent Calls Table */}
+              <div style={{
+                background: BG_CARD,
+                border: `1px solid ${BORDER}`,
+                borderRadius: "12px",
+                padding: "24px",
+              }}>
               <h2 style={{ fontFamily: FONT_DISPLAY, fontSize: "16px", fontWeight: 700, color: TEXT_PRIMARY, margin: "0 0 20px 0" }}>
                 Recent Voice Calls
               </h2>
@@ -524,6 +665,7 @@ export default function AdminAnalyticsPage() {
                 </div>
               )}
             </div>
+            </div>{/* close grid */}
           </>
         )}
       </div>

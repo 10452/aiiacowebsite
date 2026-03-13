@@ -184,14 +184,15 @@ export async function handleElevenLabsWebhook(req: Request, res: Response): Prom
               : null,
           });
       try {
-        const emailSent = await sendEmail({
+        const emailResult = await sendEmail({
           to: callerEmail,
           subject: callerEmailContent.subject,
           html: callerEmailContent.html,
           text: callerEmailContent.text,
+          leadId,
         });
-        await updateLeadEmailStatus(leadId, emailSent ? "sent" : "failed");
-        console.log(`[ElevenLabsWebhook] Caller summary email ${emailSent ? "sent" : "FAILED"} to ${callerEmail}`);
+        await updateLeadEmailStatus(leadId, emailResult.success ? "sent" : "failed");
+        console.log(`[ElevenLabsWebhook] Caller summary email ${emailResult.success ? "sent" : "FAILED"} to ${callerEmail}`);
       } catch (emailErr) {
         console.error("[ElevenLabsWebhook] Failed to send caller summary email:", emailErr);
         await updateLeadEmailStatus(leadId, "failed").catch(() => {});

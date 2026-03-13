@@ -115,3 +115,37 @@ export const knowledgeBase = mysqlTable("knowledge_base", {
 
 export type KnowledgeEntry = typeof knowledgeBase.$inferSelect;
 export type InsertKnowledgeEntry = typeof knowledgeBase.$inferInsert;
+
+/**
+ * Email events table — tracks Resend webhook events (delivered, opened, clicked, bounced).
+ * Each row is a single event. A single email can generate multiple events
+ * (e.g. delivered → opened → clicked → clicked again).
+ * leadId links back to the leads table for per-lead email engagement tracking.
+ */
+export const emailEvents = mysqlTable("email_events", {
+  id: int("id").autoincrement().primaryKey(),
+  /** Resend email ID — links all events for one email send */
+  emailId: varchar("emailId", { length: 128 }).notNull(),
+  /** Event type from Resend: email.sent, email.delivered, email.opened, email.clicked, email.bounced, email.complained */
+  eventType: varchar("eventType", { length: 64 }).notNull(),
+  /** Recipient email address */
+  recipientEmail: varchar("recipientEmail", { length: 320 }).notNull(),
+  /** FK to leads table (resolved via tags or recipient email lookup) */
+  leadId: int("leadId"),
+  /** Email subject line */
+  subject: varchar("subject", { length: 512 }),
+  /** For click events: the URL that was clicked */
+  clickedLink: text("clickedLink"),
+  /** For click events: user agent string */
+  clickUserAgent: text("clickUserAgent"),
+  /** For click events: IP address */
+  clickIpAddress: varchar("clickIpAddress", { length: 64 }),
+  /** Timestamp from Resend when the event occurred */
+  eventTimestamp: timestamp("eventTimestamp"),
+  /** Raw JSON payload from Resend (for debugging) */
+  rawPayload: text("rawPayload"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type EmailEvent = typeof emailEvents.$inferSelect;
+export type InsertEmailEvent = typeof emailEvents.$inferInsert;

@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertLead, InsertUser, leads, users, adminUsers, InsertAdminUser, knowledgeBase, InsertKnowledgeEntry } from "../drizzle/schema";
+import { InsertLead, InsertUser, leads, users, adminUsers, InsertAdminUser, knowledgeBase, InsertKnowledgeEntry, emailEvents, InsertEmailEvent } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -386,4 +386,81 @@ export async function getRecentCalls(limit: number = 10) {
   return allLeads
     .filter(l => l.callDurationSeconds != null && l.callDurationSeconds > 0)
     .slice(0, limit);
+}
+
+
+// ── Email Events ─────────────────────────────────────────────────────────────
+
+/** Insert a single email event from a Resend webhook */
+export async function insertEmailEvent(event: InsertEmailEvent): Promise<{ insertId: number }> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const [result] = await db.insert(emailEvents).values(event).$returningId();
+  return { insertId: result.id };
+}
+
+/** Get all email events for a specific lead, ordered newest first */
+export async function getEmailEventsByLeadId(leadId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.select().from(emailEvents).where(eq(emailEvents.leadId, leadId)).orderBy(desc(emailEvents.createdAt));
+}
+
+/** Get all email events for a specific Resend email ID */
+export async function getEmailEventsByEmailId(emailId: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.select().from(emailEvents).where(eq(emailEvents.emailId, emailId)).orderBy(desc(emailEvents.createdAt));
+}
+
+/** Get email engagement summary across all leads */
+export async function getEmailEngagementStats() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const allEvents = await db.select({
+    eventType: emailEvents.eventType,
+    leadId: emailEvents.leadId,
+    emailId: emailEvents.emailId,
+  }).from(emailEvents);
+
+  // Count unique emails per event type
+  const uniqueEmails = new Map<string, Set<string>>();
+  for (const ev of allEvents) {
+    if (!uniqueEmails.has(ev.eventType)) uniqueEmails.set(ev.eventType, new Set());
+    uniqueEmails.get(ev.eventType)!.add(ev.emailId);
+  }
+
+  const totalSent = uniqueEmails.get("email.sent")?.size ?? uniqueEmails.get("email.delivered")?.size ?? 0;
+  const totalDelivered = uniqueEmails.get("email.delivered")?.size ?? 0;
+  const totalOpened = uniqueEmails.get("email.opened")?.size ?? 0;
+  const totalClicked = uniqueEmails.get("email.clicked")?.size ?? 0;
+  const totalBounced = uniqueEmails.get("email.bounced")?.size ?? 0;
+
+  return {
+    totalSent,
+    totalDelivered,
+    totalOpened,
+    totalClicked,
+    totalBounced,
+    openRate: totalDelivered > 0 ? Math.round((totalOpened / totalDelivered) * 100) : 0,
+    clickRate: totalOpened > 0 ? Math.round((totalClicked / totalOpened) * 100) : 0,
+    bounceRate: totalSent > 0 ? Math.round((totalBounced / totalSent) * 100) : 0,
+    totalEvents: allEvents.length,
+  };
+}
+
+/** Get recent email events (for the activity feed) */
+export async function getRecentEmailEvents(limit: number = 20) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.select().from(emailEvents).orderBy(desc(emailEvents.createdAt)).limit(limit);
+}
+
+/** Resolve a lead ID from a recipient email address */
+export async function findLeadIdByEmail(email: string): Promise<number | null> {
+  const db = await getDb();
+  if (!db) return null;
+  const rows = await db.select({ id: leads.id }).from(leads).where(eq(leads.email, email)).orderBy(desc(leads.createdAt)).limit(1);
+  return rows[0]?.id ?? null;
 }

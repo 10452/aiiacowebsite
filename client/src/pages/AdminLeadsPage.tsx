@@ -139,6 +139,88 @@ function parseJsonArray(raw: string | null | undefined): string[] {
   }
 }
 
+/** Email Tracking Timeline — shows Resend webhook events for a specific lead */
+function EmailTrackingTimeline({ leadId }: { leadId: number }) {
+  const { data: events, isLoading } = trpc.analytics.emailEventsByLead.useQuery({ leadId });
+
+  if (isLoading) return null;
+  if (!events || events.length === 0) return null;
+
+  const eventInfo: Record<string, { icon: string; label: string; color: string }> = {
+    "email.sent": { icon: "\u2709\ufe0f", label: "Sent", color: "rgba(100,165,250,0.90)" },
+    "email.delivered": { icon: "\u2705", label: "Delivered", color: "rgba(130,140,248,0.90)" },
+    "email.opened": { icon: "\ud83d\udc41\ufe0f", label: "Opened", color: "rgba(52,211,153,0.90)" },
+    "email.clicked": { icon: "\ud83d\udd17", label: "Clicked", color: "rgba(184,156,74,0.95)" },
+    "email.bounced": { icon: "\u26a0\ufe0f", label: "Bounced", color: "rgba(239,68,68,0.90)" },
+    "email.complained": { icon: "\ud83d\udea9", label: "Complained", color: "rgba(239,68,68,0.90)" },
+    "email.delivery_delayed": { icon: "\u23f3", label: "Delayed", color: "rgba(251,191,36,0.90)" },
+  };
+
+  return (
+    <div style={{ paddingTop: "16px", paddingBottom: "4px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+      <p style={{
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+        fontSize: "10px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase",
+        color: "rgba(200,215,230,0.40)", margin: "0 0 10px",
+      }}>
+        Email Tracking
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0", position: "relative", paddingLeft: "18px" }}>
+        {/* Vertical line */}
+        <div style={{
+          position: "absolute", left: "6px", top: "4px", bottom: "4px", width: "1px",
+          background: "rgba(255,255,255,0.08)",
+        }} />
+        {events.map((ev: any) => {
+          const info = eventInfo[ev.eventType] ?? { icon: "\u2022", label: ev.eventType, color: "rgba(200,215,230,0.55)" };
+          const when = ev.createdAt ? new Date(ev.createdAt).toLocaleString() : "";
+          return (
+            <div key={ev.id} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "4px 0", position: "relative" }}>
+              {/* Dot on timeline */}
+              <div style={{
+                position: "absolute", left: "-15px", width: "9px", height: "9px",
+                borderRadius: "50%", background: info.color, border: "2px solid rgba(3,5,10,1)",
+              }} />
+              <span style={{ fontSize: "13px", width: "18px", textAlign: "center" }}>{info.icon}</span>
+              <span style={{
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                fontSize: "11px", fontWeight: 600, color: info.color,
+                padding: "1px 6px", borderRadius: "3px",
+                background: `${info.color.replace('0.90', '0.08').replace('0.95', '0.08')}`,
+                minWidth: "60px", textAlign: "center",
+              }}>
+                {info.label}
+              </span>
+              <span style={{
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                fontSize: "11px", color: "rgba(200,215,230,0.55)", flex: 1,
+                overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+              }}>
+                {ev.recipientEmail}
+              </span>
+              {ev.clickedLink && (
+                <span style={{
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                  fontSize: "10px", color: "rgba(184,156,74,0.60)",
+                  maxWidth: "140px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                }} title={ev.clickedLink}>
+                  {ev.clickedLink.replace(/^https?:\/\//, "").split("/").slice(0, 2).join("/")}
+                </span>
+              )}
+              <span style={{
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif",
+                fontSize: "10px", color: "rgba(200,215,230,0.30)", whiteSpace: "nowrap",
+              }}>
+                {when}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 /** Conversation Intelligence Panel — shows AI-extracted insights from voice calls */
 function ConversationIntelligencePanel({ lead, onReanalyze }: { lead: Lead; onReanalyze?: (id: number) => Promise<unknown> }) {
   const [open, setOpen] = useState(true);
@@ -780,6 +862,9 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic, onReanalyze, onResen
 
             {/* Conversation Intelligence */}
             <ConversationIntelligencePanel lead={lead} onReanalyze={onReanalyze} />
+
+            {/* Email Tracking Timeline */}
+            <EmailTrackingTimeline leadId={lead.id} />
 
             {/* Call Transcript */}
             {lead.callTranscript && (

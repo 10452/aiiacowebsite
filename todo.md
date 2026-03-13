@@ -680,3 +680,18 @@ Voice assignments:
 - [x] Fix name extraction bug — improved regex (multi-pattern + filler filter) + strengthened LLM prompt (positive/negative examples)
 - [x] Write tests for continue-conversation template (11 tests) + fix import tests
 - [x] Build aiia-post-call-emails skill (SKILL.md + 2 reference files, validated)
+
+## Round 84 — Email Open/Click Tracking via Resend Webhooks
+- [x] Create email_events DB table (emailId, eventType, recipientEmail, leadId, subject, clickedLink, clickUserAgent, clickIpAddress, eventTimestamp, rawPayload)
+- [x] Build Resend webhook handler (POST /api/webhooks/resend) with svix signature verification
+- [x] Tag all outgoing emails with lead_id for tracking correlation
+- [x] Update sendEmail to return { success, emailId } instead of boolean
+- [x] Add DB query helpers: insertEmailEvent, getEmailEventsByLeadId, getEmailEngagementStats, getRecentEmailEvents, findLeadIdByEmail
+- [x] Add tRPC procedures: analytics.emailEngagement, analytics.recentEmailEvents, analytics.emailEventsByLead
+- [x] Add Email Engagement KPIs to AdminAnalyticsPage (sent, delivered, opened, clicked, bounced + rates)
+- [x] Add Recent Email Activity panel to AdminAnalyticsPage (side by side with Recent Calls)
+- [x] Add Email Tracking Timeline to AdminLeadsPage lead detail panel (vertical timeline with colored dots)
+- [x] Register Resend webhook at aiiaco.com/api/webhooks/resend with all 7 event types
+- [x] Set RESEND_WEBHOOK_SECRET environment variable
+- [x] Write 11 vitest tests for webhook handler (all passing)
+- [x] Fix AdminAnalyticsPage JSX closing tag issue

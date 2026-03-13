@@ -271,14 +271,15 @@ async function processMissedConversation(detail: ElevenLabsConversationDetail): 
                 ? intelligence.conversationSummary
                 : null,
             });
-        const emailSent = await sendEmail({
+        const emailResult = await sendEmail({
           to: callerEmail,
           subject: callerEmailContent.subject,
           html: callerEmailContent.html,
           text: callerEmailContent.text,
+          leadId,
         });
-        await updateLeadEmailStatus(leadId, emailSent ? "sent" : "failed");
-        console.log(`[ConversationPoller] Caller summary email ${emailSent ? "sent" : "FAILED"} to ${callerEmail}`);
+        await updateLeadEmailStatus(leadId, emailResult.success ? "sent" : "failed");
+        console.log(`[ConversationPoller] Caller summary email ${emailResult.success ? "sent" : "FAILED"} to ${callerEmail}`);
       } catch (emailErr) {
         console.error(`[ConversationPoller] Failed to send caller summary email:`, emailErr);
         if (leadId) await updateLeadEmailStatus(leadId, "failed").catch(() => {});

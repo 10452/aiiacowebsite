@@ -36,10 +36,14 @@ export async function sendEmail(params: {
   subject: string;
   html: string;
   text: string;
-}): Promise<boolean> {
-  const { to, subject, html, text } = params;
+  /** Optional lead ID for email tracking — will be sent as a Resend tag */
+  leadId?: number;
+}): Promise<{ success: boolean; emailId?: string }> {
+  const { to, subject, html, text, leadId } = params;
   try {
     const resend = getResend();
+    const tags: { name: string; value: string }[] = [{ name: "source", value: "aiiaco" }];
+    if (leadId) tags.push({ name: "lead_id", value: String(leadId) });
     const result = await resend.emails.send({
       from: "AiiACo <team@aiiaco.com>",
       replyTo: OWNER_EMAIL,
@@ -47,16 +51,17 @@ export async function sendEmail(params: {
       subject,
       html,
       text,
+      tags,
     });
     if (result.error) {
       console.error("[Email] Resend error:", result.error);
-      return false;
+      return { success: false };
     }
     console.log("[Email] Sent to:", to, "| id:", result.data?.id);
-    return true;
+    return { success: true, emailId: result.data?.id };
   } catch (err) {
     console.error("[Email] Failed to send:", err);
-    return false;
+    return { success: false };
   }
 }
 

@@ -13,6 +13,7 @@ import {
   getAllKnowledgeEntries, getActiveKnowledgeEntries, getKnowledgeEntryById,
   insertKnowledgeEntry, updateKnowledgeEntry, deleteKnowledgeEntry, markKnowledgePushed,
   getAnalyticsOverview, getDailyCallVolume, getRecentCalls,
+  getEmailEventsByLeadId, getEmailEngagementStats, getRecentEmailEvents,
 } from "./db";
 import { generateAndSendLeadDiagnostic } from "./leadDiagnostic";
 import { sendLeadConfirmationEmail, sendEmail } from "./email";
@@ -163,6 +164,25 @@ const analyticsRouter = router({
     .input(z.object({ limit: z.number().int().min(1).max(50).default(10) }).optional())
     .query(async ({ input }) => {
       return getRecentCalls(input?.limit ?? 10);
+    }),
+
+  /** Email engagement stats (open rate, click rate, bounce rate) */
+  emailEngagement: adminAuthedProcedure.query(async () => {
+    return getEmailEngagementStats();
+  }),
+
+  /** Recent email events (activity feed) */
+  recentEmailEvents: adminAuthedProcedure
+    .input(z.object({ limit: z.number().int().min(1).max(100).default(20) }).optional())
+    .query(async ({ input }) => {
+      return getRecentEmailEvents(input?.limit ?? 20);
+    }),
+
+  /** Email events for a specific lead */
+  emailEventsByLead: adminAuthedProcedure
+    .input(z.object({ leadId: z.number().int().positive() }))
+    .query(async ({ input }) => {
+      return getEmailEventsByLeadId(input.leadId);
     }),
 });
 
@@ -906,16 +926,17 @@ export const appRouter = router({
           leadBrief: lead.leadBrief ?? lead.conversationSummary,
         });
 
-        const sent = await sendEmail({
+        const emailResult = await sendEmail({
           to: lead.email,
           subject: emailContent.subject,
           html: emailContent.html,
           text: emailContent.text,
+          leadId: input.id,
         });
 
-        await updateLeadEmailStatus(input.id, sent ? "sent" : "failed");
+        await updateLeadEmailStatus(input.id, emailResult.success ? "sent" : "failed");
 
-        if (!sent) {
+        if (!emailResult.success) {
           throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Email failed to send — check Resend domain verification" });
         }
 

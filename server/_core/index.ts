@@ -9,6 +9,7 @@ import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { handleCalendlyWebhook } from "../webhooks/calendly";
 import { handleElevenLabsWebhook } from "../webhooks/elevenlabs";
+import { handleResendWebhook } from "../webhooks/resend";
 import { startTelnyxPoller } from "../telnyxPoller";
 import { startHealthScheduler } from "../healthScheduler";
 import { startConversationPoller } from "../conversationPoller";
@@ -79,6 +80,23 @@ async function startServer() {
       next();
     },
     handleElevenLabsWebhook
+  );
+
+  // ── Resend email tracking webhook ───────────────────────────────────────────
+  app.post(
+    "/api/webhooks/resend",
+    express.raw({ type: "application/json", limit: "1mb" }),
+    (req, _res, next) => {
+      const rawText = (req.body as Buffer).toString("utf8");
+      (req as any).rawBodyText = rawText;
+      try {
+        req.body = JSON.parse(rawText);
+      } catch {
+        req.body = {};
+      }
+      next();
+    },
+    handleResendWebhook
   );
 
   // Configure body parser with larger size limit for file uploads
