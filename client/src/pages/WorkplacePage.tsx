@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEO from "@/seo/SEO";
 import { CALENDLY_URL } from "@/const";
+import { trackCalendlyLinkClick } from "@/hooks/useCalendlyTracking";
 
 const FF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
 const FFD = "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
@@ -252,6 +253,7 @@ export default function WorkplacePage() {
                   href={CALENDLY_URL}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackCalendlyLinkClick("workplace_page")}
                   style={{
                     fontFamily: FF,
                     fontSize: "14px",

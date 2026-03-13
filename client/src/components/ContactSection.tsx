@@ -12,6 +12,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { trpc } from "@/lib/trpc";
 import CallNowButton from "@/components/CallNowButton";
+import { useCalendlyTracking } from "@/hooks/useCalendlyTracking";
 
 type Step = "contact" | "problem" | "booking" | "done";
 
@@ -141,6 +142,7 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
   const [leadId, setLeadId] = useState<number | null>(null);
   const [error, setError] = useState("");
   const [showCalendly, setShowCalendly] = useState(false);
+  useCalendlyTracking("contact_section");
   const [data, setData] = useState<QualifierData>({
     name: "",
     company: "",

@@ -698,3 +698,11 @@ Voice assignments:
 
 ## Round 85 — Google Analytics 4
 - [x] Add GA4 tag (G-6XQ3T33HTF) to index.html head
+
+## Round 86 — GA4 Calendly Conversion Tracking
+- [x] Investigate Calendly integration (3 embed iframes + 4 external links across 4 components)
+- [x] Create useCalendlyTracking hook — listens for postMessage events from Calendly iframes
+- [x] Fire GA4 events: calendly_booking_complete, calendly_date_selected, calendly_page_viewed, calendly_event_type_viewed
+- [x] Add trackCalendlyLinkClick for external Calendly links (CallNowButton, IndustryMicrosite hero+CTA, WorkplacePage)
+- [x] Wire hook into ContactSection and IndustryMicrosite iframe embeds
+- [ ] Mark calendly_booking_complete as key event in GA4 admin (manual step — see instructions)

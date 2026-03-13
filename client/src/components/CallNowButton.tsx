@@ -5,6 +5,7 @@
  * To activate the phone number: update PHONE_NUMBER and PHONE_NUMBER_DISPLAY in client/src/const.ts
  */
 import { PHONE_NUMBER, PHONE_NUMBER_DISPLAY, CALENDLY_URL } from "@/const";
+import { trackCalendlyLinkClick } from "@/hooks/useCalendlyTracking";
 
 interface CallNowButtonProps {
   className?: string;
@@ -85,6 +86,7 @@ export default function CallNowButton({
       rel={rel}
       className={className}
       style={{ ...variantStyles[variant], ...sizeStyles[size], ...style }}
+      onClick={!hasPhone ? () => trackCalendlyLinkClick("call_now_button") : undefined}
     >
       {showIcon && (
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
