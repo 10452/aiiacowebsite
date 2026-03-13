@@ -41,7 +41,7 @@ export async function sendEmail(params: {
   try {
     const resend = getResend();
     const result = await resend.emails.send({
-      from: "AiiACo <team@resend.aiiaco.com>",
+      from: "AiiACo <team@aiiaco.com>",
       replyTo: OWNER_EMAIL,
       to: [to],
       subject,
@@ -80,7 +80,7 @@ export async function sendOwnerPilotBrief(params: {
     }
     const resend = new Resend(key);
     const result = await resend.emails.send({
-      from: "AiiA Intelligence <team@resend.aiiaco.com>",
+      from: "AiiA Intelligence <team@aiiaco.com>",
       replyTo: OWNER_EMAIL,
       to: [OWNER_EMAIL],
       subject,
@@ -299,7 +299,7 @@ aiiaco.com`;
   try {
     const resend = getResend();
     const result = await resend.emails.send({
-      from: "AiiACo <team@resend.aiiaco.com>",
+      from: "AiiACo <team@aiiaco.com>",
       replyTo: OWNER_EMAIL,
       to: [email],
       subject: `${firstName}, your AiiACo request is confirmed`,

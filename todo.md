@@ -660,3 +660,9 @@ Voice assignments:
 - [x] Update admin resendEmail to use new templates
 - [x] Write vitest tests for new email templates (30 tests passing)
 - [x] Verify email rendering — TypeScript clean, all tests passing
+
+## Round 81 — Send JJinco & Alan Emails
+- [x] Fix Jennifer's name in DB from "that perfectly" to "Jennifer Jingco"
+- [x] Send Jennifer the new caller summary email via Resend (id: a437953c)
+- [x] Build and send Alan a polished "we'd love to continue" email (id: 5f7678ef)
+- [x] Fix from domain: resend.aiiaco.com → aiiaco.com (verified domain) across all email.ts functions
