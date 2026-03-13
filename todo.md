@@ -695,3 +695,6 @@ Voice assignments:
 - [x] Set RESEND_WEBHOOK_SECRET environment variable
 - [x] Write 11 vitest tests for webhook handler (all passing)
 - [x] Fix AdminAnalyticsPage JSX closing tag issue
+
+## Round 85 — Google Analytics 4
+- [x] Add GA4 tag (G-6XQ3T33HTF) to index.html head
