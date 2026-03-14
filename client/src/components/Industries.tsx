@@ -1,6 +1,7 @@
 /*
  * AiiACo Industries Section — Focused Niche: Real Estate, Mortgage, CRE, Management Consulting
  * Liquid Glass Bio-Organic Design
+ * Mobile: single-column cards, responsive header with icon
  */
 import { motion } from "framer-motion";
 
@@ -48,6 +49,7 @@ export default function Industries() {
   return (
     <section
       id="industries"
+      className="mobile-section"
       style={{
         position: "relative",
         padding: "120px 0",
@@ -55,6 +57,31 @@ export default function Industries() {
         overflow: "hidden",
       }}
     >
+      <style>{`
+        .industries-header-row {
+          display: flex;
+          align-items: flex-start;
+          gap: 24px;
+          margin-bottom: 28px;
+        }
+        .industries-header-icon {
+          width: 96px;
+          height: 96px;
+          object-fit: contain;
+          flex-shrink: 0;
+          margin-top: 4px;
+        }
+        @media (max-width: 640px) {
+          .industries-header-row {
+            flex-direction: column;
+            gap: 16px;
+          }
+          .industries-header-icon {
+            width: 64px;
+            height: 64px;
+          }
+        }
+      `}</style>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(1000px 600px at 80% 30%, rgba(184,156,74,0.04) 0%, transparent 55%)" }} />
 
       <div className="container" style={{ position: "relative", zIndex: 2 }}>
@@ -66,11 +93,11 @@ export default function Industries() {
           transition={{ duration: 0.6 }}
           style={{ maxWidth: "640px", marginBottom: "64px" }}
         >
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "24px", marginBottom: "28px" }}>
+          <div className="industries-header-row">
             <img
               src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-landmark-industries_345f6f1d.png"
               alt="Industries"
-              style={{ width: "96px", height: "96px", objectFit: "contain", flexShrink: 0, marginTop: "4px" }}
+              className="industries-header-icon"
             />
             <div>
               <div className="section-pill" style={{ marginBottom: "16px", width: "fit-content" }}>
@@ -97,7 +124,7 @@ export default function Industries() {
           transition={{ duration: 0.6 }}
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
             gap: "24px",
             marginBottom: "72px",
           }}
@@ -116,7 +143,7 @@ export default function Industries() {
                 borderRadius: "16px",
                 background: "rgba(255,255,255,0.03)",
                 border: "1px solid rgba(184,156,74,0.20)",
-                padding: "32px",
+                padding: "28px",
                 transition: "background 0.25s, border-color 0.25s, transform 0.2s",
                 cursor: "pointer",
               }}
@@ -133,7 +160,7 @@ export default function Industries() {
                 el.style.transform = "translateY(0)";
               }}
             >
-              <div style={{ width: "56px", height: "56px", marginBottom: "16px" }}>
+              <div style={{ width: "48px", height: "48px", marginBottom: "16px" }}>
                 <img
                   src={industry.icon}
                   alt={industry.name}
@@ -205,7 +232,7 @@ export default function Industries() {
           </h3>
           <div style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(220px, 100%), 1fr))",
             gap: "16px",
           }}>
             {capabilities.map((cap, i) => (
@@ -219,7 +246,7 @@ export default function Industries() {
                   borderRadius: "12px",
                   background: "rgba(255,255,255,0.025)",
                   border: "1px solid rgba(255,255,255,0.07)",
-                  padding: "24px",
+                  padding: "20px",
                 }}
               >
                 <div style={{

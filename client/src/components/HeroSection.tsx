@@ -1,6 +1,7 @@
 /*
  * AiiACo Hero Section — Liquid Glass Bio-Organic Design
  * Full-bleed liquid glass background, split layout, glass KPI cards
+ * Mobile: single column, KPIs shown below hero text
  */
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
@@ -92,6 +93,70 @@ export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () 
         background: "#03050A",
       }}
     >
+      {/* Scoped responsive styles */}
+      <style>{`
+        .hero-grid {
+          display: grid;
+          grid-template-columns: 1.3fr 0.7fr;
+          gap: 32px;
+          align-items: stretch;
+        }
+        .hero-right {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+        .hero-cta-row {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          margin-top: 4px;
+        }
+        .hero-section-inner {
+          padding-top: 80px;
+          padding-bottom: 80px;
+        }
+        /* Mobile KPI strip: horizontal scroll */
+        .hero-mobile-kpis {
+          display: none;
+        }
+        @media (max-width: 1023px) {
+          .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+          }
+          .hero-right {
+            display: none;
+          }
+          .hero-mobile-kpis {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+          }
+          .hero-section-inner {
+            padding-top: 40px;
+            padding-bottom: 60px;
+          }
+        }
+        @media (max-width: 640px) {
+          .hero-mobile-kpis {
+            grid-template-columns: 1fr;
+            gap: 8px;
+          }
+          .hero-cta-row {
+            flex-direction: column;
+          }
+          .hero-cta-row .btn-gold,
+          .hero-cta-row .btn-glass {
+            width: 100%;
+            justify-content: center;
+            font-size: 14px;
+            padding: 14px 24px;
+          }
+        }
+      `}</style>
+
       {/* Liquid glass background */}
       <div
         style={{
@@ -112,16 +177,8 @@ export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () 
       <div className="glass-orb glass-orb-2" style={{ top: "50%", right: "6%", zIndex: 1 }} />
       <div className="glass-orb glass-orb-3" style={{ bottom: "12%", left: "38%", zIndex: 1 }} />
 
-      <div className="container" style={{ position: "relative", zIndex: 2, paddingTop: "80px", paddingBottom: "80px" }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1.3fr 0.7fr",
-            gap: "32px",
-            alignItems: "stretch",
-          }}
-          className="lg:grid"
-        >
+      <div className="container hero-section-inner" style={{ position: "relative", zIndex: 2 }}>
+        <div className="hero-grid">
           {/* Left */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -138,11 +195,11 @@ export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () 
               Remove Operational Friction.<br />
               <span className="gold-line">Run Your Business Faster.</span>
             </h1>
-            <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(13px, 1.2vw, 15px)", fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", margin: "-8px 0 0" }}>
+            <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(12px, 1.2vw, 15px)", fontWeight: 700, letterSpacing: "1.4px", textTransform: "uppercase", color: "rgba(184,156,74,0.70)", margin: "-8px 0 0" }}>
               Most businesses don't have a technology problem. They have an operational flow problem.
             </p>
 
-            <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(15px, 1.5vw, 18px)", lineHeight: 1.65, color: "rgba(200,215,230,0.82)", maxWidth: "52ch", margin: 0 }}>
+            <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(14px, 1.5vw, 18px)", lineHeight: 1.65, color: "rgba(200,215,230,0.82)", maxWidth: "52ch", margin: 0 }}>
               AiiA helps growing companies simplify workflows, activate dormant databases, and create clear operational visibility so leadership can move faster and teams execute without coordination drag.
             </p>
 
@@ -155,7 +212,7 @@ export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () 
               ))}
             </ul>
 
-            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginTop: "4px" }}>
+            <div className="hero-cta-row">
               <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "15px", padding: "14px 30px" }}>
                 Book an Operational Strategy Call
               </button>
@@ -163,6 +220,13 @@ export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () 
               <button onClick={() => document.querySelector("#method")?.scrollIntoView({ behavior: "smooth" })} className="btn-glass" style={{ fontSize: "15px", padding: "14px 24px" }}>
                 See How It Works
               </button>
+            </div>
+
+            {/* Mobile KPIs — shown below CTAs on tablet/mobile */}
+            <div className="hero-mobile-kpis">
+              {kpis.map((kpi, i) => (
+                <KpiCard key={kpi.label} kpi={kpi} delay={350 + i * 100} />
+              ))}
             </div>
 
             <div style={{ marginTop: "8px", display: "flex", flexDirection: "column", gap: "6px" }}>
@@ -175,13 +239,12 @@ export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () 
             </div>
           </motion.div>
 
-          {/* Right: KPI + how it works */}
+          {/* Right: KPI + how it works — desktop only */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            style={{ display: "flex", flexDirection: "column", gap: "14px" }}
-            className="hidden lg:flex"
+            className="hero-right"
           >
             {kpis.map((kpi, i) => (
               <KpiCard key={kpi.label} kpi={kpi} delay={350 + i * 100} />

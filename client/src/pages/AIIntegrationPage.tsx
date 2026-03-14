@@ -142,7 +142,7 @@ export default function AIIntegrationPage() {
                 Four Phases of <span className="accent">Operational AI Integration</span>
               </motion.h2>
 
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))", gap: "20px" }}>
                 {pillars.map((p) => (
                   <motion.div key={p.n} variants={fade} className="glass-card" style={{ padding: "32px 28px" }}>
                     <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "11px", fontWeight: 900, letterSpacing: "0.2em", color: "rgba(184,156,74,0.55)", marginBottom: "12px" }}>PHASE {p.n}</div>

@@ -119,7 +119,7 @@ export default function AIImplementationPage() {
                 What AiiAco <span className="accent">Implements for You</span>
               </motion.h2>
 
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "20px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))", gap: "20px" }}>
                 {services.map((s) => (
                   <motion.div key={s.title} variants={fade} className="glass-card" style={{ padding: "28px 24px" }}>
                     <h3 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "21px", fontWeight: 700, color: "rgba(255,255,255,0.94)", margin: "0 0 12px", letterSpacing: "-0.3px" }}>{s.title}</h3>

@@ -1,6 +1,7 @@
 /*
  * OperationalLeaks — Three Operational Leaks That Quietly Kill Profit
  * Based on the AiiA Operator Brief
+ * Mobile: stacked layout, no grid columns for icon+content
  */
 import { motion } from "framer-motion";
 
@@ -38,6 +39,7 @@ export default function OperationalLeaks({ onOpenQualifier }: { onOpenQualifier?
   return (
     <section
       id="operational-leaks"
+      className="mobile-section"
       style={{
         position: "relative",
         padding: "100px 0",
@@ -45,6 +47,36 @@ export default function OperationalLeaks({ onOpenQualifier }: { onOpenQualifier?
         overflow: "hidden",
       }}
     >
+      <style>{`
+        .leak-card-inner {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 24px;
+          align-items: flex-start;
+        }
+        .leak-cta-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        @media (max-width: 640px) {
+          .leak-card-inner {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          .leak-icon-col {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+          }
+          .leak-cta-row {
+            flex-direction: column;
+            align-items: stretch;
+          }
+        }
+      `}</style>
       {/* Subtle radial glow */}
       <div
         style={{
@@ -89,27 +121,12 @@ export default function OperationalLeaks({ onOpenQualifier }: { onOpenQualifier?
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.55 }}
               className="glass-card"
-              style={{ padding: "32px" }}
+              style={{ padding: "28px" }}
             >
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "auto 1fr",
-                  gap: "24px",
-                  alignItems: "flex-start",
-                }}
-              >
+              <div className="leak-card-inner">
                 {/* Icon + Number badge */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: "8px",
-                    paddingTop: "4px",
-                  }}
-                >
-                  <div style={{ width: "52px", height: "52px", marginBottom: "4px" }}>
+                <div className="leak-icon-col" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", paddingTop: "4px" }}>
+                  <div style={{ width: "48px", height: "48px" }}>
                     <img
                       src={leak.icon}
                       alt={leak.title}
@@ -170,8 +187,8 @@ export default function OperationalLeaks({ onOpenQualifier }: { onOpenQualifier?
                   >
                     {leak.detail}
                   </p>
-                  {/* Fix pill */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+                  {/* Fix pill + CTA */}
+                  <div className="leak-cta-row">
                     <div
                       style={{
                         display: "inline-flex",
@@ -219,7 +236,7 @@ export default function OperationalLeaks({ onOpenQualifier }: { onOpenQualifier?
                         display: "inline-flex",
                         alignItems: "center",
                         gap: "6px",
-                        padding: "8px 18px",
+                        padding: "10px 18px",
                         background: "linear-gradient(135deg, rgba(212,168,67,0.18) 0%, rgba(184,140,50,0.12) 100%)",
                         border: "1px solid rgba(212,168,67,0.45)",
                         borderRadius: "8px",
@@ -231,6 +248,7 @@ export default function OperationalLeaks({ onOpenQualifier }: { onOpenQualifier?
                         color: "#D4A843",
                         letterSpacing: "0.2px",
                         transition: "all 0.2s ease",
+                        minHeight: "44px",
                       }}
                       onMouseEnter={e => {
                         (e.currentTarget as HTMLButtonElement).style.background =

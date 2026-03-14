@@ -262,7 +262,7 @@ export default function IndustryMicrosite() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(180px, 100%), 1fr))",
                 gap: "32px",
               }}
             >
@@ -344,7 +344,7 @@ export default function IndustryMicrosite() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fill, minmax(min(380px, 100%), 1fr))",
                 gap: "16px",
               }}
             >
@@ -437,7 +437,7 @@ export default function IndustryMicrosite() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fill, minmax(min(380px, 100%), 1fr))",
                 gap: "16px",
               }}
             >
@@ -564,7 +564,7 @@ export default function IndustryMicrosite() {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
                     gap: "16px",
                     marginBottom: "32px",
                   }}
@@ -845,7 +845,7 @@ export default function IndustryMicrosite() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))",
                 gap: "16px",
               }}
             >

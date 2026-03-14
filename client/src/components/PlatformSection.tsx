@@ -41,6 +41,7 @@ export default function PlatformSection() {
   return (
     <section
       id="platform"
+      className="mobile-section"
       style={{
         position: "relative",
         padding: "120px 0",
@@ -79,7 +80,7 @@ export default function PlatformSection() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(min(320px, 100%), 1fr))",
             gap: "14px",
           }}
         >

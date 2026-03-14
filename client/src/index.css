@@ -254,7 +254,7 @@
   /* ─── HEADLINES ─────────────────────────────────────────────── */
   .display-headline {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-    font-size: clamp(44px, 6vw, 80px);
+    font-size: clamp(32px, 6vw, 80px);
     font-weight: 700;
     line-height: 0.96;
     letter-spacing: -1.5px;
@@ -268,7 +268,7 @@
 
   .section-headline {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-    font-size: clamp(32px, 4vw, 52px);
+    font-size: clamp(26px, 4vw, 52px);
     font-weight: 700;
     line-height: 1.02;
     letter-spacing: -0.8px;
@@ -281,7 +281,7 @@
 
   .section-subhead {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-    font-size: clamp(15px, 1.6vw, 18px);
+    font-size: clamp(14px, 1.6vw, 18px);
     line-height: 1.65;
     color: var(--pearl-muted);
     margin: 0;
@@ -343,7 +343,7 @@
   /* ─── STAT NUMBERS ──────────────────────────────────────────── */
   .stat-number {
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-    font-size: clamp(36px, 4vw, 52px);
+    font-size: clamp(28px, 4vw, 52px);
     font-weight: 700;
     letter-spacing: -1px;
     color: var(--gold-bright);
@@ -608,4 +608,123 @@
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.55; transform: scale(0.85); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE OVERRIDES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Global section padding reduction on mobile ─────────────── */
+@media (max-width: 768px) {
+  .mobile-section {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+}
+
+/* ─── Section headlines: scale down on mobile ────────────────── */
+@media (max-width: 640px) {
+  .section-headline {
+    font-size: clamp(24px, 7vw, 36px) !important;
+    line-height: 1.15 !important;
+  }
+  .section-subhead {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+}
+
+/* ─── Announcement bar mobile ─────────────────────────────────── */
+@media (max-width: 640px) {
+  .announce-bar {
+    font-size: 11px;
+    padding: 8px 16px;
+    letter-spacing: 0.1px;
+    line-height: 1.4;
+  }
+  .announce-bar .gold-text {
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+/* ─── Glass orbs: smaller on mobile to prevent overflow ───────── */
+@media (max-width: 768px) {
+  .glass-orb-1 {
+    width: 350px;
+    height: 350px;
+    filter: blur(40px);
+  }
+  .glass-orb-2 {
+    width: 250px;
+    height: 250px;
+    filter: blur(35px);
+  }
+  .glass-orb-3 {
+    width: 200px;
+    height: 200px;
+    filter: blur(30px);
+  }
+}
+
+/* ─── Table mobile: horizontal scroll wrapper ─────────────────── */
+@media (max-width: 768px) {
+  .glass-table th {
+    padding: 10px 12px;
+    font-size: 10px;
+    letter-spacing: 0.8px;
+  }
+  .glass-table td {
+    padding: 12px;
+    font-size: 13px;
+  }
+}
+
+/* ─── Buttons mobile: allow wrapping, full-width stacking ─────── */
+@media (max-width: 480px) {
+  .btn-gold,
+  .btn-glass {
+    font-size: 13px;
+    padding: 12px 20px;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ─── Glass cards: reduce padding on mobile ──────────────────── */
+@media (max-width: 640px) {
+  .glass-card,
+  .glass-card-gold {
+    padding: 20px !important;
+  }
+}
+
+/* ─── Container mobile: tighter horizontal padding ───────────── */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+/* ─── Stat numbers: scale for mobile ─────────────────────────── */
+@media (max-width: 640px) {
+  .stat-number {
+    font-size: 28px !important;
+  }
+}
+
+/* ─── Gold divider: shorter on mobile ────────────────────────── */
+@media (max-width: 640px) {
+  .gold-divider {
+    width: 48px !important;
+  }
+}
+
+/* ─── Footer mobile padding ──────────────────────────────────── */
+@media (max-width: 640px) {
+  footer {
+    padding-top: 40px !important;
+    padding-bottom: 24px !important;
+  }
 }

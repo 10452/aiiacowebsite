@@ -751,3 +751,34 @@ Voice assignments:
 - [x] Investigate Email Service (Resend) "fetch failed" — added 10s timeout + safeFetch wrapper, network failures now "degraded" not "down"
 - [x] Investigate Database "unreachable" — transient errors (pool reset) now "degraded", only hard failures (ECONNREFUSED) are "down"
 - [x] Fix root causes — added retry logic (1 retry per check), consecutive failure tracking (2 failures before alert), 30-min alert cooldown. Score: 100/100 after fix
+
+## Round 89 — Mobile Optimization
+- [x] Audit all pages on mobile viewport (375px, 390px, 428px)
+- [x] Fix hero section mobile layout and typography
+- [x] Fix navbar mobile menu and interactions
+- [x] Fix platform/method/results sections mobile layout
+- [x] Fix industries/case studies sections mobile layout
+- [x] Fix contact section and footer mobile layout
+- [x] Fix engagement models and principles sections mobile
+- [x] Verify all fixes across breakpoints
+- [x] Add mobile-section class with reduced padding (120px → 60px) at 768px breakpoint
+- [x] Add responsive headline/subhead font scaling at 640px breakpoint
+- [x] Fix announcement bar text wrapping on mobile
+- [x] Reduce glass orb sizes on mobile to prevent overflow
+- [x] Add horizontal scroll wrapper for glass tables on mobile
+- [x] Make buttons full-width on mobile (480px breakpoint)
+- [x] Reduce glass card padding on mobile
+- [x] Tighten container horizontal padding on mobile (16px)
+- [x] Hero: single-column grid on tablet/mobile, KPIs shown below CTAs, full-width CTA buttons
+- [x] Navbar: hamburger menu with AnimatePresence overlay, body scroll lock, 48px touch targets
+- [x] Footer: 2-column grid on tablet, 1-column on small mobile, brand section full-width
+- [x] Case Studies: 1-column cards on mobile (was 480px minmax causing overflow)
+- [x] After Upgrade: card layout replaces 3-column table on mobile
+- [x] Results: CTA card stacks vertically on mobile, full-width button
+- [x] Contact: single-column form on mobile, sidebar hidden, name/company fields stack
+- [x] Engagement Models: min() wrapper on grid for mobile safety
+- [x] Industries: responsive header icon layout, min() wrapper on card grids
+- [x] BuiltForCorporateAge: min() wrapper on principles grid, responsive CTA buttons
+- [x] OperationalLeaks: responsive grid layout with icon column
+- [x] Fix ALL minmax grid patterns across entire codebase (17 files) with min() wrapper to prevent horizontal overflow
+- [x] Fix subpages: AIIntegrationPage, AIImplementationPage, AIAutomationPage, IndustryMicrosite, AdminConsolePage, AdminLeadsPage

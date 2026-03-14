@@ -225,6 +225,7 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
   return (
     <section
       id="contact"
+      className="mobile-section"
       style={{
         background: "#03050A",
         padding: "120px 0 100px",
@@ -250,10 +251,10 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
             gap: 40px;
           }
           .aiia-contact-outer {
-            padding: 0 20px;
+            padding: 0 16px;
           }
           .aiia-contact-form-card {
-            padding: 24px !important;
+            padding: 20px !important;
           }
           .aiia-contact-section {
             padding: 60px 0 60px !important;
@@ -263,6 +264,9 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
           }
           .aiia-contact-sidebar {
             display: none;
+          }
+          .aiia-contact-name-grid {
+            grid-template-columns: 1fr !important;
           }
         }
       `}</style>
@@ -447,7 +451,7 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
                       We'll use this to reach you directly — no spam, no handoffs.
                     </p>
                     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+                      <div className="aiia-contact-name-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
                         <FieldGroup label="Your Name *">
                           <input
                             style={inputStyle}

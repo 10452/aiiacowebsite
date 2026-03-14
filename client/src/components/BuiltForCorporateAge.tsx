@@ -1,5 +1,6 @@
 /*
  * AiiACo Built For Corporate Age — Liquid Glass Bio-Organic Design
+ * Mobile: responsive CTA card padding, stacked buttons
  */
 import { motion } from "framer-motion";
 
@@ -19,6 +20,7 @@ export default function BuiltForCorporateAge() {
   return (
     <section
       id="about"
+      className="mobile-section"
       style={{
         position: "relative",
         padding: "120px 0",
@@ -26,6 +28,31 @@ export default function BuiltForCorporateAge() {
         overflow: "hidden",
       }}
     >
+      <style>{`
+        .corporate-cta-card {
+          padding: 52px 48px;
+          text-align: center;
+        }
+        .corporate-cta-buttons {
+          display: flex;
+          gap: 14px;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+        @media (max-width: 640px) {
+          .corporate-cta-card {
+            padding: 32px 20px;
+          }
+          .corporate-cta-buttons {
+            flex-direction: column;
+          }
+          .corporate-cta-buttons .btn-gold,
+          .corporate-cta-buttons .btn-glass {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+      `}</style>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(1200px 700px at 50% 50%, rgba(3,5,10,0.60) 0%, rgba(3,5,10,0.90) 70%)" }} />
 
       <div className="container" style={{ position: "relative", zIndex: 2 }}>
@@ -51,7 +78,7 @@ export default function BuiltForCorporateAge() {
         </motion.div>
 
         {/* Principles grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "14px", marginBottom: "64px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(260px, 100%), 1fr))", gap: "14px", marginBottom: "64px" }}>
           {principles.map((p, i) => (
             <motion.div
               key={p.title}
@@ -81,10 +108,9 @@ export default function BuiltForCorporateAge() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="glass-card-gold"
-          style={{ padding: "52px 48px", textAlign: "center" }}
+          className="glass-card-gold corporate-cta-card"
         >
-          <h2 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(28px, 3.5vw, 48px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 16px", lineHeight: 1.1, letterSpacing: "-0.8px" }}>
+          <h2 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(24px, 3.5vw, 48px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", margin: "0 0 16px", lineHeight: 1.1, letterSpacing: "-0.8px" }}>
             The Corporate Age of AI has already begun.
             <br />
             <span style={{ color: "#D4A843" }}>The only question is whether you are building the infrastructure or watching others do it.</span>
@@ -92,7 +118,7 @@ export default function BuiltForCorporateAge() {
           <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(15px, 1.6vw, 18px)", color: "rgba(200,215,230,0.75)", margin: "0 auto 32px", maxWidth: "56ch", lineHeight: 1.6 }}>
             AiiAco is the AI Integration Authority for the Corporate Age. One engagement. Complete operational AI infrastructure. Delivered, managed, and performance-aligned.
           </p>
-          <div style={{ display: "flex", gap: "14px", justifyContent: "center", flexWrap: "wrap" }}>
+          <div className="corporate-cta-buttons">
             <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "16px", padding: "16px 36px" }}>
               Initiate Upgrade
             </button>

@@ -1,6 +1,7 @@
 /*
  * AiiACo Navbar - Liquid Glass Bio-Organic Design
  * Gold AI chip logo, glassmorphism nav, announcement bar
+ * Mobile: hamburger menu with full-screen overlay, body scroll lock
  */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,7 +19,6 @@ const navLinks = [
 ];
 
 const FF = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
-const FFD = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif";
 
 export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => void } = {}) {
   const [scrolled, setScrolled] = useState(false);
@@ -30,9 +30,18 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
   const scrollTo = (href: string) => {
     setMobileOpen(false);
-    // If we're not on the homepage, navigate there first
     if (window.location.pathname !== "/") {
       window.location.href = "/" + href;
       return;
@@ -59,13 +68,13 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0", gap: "16px" }}>
             {/* Brand */}
             <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              style={{ display: "flex", alignItems: "center", gap: "12px", background: "none", border: "none", padding: 0, cursor: "pointer" }}
+              onClick={() => { setMobileOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              style={{ display: "flex", alignItems: "center", gap: "12px", background: "none", border: "none", padding: 0, cursor: "pointer", flexShrink: 0 }}
             >
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_pure_gold_transparent_8063797a.png"
                 alt="AiiAco — AI Integration Authority"
-                style={{ height: "44px", width: "auto", objectFit: "contain", display: "block" }}
+                style={{ height: "40px", width: "auto", objectFit: "contain", display: "block" }}
               />
             </button>
 
@@ -96,11 +105,10 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                   {link.label}
                 </a>
               ))}
-
             </div>
 
             {/* CTA + mobile toggle */}
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
               <div className="hidden lg:flex">
                 <ReadAloud />
               </div>
@@ -126,8 +134,26 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
               <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { scrollTo("#contact"); } }} className="btn-gold hidden lg:inline-flex" style={{ fontSize: "13px", padding: "10px 20px" }}>
                 Request Upgrade
               </button>
-              <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden" style={{ background: "none", border: "none", color: "rgba(255,255,255,0.80)", padding: "6px", cursor: "pointer" }}>
-                {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+
+              {/* Mobile hamburger — larger touch target */}
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="lg:hidden"
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "rgba(255,255,255,0.80)",
+                  padding: "10px",
+                  cursor: "pointer",
+                  minWidth: "44px",
+                  minHeight: "44px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              >
+                {mobileOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
             </div>
           </div>
@@ -139,20 +165,39 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.2 }}
-                style={{ borderTop: "1px solid rgba(255,255,255,0.07)", overflow: "hidden" }}
+                transition={{ duration: 0.25 }}
+                style={{
+                  borderTop: "1px solid rgba(255,255,255,0.07)",
+                  overflow: "hidden",
+                }}
               >
-                <div style={{ padding: "12px 0 20px", display: "flex", flexDirection: "column", gap: "2px" }}>
+                <div style={{ padding: "16px 0 24px", display: "flex", flexDirection: "column", gap: "4px" }}>
                   {navLinks.map((link) => (
                     <button
                       key={link.href}
                       onClick={() => scrollTo(link.href)}
-                      style={{ fontFamily: FF, fontWeight: 600, fontSize: "15px", color: "rgba(200,215,230,0.85)", background: "none", border: "none", padding: "10px 8px", textAlign: "left", cursor: "pointer", borderRadius: "8px" }}
+                      style={{
+                        fontFamily: FF,
+                        fontWeight: 600,
+                        fontSize: "16px",
+                        color: "rgba(200,215,230,0.85)",
+                        background: "none",
+                        border: "none",
+                        padding: "14px 12px",
+                        textAlign: "left",
+                        cursor: "pointer",
+                        borderRadius: "10px",
+                        minHeight: "48px",
+                        display: "flex",
+                        alignItems: "center",
+                        transition: "background 0.15s",
+                      }}
                     >
                       {link.label}
                     </button>
                   ))}
 
+                  <div style={{ height: "8px" }} />
 
                   <CallNowButton
                     variant="outline"
@@ -163,13 +208,21 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                       color: "rgba(200,215,230,0.85)",
                       background: "rgba(255,255,255,0.04)",
                       border: "1px solid rgba(255,255,255,0.12)",
-                      borderRadius: "10px",
-                      padding: "10px 8px",
+                      borderRadius: "12px",
+                      padding: "14px 16px",
                       width: "100%",
                       justifyContent: "center",
+                      minHeight: "48px",
                     }}
                   />
-                  <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { scrollTo("#contact"); } }} className="btn-gold mt-2" style={{ justifyContent: "center" }}>
+                  <button
+                    onClick={() => {
+                      if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); }
+                      else { scrollTo("#contact"); }
+                    }}
+                    className="btn-gold"
+                    style={{ justifyContent: "center", marginTop: "8px", minHeight: "48px", fontSize: "15px" }}
+                  >
                     Request Upgrade
                   </button>
                 </div>

@@ -654,7 +654,7 @@ function LeadRow({ lead, onStatusChange, onRerunDiagnostic, onReanalyze, onResen
       {expanded && (
         <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
           <td colSpan={10} style={{ padding: "0 16px 20px", background: "rgba(184,156,74,0.03)" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "12px", padding: "16px 0 12px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(220px, 100%), 1fr))", gap: "12px", padding: "16px 0 12px" }}>
               {lead.phone && (
                 <div>
                   <p style={labelStyle}>Phone</p>

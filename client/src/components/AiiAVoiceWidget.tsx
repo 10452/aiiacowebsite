@@ -63,8 +63,8 @@ export default function AiiAVoiceWidget() {
     <div
       style={{
         position: "fixed",
-        bottom: "28px",
-        right: "28px",
+        bottom: "max(28px, env(safe-area-inset-bottom, 0px))",
+        right: "20px",
         zIndex: 9999,
         display: "flex",
         flexDirection: "column",

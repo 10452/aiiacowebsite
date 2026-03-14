@@ -1,6 +1,7 @@
 /*
  * AiiACo Results Section — Liquid Glass Bio-Organic Design
  * Count-up KPIs on scroll, outcome cards, institutional motion only
+ * Mobile: single-column grids, stacked CTA
  */
 import { motion, useInView } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -72,7 +73,6 @@ const outcomes: OutcomeCard[] = [
 ];
 
 function useCountUp(target: number, start: number, enabled: boolean, durationMs = 900) {
-  // Initialize to target so SSR/prerender shows real values immediately
   const [val, setVal] = useState(target);
 
   useEffect(() => {
@@ -90,7 +90,7 @@ function useCountUp(target: number, start: number, enabled: boolean, durationMs 
 
     let raf = 0;
     const t0 = performance.now();
-    const from = 0; // animate from 0 visually even though DOM starts at target
+    const from = 0;
 
     const tick = (t: number) => {
       const p = Math.min(1, (t - t0) / durationMs);
@@ -125,7 +125,6 @@ function KpiCard({
   variants: any;
   index: number;
 }) {
-  // SSR fix: start from final value so static HTML shows real numbers; animation is visual-only
   const val = useCountUp(kpi.value, kpi.value, inView, 850 + index * 90);
 
   return (
@@ -177,8 +176,27 @@ export default function ResultsSection() {
     <section
       ref={sectionRef as any}
       id="results"
+      className="mobile-section"
       style={{ position: "relative", padding: "120px 0", background: "#060B14", overflow: "hidden" }}
     >
+      <style>{`
+        .results-bottom-cta {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          gap: 24px;
+          align-items: center;
+        }
+        @media (max-width: 640px) {
+          .results-bottom-cta {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          .results-bottom-cta .btn-gold {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+      `}</style>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(900px 600px at 20% 60%, rgba(184,156,74,0.04) 0%, transparent 55%)" }} />
 
       <div className="container" style={{ position: "relative", zIndex: 2 }}>
@@ -210,7 +228,7 @@ export default function ResultsSection() {
           variants={container}
           initial="hidden"
           animate={inView ? "show" : "hidden"}
-          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "14px", marginBottom: "14px" }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(260px, 100%), 1fr))", gap: "14px", marginBottom: "14px" }}
         >
           {kpis.map((k, idx) => (
             <KpiCard key={k.label} kpi={k} inView={inView} variants={item} index={idx} />
@@ -222,7 +240,7 @@ export default function ResultsSection() {
           variants={container}
           initial="hidden"
           animate={inView ? "show" : "hidden"}
-          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "14px", marginBottom: "32px" }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(280px, 100%), 1fr))", gap: "14px", marginBottom: "32px" }}
         >
           {outcomes.map((o) => (
             <motion.div
@@ -251,7 +269,7 @@ export default function ResultsSection() {
           className="glass-card-gold"
           style={{ padding: "32px 36px" }}
         >
-          <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "24px", alignItems: "center" }}>
+          <div className="results-bottom-cta">
             <div>
               <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(18px, 2vw, 24px)", fontWeight: 700, color: "rgba(255,255,255,0.96)", marginBottom: "8px", letterSpacing: "-0.2px" }}>
                 Results are not promised. They are engineered.

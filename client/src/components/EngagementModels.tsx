@@ -1,6 +1,7 @@
 /*
  * AiiACo Engagement Models — Liquid Glass Bio-Organic Design
  * Three pricing tiers with glass cards
+ * Mobile: single-column cards, responsive header with icon
  */
 import { motion } from "framer-motion";
 
@@ -62,6 +63,7 @@ export default function EngagementModels() {
   return (
     <section
       id="models"
+      className="mobile-section"
       style={{
         position: "relative",
         padding: "120px 0",
@@ -69,6 +71,31 @@ export default function EngagementModels() {
         overflow: "hidden",
       }}
     >
+      <style>{`
+        .models-header-row {
+          display: flex;
+          align-items: flex-start;
+          gap: 24px;
+          margin-bottom: 8px;
+        }
+        .models-header-icon {
+          width: 88px;
+          height: 88px;
+          object-fit: contain;
+          flex-shrink: 0;
+          margin-top: 4px;
+        }
+        @media (max-width: 640px) {
+          .models-header-row {
+            flex-direction: column;
+            gap: 16px;
+          }
+          .models-header-icon {
+            width: 64px;
+            height: 64px;
+          }
+        }
+      `}</style>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(900px 600px at 50% 50%, rgba(184,156,74,0.05) 0%, transparent 60%)" }} />
 
       <div className="container" style={{ position: "relative", zIndex: 2 }}>
@@ -80,11 +107,11 @@ export default function EngagementModels() {
           transition={{ duration: 0.6 }}
           style={{ maxWidth: "640px", marginBottom: "64px" }}
         >
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "24px", marginBottom: "8px" }}>
+          <div className="models-header-row">
             <img
               src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-landmark-models_23cafdae.png"
               alt="Engagement Models"
-              style={{ width: "88px", height: "88px", objectFit: "contain", flexShrink: 0, marginTop: "4px" }}
+              className="models-header-icon"
             />
             <div>
               <div className="section-pill" style={{ marginBottom: "16px", width: "fit-content" }}>
@@ -103,7 +130,7 @@ export default function EngagementModels() {
         </motion.div>
 
         {/* Cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(280px, 100%), 1fr))", gap: "16px" }}>
           {models.map((model, i) => (
             <motion.div
               key={model.name}

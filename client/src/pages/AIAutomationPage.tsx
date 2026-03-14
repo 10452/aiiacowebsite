@@ -119,7 +119,7 @@ export default function AIAutomationPage() {
                 Six Domains of <span className="accent">Business AI Automation</span>
               </motion.h2>
 
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: "20px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(290px, 100%), 1fr))", gap: "20px" }}>
                 {automationTypes.map((a) => (
                   <motion.div key={a.title} variants={fade} className="glass-card" style={{ padding: "28px 24px" }}>
                     <h3 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "21px", fontWeight: 700, color: "rgba(255,255,255,0.94)", margin: "0 0 12px", letterSpacing: "-0.3px" }}>{a.title}</h3>
@@ -140,7 +140,7 @@ export default function AIAutomationPage() {
                 What AI Automation <span className="accent">Delivers in Practice</span>
               </motion.h2>
 
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))", gap: "20px" }}>
                 {outcomes.map((o) => (
                   <motion.div key={o.label} variants={fade} className="glass-card" style={{ padding: "28px 24px", textAlign: "center" }}>
                     <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(36px, 5vw, 52px)", fontWeight: 700, color: "#D4A843", letterSpacing: "-1px", marginBottom: "12px" }}>{o.metric}</div>

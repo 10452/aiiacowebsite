@@ -39,6 +39,7 @@ export default function MethodSection() {
   return (
     <section
       id="method"
+      className="mobile-section"
       style={{
         position: "relative",
         padding: "120px 0",
@@ -46,6 +47,29 @@ export default function MethodSection() {
         overflow: "hidden",
       }}
     >
+      <style>{`
+        @media (max-width: 640px) {
+          .method-header-row {
+            flex-direction: column !important;
+            gap: 16px !important;
+          }
+          .method-header-icon {
+            width: 64px !important;
+            height: 64px !important;
+          }
+          .method-phase-grid {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+          }
+          .method-phase-badge-col {
+            flex-direction: row !important;
+            align-items: center !important;
+          }
+          .method-phase-spine {
+            display: none !important;
+          }
+        }
+      `}</style>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(800px 600px at 10% 60%, rgba(184,156,74,0.04) 0%, transparent 55%)" }} />
 
       <div className="container" style={{ position: "relative", zIndex: 2 }}>
@@ -57,10 +81,11 @@ export default function MethodSection() {
           transition={{ duration: 0.6 }}
           style={{ maxWidth: "640px", marginBottom: "72px" }}
         >
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "24px", marginBottom: "8px" }}>
+          <div className="method-header-row" style={{ display: "flex", alignItems: "flex-start", gap: "24px", marginBottom: "8px" }}>
             <img
               src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-landmark-method_c0f60812.png"
               alt="Method"
+              className="method-header-icon"
               style={{ width: "88px", height: "88px", objectFit: "contain", flexShrink: 0, marginTop: "4px" }}
             />
             <div>
@@ -91,12 +116,12 @@ export default function MethodSection() {
               className="glass-card"
               style={{ padding: "28px 32px" }}
             >
-              <div style={{ display: "grid", gridTemplateColumns: "56px 1fr", gap: "20px", alignItems: "flex-start" }}>
+              <div className="method-phase-grid" style={{ display: "grid", gridTemplateColumns: "56px 1fr", gap: "20px", alignItems: "flex-start" }}>
                 {/* Badge + spine */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+                <div className="method-phase-badge-col" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
                   <div className="phase-badge" style={{ width: "48px", height: "48px", fontSize: "13px", borderRadius: "14px" }}>{phase.num}</div>
                   {i < phases.length - 1 && (
-                    <div style={{ width: "1px", height: "32px", background: "linear-gradient(to bottom, rgba(184,156,74,0.22), transparent)" }} />
+                    <div className="method-phase-spine" style={{ width: "1px", height: "32px", background: "linear-gradient(to bottom, rgba(184,156,74,0.22), transparent)" }} />
                   )}
                 </div>
                 {/* Content */}

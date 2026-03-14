@@ -298,7 +298,7 @@ function LeadRow({ lead, onStatusChange }: { lead: Lead; onStatusChange: (id: nu
       {expanded && (
         <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
           <td colSpan={7} style={{ padding: "0 16px 20px", background: "rgba(184,156,74,0.02)" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "12px", padding: "16px 0 12px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(200px, 100%), 1fr))", gap: "12px", padding: "16px 0 12px" }}>
               {lead.phone && (
                 <div>
                   <p style={{ fontFamily: FF, fontSize: "10px", fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(200,215,230,0.30)", margin: "0 0 4px" }}>Phone</p>
@@ -599,7 +599,7 @@ function Console({ adminUser }: { adminUser: { id: number; username: string; dis
         {tab === "leads" && (
           <>
             {/* Stats */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "12px", marginBottom: "28px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(160px, 100%), 1fr))", gap: "12px", marginBottom: "28px" }}>
               {[
                 { label: "Total", value: allLeads.length },
                 { label: "New", value: byStatus("new") },

@@ -1,6 +1,7 @@
 /*
  * AiiACo Case Studies Section — Liquid Glass Bio-Organic Design
  * Filterable by sector, institutional motion, no backend required
+ * Mobile: single-column cards, responsive CTA
  */
 import { motion, useInView } from "framer-motion";
 import { useMemo, useRef, useState } from "react";
@@ -39,8 +40,36 @@ export default function CaseStudiesSection() {
     <section
       ref={ref as any}
       id="case-studies"
+      className="mobile-section"
       style={{ position: "relative", padding: "120px 0", background: "#03050A", overflow: "hidden" }}
     >
+      <style>{`
+        .cs-cards-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(min(480px, 100%), 1fr));
+          gap: 14px;
+          margin-bottom: 32px;
+        }
+        .cs-cta-inner {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          gap: 24px;
+          align-items: center;
+        }
+        @media (max-width: 640px) {
+          .cs-cards-grid {
+            grid-template-columns: 1fr;
+          }
+          .cs-cta-inner {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          .cs-cta-inner .btn-gold {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+      `}</style>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(900px 600px at 80% 40%, rgba(184,156,74,0.04) 0%, transparent 55%)" }} />
 
       <div className="container" style={{ position: "relative", zIndex: 2 }}>
@@ -108,7 +137,7 @@ export default function CaseStudiesSection() {
           variants={container}
           initial="hidden"
           animate={inView ? "show" : "hidden"}
-          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(480px, 1fr))", gap: "14px", marginBottom: "32px" }}
+          className="cs-cards-grid"
         >
           {filtered.map((cs) => (
             <motion.div key={cs.id} variants={item}>
@@ -119,7 +148,7 @@ export default function CaseStudiesSection() {
 
         {/* CTA */}
         <div className="glass-card" style={{ padding: "28px 32px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "24px", alignItems: "center" }}>
+          <div className="cs-cta-inner">
             <div>
               <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", fontWeight: 700, color: "rgba(255,255,255,0.90)", marginBottom: "6px" }}>
                 Want outcomes tied to your exact constraints?

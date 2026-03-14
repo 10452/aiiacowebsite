@@ -1,5 +1,6 @@
 /*
  * AiiACo Footer — Liquid Glass Bio-Organic Design
+ * Mobile: 2-column grid for links, brand section full-width
  */
 
 const linkStyle = {
@@ -19,12 +20,47 @@ export default function Footer() {
         overflow: "hidden",
       }}
     >
+      <style>{`
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 1.6fr 1fr 1fr 0.7fr 1fr;
+          gap: 40px;
+          align-items: flex-start;
+          margin-bottom: 48px;
+        }
+        .footer-bottom {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+        @media (max-width: 1023px) {
+          .footer-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+          }
+          .footer-brand {
+            grid-column: 1 / -1;
+          }
+        }
+        @media (max-width: 480px) {
+          .footer-grid {
+            grid-template-columns: 1fr;
+            gap: 28px;
+          }
+          .footer-bottom {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+        }
+      `}</style>
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "1px", background: "linear-gradient(90deg, transparent, rgba(184,156,74,0.50), transparent)" }} />
 
       <div className="container">
-        <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 0.7fr 1fr", gap: "40px", alignItems: "flex-start", marginBottom: "48px" }}>
+        <div className="footer-grid">
           {/* Brand */}
-          <div>
+          <div className="footer-brand">
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_pure_gold_transparent_8063797a.png"
@@ -80,7 +116,7 @@ export default function Footer() {
 
         <div style={{ height: "1px", background: "rgba(255,255,255,0.05)", marginBottom: "24px" }} />
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+        <div className="footer-bottom">
           <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12px", color: "rgba(200,215,230,0.28)", margin: 0 }}>
             © {new Date().getFullYear()} AiiAco. All rights reserved.
           </p>

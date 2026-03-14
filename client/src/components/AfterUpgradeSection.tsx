@@ -1,6 +1,7 @@
 /*
  * AiiACo After Upgrade Section — Liquid Glass Bio-Organic Design
  * Before/after transformation table with glass styling
+ * Mobile: stacked card layout instead of table
  */
 import { motion } from "framer-motion";
 
@@ -31,6 +32,7 @@ export default function AfterUpgradeSection() {
   return (
     <section
       id="upgrade"
+      className="mobile-section"
       style={{
         position: "relative",
         padding: "120px 0",
@@ -38,6 +40,24 @@ export default function AfterUpgradeSection() {
         overflow: "hidden",
       }}
     >
+      <style>{`
+        .upgrade-table-desktop {
+          display: block;
+        }
+        .upgrade-cards-mobile {
+          display: none;
+        }
+        @media (max-width: 768px) {
+          .upgrade-table-desktop {
+            display: none;
+          }
+          .upgrade-cards-mobile {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+          }
+        }
+      `}</style>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(900px 500px at 50% 100%, rgba(184,156,74,0.04) 0%, transparent 55%)" }} />
 
       <div className="container" style={{ position: "relative", zIndex: 2 }}>
@@ -62,13 +82,13 @@ export default function AfterUpgradeSection() {
           </p>
         </motion.div>
 
-        {/* Table */}
+        {/* Desktop Table */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="glass-card"
+          className="glass-card upgrade-table-desktop"
           style={{ overflow: "hidden" }}
         >
           <table className="glass-table">
@@ -96,6 +116,33 @@ export default function AfterUpgradeSection() {
             </tbody>
           </table>
         </motion.div>
+
+        {/* Mobile Cards */}
+        <div className="upgrade-cards-mobile">
+          {comparisons.map((row, i) => (
+            <motion.div
+              key={row.before}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.45 }}
+              className="glass-card"
+              style={{ padding: "20px" }}
+            >
+              <div style={{ marginBottom: "12px" }}>
+                <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 800, letterSpacing: "1.2px", textTransform: "uppercase", color: "rgba(200,215,230,0.45)", marginBottom: "4px" }}>Before</div>
+                <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", color: "rgba(200,215,230,0.60)", lineHeight: 1.5 }}>{row.before}</div>
+              </div>
+              <div style={{ marginBottom: "12px" }}>
+                <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "10px", fontWeight: 800, letterSpacing: "1.2px", textTransform: "uppercase", color: "#D4A843", marginBottom: "4px" }}>After Upgrade</div>
+                <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "14px", fontWeight: 600, color: "rgba(210,220,235,0.90)", lineHeight: 1.5 }}>{row.after}</div>
+              </div>
+              <div style={{ padding: "10px 12px", borderRadius: "8px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <div style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13px", color: "rgba(200,215,230,0.55)", lineHeight: 1.5 }}>{row.support}</div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
         {/* Quote */}
         <motion.div
