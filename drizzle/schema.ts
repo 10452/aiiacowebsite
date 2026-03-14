@@ -149,3 +149,38 @@ export const emailEvents = mysqlTable("email_events", {
 
 export type EmailEvent = typeof emailEvents.$inferSelect;
 export type InsertEmailEvent = typeof emailEvents.$inferInsert;
+
+/**
+ * SMS events table — tracks all outbound SMS messages sent via Telnyx.
+ * Supports rate limiting (2/day per phone, 4/4days per phone),
+ * delivery tracking, and per-lead SMS engagement history.
+ */
+export const smsEvents = mysqlTable("sms_events", {
+  id: int("id").autoincrement().primaryKey(),
+  /** FK to leads table */
+  leadId: int("leadId"),
+  /** Recipient phone number (E.164 format) */
+  phone: varchar("phone", { length: 32 }).notNull(),
+  /** Message type/sequence: incomplete_followup, short_followup, post_email_warmup, diagnostic_ready, continue_conversation */
+  messageType: varchar("messageType", { length: 64 }).notNull(),
+  /** The actual SMS text that was sent */
+  messageText: text("messageText").notNull(),
+  /** Telnyx message ID for tracking delivery */
+  telnyxMessageId: varchar("telnyxMessageId", { length: 128 }),
+  /** Delivery status: scheduled, queued, sent, delivered, failed, rate_limited */
+  status: mysqlEnum("smsStatus", ["scheduled", "queued", "sent", "delivered", "failed", "rate_limited"]).default("queued").notNull(),
+  /** If scheduled via Telnyx send_at, the scheduled delivery time */
+  scheduledFor: timestamp("scheduledFor"),
+  /** When the SMS was actually sent by Telnyx */
+  sentAt: timestamp("sentAt"),
+  /** When delivery was confirmed */
+  deliveredAt: timestamp("deliveredAt"),
+  /** Error message if failed */
+  errorMessage: text("errorMessage"),
+  /** Cost in USD */
+  costAmount: varchar("costAmount", { length: 16 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type SmsEvent = typeof smsEvents.$inferSelect;
+export type InsertSmsEvent = typeof smsEvents.$inferInsert;

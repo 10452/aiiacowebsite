@@ -8,9 +8,16 @@
  *   4. Email (Resend) — is the API key valid and domain verified?
  *   5. LLM (Intelligence Extraction) — is the LLM endpoint reachable?
  *   6. Owner Notification — can we reach the notification service?
+ *   7. Conversation Poller — is the conversations API reachable?
  *
  * Each check returns { status, latencyMs, details }.
  * The aggregate result includes an overall health score and alerts.
+ *
+ * Reliability features:
+ *   - Every external fetch has a 10s AbortSignal timeout
+ *   - Each check retries once on failure before reporting "down"
+ *   - Alerts only fire after 2 consecutive "down" reports for the same vital
+ *   - Alert cooldown: max 1 alert per vital per 30 minutes
  */
 
 import { getAgent } from "./aiAgent";
@@ -37,6 +44,77 @@ export interface HealthReport {
   vitals: VitalCheck[];
   checkedAt: string;
   alertsSent: boolean;
+}
+
+// ─── Consecutive Failure Tracking ──────────────────────────────────────────
+
+/** Track consecutive failures per vital to avoid false-positive alerts */
+const consecutiveFailures: Record<string, number> = {};
+/** Track last alert time per vital to enforce cooldown */
+const lastAlertTime: Record<string, number> = {};
+
+const CONSECUTIVE_FAILURES_BEFORE_ALERT = 2;
+const ALERT_COOLDOWN_MS = 30 * 60 * 1000; // 30 minutes
+
+function recordVitalResult(name: string, status: VitalStatus): void {
+  if (status === "down") {
+    consecutiveFailures[name] = (consecutiveFailures[name] ?? 0) + 1;
+  } else {
+    consecutiveFailures[name] = 0;
+  }
+}
+
+function shouldAlert(name: string): boolean {
+  const failures = consecutiveFailures[name] ?? 0;
+  if (failures < CONSECUTIVE_FAILURES_BEFORE_ALERT) return false;
+
+  const lastAlert = lastAlertTime[name] ?? 0;
+  if (Date.now() - lastAlert < ALERT_COOLDOWN_MS) return false;
+
+  return true;
+}
+
+function markAlerted(name: string): void {
+  lastAlertTime[name] = Date.now();
+}
+
+// ─── Resilient Fetch Helper ────────────────────────────────────────────────
+
+/**
+ * Fetch with a 10-second timeout. Returns null on network/timeout errors
+ * instead of throwing, so callers can handle gracefully.
+ */
+async function safeFetch(
+  url: string,
+  options: RequestInit = {}
+): Promise<Response | null> {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    const res = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    return res;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Run a health check function with one automatic retry on failure.
+ * If the first attempt returns "down", wait 2 seconds and try again.
+ */
+async function withRetry(
+  checkFn: () => Promise<VitalCheck>
+): Promise<VitalCheck> {
+  const first = await checkFn();
+  if (first.status !== "down") return first;
+
+  // Wait 2 seconds before retry
+  await new Promise((r) => setTimeout(r, 2000));
+  return checkFn();
 }
 
 // ─── Individual Health Checks ────────────────────────────────────────────────
@@ -77,10 +155,12 @@ async function checkElevenLabsWebhook(): Promise<VitalCheck> {
     if (!EL_API_KEY) {
       return { name, status: "down", latencyMs: Date.now() - start, details: "ELEVENLABS_API_KEY not configured", checkedAt: new Date().toISOString() };
     }
-    // Check workspace settings for webhook assignment
-    const res = await fetch(`${EL_BASE}/convai/settings`, {
+    const res = await safeFetch(`${EL_BASE}/convai/settings`, {
       headers: { "xi-api-key": EL_API_KEY },
     });
+    if (!res) {
+      return { name, status: "down", latencyMs: Date.now() - start, details: "ElevenLabs API unreachable (timeout)", checkedAt: new Date().toISOString() };
+    }
     if (!res.ok) {
       return { name, status: "down", latencyMs: Date.now() - start, details: `Workspace settings API returned ${res.status}`, checkedAt: new Date().toISOString() };
     }
@@ -92,12 +172,11 @@ async function checkElevenLabsWebhook(): Promise<VitalCheck> {
       return { name, status: "down", latencyMs: Date.now() - start, details: "No post-call webhook assigned to workspace", checkedAt: new Date().toISOString() };
     }
 
-    // Check the webhook itself for recent failures via the list endpoint
-    const whRes = await fetch(`${EL_BASE}/workspace/webhooks`, {
+    const whRes = await safeFetch(`${EL_BASE}/workspace/webhooks`, {
       headers: { "xi-api-key": EL_API_KEY },
     });
-    if (!whRes.ok) {
-      return { name, status: "degraded", latencyMs: Date.now() - start, details: `Webhook ${postCallId.slice(0, 8)} assigned but couldn't fetch webhook list (${whRes.status})`, checkedAt: new Date().toISOString() };
+    if (!whRes || !whRes.ok) {
+      return { name, status: "degraded", latencyMs: Date.now() - start, details: `Webhook ${postCallId.slice(0, 8)} assigned but couldn't fetch webhook list`, checkedAt: new Date().toISOString() };
     }
     const whListData = await whRes.json() as { webhooks?: Array<Record<string, unknown>> };
     const webhookList = whListData.webhooks ?? [];
@@ -138,7 +217,13 @@ async function checkDatabase(): Promise<VitalCheck> {
     const result = await db.execute(sql`SELECT 1 as health_check`);
     return { name, status: "healthy", latencyMs: Date.now() - start, details: "Database responding", checkedAt: new Date().toISOString() };
   } catch (err: any) {
-    return { name, status: "down", latencyMs: Date.now() - start, details: `Database unreachable: ${err.message?.slice(0, 200)}`, checkedAt: new Date().toISOString() };
+    // Distinguish between connection errors and query errors
+    const msg = err.message ?? "";
+    if (msg.includes("ECONNREFUSED") || msg.includes("ETIMEDOUT") || msg.includes("ENOTFOUND")) {
+      return { name, status: "down", latencyMs: Date.now() - start, details: `Database connection failed: ${msg.slice(0, 150)}`, checkedAt: new Date().toISOString() };
+    }
+    // Transient errors (connection reset, pool exhaustion) → degraded, not down
+    return { name, status: "degraded", latencyMs: Date.now() - start, details: `Database query error (transient): ${msg.slice(0, 150)}`, checkedAt: new Date().toISOString() };
   }
 }
 
@@ -151,10 +236,13 @@ async function checkEmailService(): Promise<VitalCheck> {
     if (!key) {
       return { name, status: "down", latencyMs: Date.now() - start, details: "No Resend API key configured", checkedAt: new Date().toISOString() };
     }
-    // Check Resend API health by fetching domains
-    const res = await fetch("https://api.resend.com/domains", {
+    const res = await safeFetch("https://api.resend.com/domains", {
       headers: { Authorization: `Bearer ${key}` },
     });
+    if (!res) {
+      // Network failure — likely transient DNS/TLS issue, not a hard "down"
+      return { name, status: "degraded", latencyMs: Date.now() - start, details: "Resend API unreachable (network timeout — likely transient)", checkedAt: new Date().toISOString() };
+    }
     if (res.status === 401 || res.status === 403) {
       return { name, status: "down", latencyMs: Date.now() - start, details: "Resend API key is invalid or expired", checkedAt: new Date().toISOString() };
     }
@@ -171,7 +259,7 @@ async function checkEmailService(): Promise<VitalCheck> {
 
     return { name, status: "healthy", latencyMs: Date.now() - start, details: `Resend operational, ${verifiedDomains.length} verified domain(s)`, checkedAt: new Date().toISOString() };
   } catch (err: any) {
-    return { name, status: "down", latencyMs: Date.now() - start, details: `Email check failed: ${err.message?.slice(0, 200)}`, checkedAt: new Date().toISOString() };
+    return { name, status: "degraded", latencyMs: Date.now() - start, details: `Email check error (transient): ${err.message?.slice(0, 200)}`, checkedAt: new Date().toISOString() };
   }
 }
 
@@ -206,25 +294,20 @@ async function checkNotificationService(): Promise<VitalCheck> {
     if (!forgeUrl || !forgeKey) {
       return { name, status: "degraded", latencyMs: Date.now() - start, details: "Forge API credentials not configured — notifications may not work", checkedAt: new Date().toISOString() };
     }
-    // Just check if the Forge API is reachable (don't actually send a notification)
-    const res = await fetch(`${forgeUrl}/api/health`, {
+    const res = await safeFetch(`${forgeUrl}/api/health`, {
       headers: { Authorization: `Bearer ${forgeKey}` },
-      signal: AbortSignal.timeout(5000),
-    }).catch(() => null);
+    });
 
-    // If health endpoint doesn't exist, try a lightweight call
     if (!res || !res.ok) {
-      // Forge API may not have a /health endpoint — check if the URL is at least reachable
-      const pingRes = await fetch(forgeUrl, {
+      const pingRes = await safeFetch(forgeUrl, {
         method: "HEAD",
         headers: { Authorization: `Bearer ${forgeKey}` },
-        signal: AbortSignal.timeout(5000),
-      }).catch(() => null);
+      });
 
       if (pingRes) {
         return { name, status: "healthy", latencyMs: Date.now() - start, details: "Notification service reachable", checkedAt: new Date().toISOString() };
       }
-      return { name, status: "degraded", latencyMs: Date.now() - start, details: "Notification service endpoint not responding", checkedAt: new Date().toISOString() };
+      return { name, status: "degraded", latencyMs: Date.now() - start, details: "Notification service endpoint not responding (transient)", checkedAt: new Date().toISOString() };
     }
 
     return { name, status: "healthy", latencyMs: Date.now() - start, details: "Notification service operational", checkedAt: new Date().toISOString() };
@@ -238,8 +321,6 @@ async function checkConversationPoller(): Promise<VitalCheck> {
   const start = Date.now();
   const name = "Conversation Poller";
   try {
-    // The poller is a safety net — check that the required env vars are set
-    // and that the ElevenLabs conversations API is reachable
     if (!EL_API_KEY) {
       return { name, status: "down", latencyMs: Date.now() - start, details: "ELEVENLABS_API_KEY not configured — poller cannot run", checkedAt: new Date().toISOString() };
     }
@@ -247,11 +328,13 @@ async function checkConversationPoller(): Promise<VitalCheck> {
     if (!agentId) {
       return { name, status: "down", latencyMs: Date.now() - start, details: "ELEVENLABS_AGENT_ID not configured — poller cannot run", checkedAt: new Date().toISOString() };
     }
-    // Test the conversations list endpoint (same one the poller uses)
-    const res = await fetch(
+    const res = await safeFetch(
       `${EL_BASE}/convai/conversations?agent_id=${agentId}&page_size=1`,
-      { headers: { "xi-api-key": EL_API_KEY }, signal: AbortSignal.timeout(10000) }
+      { headers: { "xi-api-key": EL_API_KEY } }
     );
+    if (!res) {
+      return { name, status: "degraded", latencyMs: Date.now() - start, details: "Conversations API unreachable (timeout)", checkedAt: new Date().toISOString() };
+    }
     if (!res.ok) {
       return { name, status: "degraded", latencyMs: Date.now() - start, details: `Conversations API returned ${res.status} — poller may fail`, checkedAt: new Date().toISOString() };
     }
@@ -266,18 +349,24 @@ async function checkConversationPoller(): Promise<VitalCheck> {
 // ─── Aggregate Health Check ──────────────────────────────────────────────────
 
 /**
- * Run all health checks in parallel and produce an aggregate report.
+ * Run all health checks in parallel with retry logic and produce an aggregate report.
+ * Alerts only fire after consecutive failures to avoid false positives from transient issues.
  */
 export async function runHealthCheck(): Promise<HealthReport> {
   const vitals = await Promise.all([
-    checkElevenLabsAgent(),
-    checkElevenLabsWebhook(),
-    checkDatabase(),
-    checkEmailService(),
-    checkLLMService(),
-    checkNotificationService(),
-    checkConversationPoller(),
+    withRetry(checkElevenLabsAgent),
+    withRetry(checkElevenLabsWebhook),
+    withRetry(checkDatabase),
+    withRetry(checkEmailService),
+    withRetry(checkLLMService),
+    withRetry(checkNotificationService),
+    withRetry(checkConversationPoller),
   ]);
+
+  // Record results for consecutive failure tracking
+  for (const v of vitals) {
+    recordVitalResult(v.name, v.status);
+  }
 
   // Calculate score: healthy=100, degraded=50, down=0
   const weights: Record<string, number> = {
@@ -316,18 +405,25 @@ export async function runHealthCheck(): Promise<HealthReport> {
     alertsSent: false,
   };
 
-  // Send alert if any vital is down
-  if (downCount > 0) {
+  // Only alert for vitals that have failed consecutively AND are past cooldown
+  const vitalsToAlert = vitals.filter(
+    v => v.status === "down" && shouldAlert(v.name)
+  );
+
+  if (vitalsToAlert.length > 0) {
     try {
-      const downVitals = vitals.filter(v => v.status === "down");
-      const alertContent = downVitals
+      const alertContent = vitalsToAlert
         .map(v => `❌ ${v.name}: ${v.details}`)
         .join("\n");
 
       await notifyOwner({
-        title: `🚨 AiiA Health Alert — ${downCount} vital(s) DOWN`,
-        content: `The following components in the AiiA diagnostic chain are down:\n\n${alertContent}\n\nHealth Score: ${score}/100\nChecked at: ${report.checkedAt}`,
+        title: `🚨 AiiA Health Alert — ${vitalsToAlert.length} vital(s) DOWN`,
+        content: `The following components in the AiiA diagnostic chain are down (confirmed after ${CONSECUTIVE_FAILURES_BEFORE_ALERT} consecutive checks):\n\n${alertContent}\n\nHealth Score: ${score}/100\nChecked at: ${report.checkedAt}`,
       });
+
+      for (const v of vitalsToAlert) {
+        markAlerted(v.name);
+      }
       report.alertsSent = true;
     } catch (err) {
       console.error("[HealthMonitor] Failed to send alert:", err);

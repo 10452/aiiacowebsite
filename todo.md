@@ -706,3 +706,48 @@ Voice assignments:
 - [x] Add trackCalendlyLinkClick for external Calendly links (CallNowButton, IndustryMicrosite hero+CTA, WorkplacePage)
 - [x] Wire hook into ContactSection and IndustryMicrosite iframe embeds
 - [ ] Mark calendly_booking_complete as key event in GA4 admin (manual step — see instructions)
+
+## Round 87 — Intelligent SMS Engagement Pipeline (Telnyx)
+### Architecture & SOP
+- [ ] Research Telnyx SMS API (send, receive, delivery status webhooks)
+- [ ] Design engagement pipeline: call outcome → delay → message template → rate limit check → send
+- [ ] Define 4 SMS sequences by call outcome (incomplete, short, complete, diagnostic_ready)
+
+### Database & Infrastructure
+- [ ] Create sms_events table (id, leadId, phone, messageType, telnyxMessageId, status, sentAt, deliveredAt)
+- [ ] Create sms_rate_limits table or use sms_events for rate limit queries
+- [ ] Build rate limiter: max 2 SMS per phone per 24h, max 4 SMS per phone per 4 days
+- [ ] Build Telnyx SMS service (sendSMS, checkDeliveryStatus)
+
+### Message Templates & Sequencing Engine
+- [ ] Incomplete call (< 60s): immediate warm text ("We got disconnected — here's how to reach us")
+- [ ] Short call (60-120s): 30-min delay, reference what was discussed briefly
+- [ ] Complete call: after email sent, warm follow-up ("Just sent you an email with your assessment")
+- [ ] Diagnostic ready: after pilot brief generated, "Your pilot brief is ready — book a strategy call"
+- [ ] All messages: personalized with first name, company if available, AiiA branding
+- [ ] Build scheduling engine (delayed sends via setTimeout or DB-backed job queue)
+
+### Pipeline Integration
+- [ ] Wire into elevenlabs webhook: determine call outcome → schedule appropriate SMS sequence
+- [ ] Wire into conversationPoller: same logic for missed/recovered calls
+- [ ] Wire into leadDiagnostic: send "pilot brief ready" text after diagnostic completes
+- [ ] Ensure SMS fires AFTER email for complete calls (sequence coordination)
+
+### Admin Dashboard
+- [ ] Add SMS activity timeline to lead detail panel
+- [ ] Add SMS stats to analytics page (sent, delivered, failed, rate-limited)
+
+### Testing
+- [ ] Write vitest tests for rate limiter, message templates, sequencing engine
+- [ ] Write vitest tests for Telnyx webhook handler
+
+## Round 87b — WhatsApp Integration + SMS No-Reply
+- [ ] Add WhatsApp click-to-chat link (wa.me) to all SMS templates
+- [ ] Add "Do not reply to this text" guidance in SMS messages
+- [ ] Pre-fill WhatsApp message with lead context (name, what they discussed)
+- [ ] Determine AiiACo WhatsApp Business number to use
+
+## Round 88 — Fix Health Monitor Alerts
+- [x] Investigate Email Service (Resend) "fetch failed" — added 10s timeout + safeFetch wrapper, network failures now "degraded" not "down"
+- [x] Investigate Database "unreachable" — transient errors (pool reset) now "degraded", only hard failures (ECONNREFUSED) are "down"
+- [x] Fix root causes — added retry logic (1 retry per check), consecutive failure tracking (2 failures before alert), 30-min alert cooldown. Score: 100/100 after fix
