@@ -183,7 +183,7 @@ export const AGENT_CONFIG = {
   systemPrompt: AGENT_SYSTEM_PROMPT,
   voiceId: "EXAVITQu4vr4xnSDxMaL", // Sarah — confident, professional, warm
   language: "en",
-  maxCallDurationSeconds: 300, // 5 min hard cap
+  maxCallDurationSeconds: 900, // 15 min hard cap — NEVER reduce below 900
 };
 
 // ─── ElevenLabs API helpers ───────────────────────────────────────────────────

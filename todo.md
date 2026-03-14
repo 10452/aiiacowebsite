@@ -782,3 +782,10 @@ Voice assignments:
 - [x] OperationalLeaks: responsive grid layout with icon column
 - [x] Fix ALL minmax grid patterns across entire codebase (17 files) with min() wrapper to prevent horizontal overflow
 - [x] Fix subpages: AIIntegrationPage, AIImplementationPage, AIAutomationPage, IndustryMicrosite, AdminConsolePage, AdminLeadsPage
+
+## Round 90 — Fix AiiA Voice Cutoff
+- [x] Fix maxCallDurationSeconds back to 900 (was incorrectly set to 300)
+- [x] Investigate AiiA voice agent cutting off mid-greeting (~10 seconds in) — root cause: ElevenLabs quota exceeded
+- [x] Inspect live ElevenLabs agent config for mismatches — live config was correct (900s), local code was 300s
+- [x] Fix the root cause of the greeting cutoff issue — user upgraded ElevenLabs plan (Creator tier, 100K chars)
+- [x] Push corrected config to ElevenLabs — verified 900s max_duration_seconds is live
