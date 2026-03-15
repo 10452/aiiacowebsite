@@ -808,3 +808,10 @@ Voice assignments:
 - [x] Add overflow: hidden to CredibilityBlock section
 - [x] Fix ContactSection 600px background accent to use max-width: 100%
 - [x] Add word-break/overflow-wrap to display-headline, section-headline, section-pill
+
+## Round 93 — Fix Case Studies Mobile & Navbar Mobile Truncation
+- [x] Fix case study cards cut off on right side — Approach/Outcomes grid now stacks to 1 column on mobile
+- [x] Make case study cards fully responsive — word-break, flex-wrap on outcome labels, reduced padding on mobile
+- [x] Support horizontal/landscape orientation — menu closes on orientation change, scrollable mobile menu
+- [x] Fix navbar items truncated at "Model" — raised breakpoint from lg (1024px) to xl (1280px) so hamburger shows on tablets
+- [x] All 153 vitest tests passing

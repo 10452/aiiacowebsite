@@ -1,7 +1,8 @@
 /*
  * AiiACo Navbar - Liquid Glass Bio-Organic Design
  * Gold AI chip logo, glassmorphism nav, announcement bar
- * Mobile: hamburger menu with full-screen overlay, body scroll lock
+ * Mobile/tablet: hamburger menu with full-screen overlay, body scroll lock
+ * Desktop links only show at xl (1280px+) to prevent truncation
  */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -39,6 +40,24 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
     }
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
+
+  // Close mobile menu on resize to desktop
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth >= 1280 && mobileOpen) {
+        setMobileOpen(false);
+      }
+    };
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => window.removeEventListener("resize", onResize);
+  }, [mobileOpen]);
+
+  // Close mobile menu on orientation change
+  useEffect(() => {
+    const onOrientationChange = () => setMobileOpen(false);
+    window.addEventListener("orientationchange", onOrientationChange);
+    return () => window.removeEventListener("orientationchange", onOrientationChange);
+  }, []);
 
   const scrollTo = (href: string) => {
     setMobileOpen(false);
@@ -78,8 +97,8 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
               />
             </button>
 
-            {/* Desktop links */}
-            <div style={{ display: "flex", alignItems: "center", gap: "4px" }} className="hidden lg:flex">
+            {/* Desktop links — only show at xl (1280px+) */}
+            <div style={{ display: "flex", alignItems: "center", gap: "4px" }} className="hidden xl:flex">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
@@ -98,6 +117,7 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                     transition: "color 0.15s, background 0.15s",
                     textDecoration: "none",
                     display: "inline-block",
+                    whiteSpace: "nowrap",
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = "rgba(255,255,255,0.96)"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(200,215,230,0.72)"; e.currentTarget.style.background = "none"; }}
@@ -109,14 +129,15 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
 
             {/* CTA + mobile toggle */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-              <div className="hidden lg:flex">
+              {/* Desktop CTAs — only at xl */}
+              <div className="hidden xl:flex">
                 <ReadAloud />
               </div>
 
               <CallNowButton
                 variant="outline"
                 size="sm"
-                className="hidden lg:inline-flex"
+                className="hidden xl:inline-flex"
                 style={{
                   fontFamily: FF,
                   fontSize: "13px",
@@ -131,22 +152,22 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                   whiteSpace: "nowrap",
                 }}
               />
-              <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { scrollTo("#contact"); } }} className="btn-gold hidden lg:inline-flex" style={{ fontSize: "13px", padding: "10px 20px" }}>
+              <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { scrollTo("#contact"); } }} className="btn-gold hidden xl:inline-flex" style={{ fontSize: "13px", padding: "10px 20px" }}>
                 Request Upgrade
               </button>
 
-              {/* Mobile hamburger — larger touch target */}
+              {/* Mobile/tablet hamburger — shows below xl (1280px) */}
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className="lg:hidden"
+                className="xl:hidden"
                 style={{
                   background: "none",
                   border: "none",
                   color: "rgba(255,255,255,0.80)",
                   padding: "10px",
                   cursor: "pointer",
-                  minWidth: "44px",
-                  minHeight: "44px",
+                  minWidth: "48px",
+                  minHeight: "48px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -158,7 +179,7 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
             </div>
           </div>
 
-          {/* Mobile menu */}
+          {/* Mobile/tablet menu — full screen overlay */}
           <AnimatePresence>
             {mobileOpen && (
               <motion.div
@@ -169,6 +190,8 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                 style={{
                   borderTop: "1px solid rgba(255,255,255,0.07)",
                   overflow: "hidden",
+                  maxHeight: "calc(100vh - 120px)",
+                  overflowY: "auto",
                 }}
               >
                 <div style={{ padding: "16px 0 24px", display: "flex", flexDirection: "column", gap: "4px" }}>
@@ -199,6 +222,10 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
 
                   <div style={{ height: "8px" }} />
 
+                  <ReadAloud />
+
+                  <div style={{ height: "4px" }} />
+
                   <CallNowButton
                     variant="outline"
                     size="md"
@@ -221,7 +248,7 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                       else { scrollTo("#contact"); }
                     }}
                     className="btn-gold"
-                    style={{ justifyContent: "center", marginTop: "8px", minHeight: "48px", fontSize: "15px" }}
+                    style={{ justifyContent: "center", marginTop: "8px", minHeight: "48px", fontSize: "15px", width: "100%" }}
                   >
                     Request Upgrade
                   </button>
