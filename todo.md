@@ -891,3 +891,6 @@ Voice assignments:
 ## Round 103 — Cookie Consent Simplification
 - [x] Remove Decline button, keep only Accept
 - [x] Change copy to "We use necessary cookies only"
+
+## Round 104 — Cookie Banner Copy Update
+- [x] Update copy to "We use site data only to provide the right diagnostic and path forward."

@@ -58,7 +58,7 @@ export default function CookieConsent() {
               color: "rgba(200, 215, 230, 0.75)",
             }}
           >
-            We use necessary cookies only.{" "}
+            We use site data only to provide the right diagnostic and path forward.{" "}
             <a
               href="/privacy"
               style={{
