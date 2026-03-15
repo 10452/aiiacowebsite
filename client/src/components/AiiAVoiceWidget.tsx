@@ -6,6 +6,7 @@
 import { useState, useCallback } from "react";
 import { useConversation } from "@11labs/react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLocation } from "wouter";
 
 const AGENT_ID: string = import.meta.env.VITE_ELEVENLABS_AGENT_ID ?? "";
 const MIC_ICON_URL =
@@ -58,6 +59,10 @@ export default function AiiAVoiceWidget() {
   }, [conversation]);
 
   const isActive = status === "connected" || status === "connecting";
+
+  // Hide on /talk page — it has its own embedded voice widget
+  const [location] = useLocation();
+  if (location === "/talk") return null;
 
   return (
     <div

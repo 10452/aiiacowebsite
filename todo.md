@@ -857,3 +857,24 @@ Voice assignments:
 - [x] Add copy-to-clipboard button that copies the entire transcript text
 - [x] Register /talk route in App.tsx
 - [x] Style consistently with site design (void black, gold accents)
+
+## Round 99 — /talk Page Improvements
+- [x] Hide floating AiA voice widget on /talk page (redundant with embedded control)
+- [x] Add "Talk to AiA" link in navbar for discoverability
+- [x] Persist /talk page transcripts to database when conversation ends
+- [x] Make persisted transcripts visible in admin console alongside webhook-captured calls
+- [x] Write vitest tests for transcript persistence
+
+## Round 100 — Option C: Two-Tier /talk with Magic Link + Improvements
+- [x] Add magic_link_tokens table to schema (token, email, leadId, expiresAt, usedAt)
+- [x] Push DB migration for magic_link_tokens
+- [x] Add server procedure: talk.sendMagicLink (lookup lead by email, generate token, send email via Resend)
+- [x] Add server procedure: talk.verifyMagicLink (validate token, return lead + conversation history)
+- [x] Add server procedure: talk.saveTranscript (persist /talk page transcript to leads table when call ends)
+- [x] Rebuild TalkPage with two-tier UX: "I'm new" path (optional name/email/phone pre-fill) + "Continue conversation" path (enter email → magic link)
+- [x] On magic link verification, load previous transcripts and greet returning lead with context
+- [ ] Inject pre-filled identity into AiA context via contextual update when conversation starts
+- [x] Hide floating AiA voice widget on /talk page
+- [x] Add "Talk to AiA" link in navbar
+- [x] Write vitest tests for magic link send/verify and transcript save procedures
+- [x] Ensure persisted transcripts appear in admin console alongside webhook-captured calls

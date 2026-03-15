@@ -184,3 +184,56 @@ export const smsEvents = mysqlTable("sms_events", {
 
 export type SmsEvent = typeof smsEvents.$inferSelect;
 export type InsertSmsEvent = typeof smsEvents.$inferInsert;
+
+/**
+ * Magic link tokens — used for returning lead verification on the /talk page.
+ * A token is emailed to the lead; clicking the link verifies their identity
+ * and grants access to their conversation history.
+ */
+export const magicLinkTokens = mysqlTable("magic_link_tokens", {
+  id: int("id").autoincrement().primaryKey(),
+  /** The token string sent in the magic link URL */
+  token: varchar("token", { length: 128 }).notNull().unique(),
+  /** Email address the magic link was sent to */
+  email: varchar("email", { length: 320 }).notNull(),
+  /** FK to leads table — the lead this token authenticates */
+  leadId: int("leadId").notNull(),
+  /** When the token expires (15 minutes from creation) */
+  expiresAt: timestamp("expiresAt").notNull(),
+  /** When the token was used (null if unused) */
+  usedAt: timestamp("usedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type MagicLinkToken = typeof magicLinkTokens.$inferSelect;
+export type InsertMagicLinkToken = typeof magicLinkTokens.$inferInsert;
+
+/**
+ * Web transcripts — stores transcripts from the /talk page voice conversations.
+ * These are separate from the webhook-captured transcripts (which come via ElevenLabs post-call webhook).
+ * Each row is one complete conversation from the /talk page.
+ * If leadId is set, links to an existing lead record.
+ */
+export const webTranscripts = mysqlTable("web_transcripts", {
+  id: int("id").autoincrement().primaryKey(),
+  /** FK to leads table (null if anonymous / new visitor) */
+  leadId: int("leadId"),
+  /** Visitor-provided name (optional, from pre-fill form) */
+  visitorName: varchar("visitorName", { length: 255 }),
+  /** Visitor-provided email (optional, from pre-fill form) */
+  visitorEmail: varchar("visitorEmail", { length: 320 }),
+  /** Visitor-provided phone (optional, from pre-fill form) */
+  visitorPhone: varchar("visitorPhone", { length: 64 }),
+  /** Structured transcript JSON: Array<{role: 'user'|'ai', text: string, timestamp: string}> */
+  transcript: text("transcript").notNull(),
+  /** Plain text version of the transcript for display */
+  transcriptText: text("transcriptText"),
+  /** Duration of the conversation in seconds */
+  durationSeconds: int("durationSeconds"),
+  /** Source: 'web_talk' for /talk page, 'web_widget' for floating widget */
+  source: varchar("source", { length: 32 }).default("web_talk").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type WebTranscript = typeof webTranscripts.$inferSelect;
+export type InsertWebTranscript = typeof webTranscripts.$inferInsert;

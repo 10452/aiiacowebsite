@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertLead, InsertUser, leads, users, adminUsers, InsertAdminUser, knowledgeBase, InsertKnowledgeEntry, emailEvents, InsertEmailEvent } from "../drizzle/schema";
+import { InsertLead, InsertUser, leads, users, adminUsers, InsertAdminUser, knowledgeBase, InsertKnowledgeEntry, emailEvents, InsertEmailEvent, magicLinkTokens, InsertMagicLinkToken, webTranscripts, InsertWebTranscript } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -463,4 +463,57 @@ export async function findLeadIdByEmail(email: string): Promise<number | null> {
   if (!db) return null;
   const rows = await db.select({ id: leads.id }).from(leads).where(eq(leads.email, email)).orderBy(desc(leads.createdAt)).limit(1);
   return rows[0]?.id ?? null;
+}
+
+// ─── Magic Link helpers ─────────────────────────────────────────────────────
+
+export async function insertMagicLinkToken(data: InsertMagicLinkToken): Promise<{ insertId: number }> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const [result] = await db.insert(magicLinkTokens).values(data);
+  return { insertId: (result as any).insertId ?? 0 };
+}
+
+export async function getMagicLinkByToken(token: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.select().from(magicLinkTokens).where(eq(magicLinkTokens.token, token)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function markMagicLinkUsed(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.update(magicLinkTokens).set({ usedAt: new Date() }).where(eq(magicLinkTokens.id, id));
+}
+
+/**
+ * Find all leads by email address (for returning lead lookup).
+ * Returns the most recent lead first.
+ */
+export async function getLeadsByEmail(email: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.select().from(leads).where(eq(leads.email, email)).orderBy(desc(leads.createdAt));
+}
+
+// ─── Web Transcript helpers ─────────────────────────────────────────────────
+
+export async function insertWebTranscript(data: InsertWebTranscript): Promise<{ insertId: number }> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const [result] = await db.insert(webTranscripts).values(data);
+  return { insertId: (result as any).insertId ?? 0 };
+}
+
+export async function getWebTranscriptsByLeadId(leadId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.select().from(webTranscripts).where(eq(webTranscripts.leadId, leadId)).orderBy(desc(webTranscripts.createdAt));
+}
+
+export async function getAllWebTranscripts() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.select().from(webTranscripts).orderBy(desc(webTranscripts.createdAt));
 }

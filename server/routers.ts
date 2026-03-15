@@ -14,7 +14,10 @@ import {
   insertKnowledgeEntry, updateKnowledgeEntry, deleteKnowledgeEntry, markKnowledgePushed,
   getAnalyticsOverview, getDailyCallVolume, getRecentCalls,
   getEmailEventsByLeadId, getEmailEngagementStats, getRecentEmailEvents,
+  insertMagicLinkToken, getMagicLinkByToken, markMagicLinkUsed, getLeadsByEmail,
+  insertWebTranscript, getWebTranscriptsByLeadId, getAllWebTranscripts,
 } from "./db";
+import crypto from "crypto";
 import { generateAndSendLeadDiagnostic } from "./leadDiagnostic";
 import { sendLeadConfirmationEmail, sendEmail } from "./email";
 import { notifyOwner } from "./_core/notification";
@@ -389,12 +392,267 @@ const knowledgeRouter = router({
 
 // ─── Router ───────────────────────────────────────────────────────────────────────────
 
+// ─── Magic Link Email Template ──────────────────────────────────────────────
+
+function buildMagicLinkEmailHtml(firstName: string, magicUrl: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Continue your conversation — AiiACo</title>
+  <style>
+    body {
+      margin: 0; padding: 0;
+      background-color: #03050A;
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+      color: #C8D7E6;
+    }
+    .wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+    .logo {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.20em;
+      color: rgba(184,156,74,0.90);
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+    .divider-gold {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(184,156,74,0.80), rgba(184,156,74,0.15));
+      margin-bottom: 32px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #F0F4F8;
+      margin: 0 0 14px 0;
+      line-height: 1.3;
+    }
+    p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(200,215,230,0.80);
+      margin: 0 0 18px 0;
+    }
+    .btn-magic {
+      display: inline-block;
+      background: linear-gradient(135deg, #D4A843 0%, #B89C4A 100%);
+      color: #03050A;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      padding: 14px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin: 24px 0;
+    }
+    .expire-note {
+      font-size: 13px;
+      color: rgba(200,215,230,0.45);
+      margin: 0 0 8px 0;
+    }
+    .footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 12px;
+      color: rgba(200,215,230,0.30);
+      line-height: 1.6;
+    }
+    a { color: rgba(184,156,74,0.75); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="logo">AiiACo</div>
+    <div class="divider-gold"></div>
+
+    <h1>Welcome back, ${firstName}.</h1>
+
+    <p>
+      Click the button below to continue your conversation with AiA.
+      She remembers your previous discussions and is ready to pick up where you left off.
+    </p>
+
+    <a href="${magicUrl}" class="btn-magic">Continue Conversation &rarr;</a>
+
+    <p class="expire-note">This link expires in 15 minutes for your security.</p>
+    <p class="expire-note">If you didn't request this, you can safely ignore this email.</p>
+
+    <div class="footer">
+      <p style="margin:0;">
+        AiiACo &nbsp;&middot;&nbsp; AI Integration Authority for the Corporate Age<br />
+        <a href="https://aiiaco.com">aiiaco.com</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+// ─── Talk Router (Magic Link + Transcript Persistence) ──────────────────────
+
+const talkRouter = router({
+  /**
+   * Send a magic link to a returning lead's email.
+   * Looks up the lead by email, generates a secure token, and sends the link.
+   */
+  sendMagicLink: publicProcedure
+    .input(z.object({
+      email: z.string().email().max(320),
+      origin: z.string().url(),
+    }))
+    .mutation(async ({ input }) => {
+      const leadsList = await getLeadsByEmail(input.email.toLowerCase().trim());
+      if (leadsList.length === 0) {
+        // Don't reveal whether the email exists — always return success
+        return { success: true, message: "If we have your email on file, you'll receive a magic link shortly." };
+      }
+
+      const lead = leadsList[0]; // Most recent lead
+      const token = crypto.randomBytes(32).toString("hex");
+      const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+
+      await insertMagicLinkToken({
+        token,
+        email: input.email.toLowerCase().trim(),
+        leadId: lead.id,
+        expiresAt,
+      });
+
+      const magicUrl = `${input.origin}/talk?token=${token}`;
+      const firstName = lead.name?.split(" ")[0] ?? "there";
+
+      // Send the magic link email
+      await sendEmail({
+        to: input.email,
+        subject: `Continue your conversation with AiA`,
+        html: buildMagicLinkEmailHtml(firstName, magicUrl),
+        text: `Hi ${firstName},\n\nClick the link below to continue your conversation with AiA:\n\n${magicUrl}\n\nThis link expires in 15 minutes.\n\n— The AiiACo Team`,
+        leadId: lead.id,
+      });
+
+      return { success: true, message: "If we have your email on file, you'll receive a magic link shortly." };
+    }),
+
+  /**
+   * Verify a magic link token and return the lead's conversation history.
+   */
+  verifyMagicLink: publicProcedure
+    .input(z.object({ token: z.string().min(1).max(128) }))
+    .mutation(async ({ input }) => {
+      const record = await getMagicLinkByToken(input.token);
+      if (!record) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Invalid or expired link" });
+      }
+      if (record.usedAt) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "This link has already been used" });
+      }
+      if (record.expiresAt < new Date()) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "This link has expired. Please request a new one." });
+      }
+
+      // Mark as used
+      await markMagicLinkUsed(record.id);
+
+      // Fetch the lead
+      const lead = await getLeadById(record.leadId);
+      if (!lead) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "Lead record not found" });
+      }
+
+      // Fetch previous web transcripts for this lead
+      const previousTranscripts = await getWebTranscriptsByLeadId(lead.id);
+
+      // Also include the webhook-captured transcript if available
+      const webhookTranscript = lead.callTranscript ? {
+        source: "phone" as const,
+        transcript: lead.structuredTranscript ?? lead.callTranscript,
+        summary: lead.conversationSummary,
+        createdAt: lead.createdAt,
+      } : null;
+
+      return {
+        success: true,
+        lead: {
+          id: lead.id,
+          name: lead.name,
+          email: lead.email,
+          company: lead.company,
+          phone: lead.phone,
+          conversationSummary: lead.conversationSummary,
+          painPoints: lead.painPoints,
+          wants: lead.wants,
+        },
+        previousTranscripts: previousTranscripts.map(t => ({
+          id: t.id,
+          transcript: t.transcript,
+          transcriptText: t.transcriptText,
+          durationSeconds: t.durationSeconds,
+          createdAt: t.createdAt,
+        })),
+        webhookTranscript,
+      };
+    }),
+
+  /**
+   * Save a transcript from the /talk page when the conversation ends.
+   */
+  saveTranscript: publicProcedure
+    .input(z.object({
+      leadId: z.number().int().positive().optional(),
+      visitorName: z.string().max(255).optional(),
+      visitorEmail: z.string().email().max(320).optional(),
+      visitorPhone: z.string().max(64).optional(),
+      transcript: z.string().min(1).max(500000),
+      transcriptText: z.string().max(500000).optional(),
+      durationSeconds: z.number().int().min(0).optional(),
+    }))
+    .mutation(async ({ input }) => {
+      const result = await insertWebTranscript({
+        leadId: input.leadId ?? null,
+        visitorName: input.visitorName ?? null,
+        visitorEmail: input.visitorEmail?.toLowerCase().trim() ?? null,
+        visitorPhone: input.visitorPhone ?? null,
+        transcript: input.transcript,
+        transcriptText: input.transcriptText ?? null,
+        durationSeconds: input.durationSeconds ?? null,
+        source: "web_talk",
+      });
+
+      // If we have an email but no leadId, try to link to an existing lead
+      if (!input.leadId && input.visitorEmail) {
+        const existingLeads = await getLeadsByEmail(input.visitorEmail.toLowerCase().trim());
+        if (existingLeads.length > 0) {
+          // Could update the web_transcript with the leadId, but for now just log
+          console.log(`[Talk] Transcript saved for existing lead email: ${input.visitorEmail}`);
+        }
+      }
+
+      return { success: true, transcriptId: result.insertId };
+    }),
+
+  /**
+   * Admin: list all web transcripts (for admin console).
+   */
+  listTranscripts: adminAuthedProcedure.query(async () => {
+    return getAllWebTranscripts();
+  }),
+});
+
 export const appRouter = router({
   system: systemRouter,
   agent: agentRouter,
   health: healthRouter,
   knowledge: knowledgeRouter,
   analytics: analyticsRouter,
+  talk: talkRouter,
 
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),

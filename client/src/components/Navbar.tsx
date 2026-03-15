@@ -135,6 +135,37 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
 
             {/* Desktop CTAs — all wrapped in one hidden xl:flex container */}
             <div className="hidden xl:flex" style={{ alignItems: "center", gap: "10px", flexShrink: 0 }}>
+              <a
+                href="/talk"
+                style={{
+                  fontFamily: FF,
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  letterSpacing: "0.02em",
+                  color: "var(--gold-bright, #D4A843)",
+                  background: "rgba(212,168,67,0.08)",
+                  border: "1px solid rgba(212,168,67,0.25)",
+                  borderRadius: "20px",
+                  padding: "9px 16px",
+                  textDecoration: "none",
+                  whiteSpace: "nowrap",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  transition: "background 0.2s, border-color 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(212,168,67,0.15)";
+                  e.currentTarget.style.borderColor = "rgba(212,168,67,0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(212,168,67,0.08)";
+                  e.currentTarget.style.borderColor = "rgba(212,168,67,0.25)";
+                }}
+              >
+                <span style={{ fontSize: "14px" }}>🎙</span>
+                Talk to AiA
+              </a>
               <ReadAloud />
               <CallNowButton
                 variant="outline"
@@ -223,6 +254,33 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                   ))}
 
                   <div style={{ height: "8px" }} />
+
+                  <a
+                    href="/talk"
+                    onClick={() => setMobileOpen(false)}
+                    style={{
+                      fontFamily: FF,
+                      fontWeight: 600,
+                      fontSize: "15px",
+                      color: "var(--gold-bright, #D4A843)",
+                      background: "rgba(212,168,67,0.08)",
+                      border: "1px solid rgba(212,168,67,0.25)",
+                      borderRadius: "12px",
+                      padding: "14px 16px",
+                      textDecoration: "none",
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "8px",
+                      minHeight: "48px",
+                    }}
+                  >
+                    <span style={{ fontSize: "16px" }}>🎙</span>
+                    Talk to AiA
+                  </a>
+
+                  <div style={{ height: "4px" }} />
 
                   <ReadAloud />
 
