@@ -45,8 +45,8 @@ function cleanText(raw: string): string {
     .replace(/\s([.,:;!?])\s/g, " ")
     .replace(/\s([.,:;!?])$/g, "")
     // Brand name pronunciation fixes
-    .replace(/AiiACo/gi, "AiiA Co")
-    .replace(/AiiAco/gi, "AiiA Co")
+    .replace(/AiiACo/gi, "AiA Co")
+    .replace(/AiiAco/gi, "AiA Co")
     .trim();
 }
 
@@ -471,7 +471,7 @@ export default function ReadAloud() {
       {state === "idle" && (
         <button
           onClick={handlePlay}
-          title="Listen to this page — AiiA voice"
+          title="Listen to this page — AiA voice"
           style={btnStyle}
           onMouseEnter={e => { e.currentTarget.style.background = "rgba(184,134,11,0.18)"; e.currentTarget.style.color = "#FFD700"; }}
           onMouseLeave={e => { e.currentTarget.style.background = "rgba(184,134,11,0.10)"; e.currentTarget.style.color = "rgba(255,215,0,0.80)"; }}

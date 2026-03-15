@@ -1,6 +1,6 @@
 /*
  * OperationalLeaks — Three Operational Leaks That Quietly Kill Profit
- * Based on the AiiA Operator Brief
+ * Based on the AiA Operator Brief
  * Mobile: stacked layout, no grid columns for icon+content
  */
 import { motion } from "framer-motion";

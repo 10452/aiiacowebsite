@@ -789,3 +789,13 @@ Voice assignments:
 - [x] Inspect live ElevenLabs agent config for mismatches — live config was correct (900s), local code was 300s
 - [x] Fix the root cause of the greeting cutoff issue — user upgraded ElevenLabs plan (Creator tier, 100K chars)
 - [x] Push corrected config to ElevenLabs — verified 900s max_duration_seconds is live
+
+## Round 91 — AiA Agent Prompt Overhaul
+- [x] Rename AiiA to AiA throughout agent prompt and first message
+- [x] Relax contact intake — let callers explore what AiiACo does for 1-2 min before pushing for info
+- [x] Switch turn eagerness from "eager" to "normal" (balanced)
+- [x] Push updated prompt + config to ElevenLabs live agent
+- [x] Update frontend voice widget references from AiiA to AiA
+- [x] Fix budget question — remove "few hundred" option, minimum is $3K setup + $2,500/mo
+- [x] Update server-side references (emails, SMS, health monitor, webhooks, tests) from AiiA to AiA
+- [x] All 153 vitest tests passing

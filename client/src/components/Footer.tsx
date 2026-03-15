@@ -64,12 +64,12 @@ export default function Footer() {
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_pure_gold_transparent_8063797a.png"
-                alt="AiiA logo"
+                alt="AiA logo"
                 style={{ height: "44px", width: "auto", objectFit: "contain" }}
               />
             </div>
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "13.5px", lineHeight: 1.65, color: "rgba(200,215,230,0.48)", margin: "0 0 8px", maxWidth: "42ch" }}>
-              AiiA is the Operational Intelligence partner for companies that refuse to let friction run the business. We find the leaks, implement the fix, and measure the improvement.
+              AiA is the Operational Intelligence partner for companies that refuse to let friction run the business. We find the leaks, implement the fix, and measure the improvement.
             </p>
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "12.5px", lineHeight: 1.6, color: "rgba(200,215,230,0.32)", margin: "0 0 4px", maxWidth: "42ch" }}>
               Serving real estate, mortgage & lending, commercial property, and management consulting firms.

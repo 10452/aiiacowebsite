@@ -6,7 +6,7 @@
  * 2. Caller Summary — personalized, intelligence-driven follow-up with conversation insights
  * 3. Continue Conversation — warm follow-up for short/abandoned calls (< 90s)
  *
- * Both use the AiiA brand system: void black (#0A0804), gold accents (#C9A84C / #F5D77A),
+ * Both use the AiA brand system: void black (#0A0804), gold accents (#C9A84C / #F5D77A),
  * Cormorant Garamond + Inter typography, warm paper (#F8F3E8) for content sections.
  *
  * Design: Email-safe inline CSS only. No external stylesheets, no CSS classes.
@@ -694,7 +694,7 @@ export function buildCallerSummaryEmail(data: CallerSummaryData): {
                 </tr>
                 <tr>
                   <td style="font-family: 'Inter', Arial, sans-serif; font-size: 11px; color: rgba(200,215,230,0.20); padding-top: 8px;">
-                    You received this email because you spoke with AiiA, our AI diagnostic intelligence.
+                    You received this email because you spoke with AiA, our AI diagnostic intelligence.
                   </td>
                 </tr>
               </table>
@@ -779,7 +779,7 @@ export function buildContinueConversationEmail(data: ContinueConversationData): 
 
         <!-- Logo header -->
         <tr><td style="padding: 32px 40px 24px 40px; text-align: center;">
-          <img src="${LOGO_URL}" alt="AiiA" width="48" height="48" style="display: block; margin: 0 auto 16px auto; width: 48px; height: 48px;" />
+          <img src="${LOGO_URL}" alt="AiA" width="48" height="48" style="display: block; margin: 0 auto 16px auto; width: 48px; height: 48px;" />
           <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 11px; font-weight: 700; letter-spacing: 0.25em; color: rgba(201,168,76,0.70); text-transform: uppercase;">AI Integration Authority</div>
         </td></tr>
 

@@ -121,7 +121,7 @@ function SetupPage({ onDone }: { onDone: () => void }) {
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
           <img
             src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_pure_gold_transparent_8063797a.png"
-            alt="AiiA logo"
+            alt="AiA logo"
             style={{ height: "56px", width: "auto", objectFit: "contain", margin: "0 auto 20px", display: "block" }}
           />
           <h1 style={{ fontFamily: FFD, fontSize: "26px", fontWeight: 700, color: "rgba(255,255,255,0.92)", margin: "0 0 8px" }}>Initial Setup</h1>
@@ -210,7 +210,7 @@ function LoginPage({ onLogin }: { onLogin: () => void }) {
         <div style={{ textAlign: "center", marginBottom: "36px" }}>
           <img
             src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_pure_gold_transparent_8063797a.png"
-            alt="AiiA logo"
+            alt="AiA logo"
             style={{ height: "56px", width: "auto", objectFit: "contain", margin: "0 auto 20px", display: "block" }}
           />
           <h1 style={{ fontFamily: FFD, fontSize: "26px", fontWeight: 700, color: "rgba(255,255,255,0.92)", margin: "0 0 8px" }}>Operations Console</h1>
@@ -555,7 +555,7 @@ function Console({ adminUser }: { adminUser: { id: number; username: string; dis
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <img
               src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_logo_pure_gold_transparent_8063797a.png"
-              alt="AiiA logo"
+              alt="AiA logo"
               style={{ height: "36px", width: "auto", objectFit: "contain" }}
             />
             <div>

@@ -1,5 +1,5 @@
 /**
- * AiiA Diagnostic Chain — Health Monitor
+ * AiA Diagnostic Chain — Health Monitor
  *
  * Checks every vital in the pipeline:
  *   1. ElevenLabs Agent — is the agent reachable and configured?
@@ -417,8 +417,8 @@ export async function runHealthCheck(): Promise<HealthReport> {
         .join("\n");
 
       await notifyOwner({
-        title: `🚨 AiiA Health Alert — ${vitalsToAlert.length} vital(s) DOWN`,
-        content: `The following components in the AiiA diagnostic chain are down (confirmed after ${CONSECUTIVE_FAILURES_BEFORE_ALERT} consecutive checks):\n\n${alertContent}\n\nHealth Score: ${score}/100\nChecked at: ${report.checkedAt}`,
+        title: `🚨 AiA Health Alert — ${vitalsToAlert.length} vital(s) DOWN`,
+        content: `The following components in the AiA diagnostic chain are down (confirmed after ${CONSECUTIVE_FAILURES_BEFORE_ALERT} consecutive checks):\n\n${alertContent}\n\nHealth Score: ${score}/100\nChecked at: ${report.checkedAt}`,
       });
 
       for (const v of vitalsToAlert) {

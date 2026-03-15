@@ -95,7 +95,7 @@ export type AdminUser = typeof adminUsers.$inferSelect;
 export type InsertAdminUser = typeof adminUsers.$inferInsert;
 
 /**
- * Knowledge base entries — AiiA's knowledge that gets pushed to the ElevenLabs agent prompt.
+ * Knowledge base entries — AiA's knowledge that gets pushed to the ElevenLabs agent prompt.
  * Each entry is a named piece of knowledge (e.g., "Agent Package Details", "Company Overview").
  * source: where the knowledge came from (document, website, conversation, manual)
  * category: organizational grouping (packages, company, processes, faq)

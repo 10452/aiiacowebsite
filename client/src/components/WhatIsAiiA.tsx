@@ -19,7 +19,7 @@ const pillars = [
   {
     icon: AIIA_ICONS.brain,
     title: "She Learns Your Business",
-    desc: "AiiA conducts a deep analysis of your goals, your history, your attempts, your competition, and your industry before making a single recommendation.",
+    desc: "AiA conducts a deep analysis of your goals, your history, your attempts, your competition, and your industry before making a single recommendation.",
     color: "#00E5FF",
   },
   {
@@ -31,7 +31,7 @@ const pillars = [
   {
     icon: AIIA_ICONS.users,
     title: "She Hires Your AI Staff",
-    desc: "Instead of you sourcing, vetting, and managing dozens of AI tools and agents, AiiA assembles and manages your entire AI workforce for you.",
+    desc: "Instead of you sourcing, vetting, and managing dozens of AI tools and agents, AiA assembles and manages your entire AI workforce for you.",
     color: "#00E5FF",
   },
   {
@@ -119,7 +119,7 @@ export default function WhatIsAiiA() {
             An AI Director.
           </h2>
           <p className="font-dm text-lg text-[#7A9BB5] max-w-2xl mx-auto leading-relaxed">
-            Every other AI solution gives you more complexity to manage. AiiA removes it.
+            Every other AI solution gives you more complexity to manage. AiA removes it.
             She is the single hire that replaces an entire AI department — and she delivers results,
             not workload.
           </p>
@@ -141,7 +141,7 @@ export default function WhatIsAiiA() {
               <div className="md:col-span-2">
                 <p className="font-cinzel text-2xl md:text-3xl text-white leading-relaxed">
                   "Instead of hiring AI agents to fill different positions,{" "}
-                  <span className="gradient-text-gold">you hire AiiA</span> — and she hires and manages
+                  <span className="gradient-text-gold">you hire AiA</span> — and she hires and manages
                   all the AI agents for you and delivers the results, not the workload."
                 </p>
               </div>

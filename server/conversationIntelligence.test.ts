@@ -7,10 +7,10 @@ import { parseCallWebhook } from "./aiAgent";
  * 2. ConversationIntelligence — LLM-based extraction (tested via structure validation)
  */
 
-// ── Sample transcript simulating a real AiiA diagnostic call ─────────────────
+// ── Sample transcript simulating a real AiA diagnostic call ─────────────────
 
 const SAMPLE_TRANSCRIPT_TURNS = [
-  { role: "agent", message: "Hey there — thanks for reaching out to AiiACo. I'm AiiA, your AI diagnostic intelligence. I'm going to ask you a few quick questions so we can figure out exactly how to help. But first — what's your name?" },
+  { role: "agent", message: "Hey there — thanks for reaching out to AiiACo. I'm AiA, your AI diagnostic intelligence. I'm going to ask you a few quick questions so we can figure out exactly how to help. But first — what's your name?" },
   { role: "user", message: "Hi, I'm John Miller." },
   { role: "agent", message: "Great to meet you, John. And what company are you with?" },
   { role: "user", message: "I'm with Apex Logistics." },
@@ -62,7 +62,7 @@ describe("parseCallWebhook", () => {
   it("builds a plain-text transcript from turns", () => {
     const payload = buildWebhookPayload(SAMPLE_TRANSCRIPT_TURNS);
     const result = parseCallWebhook(payload as any);
-    expect(result.transcriptText).toContain("AiiA:");
+    expect(result.transcriptText).toContain("AiA:");
     expect(result.transcriptText).toContain("Caller:");
     expect(result.transcriptText).toContain("john@apexlogistics.com");
   });

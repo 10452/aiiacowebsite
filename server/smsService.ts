@@ -133,7 +133,7 @@ export function normalizePhone(phone: string | null | undefined): string | null 
 
 /**
  * Generate context-aware SMS text based on message type and lead context.
- * All messages are warm, professional, and AiiA-branded.
+ * All messages are warm, professional, and AiA-branded.
  */
 export function buildSmsText(type: SmsMessageType, ctx: SmsContext): string {
   const name = ctx.firstName || "there";
@@ -142,7 +142,7 @@ export function buildSmsText(type: SmsMessageType, ctx: SmsContext): string {
   switch (type) {
     case "incomplete_followup":
       return (
-        `Hi ${name}, this is AiiA from AiiACo. ` +
+        `Hi ${name}, this is AiA from AiiACo. ` +
         `Looks like we got disconnected — no worries at all. ` +
         `Whenever you're ready, you can call us back or book a quick intro here: ${CALENDLY_URL}\n\n` +
         `— AiiACo`
@@ -173,7 +173,7 @@ export function buildSmsText(type: SmsMessageType, ctx: SmsContext): string {
 
     case "continue_conversation":
       return (
-        `Hi ${name}, this is AiiA from AiiACo. ` +
+        `Hi ${name}, this is AiA from AiiACo. ` +
         `We'd love to pick up where we left off and learn more about what you're working on${company}. ` +
         `Here's a link to book a quick call: ${CALENDLY_URL}\n\n` +
         `— AiiACo`
@@ -263,8 +263,8 @@ export async function sendLeadSms(
   const phone = normalizePhone(ctx.phone);
   if (!phone) return { sent: false, reason: "Invalid phone number" };
 
-  // Filter out AiiA's own number
-  if (phone === AIIA_PHONE) return { sent: false, reason: "Cannot SMS AiiA's own number" };
+  // Filter out AiA's own number
+  if (phone === AIIA_PHONE) return { sent: false, reason: "Cannot SMS AiA's own number" };
 
   // Rate limit check
   const rateCheck = await checkSmsRateLimit(phone);

@@ -1,6 +1,6 @@
 /**
  * AiiAVoiceWidget — Floating voice chat button that connects directly to the
- * AiiA Diagnostic Agent via ElevenLabs Conversational AI SDK.
+ * AiA Diagnostic Agent via ElevenLabs Conversational AI SDK.
  * Renders as a gold circuit-wired microphone artifact in the bottom-right corner.
  */
 import { useState, useCallback } from "react";
@@ -113,10 +113,10 @@ export default function AiiAVoiceWidget() {
 
             <div>
               <div style={{ fontSize: "11px", fontWeight: 700, color: "#D4A843", letterSpacing: "0.06em", textTransform: "uppercase" }}>
-                {status === "connecting" ? "Connecting…" : agentSpeaking ? "AiiA Speaking" : "Listening…"}
+                {status === "connecting" ? "Connecting…" : agentSpeaking ? "AiA Speaking" : "Listening…"}
               </div>
               <div style={{ fontSize: "10px", color: "rgba(200,215,230,0.55)", marginTop: "1px" }}>
-                AiiA Diagnostic Agent
+                AiA Diagnostic Agent
               </div>
             </div>
 
@@ -209,7 +209,7 @@ export default function AiiAVoiceWidget() {
           overflow: "hidden",
           padding: 0,
         }}
-        title={isActive ? "End conversation" : "Talk to AiiA"}
+        title={isActive ? "End conversation" : "Talk to AiA"}
       >
         {/* Pulse ring when active */}
         {isActive && (
@@ -234,7 +234,7 @@ export default function AiiAVoiceWidget() {
         ) : (
           <img
             src={MIC_ICON_URL}
-            alt="Talk to AiiA"
+            alt="Talk to AiA"
             style={{
               width: "52px",
               height: "52px",
@@ -262,7 +262,7 @@ export default function AiiAVoiceWidget() {
             pointerEvents: "none",
           }}
         >
-          Talk to AiiA
+          Talk to AiA
         </motion.div>
       )}
     </div>

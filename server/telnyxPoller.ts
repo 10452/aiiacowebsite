@@ -8,7 +8,7 @@
  *   2. Purchase the number
  *   3. Create SIP trunk credentials
  *   4. Import the number into ElevenLabs via SIP trunk
- *   5. Assign the AiiA Diagnostic Agent
+ *   5. Assign the AiA Diagnostic Agent
  *   6. Notify the owner with the new number
  *
  * The poller stops itself after successful provisioning to avoid re-running.
@@ -94,7 +94,7 @@ async function createSipCredentials(): Promise<{ username: string; password: str
   try {
     // Create a credential connection (SIP trunk)
     const connData = await telnyxPost("/credential_connections", {
-      name: "AiiACo Diagnostic Agent",
+      name: "AiACo Diagnostic Agent",
       active: true,
       user_name: `aiia-agent-${Date.now()}`,
       password: Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2),
@@ -125,7 +125,7 @@ async function importIntoElevenLabs(
       },
       body: JSON.stringify({
         phone_number: phoneNumber,
-        label: "AiiACo Diagnostic Agent",
+        label: "AiACo Diagnostic Agent",
         sip_trunk_credentials: {
           username: sipUsername,
           password: sipPassword,
@@ -209,7 +209,7 @@ async function runProvisioning(): Promise<void> {
   await notifyOwner({
     title: `✅ AI Phone Number Live: ${display}`,
     content: [
-      `Phone number ${display} has been automatically provisioned and assigned to the AiiA Diagnostic Agent.`,
+      `Phone number ${display} has been automatically provisioned and assigned to the AiA Diagnostic Agent.`,
       ``,
       `Next step: Update the site CTAs by setting PHONE_NUMBER=${purchased} and PHONE_NUMBER_DISPLAY=${display} in client/src/const.ts`,
       ``,

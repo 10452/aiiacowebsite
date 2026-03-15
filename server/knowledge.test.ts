@@ -58,7 +58,7 @@ describe("Knowledge Prompt Assembly", () => {
   });
 
   it("should inject knowledge into prompt with markers", () => {
-    const basePrompt = `You are AiiA.
+    const basePrompt = `You are AiA.
 
 ## Deep Company Knowledge
 
@@ -81,7 +81,7 @@ Never break character.`;
       fullPrompt = `${basePrompt}\n\n## Additional Knowledge\n\n${knowledgeSection}`;
     }
 
-    expect(fullPrompt).toContain("You are AiiA.");
+    expect(fullPrompt).toContain("You are AiA.");
     expect(fullPrompt).toContain("### New Knowledge");
     expect(fullPrompt).toContain("Fresh content here.");
     expect(fullPrompt).toContain("Never break character.");
@@ -89,7 +89,7 @@ Never break character.`;
   });
 
   it("should fallback to appending when markers are missing", () => {
-    const basePrompt = "You are AiiA. Simple prompt without markers.";
+    const basePrompt = "You are AiA. Simple prompt without markers.";
     const knowledgeSection = "### FAQ\nCommon questions.";
     const knowledgeMarker = "## Deep Company Knowledge";
     const nextSectionMarker = "## Identity & Adversarial Resilience";
@@ -103,7 +103,7 @@ Never break character.`;
       fullPrompt = `${basePrompt}\n\n## Additional Knowledge\n\n${knowledgeSection}`;
     }
 
-    expect(fullPrompt).toContain("You are AiiA. Simple prompt without markers.");
+    expect(fullPrompt).toContain("You are AiA. Simple prompt without markers.");
     expect(fullPrompt).toContain("## Additional Knowledge");
     expect(fullPrompt).toContain("### FAQ");
   });

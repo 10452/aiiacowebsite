@@ -4,7 +4,7 @@
  * Endpoint: POST /api/webhooks/elevenlabs
  *
  * Receives post_call_transcription events from ElevenLabs after each call
- * to the AiiA Diagnostic Agent. Processes the transcript through:
+ * to the AiA Diagnostic Agent. Processes the transcript through:
  *   1. Quality gate (anti-spam + minimum viable lead check)
  *   2. Extract caller info (email, name, company, phone, pain point, budget, track)
  *   3. Run LLM-powered conversation intelligence extraction

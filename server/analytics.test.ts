@@ -11,7 +11,7 @@ vi.mock("./db", () => {
       type: "call",
       status: "new",
       callTrack: "operator",
-      callTranscript: "AiiA: Hello\nCaller: Hi",
+      callTranscript: "AiA: Hello\nCaller: Hi",
       conversationId: "conv_1",
       callDurationSeconds: 180,
       createdAt: new Date(),
@@ -25,7 +25,7 @@ vi.mock("./db", () => {
       type: "call",
       status: "contacted",
       callTrack: "agent",
-      callTranscript: "AiiA: Welcome\nCaller: Thanks",
+      callTranscript: "AiA: Welcome\nCaller: Thanks",
       conversationId: "conv_2",
       callDurationSeconds: 300,
       createdAt: new Date(Date.now() - 86400000 * 2), // 2 days ago
@@ -53,7 +53,7 @@ vi.mock("./db", () => {
       type: "call",
       status: "closed",
       callTrack: "corporate",
-      callTranscript: "AiiA: Hi\nCaller: Hello",
+      callTranscript: "AiA: Hi\nCaller: Hello",
       conversationId: "conv_3",
       callDurationSeconds: 420,
       createdAt: new Date(Date.now() - 86400000 * 10), // 10 days ago

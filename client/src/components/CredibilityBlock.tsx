@@ -1,5 +1,5 @@
 /*
- * CredibilityBlock — 3-line "Companies come to AiiA when..." section
+ * CredibilityBlock — 3-line "Companies come to AiA when..." section
  * Positioned directly below the Hero, above Platform
  */
 import { motion } from "framer-motion";
@@ -46,7 +46,7 @@ export default function CredibilityBlock() {
               margin: 0,
             }}
           >
-            Companies come to AiiA when
+            Companies come to AiA when
           </p>
 
           <div

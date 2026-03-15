@@ -599,10 +599,10 @@ export const appRouter = router({
         // Preserve URLs (don't strip dots inside them), then clean everything else
         const sanitized = input.text
           // Fix brand name pronunciation FIRST (before any other transforms)
-          // "AiiACo" → "AiiA Co" so ElevenLabs reads it as two words: AyyA + Co
-          .replace(/AiiACo/gi, "AiiA Co")
-          // "AiiAco" → "AiiA Co"
-          .replace(/AiiAco/gi, "AiiA Co")
+          // "AiiACo" → "AiA Co" so ElevenLabs reads it as two words: Aya + Co
+          .replace(/AiiACo/gi, "AiA Co")
+          // "AiiAco" → "AiA Co"
+          .replace(/AiiAco/gi, "AiA Co")
           // Protect URLs: temporarily replace dots inside URLs
           .replace(/https?:\/\/[^\s]+/g, (url) => url.replace(/\./g, "__DOT__"))
           // Remove bullet/list symbols

@@ -408,10 +408,10 @@ function parseTranscript(structuredJson: string | null | undefined, plainText: s
   }
   // Fallback: parse plain text lines
   return plainText.split("\n").filter(Boolean).map((line) => {
-    const isAgent = line.startsWith("AiiA:");
+    const isAgent = line.startsWith("AiA:") || line.startsWith("AiiA:");
     return {
       role: isAgent ? "agent" as const : "user" as const,
-      message: line.replace(/^(AiiA:|Caller:)\s*/, ""),
+      message: line.replace(/^(AiA:|AiiA:|Caller:)\s*/, ""),
     };
   });
 }
@@ -472,7 +472,7 @@ function CallTranscriptViewer({ transcript, structuredTranscript, track, duratio
                       color: isAgent ? "rgba(184,156,74,0.75)" : "rgba(120,200,255,0.75)",
                     }}
                   >
-                    {isAgent ? "AiiA" : "Caller"}
+                    {isAgent ? "AiA" : "Caller"}
                   </span>
                   {turn.time !== undefined && (
                     <span style={{ fontSize: "10px", color: "rgba(200,215,230,0.25)", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif" }}>

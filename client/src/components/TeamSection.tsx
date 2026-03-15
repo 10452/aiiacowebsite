@@ -1,6 +1,6 @@
 /*
  * AiiACo — Team Section
- * The humans behind AiiA: Nemr Hallak & Marylou Castronovo from Volentixlabs
+ * The humans behind AiA: Nemr Hallak & Marylou Castronovo from Volentixlabs
  */
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
@@ -21,7 +21,7 @@ const team = [
   {
     name: "Marylou Castronovo",
     role: "Co-Founder & Operations Director",
-    bio: "A seasoned operator with deep experience in building and scaling service businesses. Marylou brings the operational excellence and client relationship mastery that ensures every AiiA engagement delivers on its promise — not just in strategy, but in execution and results.",
+    bio: "A seasoned operator with deep experience in building and scaling service businesses. Marylou brings the operational excellence and client relationship mastery that ensures every AiA engagement delivers on its promise — not just in strategy, but in execution and results.",
     expertise: ["Operations Management", "Client Success", "Service Delivery", "Business Scaling"],
     avatar: "MC",
     color: "#C9A227",
@@ -113,7 +113,7 @@ export default function TeamSection() {
         >
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-12 h-px bg-[#00E5FF]/40" />
-            <span className="label-tag">The Humans Behind AiiA</span>
+            <span className="label-tag">The Humans Behind AiA</span>
             <div className="w-12 h-px bg-[#00E5FF]/40" />
           </div>
           <h2 className="font-cinzel text-4xl md:text-5xl font-bold text-white mb-6">
@@ -121,7 +121,7 @@ export default function TeamSection() {
             <span className="gradient-text-cyan">Know Business</span>
           </h2>
           <p className="font-dm text-lg text-[#7A9BB5] max-w-2xl mx-auto">
-            AiiA is powered by the team from{" "}
+            AiA is powered by the team from{" "}
             <a
               href="https://volentixlabs.com"
               target="_blank"

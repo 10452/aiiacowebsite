@@ -19,7 +19,7 @@ describe("ElevenLabs TTS", () => {
           "Accept": "audio/mpeg",
         },
         body: JSON.stringify({
-          text: "AiiA. The AI Integration Authority for the Corporate Age.",
+          text: "AiA. The AI Integration Authority for the Corporate Age.",
           model_id: "eleven_turbo_v2",
           voice_settings: {
             stability: 0.45,
