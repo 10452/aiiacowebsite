@@ -59,8 +59,14 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
     return () => window.removeEventListener("orientationchange", onOrientationChange);
   }, []);
 
-  const scrollTo = (href: string) => {
+  const navigateTo = (href: string) => {
     setMobileOpen(false);
+    // Route paths (e.g. /corporate, /method) — navigate directly
+    if (href.startsWith("/")) {
+      window.location.href = href;
+      return;
+    }
+    // Hash anchors (e.g. #platform, #contact) — scroll on homepage, navigate if on subpage
     if (window.location.pathname !== "/") {
       window.location.href = "/" + href;
       return;
@@ -103,7 +109,7 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                 <a
                   key={link.href}
                   href={link.route}
-                  onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
+                  onClick={(e) => { e.preventDefault(); navigateTo(link.href); }}
                   style={{
                     fontFamily: FF,
                     fontWeight: 600,
@@ -152,7 +158,7 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                   whiteSpace: "nowrap",
                 }}
               />
-              <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { scrollTo("#contact"); } }} className="btn-gold hidden xl:inline-flex" style={{ fontSize: "13px", padding: "10px 20px" }}>
+              <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { navigateTo("#contact"); } }} className="btn-gold hidden xl:inline-flex" style={{ fontSize: "13px", padding: "10px 20px" }}>
                 Request Upgrade
               </button>
 
@@ -198,7 +204,7 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                   {navLinks.map((link) => (
                     <button
                       key={link.href}
-                      onClick={() => scrollTo(link.href)}
+                      onClick={() => navigateTo(link.href)}
                       style={{
                         fontFamily: FF,
                         fontWeight: 600,
@@ -245,7 +251,7 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                   <button
                     onClick={() => {
                       if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); }
-                      else { scrollTo("#contact"); }
+                      else { navigateTo("#contact"); }
                     }}
                     className="btn-gold"
                     style={{ justifyContent: "center", marginTop: "8px", minHeight: "48px", fontSize: "15px", width: "100%" }}

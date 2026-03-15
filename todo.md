@@ -828,3 +828,6 @@ Voice assignments:
   - Engagement Models: "Begin Full Integration" / "Discuss This Model" (kept — contextual)
   - Subpages: kept page-specific labels (contextual to service)
 - [x] Verify consistency — all 153 tests passing, zero "Initiate Upgrade" or "Request Upgrade Plan" remaining
+
+## Round 95 — Fix Corporate Nav Link
+- [x] Fix "Corporate" link in Navbar to navigate to /corporate instead of scrolling — refactored scrollTo→navigateTo to handle route paths vs hash anchors
