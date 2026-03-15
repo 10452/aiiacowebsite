@@ -845,3 +845,8 @@ Voice assignments:
 - [x] Fix landscape orientation — added landscape media queries, safe-area insets, viewport-fit: cover
 - [x] Fixed viewport meta tag: removed maximum-scale=1, added viewport-fit=cover
 - [x] All 153 vitest tests passing
+
+## Round 97 — Comprehensive Privacy Policy Page
+- [x] Rewrite /privacy page with comprehensive sections: Voice AI data (AiA calls), website analytics, cookies, data retention, third-party services, enterprise data handling, CCPA/GDPR rights, contact info
+- [x] Match styling with existing legal pages (TermsPage pattern)
+- [x] Verify route and footer link work correctly
