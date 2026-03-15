@@ -911,3 +911,7 @@ Voice assignments:
 - [x] Make it clear that providing email enables conversation continuity (hint text + inline returning lead banner)
 - [x] Remove the separate "Continue a Previous Conversation" card — one unified flow
 - [x] Add checkEmail server procedure and vitest test (163 tests passing)
+
+## Round 107 — Cookie Banner Mobile Fix
+- [x] Fix cookie banner on mobile — only left half visible, Accept button unreachable
+- [x] Ensure banner is fully visible and dismissable on all screen sizes
