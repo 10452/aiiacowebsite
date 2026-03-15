@@ -887,3 +887,7 @@ Voice assignments:
 - [x] Store consent in localStorage, hide on return visits
 - [x] Link to /privacy page
 - [x] Wire into App.tsx
+
+## Round 103 — Cookie Consent Simplification
+- [x] Remove Decline button, keep only Accept
+- [x] Change copy to "We use necessary cookies only"

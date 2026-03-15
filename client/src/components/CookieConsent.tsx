@@ -7,7 +7,6 @@ export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Show after a short delay if no consent stored
     const consent = localStorage.getItem(STORAGE_KEY);
     if (!consent) {
       const timer = setTimeout(() => setVisible(true), 1200);
@@ -17,11 +16,6 @@ export default function CookieConsent() {
 
   const accept = () => {
     localStorage.setItem(STORAGE_KEY, "accepted");
-    setVisible(false);
-  };
-
-  const decline = () => {
-    localStorage.setItem(STORAGE_KEY, "declined");
     setVisible(false);
   };
 
@@ -40,7 +34,7 @@ export default function CookieConsent() {
             transform: "translateX(-50%)",
             zIndex: 9999,
             width: "calc(100% - 32px)",
-            maxWidth: "520px",
+            maxWidth: "460px",
             background: "rgba(12, 14, 20, 0.92)",
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
@@ -64,7 +58,7 @@ export default function CookieConsent() {
               color: "rgba(200, 215, 230, 0.75)",
             }}
           >
-            We use cookies for analytics.{" "}
+            We use necessary cookies only.{" "}
             <a
               href="/privacy"
               style={{
@@ -76,48 +70,25 @@ export default function CookieConsent() {
               Privacy Policy
             </a>
           </p>
-          <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
-            <button
-              onClick={decline}
-              style={{
-                fontSize: "12px",
-                fontWeight: 500,
-                color: "rgba(200, 215, 230, 0.55)",
-                background: "none",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "8px",
-                padding: "7px 14px",
-                cursor: "pointer",
-                transition: "border-color 0.15s",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")
-              }
-            >
-              Decline
-            </button>
-            <button
-              onClick={accept}
-              style={{
-                fontSize: "12px",
-                fontWeight: 600,
-                color: "#03050A",
-                background: "var(--gold-bright, #D4A843)",
-                border: "none",
-                borderRadius: "8px",
-                padding: "7px 16px",
-                cursor: "pointer",
-                transition: "opacity 0.15s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-            >
-              Accept
-            </button>
-          </div>
+          <button
+            onClick={accept}
+            style={{
+              fontSize: "12px",
+              fontWeight: 600,
+              color: "#03050A",
+              background: "var(--gold-bright, #D4A843)",
+              border: "none",
+              borderRadius: "8px",
+              padding: "7px 16px",
+              cursor: "pointer",
+              flexShrink: 0,
+              transition: "opacity 0.15s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+          >
+            Accept
+          </button>
         </motion.div>
       )}
     </AnimatePresence>
