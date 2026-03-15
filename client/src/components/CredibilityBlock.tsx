@@ -18,6 +18,7 @@ export default function CredibilityBlock() {
         padding: "0 0 64px",
         position: "relative",
         zIndex: 1,
+        overflow: "hidden",
       }}
     >
       <div className="container">

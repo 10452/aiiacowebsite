@@ -54,7 +54,7 @@ export default function Home() {
         path="/"
         keywords="AI integration authority, enterprise AI integration, AI implementation services, managed AI integration, AI automation for business, operational AI infrastructure, AI workforce, AI director, done-for-you AI, performance-based AI, AI integration services, artificial intelligence consulting, business AI automation, AI strategy, managed AI services"
       />
-      <div className="min-h-screen flex flex-col" style={{ background: "#03050A" }}>
+      <div className="min-h-screen flex flex-col" style={{ background: "#03050A", overflowX: "hidden" }}>
         <Navbar onOpenQualifier={() => openQualifier("Navbar — Request Upgrade")} />
         <main className="flex-1">
           <HeroSection onOpenQualifier={() => openQualifier("Hero CTA")} />

@@ -5,7 +5,6 @@
  */
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import CallNowButton from "@/components/CallNowButton";
 
 // Animated counter hook — counts from 0 to target over duration ms
 function useCountUp(target: number, duration: number = 1800, delay: number = 0) {
@@ -216,7 +215,6 @@ export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () 
               <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "15px", padding: "14px 30px" }}>
                 Book an Operational Strategy Call
               </button>
-              <CallNowButton variant="outline" size="lg" className="btn-glass" style={{ fontSize: "15px", padding: "14px 24px" }} />
               <button onClick={() => document.querySelector("#method")?.scrollIntoView({ behavior: "smooth" })} className="btn-glass" style={{ fontSize: "15px", padding: "14px 24px" }}>
                 See How It Works
               </button>

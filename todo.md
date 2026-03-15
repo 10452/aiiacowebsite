@@ -799,3 +799,12 @@ Voice assignments:
 - [x] Fix budget question — remove "few hundred" option, minimum is $3K setup + $2,500/mo
 - [x] Update server-side references (emails, SMS, health monitor, webhooks, tests) from AiiA to AiA
 - [x] All 153 vitest tests passing
+
+## Round 92 — Fix Duplicate CTAs & Mobile Horizontal Scroll
+- [x] Remove duplicate CTA buttons ("Book an Operational Strategy Call" + "Book a Call" both went to Calendly — removed the duplicate)
+- [x] Fix horizontal scroll on mobile — html+body+page wrapper all have overflow-x: hidden
+- [x] Reduce glass orb animations on mobile (translate distances cut from 140px to 40px max)
+- [x] Add mobile-safe keyframe animations for all 3 glass orbs
+- [x] Add overflow: hidden to CredibilityBlock section
+- [x] Fix ContactSection 600px background accent to use max-width: 100%
+- [x] Add word-break/overflow-wrap to display-headline, section-headline, section-pill

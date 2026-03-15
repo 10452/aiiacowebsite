@@ -83,6 +83,7 @@
   }
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   body {
     margin: 0;
@@ -241,6 +242,9 @@
     letter-spacing: 1.4px;
     text-transform: uppercase;
     color: rgba(210,220,235,0.85);
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   .section-pill .dot {
     width: 6px;
@@ -260,6 +264,8 @@
     letter-spacing: -1.5px;
     color: rgba(255,255,255,0.96);
     margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   .display-headline .gold-line {
     color: var(--gold-bright);
@@ -272,6 +278,8 @@
     font-weight: 700;
     line-height: 1.02;
     letter-spacing: -0.8px;
+    overflow-wrap: break-word;
+    word-break: break-word;
     color: rgba(255,255,255,0.96);
     margin: 0;
   }
@@ -648,23 +656,48 @@
   }
 }
 
-/* ─── Glass orbs: smaller on mobile to prevent overflow ───────── */
+/* ─── Glass orbs: smaller on mobile + reduced animation to prevent overflow ── */
 @media (max-width: 768px) {
   .glass-orb-1 {
-    width: 350px;
-    height: 350px;
-    filter: blur(40px);
-  }
-  .glass-orb-2 {
     width: 250px;
     height: 250px;
+    filter: blur(40px);
+    animation: glass-float-1-mobile 18s ease-in-out infinite;
+  }
+  .glass-orb-2 {
+    width: 180px;
+    height: 180px;
     filter: blur(35px);
+    animation: glass-float-2-mobile 24s ease-in-out infinite;
   }
   .glass-orb-3 {
-    width: 200px;
-    height: 200px;
+    width: 140px;
+    height: 140px;
     filter: blur(30px);
+    animation: glass-float-3-mobile 14s ease-in-out infinite;
   }
+}
+
+/* Mobile-safe orb animations — reduced travel distance */
+@keyframes glass-float-1-mobile {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  25%  { transform: translate(20px, -30px) scale(1.06); }
+  50%  { transform: translate(40px, -15px) scale(1.03); }
+  75%  { transform: translate(15px, 20px) scale(0.96); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+@keyframes glass-float-2-mobile {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  30%  { transform: translate(-25px, 20px) scale(1.05); }
+  60%  { transform: translate(-15px, -20px) scale(0.95); }
+  80%  { transform: translate(12px, -8px) scale(1.02); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+@keyframes glass-float-3-mobile {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  40%  { transform: translate(18px, 25px) scale(1.08); }
+  70%  { transform: translate(-12px, 12px) scale(0.92); }
+  100% { transform: translate(0px, 0px) scale(1); }
 }
 
 /* ─── Table mobile: horizontal scroll wrapper ─────────────────── */
