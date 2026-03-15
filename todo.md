@@ -903,3 +903,11 @@ Voice assignments:
 - [x] Mic icon lights up / shows speech indicator bars during active conversation
 - [x] Ensure video audio is stripped — only AiA's ElevenLabs voice plays
 - [x] Add semi-transparent "Play Video" button for return visitors to optionally replay video background
+
+## Round 106 — /talk Page UX Improvements
+- [x] Increase video watermark opacity significantly (from 0.12 to 0.35, gradient overlay reduced)
+- [x] Merge two separate forms into one intelligent email field that serves both purposes (new visitor + returning lead)
+- [x] Smart detection: debounced checkEmail procedure detects existing leads, shows inline context message
+- [x] Make it clear that providing email enables conversation continuity (hint text + inline returning lead banner)
+- [x] Remove the separate "Continue a Previous Conversation" card — one unified flow
+- [x] Add checkEmail server procedure and vitest test (163 tests passing)

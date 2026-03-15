@@ -1,18 +1,17 @@
 /**
  * TalkPage — Dedicated page to talk with AiA directly.
  *
- * Two-tier UX:
- *   1. New visitors: optional pre-fill form (name, email, phone) → start voice
- *   2. Returning leads: enter email → receive magic link → verify → see history + talk
+ * Unified UX:
+ *   - One smart email field: if email exists in DB → offer magic link to continue;
+ *     if new → proceed as new visitor. No separate "continue" card.
+ *   - Optional name/phone pre-fill
  *
  * Visual features:
- *   - Holographic video watermark background (auto on first visit, optional replay button after)
+ *   - Holographic video watermark background (auto on first visit, optional replay after)
  *   - Golden microphone icon with 7-second shine pulse
  *   - Speech indicator bars during active conversation
  *   - Live transcription with copy-to-clipboard
  *   - Transcript persisted to DB on conversation end
- *
- * Uses ElevenLabs React SDK `useConversation` with `onMessage`.
  */
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useConversation } from "@11labs/react";
@@ -33,6 +32,7 @@ import {
   ChevronDown,
   ChevronUp,
   Play,
+  RefreshCw,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -63,6 +63,9 @@ type ConvStatus = "idle" | "connecting" | "connected" | "error";
 /** Which screen the user sees */
 type PageView = "landing" | "voice" | "magic-link-sent" | "verified";
 
+/** Smart email state */
+type EmailState = "idle" | "checking" | "new" | "returning";
+
 interface VerifiedLead {
   id: number;
   name: string | null;
@@ -88,18 +91,20 @@ export default function TalkPage() {
   const [visitorName, setVisitorName] = useState("");
   const [visitorEmail, setVisitorEmail] = useState("");
   const [visitorPhone, setVisitorPhone] = useState("");
-  const [magicLinkEmail, setMagicLinkEmail] = useState("");
   const [verifiedLead, setVerifiedLead] = useState<VerifiedLead | null>(null);
   const [previousTranscripts, setPreviousTranscripts] = useState<PreviousTranscript[]>([]);
   const [expandedTranscript, setExpandedTranscript] = useState<number | null>(null);
   const conversationStartRef = useRef<Date | null>(null);
+
+  // ─── Smart email detection ────────────────────────────────────────
+  const [emailState, setEmailState] = useState<EmailState>("idle");
+  const emailCheckTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ─── Video watermark state ─────────────────────────────────────────
   const [isFirstVisit] = useState(() => !localStorage.getItem(FIRST_VISIT_KEY));
   const [videoPlaying, setVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Mark first visit as done on mount
   useEffect(() => {
     if (isFirstVisit) {
       localStorage.setItem(FIRST_VISIT_KEY, "true");
@@ -107,7 +112,6 @@ export default function TalkPage() {
     }
   }, [isFirstVisit]);
 
-  // Auto-play video on first visit
   useEffect(() => {
     if (videoPlaying && videoRef.current) {
       videoRef.current.currentTime = 0;
@@ -136,6 +140,7 @@ export default function TalkPage() {
   const sendMagicLink = trpc.talk.sendMagicLink.useMutation();
   const verifyMagicLink = trpc.talk.verifyMagicLink.useMutation();
   const saveTranscript = trpc.talk.saveTranscript.useMutation();
+  const checkEmail = trpc.talk.checkEmail.useMutation();
 
   // ─── Check for magic link token in URL on mount ────────────────────
   useEffect(() => {
@@ -168,6 +173,60 @@ export default function TalkPage() {
       );
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ─── Smart email change handler (debounced check) ──────────────────
+  const handleEmailChange = useCallback(
+    (val: string) => {
+      setVisitorEmail(val);
+      if (emailCheckTimeout.current) clearTimeout(emailCheckTimeout.current);
+
+      // Reset state if email is empty or invalid
+      if (!val.trim() || !val.includes("@") || !val.includes(".")) {
+        setEmailState("idle");
+        return;
+      }
+
+      // Basic email validation before checking
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(val.trim())) {
+        setEmailState("idle");
+        return;
+      }
+
+      setEmailState("checking");
+      emailCheckTimeout.current = setTimeout(() => {
+        checkEmail.mutate(
+          { email: val.trim() },
+          {
+            onSuccess: (data) => {
+              setEmailState(data.exists ? "returning" : "new");
+            },
+            onError: () => {
+              setEmailState("new"); // Default to new on error
+            },
+          }
+        );
+      }, 600);
+    },
+    [checkEmail]
+  );
+
+  // ─── Magic link for returning lead ─────────────────────────────────
+  const handleSendMagicLink = useCallback(() => {
+    if (!visitorEmail.trim()) return;
+    sendMagicLink.mutate(
+      { email: visitorEmail.trim(), origin: window.location.origin },
+      {
+        onSuccess: (data) => {
+          setView("magic-link-sent");
+          toast.success(data.message);
+        },
+        onError: (err) => {
+          toast.error(err.message || "Failed to send magic link");
+        },
+      }
+    );
+  }, [visitorEmail, sendMagicLink]);
 
   // ─── ElevenLabs conversation ───────────────────────────────────────
   const conversation = useConversation({
@@ -225,7 +284,6 @@ export default function TalkPage() {
     setStatus("idle");
     setAgentSpeaking(false);
 
-    // Persist transcript to DB
     if (transcript.length > 0) {
       const durationSeconds = conversationStartRef.current
         ? Math.round((Date.now() - conversationStartRef.current.getTime()) / 1000)
@@ -285,23 +343,6 @@ export default function TalkPage() {
 
   const isActive = status === "connected" || status === "connecting";
 
-  // ─── Magic link handlers ───────────────────────────────────────────
-  const handleSendMagicLink = useCallback(() => {
-    if (!magicLinkEmail.trim()) return;
-    sendMagicLink.mutate(
-      { email: magicLinkEmail.trim(), origin: window.location.origin },
-      {
-        onSuccess: (data) => {
-          setView("magic-link-sent");
-          toast.success(data.message);
-        },
-        onError: (err) => {
-          toast.error(err.message || "Failed to send magic link");
-        },
-      }
-    );
-  }, [magicLinkEmail, sendMagicLink]);
-
   const handleStartAsNew = useCallback(() => {
     setView("voice");
   }, []);
@@ -325,44 +366,20 @@ export default function TalkPage() {
 
   // ─── Render helpers ────────────────────────────────────────────────
 
-  /** Landing view — choose new or returning */
+  /** Unified landing view — one smart form */
   const renderLanding = () => (
-    <div style={{ maxWidth: "560px", margin: "0 auto" }}>
-      {/* New visitor card */}
+    <div style={{ maxWidth: "520px", margin: "0 auto" }}>
       <div
         style={{
           background: "rgba(5,8,15,0.85)",
           border: "1px solid rgba(212,168,67,0.18)",
           borderRadius: "16px",
           padding: "32px",
-          marginBottom: "24px",
           backdropFilter: "blur(12px)",
         }}
       >
-        <h2
-          style={{
-            fontFamily: FF,
-            fontSize: "20px",
-            fontWeight: 700,
-            color: "var(--pearl)",
-            marginBottom: "8px",
-          }}
-        >
-          Start a New Conversation
-        </h2>
-        <p
-          style={{
-            fontSize: "14px",
-            color: "var(--pearl-dim)",
-            lineHeight: 1.6,
-            marginBottom: "24px",
-          }}
-        >
-          Optionally share your details so AiA can personalize your diagnostic.
-          You can also skip and just start talking.
-        </p>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>
+        {/* Name field */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "16px" }}>
           <div style={{ position: "relative" }}>
             <User
               size={16}
@@ -384,6 +401,8 @@ export default function TalkPage() {
               onBlur={(e) => (e.target.style.borderColor = "rgba(212,168,67,0.20)")}
             />
           </div>
+
+          {/* Smart email field */}
           <div style={{ position: "relative" }}>
             <Mail
               size={16}
@@ -392,19 +411,62 @@ export default function TalkPage() {
                 left: "14px",
                 top: "50%",
                 transform: "translateY(-50%)",
-                color: "rgba(212,168,67,0.4)",
+                color:
+                  emailState === "returning"
+                    ? "rgba(74,222,128,0.6)"
+                    : "rgba(212,168,67,0.4)",
+                transition: "color 0.3s",
               }}
             />
             <input
               type="email"
-              placeholder="Email (optional)"
+              placeholder="Email — enter to continue a prior conversation"
               value={visitorEmail}
-              onChange={(e) => setVisitorEmail(e.target.value)}
-              style={{ ...inputStyle, paddingLeft: "40px" }}
-              onFocus={(e) => (e.target.style.borderColor = "rgba(212,168,67,0.45)")}
-              onBlur={(e) => (e.target.style.borderColor = "rgba(212,168,67,0.20)")}
+              onChange={(e) => handleEmailChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && emailState === "returning") {
+                  handleSendMagicLink();
+                }
+              }}
+              style={{
+                ...inputStyle,
+                paddingLeft: "40px",
+                paddingRight: emailState === "checking" ? "40px" : "16px",
+                borderColor:
+                  emailState === "returning"
+                    ? "rgba(74,222,128,0.30)"
+                    : "rgba(212,168,67,0.20)",
+              }}
+              onFocus={(e) =>
+                (e.target.style.borderColor =
+                  emailState === "returning"
+                    ? "rgba(74,222,128,0.5)"
+                    : "rgba(212,168,67,0.45)")
+              }
+              onBlur={(e) =>
+                (e.target.style.borderColor =
+                  emailState === "returning"
+                    ? "rgba(74,222,128,0.30)"
+                    : "rgba(212,168,67,0.20)")
+              }
             />
+            {/* Checking spinner */}
+            {emailState === "checking" && (
+              <Loader2
+                size={14}
+                className="animate-spin"
+                style={{
+                  position: "absolute",
+                  right: "14px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "rgba(212,168,67,0.5)",
+                }}
+              />
+            )}
           </div>
+
+          {/* Phone field */}
           <div style={{ position: "relative" }}>
             <Phone
               size={16}
@@ -428,165 +490,212 @@ export default function TalkPage() {
           </div>
         </div>
 
-        <motion.button
-          onClick={handleStartAsNew}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          style={{
-            width: "100%",
-            padding: "16px",
-            borderRadius: "12px",
-            border: "1px solid rgba(212,168,67,0.35)",
-            background:
-              "linear-gradient(135deg, rgba(212,168,67,0.18) 0%, rgba(184,156,74,0.10) 100%)",
-            color: "var(--gold-bright)",
-            fontFamily: FF,
-            fontSize: "16px",
-            fontWeight: 700,
-            letterSpacing: "0.04em",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "10px",
-            transition: "all 0.2s",
-          }}
-        >
-          <img
-            src={MIC_ICON_URL}
-            alt=""
-            style={{ width: "24px", height: "24px", objectFit: "contain" }}
-          />
-          Talk to AiA
-        </motion.button>
-      </div>
-
-      {/* Divider */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "16px",
-          margin: "8px 0",
-        }}
-      >
-        <div style={{ flex: 1, height: "1px", background: "rgba(212,168,67,0.12)" }} />
-        <span
-          style={{
-            fontSize: "12px",
-            fontWeight: 700,
-            color: "var(--pearl-dim)",
-            letterSpacing: "0.08em",
-            opacity: 0.5,
-          }}
-        >
-          OR
-        </span>
-        <div style={{ flex: 1, height: "1px", background: "rgba(212,168,67,0.12)" }} />
-      </div>
-
-      {/* Returning lead card */}
-      <div
-        style={{
-          background: "rgba(5,8,15,0.85)",
-          border: "1px solid rgba(100,140,200,0.15)",
-          borderRadius: "16px",
-          padding: "32px",
-          marginTop: "24px",
-          backdropFilter: "blur(12px)",
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: FF,
-            fontSize: "20px",
-            fontWeight: 700,
-            color: "var(--pearl)",
-            marginBottom: "8px",
-          }}
-        >
-          Continue a Previous Conversation
-        </h2>
-        <p
-          style={{
-            fontSize: "14px",
-            color: "var(--pearl-dim)",
-            lineHeight: 1.6,
-            marginBottom: "24px",
-          }}
-        >
-          We'll send a secure link to your email so AiA can pick up where you
-          left off. Only you can access your conversation history.
-        </p>
-
-        <div style={{ position: "relative" }}>
-          <Mail
-            size={16}
-            style={{
-              position: "absolute",
-              left: "14px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              color: "rgba(100,140,200,0.5)",
-            }}
-          />
-          <input
-            type="email"
-            placeholder="Enter the email you used before"
-            value={magicLinkEmail}
-            onChange={(e) => setMagicLinkEmail(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleSendMagicLink()}
-            style={{
-              ...inputStyle,
-              paddingLeft: "40px",
-              borderColor: "rgba(100,140,200,0.20)",
-            }}
-            onFocus={(e) =>
-              (e.target.style.borderColor = "rgba(100,140,200,0.5)")
-            }
-            onBlur={(e) =>
-              (e.target.style.borderColor = "rgba(100,140,200,0.20)")
-            }
-          />
-        </div>
-
-        <motion.button
-          onClick={handleSendMagicLink}
-          disabled={!magicLinkEmail.trim() || sendMagicLink.isPending}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          style={{
-            width: "100%",
-            marginTop: "16px",
-            padding: "14px",
-            borderRadius: "10px",
-            border: "1px solid rgba(100,140,200,0.25)",
-            background: "rgba(100,140,200,0.10)",
-            color: "rgba(140,170,220,0.9)",
-            fontFamily: FF,
-            fontSize: "15px",
-            fontWeight: 600,
-            letterSpacing: "0.03em",
-            cursor:
-              !magicLinkEmail.trim() || sendMagicLink.isPending
-                ? "not-allowed"
-                : "pointer",
-            opacity:
-              !magicLinkEmail.trim() || sendMagicLink.isPending ? 0.5 : 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px",
-            transition: "all 0.2s",
-          }}
-        >
-          {sendMagicLink.isPending ? (
-            <Loader2 size={16} className="animate-spin" />
-          ) : (
-            <Mail size={16} />
+        {/* Smart context message — appears when email is recognized */}
+        <AnimatePresence>
+          {emailState === "returning" && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25 }}
+              style={{ overflow: "hidden", marginBottom: "16px" }}
+            >
+              <div
+                style={{
+                  background: "rgba(74,222,128,0.06)",
+                  border: "1px solid rgba(74,222,128,0.18)",
+                  borderRadius: "10px",
+                  padding: "12px 16px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    width: "28px",
+                    height: "28px",
+                    borderRadius: "50%",
+                    background: "rgba(74,222,128,0.12)",
+                    border: "1px solid rgba(74,222,128,0.25)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <RefreshCw size={13} style={{ color: "#4ade80" }} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div
+                    style={{
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      color: "rgba(74,222,128,0.9)",
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    We found your previous conversation.
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      color: "var(--pearl-dim)",
+                      lineHeight: 1.4,
+                      marginTop: "2px",
+                    }}
+                  >
+                    Click below to receive a secure link and pick up where you left off.
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           )}
-          {sendMagicLink.isPending ? "Sending…" : "Send Magic Link"}
-        </motion.button>
+        </AnimatePresence>
+
+        {/* Contextual hint below email when idle */}
+        {emailState === "idle" && !visitorEmail && (
+          <p
+            style={{
+              fontSize: "12px",
+              color: "var(--pearl-dim)",
+              opacity: 0.5,
+              lineHeight: 1.5,
+              marginBottom: "16px",
+              paddingLeft: "2px",
+            }}
+          >
+            Providing your email lets you continue conversations later.
+          </p>
+        )}
+
+        {/* New email hint */}
+        {emailState === "new" && (
+          <p
+            style={{
+              fontSize: "12px",
+              color: "var(--pearl-dim)",
+              opacity: 0.6,
+              lineHeight: 1.5,
+              marginBottom: "16px",
+              paddingLeft: "2px",
+            }}
+          >
+            New here? Great — AiA will remember you for next time.
+          </p>
+        )}
+
+        {/* Buttons — context-dependent */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {/* Primary: Talk to AiA (always shown) */}
+          {emailState !== "returning" && (
+            <motion.button
+              onClick={handleStartAsNew}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              style={{
+                width: "100%",
+                padding: "16px",
+                borderRadius: "12px",
+                border: "1px solid rgba(212,168,67,0.35)",
+                background:
+                  "linear-gradient(135deg, rgba(212,168,67,0.18) 0%, rgba(184,156,74,0.10) 100%)",
+                color: "var(--gold-bright)",
+                fontFamily: FF,
+                fontSize: "16px",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+                transition: "all 0.2s",
+              }}
+            >
+              <img
+                src={MIC_ICON_URL}
+                alt=""
+                style={{ width: "24px", height: "24px", objectFit: "contain" }}
+              />
+              Talk to AiA
+            </motion.button>
+          )}
+
+          {/* Returning lead: Send Magic Link button */}
+          {emailState === "returning" && (
+            <>
+              <motion.button
+                onClick={handleSendMagicLink}
+                disabled={sendMagicLink.isPending}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                style={{
+                  width: "100%",
+                  padding: "16px",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(74,222,128,0.30)",
+                  background:
+                    "linear-gradient(135deg, rgba(74,222,128,0.12) 0%, rgba(74,222,128,0.06) 100%)",
+                  color: "rgba(74,222,128,0.9)",
+                  fontFamily: FF,
+                  fontSize: "15px",
+                  fontWeight: 700,
+                  letterSpacing: "0.04em",
+                  cursor: sendMagicLink.isPending ? "not-allowed" : "pointer",
+                  opacity: sendMagicLink.isPending ? 0.6 : 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                  transition: "all 0.2s",
+                }}
+              >
+                {sendMagicLink.isPending ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <Mail size={16} />
+                )}
+                {sendMagicLink.isPending
+                  ? "Sending…"
+                  : "Continue Previous Conversation"}
+              </motion.button>
+
+              {/* Secondary: Start fresh anyway */}
+              <motion.button
+                onClick={handleStartAsNew}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  borderRadius: "10px",
+                  border: "1px solid rgba(212,168,67,0.15)",
+                  background: "transparent",
+                  color: "var(--pearl-dim)",
+                  fontFamily: FF,
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  letterSpacing: "0.03em",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                  opacity: 0.7,
+                  transition: "all 0.2s",
+                }}
+              >
+                <img
+                  src={MIC_ICON_URL}
+                  alt=""
+                  style={{ width: "18px", height: "18px", objectFit: "contain", opacity: 0.6 }}
+                />
+                Or start a new conversation
+              </motion.button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -644,8 +753,9 @@ export default function TalkPage() {
             marginBottom: "8px",
           }}
         >
-          If we have <strong style={{ color: "var(--pearl-muted)" }}>{magicLinkEmail}</strong> on
-          file, you'll receive a magic link shortly.
+          If we have{" "}
+          <strong style={{ color: "var(--pearl-muted)" }}>{visitorEmail}</strong>{" "}
+          on file, you'll receive a magic link shortly.
         </p>
         <p
           style={{
@@ -714,22 +824,10 @@ export default function TalkPage() {
           <Check size={18} style={{ color: "#4ade80" }} />
         </div>
         <div style={{ flex: 1 }}>
-          <div
-            style={{
-              fontSize: "14px",
-              fontWeight: 600,
-              color: "var(--pearl)",
-            }}
-          >
+          <div style={{ fontSize: "14px", fontWeight: 600, color: "var(--pearl)" }}>
             Verified: {verifiedLead.name ?? verifiedLead.email}
           </div>
-          <div
-            style={{
-              fontSize: "12px",
-              color: "var(--pearl-dim)",
-              marginTop: "2px",
-            }}
-          >
+          <div style={{ fontSize: "12px", color: "var(--pearl-dim)", marginTop: "2px" }}>
             AiA has your context and is ready to continue.
             {verifiedLead.company && ` (${verifiedLead.company})`}
           </div>
@@ -762,7 +860,7 @@ export default function TalkPage() {
             try {
               parsedEntries = JSON.parse(t.transcript);
             } catch {
-              // fallback to text
+              /* fallback to text */
             }
             return (
               <div
@@ -775,9 +873,7 @@ export default function TalkPage() {
                 }}
               >
                 <button
-                  onClick={() =>
-                    setExpandedTranscript(isExpanded ? null : t.id)
-                  }
+                  onClick={() => setExpandedTranscript(isExpanded ? null : t.id)}
                   style={{
                     width: "100%",
                     padding: "12px 16px",
@@ -790,24 +886,9 @@ export default function TalkPage() {
                     color: "var(--pearl-muted)",
                   }}
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
-                    }}
-                  >
-                    <MessageSquare
-                      size={14}
-                      style={{ color: "rgba(212,168,67,0.5)" }}
-                    />
-                    <span
-                      style={{
-                        fontSize: "13px",
-                        fontFamily: FF,
-                        fontWeight: 500,
-                      }}
-                    >
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <MessageSquare size={14} style={{ color: "rgba(212,168,67,0.5)" }} />
+                    <span style={{ fontSize: "13px", fontFamily: FF, fontWeight: 500 }}>
                       {new Date(t.createdAt).toLocaleDateString(undefined, {
                         month: "short",
                         day: "numeric",
@@ -825,16 +906,11 @@ export default function TalkPage() {
                         }}
                       >
                         <Clock size={10} />
-                        {Math.floor(t.durationSeconds / 60)}m{" "}
-                        {t.durationSeconds % 60}s
+                        {Math.floor(t.durationSeconds / 60)}m {t.durationSeconds % 60}s
                       </span>
                     )}
                   </div>
-                  {isExpanded ? (
-                    <ChevronUp size={14} />
-                  ) : (
-                    <ChevronDown size={14} />
-                  )}
+                  {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                 </button>
                 <AnimatePresence>
                   {isExpanded && (
@@ -846,11 +922,7 @@ export default function TalkPage() {
                       style={{ overflow: "hidden" }}
                     >
                       <div
-                        style={{
-                          padding: "0 16px 16px",
-                          maxHeight: "300px",
-                          overflowY: "auto",
-                        }}
+                        style={{ padding: "0 16px 16px", maxHeight: "300px", overflowY: "auto" }}
                         className="transcript-scroll"
                       >
                         {parsedEntries.length > 0
@@ -904,7 +976,7 @@ export default function TalkPage() {
     );
   };
 
-  /** Voice conversation UI (shared between "voice" and "verified" views) */
+  /** Voice conversation UI */
   const renderVoiceUI = () => (
     <>
       {/* Voice Control Area */}
@@ -974,22 +1046,14 @@ export default function TalkPage() {
                     position: "absolute",
                     width: "3px",
                     borderRadius: "2px",
-                    background: agentSpeaking
-                      ? "#D4A843"
-                      : "rgba(212,168,67,0.35)",
+                    background: agentSpeaking ? "#D4A843" : "rgba(212,168,67,0.35)",
                     transformOrigin: "center 76px",
                     transform: `rotate(${deg}deg) translateY(-76px)`,
                   }}
                   animate={
                     agentSpeaking
-                      ? {
-                          height: [6, 20, 6, 24, 6],
-                          opacity: [0.5, 1, 0.5, 1, 0.5],
-                        }
-                      : {
-                          height: [4, 10, 4, 8, 4],
-                          opacity: [0.3, 0.6, 0.3, 0.5, 0.3],
-                        }
+                      ? { height: [6, 20, 6, 24, 6], opacity: [0.5, 1, 0.5, 1, 0.5] }
+                      : { height: [4, 10, 4, 8, 4], opacity: [0.3, 0.6, 0.3, 0.5, 0.3] }
                   }
                   transition={{
                     repeat: Infinity,
@@ -1029,7 +1093,6 @@ export default function TalkPage() {
             }}
             title={isActive ? "End conversation" : "Talk to AiA"}
           >
-            {/* Active pulsing ring */}
             {isActive && (
               <motion.div
                 style={{
@@ -1039,19 +1102,11 @@ export default function TalkPage() {
                   border: "2px solid rgba(212,168,67,0.5)",
                 }}
                 animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 1.5,
-                  ease: "easeOut",
-                }}
+                transition={{ repeat: Infinity, duration: 1.5, ease: "easeOut" }}
               />
             )}
             {status === "connecting" ? (
-              <Loader2
-                size={44}
-                style={{ color: "#D4A843" }}
-                className="animate-spin"
-              />
+              <Loader2 size={44} style={{ color: "#D4A843" }} className="animate-spin" />
             ) : isActive ? (
               <PhoneOff size={44} style={{ color: "#ff6b6b" }} />
             ) : (
@@ -1071,13 +1126,7 @@ export default function TalkPage() {
         </div>
 
         {/* Status + controls */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "16px",
-          }}
-        >
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <div
             style={{
               fontSize: "13px",
@@ -1094,8 +1143,7 @@ export default function TalkPage() {
           >
             {status === "idle" && "Press to start"}
             {status === "connecting" && "Connecting…"}
-            {status === "connected" &&
-              (agentSpeaking ? "AiA is speaking…" : "Listening…")}
+            {status === "connected" && (agentSpeaking ? "AiA is speaking…" : "Listening…")}
             {status === "error" && "Mic access required"}
           </div>
 
@@ -1106,16 +1154,12 @@ export default function TalkPage() {
               onClick={toggleMute}
               title={isMuted ? "Unmute" : "Mute"}
               style={{
-                background: isMuted
-                  ? "rgba(212,168,67,0.2)"
-                  : "rgba(255,255,255,0.06)",
+                background: isMuted ? "rgba(212,168,67,0.2)" : "rgba(255,255,255,0.06)",
                 border: "1px solid rgba(212,168,67,0.25)",
                 borderRadius: "10px",
                 padding: "8px 12px",
                 cursor: "pointer",
-                color: isMuted
-                  ? "#D4A843"
-                  : "rgba(200,215,230,0.7)",
+                color: isMuted ? "#D4A843" : "rgba(200,215,230,0.7)",
                 display: "flex",
                 alignItems: "center",
                 gap: "6px",
@@ -1142,7 +1186,6 @@ export default function TalkPage() {
           WebkitBackdropFilter: "blur(12px)",
         }}
       >
-        {/* Transcript header */}
         <div
           style={{
             display: "flex",
@@ -1152,13 +1195,7 @@ export default function TalkPage() {
             borderBottom: "1px solid rgba(255,255,255,0.06)",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <div
               style={{
                 width: "8px",
@@ -1169,9 +1206,7 @@ export default function TalkPage() {
                   : transcript.length > 0
                     ? "var(--gold-bright)"
                     : "rgba(200,215,230,0.25)",
-                boxShadow: isActive
-                  ? "0 0 8px rgba(74,222,128,0.5)"
-                  : "none",
+                boxShadow: isActive ? "0 0 8px rgba(74,222,128,0.5)" : "none",
               }}
             />
             <span
@@ -1198,9 +1233,7 @@ export default function TalkPage() {
               padding: "6px 14px",
               borderRadius: "8px",
               border: "1px solid rgba(212,168,67,0.25)",
-              background: copied
-                ? "rgba(74,222,128,0.15)"
-                : "rgba(255,255,255,0.04)",
+              background: copied ? "rgba(74,222,128,0.15)" : "rgba(255,255,255,0.04)",
               color: copied ? "#4ade80" : "var(--pearl-dim)",
               fontSize: "12px",
               fontWeight: 600,
@@ -1215,7 +1248,6 @@ export default function TalkPage() {
           </button>
         </div>
 
-        {/* Transcript content */}
         <div
           style={{
             minHeight: "200px",
@@ -1249,10 +1281,7 @@ export default function TalkPage() {
                   justifyContent: "center",
                 }}
               >
-                <Mic
-                  size={20}
-                  style={{ color: "rgba(212,168,67,0.4)" }}
-                />
+                <Mic size={20} style={{ color: "rgba(212,168,67,0.4)" }} />
               </div>
               <p
                 style={{
@@ -1268,24 +1297,14 @@ export default function TalkPage() {
               </p>
             </div>
           ) : (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "16px",
-              }}
-            >
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               {transcript.map((entry) => (
                 <motion.div
                   key={entry.id}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.25 }}
-                  style={{
-                    display: "flex",
-                    gap: "12px",
-                    alignItems: "flex-start",
-                  }}
+                  style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}
                 >
                   <div
                     style={{
@@ -1294,13 +1313,9 @@ export default function TalkPage() {
                       height: "32px",
                       borderRadius: "50%",
                       background:
-                        entry.role === "ai"
-                          ? "rgba(212,168,67,0.15)"
-                          : "rgba(100,140,200,0.12)",
+                        entry.role === "ai" ? "rgba(212,168,67,0.15)" : "rgba(100,140,200,0.12)",
                       border: `1px solid ${
-                        entry.role === "ai"
-                          ? "rgba(212,168,67,0.3)"
-                          : "rgba(100,140,200,0.2)"
+                        entry.role === "ai" ? "rgba(212,168,67,0.3)" : "rgba(100,140,200,0.2)"
                       }`,
                       display: "flex",
                       alignItems: "center",
@@ -1308,26 +1323,19 @@ export default function TalkPage() {
                       fontSize: "11px",
                       fontWeight: 700,
                       color:
-                        entry.role === "ai"
-                          ? "var(--gold-bright)"
-                          : "rgba(140,170,220,0.8)",
+                        entry.role === "ai" ? "var(--gold-bright)" : "rgba(140,170,220,0.8)",
                       letterSpacing: "0.04em",
                     }}
                   >
                     {entry.role === "ai" ? "AiA" : "You"}
                   </div>
-
                   <div
                     style={{
                       flex: 1,
                       background:
-                        entry.role === "ai"
-                          ? "rgba(212,168,67,0.06)"
-                          : "rgba(100,140,200,0.05)",
+                        entry.role === "ai" ? "rgba(212,168,67,0.06)" : "rgba(100,140,200,0.05)",
                       border: `1px solid ${
-                        entry.role === "ai"
-                          ? "rgba(212,168,67,0.12)"
-                          : "rgba(100,140,200,0.08)"
+                        entry.role === "ai" ? "rgba(212,168,67,0.12)" : "rgba(100,140,200,0.08)"
                       }`,
                       borderRadius: "12px",
                       padding: "12px 16px",
@@ -1400,21 +1408,21 @@ export default function TalkPage() {
             height: "auto",
             objectFit: "cover",
             zIndex: 0,
-            opacity: videoPlaying ? 0.12 : 0,
+            opacity: videoPlaying ? 0.35 : 0,
             transition: "opacity 1.5s ease-in-out",
             pointerEvents: "none",
             mixBlendMode: "screen",
-            filter: "saturate(0.6) brightness(1.2)",
+            filter: "saturate(0.7) brightness(1.4)",
           }}
         />
-        {/* Gradient overlay to keep content readable */}
+        {/* Lighter gradient overlay — lets more video through */}
         <div
           style={{
             position: "fixed",
             inset: 0,
             zIndex: 0,
             background:
-              "radial-gradient(ellipse at center, rgba(3,5,10,0.3) 0%, rgba(3,5,10,0.75) 70%, rgba(3,5,10,0.92) 100%)",
+              "radial-gradient(ellipse at center, rgba(3,5,10,0.15) 0%, rgba(3,5,10,0.50) 70%, rgba(3,5,10,0.80) 100%)",
             pointerEvents: "none",
           }}
         />
@@ -1468,7 +1476,7 @@ export default function TalkPage() {
                 >
                   {view === "verified"
                     ? "Welcome back. AiA has your context and is ready to continue where you left off."
-                    : "AiA is our AI diagnostic agent. Start a new conversation or continue a previous one."}
+                    : "AiA is our AI diagnostic agent. Share your details or just start talking."}
                 </p>
               </div>
 
@@ -1484,7 +1492,7 @@ export default function TalkPage() {
                 </>
               )}
 
-              {/* Phone fallback — show on voice/verified views */}
+              {/* Phone fallback */}
               {(view === "voice" || view === "verified") && (
                 <p
                   style={{
@@ -1499,10 +1507,7 @@ export default function TalkPage() {
                   You can also call AiA directly at{" "}
                   <a
                     href="tel:+18888080001"
-                    style={{
-                      color: "var(--gold-bright)",
-                      textDecoration: "none",
-                    }}
+                    style={{ color: "var(--gold-bright)", textDecoration: "none" }}
                   >
                     +1 (888) 808-0001
                   </a>
@@ -1513,7 +1518,10 @@ export default function TalkPage() {
               {view === "voice" && (
                 <div style={{ textAlign: "center", marginTop: "16px" }}>
                   <button
-                    onClick={() => setView("landing")}
+                    onClick={() => {
+                      if (isActive) endConversation();
+                      setView("landing");
+                    }}
                     style={{
                       padding: "8px 16px",
                       borderRadius: "8px",
@@ -1588,7 +1596,6 @@ export default function TalkPage() {
         )}
       </div>
 
-      {/* Custom scrollbar + shine keyframes */}
       <style>{`
         .transcript-scroll::-webkit-scrollbar {
           width: 6px;

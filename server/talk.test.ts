@@ -219,6 +219,33 @@ describe("talk.sendMagicLink", () => {
   });
 });
 
+describe("talk.checkEmail", () => {
+  it("returns exists: false for unknown email", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+
+    const result = await caller.talk.checkEmail({
+      email: "unknown-person@example.com",
+    });
+
+    expect(result.exists).toBe(false);
+  });
+
+  it("returns exists: true for known lead email", async () => {
+    const { getLeadsByEmail } = await import("./db");
+    (getLeadsByEmail as any).mockResolvedValueOnce([
+      { id: 99, email: "known@example.com", name: "Known Lead" },
+    ]);
+
+    const caller = appRouter.createCaller(createPublicContext());
+
+    const result = await caller.talk.checkEmail({
+      email: "known@example.com",
+    });
+
+    expect(result.exists).toBe(true);
+  });
+});
+
 describe("talk.verifyMagicLink", () => {
   it("rejects invalid tokens", async () => {
     const caller = appRouter.createCaller(createPublicContext());

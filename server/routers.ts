@@ -639,6 +639,17 @@ const talkRouter = router({
     }),
 
   /**
+   * Check if an email belongs to an existing lead (for smart unified form).
+   * Returns whether the email is recognized WITHOUT revealing any lead data.
+   */
+  checkEmail: publicProcedure
+    .input(z.object({ email: z.string().email().max(320) }))
+    .mutation(async ({ input }) => {
+      const leads = await getLeadsByEmail(input.email.toLowerCase().trim());
+      return { exists: leads.length > 0 };
+    }),
+
+  /**
    * Admin: list all web transcripts (for admin console).
    */
   listTranscripts: adminAuthedProcedure.query(async () => {
