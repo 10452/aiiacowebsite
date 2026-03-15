@@ -7,7 +7,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import ReadAloud from "./ReadAloud";
 import CallNowButton from "@/components/CallNowButton";
 
 const navLinks = [
@@ -166,7 +165,6 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                 <span style={{ fontSize: "14px" }}>🎙</span>
                 Talk to AiA
               </a>
-              <ReadAloud />
               <CallNowButton
                 variant="outline"
                 size="sm"
@@ -279,10 +277,6 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                     <span style={{ fontSize: "16px" }}>🎙</span>
                     Talk to AiA
                   </a>
-
-                  <div style={{ height: "4px" }} />
-
-                  <ReadAloud />
 
                   <div style={{ height: "4px" }} />
 

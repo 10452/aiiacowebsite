@@ -878,3 +878,6 @@ Voice assignments:
 - [x] Add "Talk to AiA" link in navbar
 - [x] Write vitest tests for magic link send/verify and transcript save procedures
 - [x] Ensure persisted transcripts appear in admin console alongside webhook-captured calls
+
+## Round 101 — Remove LISTEN Button
+- [x] Remove ReadAloud component from Navbar (desktop + mobile) — low-quality TTS misrepresents AiA voice
