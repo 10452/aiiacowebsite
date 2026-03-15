@@ -30,6 +30,8 @@ import AdminAgentPage from "./pages/AdminAgentPage";
 import AdminKnowledgePage from "./pages/AdminKnowledgePage";
 import AdminAnalyticsPage from "./pages/AdminAnalyticsPage";
 import CorporatePage from "./pages/CorporatePage";
+import AgentPackagePage from "./pages/AgentPackagePage";
+import OperatorPage from "./pages/OperatorPage";
 import DiagnosticDemoPage from "./pages/DiagnosticDemoPage";
 import AiiAVoiceWidget from "./components/AiiAVoiceWidget";
 
@@ -55,6 +57,8 @@ function Router() {
       <Route path="/results" component={ResultsPage} />
       <Route path="/upgrade" component={UpgradePage} />
       <Route path="/corporate" component={CorporatePage} />
+      <Route path="/agentpackage" component={AgentPackagePage} />
+      <Route path="/operator" component={OperatorPage} />
       <Route path="/privacy" component={PrivacyPage} />
       <Route path="/terms" component={TermsPage} />
       <Route path="/ai-integration" component={AIIntegrationPage} />

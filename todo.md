@@ -831,3 +831,17 @@ Voice assignments:
 
 ## Round 95 — Fix Corporate Nav Link
 - [x] Fix "Corporate" link in Navbar to navigate to /corporate instead of scrolling — refactored scrollTo→navigateTo to handle route paths vs hash anchors
+
+## Round 96 — Multiple Fixes: Logo Nav, Gold Icons, New Pages, Mobile Navbar & Landscape
+- [x] Fix logo click to navigate to homepage from all subpages (window.location.href = "/" on subpages, smooth scroll on homepage)
+- [x] Replace all generic emoji icons on /corporate page with AiiACo proprietary solid gold CDN icons (generated handshake icon)
+- [x] Create /agentpackage page (AI Agent Package offering — full page with features, pricing, CTAs)
+- [x] Create /operator page (AI Operator offering — full page with features, pricing, CTAs)
+- [x] Link /agentpackage and /operator from /corporate track cards ("Explore" buttons)
+- [x] Fix mobile navbar — root cause: inline style display:flex overriding Tailwind hidden class
+  - Restructured: desktop links + CTAs in hidden xl:flex containers (no inline display)
+  - Hamburger: xl:!hidden with !important to override inline flex at desktop
+  - All nav items now accessible via hamburger menu on mobile
+- [x] Fix landscape orientation — added landscape media queries, safe-area insets, viewport-fit: cover
+- [x] Fixed viewport meta tag: removed maximum-scale=1, added viewport-fit=cover
+- [x] All 153 vitest tests passing

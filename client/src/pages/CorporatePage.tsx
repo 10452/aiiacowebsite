@@ -100,19 +100,22 @@ const TRACKS = [
     name: "Operator",
     description: "AiiA manages everything. You receive outcomes.",
     example: "Ideal for companies like LRMB — full managed AI infrastructure.",
-    icon: "⚙️",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency_6b72c1c5.png",
+    link: "/operator",
   },
   {
     name: "Agent",
     description: "AI tools deployed for your team to operate.",
     example: "Ideal for solo practitioners like Stephanie — self-operated AI.",
-    icon: "🤝",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-handshake-aPpLfARcj64PcMhQFxNgTw.webp",
+    link: "/agentpackage",
   },
   {
     name: "Corporate",
     description: "Modular enterprise rollout, phase by phase.",
     example: "Ideal for growing companies — structured, measurable, scalable.",
-    icon: "🏢",
+    icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-skyline-v1_b078c165.png",
+    link: null,
   },
 ];
 
@@ -177,40 +180,63 @@ export default function CorporatePage() {
         {/* Three Tracks */}
         <section style={{ padding: "0 24px 80px", maxWidth: "1100px", margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px" }}>
-            {TRACKS.map((track) => (
-              <div
-                key={track.name}
-                style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: track.name === "Corporate" ? "1px solid rgba(184,156,74,0.40)" : "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: "16px", padding: "28px 24px",
-                  backdropFilter: "blur(12px)",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                {track.name === "Corporate" && (
-                  <div style={{
-                    position: "absolute", top: "12px", right: "12px",
-                    background: "rgba(184,156,74,0.15)", border: "1px solid rgba(184,156,74,0.30)",
-                    borderRadius: "10px", padding: "3px 10px",
-                    fontSize: "10px", fontWeight: 700, color: "#D4A843", letterSpacing: "0.1em",
-                  }}>
-                    THIS PAGE
+            {TRACKS.map((track) => {
+              const CardContent = (
+                <>
+                  {track.name === "Corporate" && (
+                    <div style={{
+                      position: "absolute", top: "12px", right: "12px",
+                      background: "rgba(184,156,74,0.15)", border: "1px solid rgba(184,156,74,0.30)",
+                      borderRadius: "10px", padding: "3px 10px",
+                      fontSize: "10px", fontWeight: 700, color: "#D4A843", letterSpacing: "0.1em",
+                    }}>
+                      THIS PAGE
+                    </div>
+                  )}
+                  <img src={track.icon} alt={track.name} style={{ width: "48px", height: "48px", objectFit: "contain", marginBottom: "12px" }} />
+                  <div style={{ fontSize: "17px", fontWeight: 700, marginBottom: "8px", color: track.name === "Corporate" ? "#D4A843" : "#d2dceb" }}>
+                    {track.name} Track
                   </div>
-                )}
-                <div style={{ fontSize: "28px", marginBottom: "12px" }}>{track.icon}</div>
-                <div style={{ fontSize: "17px", fontWeight: 700, marginBottom: "8px", color: track.name === "Corporate" ? "#D4A843" : "#d2dceb" }}>
-                  {track.name} Track
+                  <p style={{ fontSize: "14px", color: "rgba(200,215,230,0.60)", lineHeight: 1.6, margin: "0 0 10px" }}>
+                    {track.description}
+                  </p>
+                  <p style={{ fontSize: "12px", color: "rgba(200,215,230,0.35)", lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
+                    {track.example}
+                  </p>
+                  {track.link && (
+                    <div style={{ marginTop: "14px", fontSize: "13px", fontWeight: 600, color: "#D4A843", display: "flex", alignItems: "center", gap: "6px" }}>
+                      Learn more <span style={{ fontSize: "16px" }}>&rarr;</span>
+                    </div>
+                  )}
+                </>
+              );
+
+              const cardStyle = {
+                background: "rgba(255,255,255,0.03)",
+                border: track.name === "Corporate" ? "1px solid rgba(184,156,74,0.40)" : "1px solid rgba(255,255,255,0.08)",
+                borderRadius: "16px", padding: "28px 24px",
+                backdropFilter: "blur(12px)",
+                position: "relative" as const,
+                overflow: "hidden" as const,
+                textDecoration: "none",
+                color: "inherit",
+                display: "block",
+                transition: "border-color 0.2s, transform 0.2s",
+              };
+
+              return track.link ? (
+                <a key={track.name} href={track.link} style={cardStyle}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(184,156,74,0.50)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.08)"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}
+                >
+                  {CardContent}
+                </a>
+              ) : (
+                <div key={track.name} style={cardStyle}>
+                  {CardContent}
                 </div>
-                <p style={{ fontSize: "14px", color: "rgba(200,215,230,0.60)", lineHeight: 1.6, margin: "0 0 10px" }}>
-                  {track.description}
-                </p>
-                <p style={{ fontSize: "12px", color: "rgba(200,215,230,0.35)", lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
-                  {track.example}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
@@ -261,7 +287,7 @@ export default function CorporatePage() {
                       borderRadius: "8px", padding: "5px 12px",
                       fontSize: "12px", fontWeight: 600, color: phase.color,
                     }}>
-                      ⏱ {phase.timeline}
+                      <img src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-trending_e02fc2b1.png" alt="" style={{ width: "14px", height: "14px", objectFit: "contain" }} /> {phase.timeline}
                     </div>
                   </div>
                 )}
@@ -308,7 +334,7 @@ export default function CorporatePage() {
                       borderRadius: "8px", padding: "5px 12px",
                       fontSize: "12px", fontWeight: 600, color: phase.color,
                     }}>
-                      ⏱ {phase.timeline}
+                      <img src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-trending_e02fc2b1.png" alt="" style={{ width: "14px", height: "14px", objectFit: "contain" }} /> {phase.timeline}
                     </div>
                   </div>
                 )}

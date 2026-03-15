@@ -93,7 +93,7 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0", gap: "16px" }}>
             {/* Brand */}
             <button
-              onClick={() => { setMobileOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              onClick={() => { setMobileOpen(false); if (window.location.pathname !== "/") { window.location.href = "/"; } else { window.scrollTo({ top: 0, behavior: "smooth" }); } }}
               style={{ display: "flex", alignItems: "center", gap: "12px", background: "none", border: "none", padding: 0, cursor: "pointer", flexShrink: 0 }}
             >
               <img
@@ -104,7 +104,7 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
             </button>
 
             {/* Desktop links — only show at xl (1280px+) */}
-            <div style={{ display: "flex", alignItems: "center", gap: "4px" }} className="hidden xl:flex">
+            <div className="hidden xl:flex items-center gap-1">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
@@ -133,17 +133,12 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
               ))}
             </div>
 
-            {/* CTA + mobile toggle */}
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-              {/* Desktop CTAs — only at xl */}
-              <div className="hidden xl:flex">
-                <ReadAloud />
-              </div>
-
+            {/* Desktop CTAs — all wrapped in one hidden xl:flex container */}
+            <div className="hidden xl:flex" style={{ alignItems: "center", gap: "10px", flexShrink: 0 }}>
+              <ReadAloud />
               <CallNowButton
                 variant="outline"
                 size="sm"
-                className="hidden xl:inline-flex"
                 style={{
                   fontFamily: FF,
                   fontSize: "13px",
@@ -158,31 +153,32 @@ export default function Navbar({ onOpenQualifier }: { onOpenQualifier?: () => vo
                   whiteSpace: "nowrap",
                 }}
               />
-              <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { navigateTo("#contact"); } }} className="btn-gold hidden xl:inline-flex" style={{ fontSize: "13px", padding: "10px 20px" }}>
+              <button onClick={() => { if (onOpenQualifier) { setMobileOpen(false); onOpenQualifier(); } else { navigateTo("#contact"); } }} className="btn-gold" style={{ fontSize: "13px", padding: "10px 20px" }}>
                 Request Upgrade
               </button>
-
-              {/* Mobile/tablet hamburger — shows below xl (1280px) */}
-              <button
-                onClick={() => setMobileOpen(!mobileOpen)}
-                className="xl:hidden"
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "rgba(255,255,255,0.80)",
-                  padding: "10px",
-                  cursor: "pointer",
-                  minWidth: "48px",
-                  minHeight: "48px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                aria-label={mobileOpen ? "Close menu" : "Open menu"}
-              >
-                {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
             </div>
+
+            {/* Mobile/tablet hamburger — shows below xl (1280px), hidden at xl+ */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="xl:!hidden"
+              style={{
+                background: "none",
+                border: "none",
+                color: "rgba(255,255,255,0.80)",
+                padding: "10px",
+                cursor: "pointer",
+                minWidth: "48px",
+                minHeight: "48px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
 
           {/* Mobile/tablet menu — full screen overlay */}
