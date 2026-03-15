@@ -283,7 +283,7 @@ export default function ResultsSection() {
               className="btn-gold"
               style={{ whiteSpace: "nowrap", fontSize: "14px", padding: "13px 24px" }}
             >
-              Request Upgrade Plan
+              See Your Upgrade Plan
             </button>
           </div>
         </motion.div>

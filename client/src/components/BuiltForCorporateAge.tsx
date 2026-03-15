@@ -120,7 +120,7 @@ export default function BuiltForCorporateAge() {
           </p>
           <div className="corporate-cta-buttons">
             <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "16px", padding: "16px 36px" }}>
-              Initiate Upgrade
+              Request Upgrade
             </button>
             <button
               onClick={() => document.querySelector("#models")?.scrollIntoView({ behavior: "smooth" })}

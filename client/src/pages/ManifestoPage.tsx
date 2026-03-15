@@ -190,7 +190,7 @@ export default function ManifestoPage() {
                 </p>
                 <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
                   <a href="/upgrade" className="btn-gold" style={{ fontSize: "15px", padding: "14px 28px", textDecoration: "none" }}>
-                    Initiate Upgrade
+                    Request Upgrade
                   </a>
                   <a href="/method" className="btn-glass" style={{ fontSize: "15px", padding: "14px 22px", textDecoration: "none" }}>
                     Review the Method

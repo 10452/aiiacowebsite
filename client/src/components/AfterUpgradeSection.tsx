@@ -162,7 +162,7 @@ export default function AfterUpgradeSection() {
             className="btn-gold"
             style={{ fontSize: "15px", padding: "14px 32px" }}
           >
-            Initiate Upgrade
+            Request Upgrade
           </button>
         </motion.div>
       </div>

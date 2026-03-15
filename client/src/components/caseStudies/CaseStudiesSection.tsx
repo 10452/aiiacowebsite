@@ -162,7 +162,7 @@ export default function CaseStudiesSection() {
               className="btn-gold"
               style={{ whiteSpace: "nowrap", fontSize: "14px", padding: "13px 22px" }}
             >
-              Request Upgrade Plan
+              Start Your Diagnostic
             </button>
           </div>
         </div>

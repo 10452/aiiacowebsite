@@ -213,7 +213,7 @@ export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () 
 
             <div className="hero-cta-row">
               <button onClick={scrollToContact} className="btn-gold" style={{ fontSize: "15px", padding: "14px 30px" }}>
-                Book an Operational Strategy Call
+                Book a Strategy Call
               </button>
               <button onClick={() => document.querySelector("#method")?.scrollIntoView({ behavior: "smooth" })} className="btn-glass" style={{ fontSize: "15px", padding: "14px 24px" }}>
                 See How It Works

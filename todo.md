@@ -815,3 +815,16 @@ Voice assignments:
 - [x] Support horizontal/landscape orientation — menu closes on orientation change, scrollable mobile menu
 - [x] Fix navbar items truncated at "Model" — raised breakpoint from lg (1024px) to xl (1280px) so hamburger shows on tablets
 - [x] All 153 vitest tests passing
+
+## Round 94 — Consolidate CTAs Across Site
+- [x] Audit all CTA buttons across every section and page — found 5 different labels doing the same thing
+- [x] Map each CTA: text, action, location, purpose — documented in cta_audit.md
+- [x] Eliminate redundant CTAs — consolidated to distinct labels per section
+- [x] Implement consolidated CTA hierarchy:
+  - Hero: "Book a Strategy Call" (distinct invitation)
+  - Navbar/AfterUpgrade/BuiltForCorporateAge/Manifesto: "Request Upgrade" (primary)
+  - Results: "See Your Upgrade Plan" (contextual)
+  - Case Studies: "Start Your Diagnostic" (contextual)
+  - Engagement Models: "Begin Full Integration" / "Discuss This Model" (kept — contextual)
+  - Subpages: kept page-specific labels (contextual to service)
+- [x] Verify consistency — all 153 tests passing, zero "Initiate Upgrade" or "Request Upgrade Plan" remaining
