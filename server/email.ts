@@ -11,6 +11,7 @@
  */
 
 import { Resend } from "resend";
+import { sanitizeName } from "./emailTemplates";
 
 const CALL_PREF_LABELS: Record<string, string> = {
   morning: "Morning — Weekdays 8am to 12pm",
@@ -114,7 +115,8 @@ export async function sendLeadConfirmationEmail(params: {
 }): Promise<boolean> {
   const { name, email, company, callPreference, isCalendly = false, leadBrief } = params;
 
-  const firstName = name.split(" ")[0] ?? name;
+  const cleanName = sanitizeName(name);
+  const firstName = cleanName ? cleanName.split(" ")[0] : null;
   const callLabel =
     CALL_PREF_LABELS[callPreference ?? ""] ??
     callPreference ??
@@ -251,7 +253,7 @@ export async function sendLeadConfirmationEmail(params: {
     <div class="logo">AiiACo</div>
     <div class="divider-gold"></div>
 
-    <h1>${firstName}, your request has been received.</h1>
+    <h1>${firstName ? `${firstName}, your` : `Your`} request has been received.</h1>
 
     <p>
       Thank you for taking the time to walk us through your situation${company ? ` at <strong>${company}</strong>` : ""}.
@@ -289,7 +291,7 @@ export async function sendLeadConfirmationEmail(params: {
 </body>
 </html>`;
 
-  const text = `AiiACo — ${firstName}, your request has been received.
+  const text = `AiiACo — ${firstName ? `${firstName}, your` : `Your`} request has been received.
 
 Thank you for taking the time to walk us through your situation${company ? ` at ${company}` : ""}.
 
@@ -307,7 +309,7 @@ aiiaco.com`;
       from: "AiiACo <team@aiiaco.com>",
       replyTo: OWNER_EMAIL,
       to: [email],
-      subject: `${firstName}, your AiiACo request is confirmed`,
+      subject: firstName ? `${firstName}, your AiiACo request is confirmed` : `Your AiiACo request is confirmed`,
       html,
       text,
     });

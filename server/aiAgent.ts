@@ -14,6 +14,7 @@
  */
 
 import crypto from "crypto";
+import { sanitizeName } from "./emailTemplates";
 
 // ─── Agent system prompt ──────────────────────────────────────────────────────
 
@@ -451,7 +452,21 @@ export function parseCallWebhook(payload: Record<string, unknown>): CallSummary 
     if (match && match[1]) {
       // Validate: must be 2+ chars, not a common filler word
       const candidate = match[1].trim();
-      const fillerWords = new Set(["So", "Now", "Well", "Great", "Sure", "Yes", "Yeah", "Right", "Okay", "Hey", "Hi", "Hello", "Thanks", "Thank"]);
+      const fillerWords = new Set([
+        // Filler / conversational
+        "So", "Now", "Well", "Great", "Sure", "Yes", "Yeah", "Right", "Okay", "Ok",
+        "Hey", "Hi", "Hello", "Thanks", "Thank", "Please", "Just", "Like", "Um", "Uh",
+        // Prepositions / conjunctions / articles
+        "For", "And", "But", "The", "That", "This", "With", "From", "About", "Into",
+        "Over", "Then", "Also", "Very", "Much", "More", "Some", "Any", "All", "Not",
+        // Pronouns / misc
+        "It", "Its", "My", "Your", "Our", "Their", "His", "Her", "We", "You", "They",
+        "There", "Here", "Where", "When", "What", "Which", "Who", "How", "Why",
+        // Common verbs that are never names
+        "Is", "Are", "Was", "Were", "Have", "Has", "Had", "Do", "Does", "Did",
+        "Will", "Would", "Could", "Should", "Can", "May", "Might",
+        "Regarding", "Perfectly", "Exactly", "Actually", "Basically", "Honestly",
+      ]);
       if (candidate.length >= 2 && !fillerWords.has(candidate)) {
         callerName = candidate;
         break;
@@ -598,7 +613,7 @@ If a field has no data, use an empty array [] for arrays, null for strings.`,
       wants: Array.isArray(parsed.wants) ? parsed.wants : [],
       currentSolutions: Array.isArray(parsed.current_solutions) ? parsed.current_solutions : [],
       conversationSummary: parsed.conversation_summary ?? "Summary unavailable.",
-      callerName: parsed.caller_name ?? null,
+      callerName: sanitizeName(parsed.caller_name) ?? null,
       companyName: parsed.company_name ?? null,
       callerEmail: parsed.caller_email ?? null,
       callerPhone: parsed.caller_phone ?? null,

@@ -394,7 +394,7 @@ const knowledgeRouter = router({
 
 // ─── Magic Link Email Template ──────────────────────────────────────────────
 
-function buildMagicLinkEmailHtml(firstName: string, magicUrl: string): string {
+function buildMagicLinkEmailHtml(firstName: string | null, magicUrl: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -473,7 +473,7 @@ function buildMagicLinkEmailHtml(firstName: string, magicUrl: string): string {
     <div class="logo">AiiACo</div>
     <div class="divider-gold"></div>
 
-    <h1>Welcome back, ${firstName}.</h1>
+    <h1>${firstName ? `Welcome back, ${firstName}.` : `Welcome back.`}</h1>
 
     <p>
       Click the button below to continue your conversation with AiA.
@@ -527,14 +527,16 @@ const talkRouter = router({
       });
 
       const magicUrl = `${input.origin}/talk?token=${token}`;
-      const firstName = lead.name?.split(" ")[0] ?? "there";
+      const { sanitizeName } = await import("./emailTemplates");
+      const cleanName = sanitizeName(lead.name);
+      const firstName = cleanName ? cleanName.split(" ")[0] : null;
 
       // Send the magic link email
       await sendEmail({
         to: input.email,
         subject: `Continue your conversation with AiA`,
         html: buildMagicLinkEmailHtml(firstName, magicUrl),
-        text: `Hi ${firstName},\n\nClick the link below to continue your conversation with AiA:\n\n${magicUrl}\n\nThis link expires in 15 minutes.\n\n— The AiiACo Team`,
+        text: `${firstName ? `Hi ${firstName},` : `Hi,`}\n\nClick the link below to continue your conversation with AiA:\n\n${magicUrl}\n\nThis link expires in 15 minutes.\n\n— The AiiACo Team`,
         leadId: lead.id,
       });
 

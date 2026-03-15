@@ -70,6 +70,51 @@ function escPlain(str: string | null | undefined): string {
   return str ?? "";
 }
 
+// ─── Helper: sanitize caller name ───────────────────────────────────────────
+
+/** Common filler words, prepositions, conjunctions, and non-name tokens that
+ *  can slip through regex or LLM name extraction. */
+const INVALID_NAME_TOKENS = new Set([
+  // Filler / conversational
+  "so", "now", "well", "great", "sure", "yes", "yeah", "right", "okay", "ok",
+  "hey", "hi", "hello", "thanks", "thank", "please", "just", "like", "um", "uh",
+  // Prepositions / conjunctions / articles
+  "for", "and", "but", "the", "that", "this", "with", "from", "about", "into",
+  "over", "then", "also", "very", "much", "more", "some", "any", "all", "not",
+  // Verbs / adjectives that are never names
+  "is", "are", "was", "were", "been", "being", "have", "has", "had", "do", "does",
+  "did", "will", "would", "could", "should", "can", "may", "might", "shall",
+  "paid", "said", "told", "got", "get", "let", "put", "set", "run", "see",
+  "it", "its", "my", "your", "our", "their", "his", "her", "we", "you", "they",
+  // Pronouns / misc
+  "there", "here", "where", "when", "what", "which", "who", "how", "why",
+  "regarding", "perfectly", "exactly", "actually", "basically", "honestly",
+]);
+
+/**
+ * Validate and sanitize a name before it reaches any email template.
+ * Returns null if the name is invalid (filler word, too short, non-alphabetic).
+ */
+export function sanitizeName(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+  const trimmed = raw.trim();
+  if (trimmed.length < 2) return null;
+  // Reject if it's a known invalid token
+  if (INVALID_NAME_TOKENS.has(trimmed.toLowerCase())) return null;
+  // Reject if first word is an invalid token (e.g. "for John" → bad extraction)
+  const firstWord = trimmed.split(/\s+/)[0];
+  if (firstWord && INVALID_NAME_TOKENS.has(firstWord.toLowerCase())) return null;
+  // Reject if it contains no letters (pure numbers/symbols)
+  if (!/[a-zA-Z]/.test(trimmed)) return null;
+  // Reject if it looks like a sentence fragment (4+ words)
+  if (trimmed.split(/\s+/).length > 3) return null;
+  // Capitalize first letter of each word
+  return trimmed
+    .split(/\s+/)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
 // ─── Helper: parse JSON arrays safely ────────────────────────────────────────
 
 function parseJsonArray(val: string | null | undefined): string[] {
@@ -122,7 +167,9 @@ export function buildOwnerPilotBriefEmail(data: OwnerPilotBriefData): {
   html: string;
   text: string;
 } {
-  const firstName = data.name.split(" ")[0] ?? data.name;
+  const cleanName = sanitizeName(data.name);
+  const firstName = cleanName ? cleanName.split(" ")[0] : null;
+  const displayName = cleanName ?? data.name; // For owner brief, show raw name even if suspicious
   const trackLabel = TRACK_LABELS[data.track] ?? "Custom Engagement";
   const painPoints = parseJsonArray(data.painPoints);
   const wants = parseJsonArray(data.wants);
@@ -518,13 +565,16 @@ export function buildCallerSummaryEmail(data: CallerSummaryData): {
   html: string;
   text: string;
 } {
-  const firstName = data.name.split(" ")[0] ?? data.name;
+  const cleanName = sanitizeName(data.name);
+  const firstName = cleanName ? cleanName.split(" ")[0] : null;
   const trackLabel = TRACK_LABELS[data.track] ?? "Custom Engagement";
   const trackDesc = TRACK_DESCRIPTIONS[data.track] ?? TRACK_DESCRIPTIONS.unknown;
   const painPoints = parseJsonArray(data.painPoints);
   const wants = parseJsonArray(data.wants);
 
-  const subject = `${firstName}, here's your AiiACo conversation summary`;
+  const subject = firstName
+    ? `${firstName}, here's your AiiACo conversation summary`
+    : `Your AiiACo conversation summary`;
 
   // Build pain points section for the caller (reframed positively)
   const insightsHtml =
@@ -580,7 +630,7 @@ export function buildCallerSummaryEmail(data: CallerSummaryData): {
           <!-- ═══ GREETING ═══ -->
           <tr>
             <td style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; font-weight: 300; line-height: 1.2; color: #F0F4F8; padding-bottom: 16px;">
-              ${firstName}, thank you for the conversation.
+              ${firstName ? `${esc(firstName)}, thank` : "Thank"} you for the conversation.
             </td>
           </tr>
 
@@ -712,7 +762,7 @@ export function buildCallerSummaryEmail(data: CallerSummaryData): {
   // ── Plain text fallback ────────────────────────────────────────────────────
 
   const text = [
-    `${firstName}, thank you for the conversation.`,
+    firstName ? `${firstName}, thank you for the conversation.` : `Thank you for the conversation.`,
     ``,
     `We appreciate you taking the time to walk us through your situation${data.company ? ` at ${data.company}` : ""}.`,
     ``,
@@ -754,13 +804,16 @@ export function buildContinueConversationEmail(data: ContinueConversationData): 
   html: string;
   text: string;
 } {
-  const firstName = data.name.split(" ")[0] ?? data.name;
+  const cleanName = sanitizeName(data.name);
+  const firstName = cleanName ? cleanName.split(" ")[0] : null;
   const companyRef = data.company
     ? ` at <strong style="color: #1A1508;">${esc(data.company)}</strong>`
     : "";
   const companyRefPlain = data.company ? ` at ${data.company}` : "";
 
-  const subject = `${firstName}, let's pick up where we left off`;
+  const subject = firstName
+    ? `${firstName}, let's pick up where we left off`
+    : `Let's pick up where we left off`;
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -793,7 +846,7 @@ export function buildContinueConversationEmail(data: ContinueConversationData): 
           <div style="background-color: #F8F3E8; border-radius: 0 0 8px 8px; padding: 40px 36px;">
 
             <p style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; font-weight: 600; color: #1A1508; margin: 0 0 20px 0; line-height: 1.3;">
-              ${esc(firstName)}, great connecting with you.
+              ${firstName ? `${esc(firstName)}, great` : "Great"} connecting with you.
             </p>
 
             <p style="font-family: 'Inter', Arial, sans-serif; font-size: 15px; line-height: 1.75; color: #3D3520; margin: 0 0 20px 0;">
@@ -864,7 +917,7 @@ export function buildContinueConversationEmail(data: ContinueConversationData): 
 </body>
 </html>`;
 
-  const text = `${firstName}, great connecting with you.
+  const text = `${firstName ? `${firstName}, great` : "Great"} connecting with you.
 
 It sounds like we got cut short before we could really dig into what's happening${companyRefPlain}. No worries — that happens.
 

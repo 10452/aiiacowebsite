@@ -1,5 +1,76 @@
 import { describe, it, expect } from "vitest";
-import { buildOwnerPilotBriefEmail, buildCallerSummaryEmail } from "./emailTemplates";
+import { buildOwnerPilotBriefEmail, buildCallerSummaryEmail, sanitizeName } from "./emailTemplates";
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 0. sanitizeName — Name validation & sanitization
+// ═══════════════════════════════════════════════════════════════════════════════
+
+describe("sanitizeName", () => {
+  it("accepts valid names", () => {
+    expect(sanitizeName("John")).toBe("John");
+    expect(sanitizeName("Sarah Chen")).toBe("Sarah Chen");
+    expect(sanitizeName("Alan Dourado")).toBe("Alan Dourado");
+    expect(sanitizeName("Marc Sleiman")).toBe("Marc Sleiman");
+  });
+
+  it("capitalizes names properly", () => {
+    expect(sanitizeName("john")).toBe("John");
+    expect(sanitizeName("sarah chen")).toBe("Sarah Chen");
+  });
+
+  it("rejects common filler words", () => {
+    expect(sanitizeName("for")).toBeNull();
+    expect(sanitizeName("For")).toBeNull();
+    expect(sanitizeName("there")).toBeNull();
+    expect(sanitizeName("so")).toBeNull();
+    expect(sanitizeName("that")).toBeNull();
+    expect(sanitizeName("well")).toBeNull();
+    expect(sanitizeName("actually")).toBeNull();
+    expect(sanitizeName("basically")).toBeNull();
+  });
+
+  it("rejects prepositions and conjunctions", () => {
+    expect(sanitizeName("and")).toBeNull();
+    expect(sanitizeName("but")).toBeNull();
+    expect(sanitizeName("the")).toBeNull();
+    expect(sanitizeName("with")).toBeNull();
+  });
+
+  it("rejects pronouns", () => {
+    expect(sanitizeName("it")).toBeNull();
+    expect(sanitizeName("we")).toBeNull();
+    expect(sanitizeName("they")).toBeNull();
+    expect(sanitizeName("you")).toBeNull();
+  });
+
+  it("rejects names starting with invalid tokens", () => {
+    expect(sanitizeName("for John")).toBeNull();
+    expect(sanitizeName("the company")).toBeNull();
+    expect(sanitizeName("and also")).toBeNull();
+  });
+
+  it("rejects sentence fragments (4+ words)", () => {
+    expect(sanitizeName("that perfectly is regarding")).toBeNull();
+    expect(sanitizeName("paid and it exactly")).toBeNull();
+  });
+
+  it("rejects null, undefined, empty, and single-char inputs", () => {
+    expect(sanitizeName(null)).toBeNull();
+    expect(sanitizeName(undefined)).toBeNull();
+    expect(sanitizeName("")).toBeNull();
+    expect(sanitizeName("a")).toBeNull();
+    expect(sanitizeName(" ")).toBeNull();
+  });
+
+  it("rejects pure numbers/symbols", () => {
+    expect(sanitizeName("123")).toBeNull();
+    expect(sanitizeName("!!!")).toBeNull();
+  });
+
+  it("accepts names with up to 3 words", () => {
+    expect(sanitizeName("Mary Jane Watson")).toBe("Mary Jane Watson");
+  });
+});
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // 1. Owner Pilot Brief Email
@@ -237,10 +308,24 @@ describe("buildCallerSummaryEmail", () => {
       email: "unknown@test.com",
       track: "unknown",
     });
-    expect(result.html).toContain("thank you for the conversation");
+    // "there" is a filler word — sanitizeName returns null, so greeting omits name
+    expect(result.html).toContain("Thank you for the conversation");
+    expect(result.html).not.toContain("there, thank");
     expect(result.html).toContain("Custom Engagement");
-    // Should not crash with null/undefined fields
     expect(result.text.length).toBeGreaterThan(0);
+  });
+
+  it("rejects filler words like 'for' as names", () => {
+    const result = buildCallerSummaryEmail({
+      name: "for",
+      email: "test@test.com",
+      track: "operator",
+    });
+    // "for" is an invalid name — should not appear in greeting
+    expect(result.html).not.toContain("for, thank");
+    expect(result.html).not.toContain("for,");
+    expect(result.html).toContain("Thank you for the conversation");
+    expect(result.subject).toBe("Your AiiACo conversation summary");
   });
 
   it("generates a plain text fallback", () => {
@@ -348,10 +433,22 @@ describe("buildContinueConversationEmail", () => {
       name: "there",
       email: "test@example.com",
     });
-    expect(result.html).toContain("great connecting with you");
+    // "there" is a filler word — sanitizeName returns null, greeting omits name
+    expect(result.html).toContain("Great connecting with you");
+    expect(result.html).not.toContain("there, great");
     expect(result.html).not.toContain("undefined");
     expect(result.html).not.toContain("null");
     expect(result.text.length).toBeGreaterThan(0);
+  });
+
+  it("rejects filler words like 'for' as names", () => {
+    const result = buildContinueConversationEmail({
+      name: "for",
+      email: "test@test.com",
+    });
+    expect(result.html).not.toContain("for, great");
+    expect(result.html).toContain("Great connecting with you");
+    expect(result.subject).toBe("Let's pick up where we left off");
   });
 
   it("generates a plain text fallback", () => {

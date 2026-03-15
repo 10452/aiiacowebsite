@@ -915,3 +915,13 @@ Voice assignments:
 ## Round 107 — Cookie Banner Mobile Fix
 - [x] Fix cookie banner on mobile — only left half visible, Accept button unreachable
 - [x] Ensure banner is fully visible and dismissable on all screen sizes
+
+## Round 108 — Email Grammar & Quality Audit
+- [x] Audit all 5 email templates: caller summary, owner pilot brief, continue conversation, magic link, lead confirmation
+- [x] Fix "for, thank you for" bug — added sanitizeName() function with 80+ blocked filler words
+- [x] All greeting patterns handle null/missing names gracefully (no dangling commas or fragments)
+- [x] Applied sanitizeName to LLM-extracted names in aiAgent.ts
+- [x] Expanded regex name extractor filler word blocklist (prepositions, conjunctions, pronouns, verbs, adverbs)
+- [x] Fixed lead confirmation email (email.ts) to use sanitizeName and handle null firstName
+- [x] Fixed magic link email to use sanitizeName and handle null firstName
+- [x] All 175 tests passing including 12 new sanitizeName tests + 2 filler word rejection tests per template
