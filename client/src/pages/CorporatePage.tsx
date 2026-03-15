@@ -99,14 +99,14 @@ const TRACKS = [
   {
     name: "Operator",
     description: "AiiA manages everything. You receive outcomes.",
-    example: "Ideal for companies like LRMB — full managed AI infrastructure.",
+    example: "Ideal for growth-stage companies ready for full managed AI infrastructure.",
     icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency_6b72c1c5.png",
     link: "/operator",
   },
   {
     name: "Agent",
     description: "AI tools deployed for your team to operate.",
-    example: "Ideal for solo practitioners like Stephanie — self-operated AI.",
+    example: "Ideal for independent professionals and boutique firms — self-operated AI.",
     icon: "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-handshake-aPpLfARcj64PcMhQFxNgTw.webp",
     link: "/agentpackage",
   },

@@ -27,7 +27,7 @@ export function getTrackEmail(track: TrackType, callerName: string | null): {
         <h1 style="font-size: 24px; font-weight: 700; color: #B89C4A; margin: 0 0 16px;">The Operator Program</h1>
         <p style="font-size: 15px; line-height: 1.7; color: rgba(200,215,230,0.85); margin: 0 0 20px;">Hi ${name},</p>
         <p style="font-size: 15px; line-height: 1.7; color: rgba(200,215,230,0.85); margin: 0 0 20px;">Based on your diagnostic, you're a strong fit for the <strong style="color: #B89C4A;">AiiACo Operator Program</strong> — where we build, deploy, and manage your entire AI infrastructure end-to-end.</p>
-        <p style="font-size: 15px; line-height: 1.7; color: rgba(200,215,230,0.85); margin: 0 0 20px;">This is the same model powering companies like LRMB — fully managed, performance-oriented AI operations with zero internal overhead on your team.</p>
+        <p style="font-size: 15px; line-height: 1.7; color: rgba(200,215,230,0.85); margin: 0 0 20px;">This is the same model powering growth-stage companies across real estate, mortgage, and consulting — fully managed, performance-oriented AI operations with zero internal overhead on your team.</p>
         <div style="background: rgba(184,156,74,0.08); border: 1px solid rgba(184,156,74,0.20); border-radius: 12px; padding: 24px; margin: 24px 0;">
           <p style="font-size: 13px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: rgba(184,156,74,0.75); margin: 0 0 12px;">What's included</p>
           <ul style="font-size: 14px; line-height: 1.8; color: rgba(200,215,230,0.80); margin: 0; padding-left: 20px;">
@@ -51,7 +51,7 @@ export function getTrackEmail(track: TrackType, callerName: string | null): {
         <h1 style="font-size: 24px; font-weight: 700; color: #B89C4A; margin: 0 0 16px;">The Agent Program</h1>
         <p style="font-size: 15px; line-height: 1.7; color: rgba(200,215,230,0.85); margin: 0 0 20px;">Hi ${name},</p>
         <p style="font-size: 15px; line-height: 1.7; color: rgba(200,215,230,0.85); margin: 0 0 20px;">Based on your diagnostic, the <strong style="color: #B89C4A;">AiiACo Agent Program</strong> is built for operators like you — powerful AI tools you control, without the enterprise overhead.</p>
-        <p style="font-size: 15px; line-height: 1.7; color: rgba(200,215,230,0.85); margin: 0 0 20px;">This is the model powering solo practitioners and small teams — like Stephanie in real estate — who want to run faster without hiring more people.</p>
+        <p style="font-size: 15px; line-height: 1.7; color: rgba(200,215,230,0.85); margin: 0 0 20px;">This is the model powering independent professionals and boutique firms who want to run faster without hiring more people.</p>
         <div style="background: rgba(184,156,74,0.08); border: 1px solid rgba(184,156,74,0.20); border-radius: 12px; padding: 24px; margin: 24px 0;">
           <p style="font-size: 13px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: rgba(184,156,74,0.75); margin: 0 0 12px;">What's included</p>
           <ul style="font-size: 14px; line-height: 1.8; color: rgba(200,215,230,0.80); margin: 0; padding-left: 20px;">

@@ -5,8 +5,8 @@
  * The agent answers calls to +1 (888) 808-0001, runs a 4-question diagnostic,
  * and routes callers into one of three tracks:
  *
- *   - OPERATOR  → Managed AI infrastructure (LRMB-style, company-level)
- *   - AGENT     → AI tools for solo practitioners (Stephanie-style, real estate agents)
+ *   - OPERATOR  → Managed AI infrastructure (full-service, company-level)
+ *   - AGENT     → AI tools for solo practitioners (independent professionals, small teams)
  *   - CORPORATE → Enterprise modular implementation packages (AiA direct)
  *
  * After the call, ElevenLabs fires a post-call webhook to /api/webhooks/elevenlabs

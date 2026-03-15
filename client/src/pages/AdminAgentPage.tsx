@@ -173,7 +173,7 @@ function ServiceOfferingBanner() {
             ))}
           </div>
           <p style={{ fontSize: "13px", color: "rgba(200,215,230,0.50)", margin: 0, fontStyle: "italic" }}>
-            Example: LRMB could have one that books everything for you with voice — property tours, maintenance, tenant communications — all through a single AI agent that knows their entire operation.
+            Example: A property management firm could have one that books everything with voice — property tours, maintenance, tenant communications — all through a single AI agent that knows their entire operation.
           </p>
         </div>
       </div>
