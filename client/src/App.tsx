@@ -35,6 +35,7 @@ import OperatorPage from "./pages/OperatorPage";
 import DiagnosticDemoPage from "./pages/DiagnosticDemoPage";
 import TalkPage from "./pages/TalkPage";
 import AiiAVoiceWidget from "./components/AiiAVoiceWidget";
+import CookieConsent from "./components/CookieConsent";
 
 // Immediate external redirect component — fires window.location.href on mount
 // This is the reliable fallback in case the Express server redirect is bypassed
@@ -98,6 +99,7 @@ function App() {
           <Toaster />
           <Router />
           <AiiAVoiceWidget />
+          <CookieConsent />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

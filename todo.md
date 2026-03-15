@@ -881,3 +881,9 @@ Voice assignments:
 
 ## Round 101 — Remove LISTEN Button
 - [x] Remove ReadAloud component from Navbar (desktop + mobile) — low-quality TTS misrepresents AiA voice
+
+## Round 102 — Cookie Consent Banner
+- [x] Create lightweight CookieConsent component (small, bottom bar, professional)
+- [x] Store consent in localStorage, hide on return visits
+- [x] Link to /privacy page
+- [x] Wire into App.tsx
