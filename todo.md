@@ -850,3 +850,10 @@ Voice assignments:
 - [x] Rewrite /privacy page with comprehensive sections: Voice AI data (AiA calls), website analytics, cookies, data retention, third-party services, enterprise data handling, CCPA/GDPR rights, contact info
 - [x] Match styling with existing legal pages (TermsPage pattern)
 - [x] Verify route and footer link work correctly
+
+## Round 98 — /talk Page with Live Transcription
+- [x] Create /talk page with AiA voice widget prominently displayed (not just floating bottom-right)
+- [x] Add live transcription box that shows conversation messages in real time (user + AiA)
+- [x] Add copy-to-clipboard button that copies the entire transcript text
+- [x] Register /talk route in App.tsx
+- [x] Style consistently with site design (void black, gold accents)
