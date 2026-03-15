@@ -894,3 +894,12 @@ Voice assignments:
 
 ## Round 104 — Cookie Banner Copy Update
 - [x] Update copy to "We use site data only to provide the right diagnostic and path forward."
+
+## Round 105 — /talk Page Holographic Video + Mic Enhancements
+- [x] Upload AiA 3D animation video to CDN
+- [x] Add video as semi-transparent holographic watermark background on /talk page (muted, looping, no video audio)
+- [x] Auto-start AiA voice greeting for first-time visitors only (once per session/localStorage)
+- [x] Replace CTA with golden microphone icon that shines/pulses every 7 seconds
+- [x] Mic icon lights up / shows speech indicator bars during active conversation
+- [x] Ensure video audio is stripped — only AiA's ElevenLabs voice plays
+- [x] Add semi-transparent "Play Video" button for return visitors to optionally replay video background

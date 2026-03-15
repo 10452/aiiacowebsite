@@ -5,11 +5,12 @@
  *   1. New visitors: optional pre-fill form (name, email, phone) → start voice
  *   2. Returning leads: enter email → receive magic link → verify → see history + talk
  *
- * Features:
- *   - Prominent voice widget with live transcription
- *   - Copy-to-clipboard for transcript
+ * Visual features:
+ *   - Holographic video watermark background (auto on first visit, optional replay button after)
+ *   - Golden microphone icon with 7-second shine pulse
+ *   - Speech indicator bars during active conversation
+ *   - Live transcription with copy-to-clipboard
  *   - Transcript persisted to DB on conversation end
- *   - Previous conversation history for verified leads
  *
  * Uses ElevenLabs React SDK `useConversation` with `onMessage`.
  */
@@ -31,6 +32,7 @@ import {
   Clock,
   ChevronDown,
   ChevronUp,
+  Play,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -41,6 +43,10 @@ import { toast } from "sonner";
 const AGENT_ID: string = import.meta.env.VITE_ELEVENLABS_AGENT_ID ?? "";
 const MIC_ICON_URL =
   "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia_gold_microphone_v2-cZjuNxwT4CHFwbMHWYwnRS.webp";
+const VIDEO_URL =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aia-intro-silent_a0998b5e.mp4";
+
+const FIRST_VISIT_KEY = "aiiaco_talk_visited";
 
 const FF =
   "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif";
@@ -88,6 +94,35 @@ export default function TalkPage() {
   const [expandedTranscript, setExpandedTranscript] = useState<number | null>(null);
   const conversationStartRef = useRef<Date | null>(null);
 
+  // ─── Video watermark state ─────────────────────────────────────────
+  const [isFirstVisit] = useState(() => !localStorage.getItem(FIRST_VISIT_KEY));
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Mark first visit as done on mount
+  useEffect(() => {
+    if (isFirstVisit) {
+      localStorage.setItem(FIRST_VISIT_KEY, "true");
+      setVideoPlaying(true);
+    }
+  }, [isFirstVisit]);
+
+  // Auto-play video on first visit
+  useEffect(() => {
+    if (videoPlaying && videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => {});
+    }
+  }, [videoPlaying]);
+
+  const handlePlayVideo = useCallback(() => {
+    setVideoPlaying(true);
+  }, []);
+
+  const handleVideoEnded = useCallback(() => {
+    setVideoPlaying(false);
+  }, []);
+
   // ─── Voice state ───────────────────────────────────────────────────
   const [status, setStatus] = useState<ConvStatus>("idle");
   const [isMuted, setIsMuted] = useState(false);
@@ -107,9 +142,7 @@ export default function TalkPage() {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
     if (token) {
-      // Clean the URL
       window.history.replaceState({}, "", "/talk");
-      // Verify the token
       verifyMagicLink.mutate(
         { token },
         {
@@ -226,7 +259,6 @@ export default function TalkPage() {
             });
           },
           onError: () => {
-            // Silent fail — don't disrupt UX
             console.error("[Talk] Failed to save transcript");
           },
         }
@@ -326,11 +358,11 @@ export default function TalkPage() {
             marginBottom: "24px",
           }}
         >
-          Optionally provide your details so AiA doesn't have to ask. All fields
-          are optional — you can jump straight in.
+          Optionally share your details so AiA can personalize your diagnostic.
+          You can also skip and just start talking.
         </p>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>
           <div style={{ position: "relative" }}>
             <User
               size={16}
@@ -339,24 +371,19 @@ export default function TalkPage() {
                 left: "14px",
                 top: "50%",
                 transform: "translateY(-50%)",
-                color: "rgba(212,168,67,0.45)",
+                color: "rgba(212,168,67,0.4)",
               }}
             />
             <input
               type="text"
-              placeholder="Your name"
+              placeholder="Your name (optional)"
               value={visitorName}
               onChange={(e) => setVisitorName(e.target.value)}
               style={{ ...inputStyle, paddingLeft: "40px" }}
-              onFocus={(e) =>
-                (e.target.style.borderColor = "rgba(212,168,67,0.5)")
-              }
-              onBlur={(e) =>
-                (e.target.style.borderColor = "rgba(212,168,67,0.20)")
-              }
+              onFocus={(e) => (e.target.style.borderColor = "rgba(212,168,67,0.45)")}
+              onBlur={(e) => (e.target.style.borderColor = "rgba(212,168,67,0.20)")}
             />
           </div>
-
           <div style={{ position: "relative" }}>
             <Mail
               size={16}
@@ -365,24 +392,19 @@ export default function TalkPage() {
                 left: "14px",
                 top: "50%",
                 transform: "translateY(-50%)",
-                color: "rgba(212,168,67,0.45)",
+                color: "rgba(212,168,67,0.4)",
               }}
             />
             <input
               type="email"
-              placeholder="Email address"
+              placeholder="Email (optional)"
               value={visitorEmail}
               onChange={(e) => setVisitorEmail(e.target.value)}
               style={{ ...inputStyle, paddingLeft: "40px" }}
-              onFocus={(e) =>
-                (e.target.style.borderColor = "rgba(212,168,67,0.5)")
-              }
-              onBlur={(e) =>
-                (e.target.style.borderColor = "rgba(212,168,67,0.20)")
-              }
+              onFocus={(e) => (e.target.style.borderColor = "rgba(212,168,67,0.45)")}
+              onBlur={(e) => (e.target.style.borderColor = "rgba(212,168,67,0.20)")}
             />
           </div>
-
           <div style={{ position: "relative" }}>
             <Phone
               size={16}
@@ -391,21 +413,17 @@ export default function TalkPage() {
                 left: "14px",
                 top: "50%",
                 transform: "translateY(-50%)",
-                color: "rgba(212,168,67,0.45)",
+                color: "rgba(212,168,67,0.4)",
               }}
             />
             <input
               type="tel"
-              placeholder="Phone number"
+              placeholder="Phone (optional)"
               value={visitorPhone}
               onChange={(e) => setVisitorPhone(e.target.value)}
               style={{ ...inputStyle, paddingLeft: "40px" }}
-              onFocus={(e) =>
-                (e.target.style.borderColor = "rgba(212,168,67,0.5)")
-              }
-              onBlur={(e) =>
-                (e.target.style.borderColor = "rgba(212,168,67,0.20)")
-              }
+              onFocus={(e) => (e.target.style.borderColor = "rgba(212,168,67,0.45)")}
+              onBlur={(e) => (e.target.style.borderColor = "rgba(212,168,67,0.20)")}
             />
           </div>
         </div>
@@ -416,25 +434,29 @@ export default function TalkPage() {
           whileTap={{ scale: 0.98 }}
           style={{
             width: "100%",
-            marginTop: "24px",
-            padding: "14px",
-            borderRadius: "10px",
-            border: "none",
+            padding: "16px",
+            borderRadius: "12px",
+            border: "1px solid rgba(212,168,67,0.35)",
             background:
-              "linear-gradient(135deg, #D4A843 0%, #B89C4A 100%)",
-            color: "#03050A",
+              "linear-gradient(135deg, rgba(212,168,67,0.18) 0%, rgba(184,156,74,0.10) 100%)",
+            color: "var(--gold-bright)",
             fontFamily: FF,
-            fontSize: "15px",
+            fontSize: "16px",
             fontWeight: 700,
             letterSpacing: "0.04em",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: "8px",
+            gap: "10px",
+            transition: "all 0.2s",
           }}
         >
-          <Mic size={18} />
+          <img
+            src={MIC_ICON_URL}
+            alt=""
+            style={{ width: "24px", height: "24px", objectFit: "contain" }}
+          />
           Talk to AiA
         </motion.button>
       </div>
@@ -445,36 +467,22 @@ export default function TalkPage() {
           display: "flex",
           alignItems: "center",
           gap: "16px",
-          marginBottom: "24px",
+          margin: "8px 0",
         }}
       >
-        <div
-          style={{
-            flex: 1,
-            height: "1px",
-            background:
-              "linear-gradient(90deg, transparent, rgba(212,168,67,0.25), transparent)",
-          }}
-        />
+        <div style={{ flex: 1, height: "1px", background: "rgba(212,168,67,0.12)" }} />
         <span
           style={{
             fontSize: "12px",
-            fontWeight: 600,
+            fontWeight: 700,
             color: "var(--pearl-dim)",
             letterSpacing: "0.08em",
-            textTransform: "uppercase",
+            opacity: 0.5,
           }}
         >
-          or
+          OR
         </span>
-        <div
-          style={{
-            flex: 1,
-            height: "1px",
-            background:
-              "linear-gradient(90deg, transparent, rgba(212,168,67,0.25), transparent)",
-          }}
-        />
+        <div style={{ flex: 1, height: "1px", background: "rgba(212,168,67,0.12)" }} />
       </div>
 
       {/* Returning lead card */}
@@ -484,6 +492,7 @@ export default function TalkPage() {
           border: "1px solid rgba(100,140,200,0.15)",
           borderRadius: "16px",
           padding: "32px",
+          marginTop: "24px",
           backdropFilter: "blur(12px)",
         }}
       >
@@ -909,70 +918,157 @@ export default function TalkPage() {
         }}
       >
         {/* Main microphone button */}
-        <motion.button
-          onClick={isActive ? endConversation : startConversation}
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.94 }}
-          style={{
-            width: "120px",
-            height: "120px",
-            borderRadius: "50%",
-            border: "none",
-            cursor: "pointer",
-            position: "relative",
-            background: isActive
-              ? "radial-gradient(circle at 40% 35%, rgba(232,192,96,0.25), rgba(184,156,74,0.15) 60%, rgba(138,110,42,0.1))"
-              : "radial-gradient(circle at 40% 35%, rgba(200,168,64,0.12), rgba(138,110,42,0.08) 60%, transparent)",
-            boxShadow: isActive
-              ? "0 0 0 4px rgba(212,168,67,0.35), 0 0 60px rgba(212,168,67,0.35), 0 4px 32px rgba(0,0,0,0.5)"
-              : "0 0 0 2px rgba(212,168,67,0.18), 0 4px 24px rgba(0,0,0,0.4)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            transition: "box-shadow 0.3s ease",
-            overflow: "hidden",
-            padding: 0,
-          }}
-          title={isActive ? "End conversation" : "Talk to AiA"}
-        >
-          {isActive && (
+        <div style={{ position: "relative" }}>
+          {/* 7-second shine pulse ring — only when idle */}
+          {!isActive && status === "idle" && (
             <motion.div
               style={{
                 position: "absolute",
-                inset: "-12px",
+                inset: "-8px",
                 borderRadius: "50%",
-                border: "2px solid rgba(212,168,67,0.5)",
-              }}
-              animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
-              transition={{
-                repeat: Infinity,
-                duration: 1.5,
-                ease: "easeOut",
-              }}
-            />
-          )}
-          {status === "connecting" ? (
-            <Loader2
-              size={40}
-              style={{ color: "#D4A843" }}
-              className="animate-spin"
-            />
-          ) : isActive ? (
-            <PhoneOff size={40} style={{ color: "#ff6b6b" }} />
-          ) : (
-            <img
-              src={MIC_ICON_URL}
-              alt="Talk to AiA"
-              style={{
-                width: "80px",
-                height: "80px",
-                objectFit: "contain",
-                filter: "drop-shadow(0 2px 8px rgba(212,168,67,0.4))",
+                border: "2px solid rgba(212,168,67,0.4)",
                 pointerEvents: "none",
               }}
+              animate={{
+                boxShadow: [
+                  "0 0 0px rgba(212,168,67,0)",
+                  "0 0 0px rgba(212,168,67,0)",
+                  "0 0 0px rgba(212,168,67,0)",
+                  "0 0 30px rgba(212,168,67,0.5), inset 0 0 20px rgba(212,168,67,0.15)",
+                  "0 0 0px rgba(212,168,67,0)",
+                ],
+                borderColor: [
+                  "rgba(212,168,67,0.15)",
+                  "rgba(212,168,67,0.15)",
+                  "rgba(212,168,67,0.15)",
+                  "rgba(212,168,67,0.6)",
+                  "rgba(212,168,67,0.15)",
+                ],
+              }}
+              transition={{
+                repeat: Infinity,
+                duration: 7,
+                ease: "easeInOut",
+                times: [0, 0.6, 0.7, 0.85, 1],
+              }}
             />
           )}
-        </motion.button>
+
+          {/* Speech indicator bars — shown when connected */}
+          {status === "connected" && (
+            <div
+              style={{
+                position: "absolute",
+                inset: "-16px",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                pointerEvents: "none",
+              }}
+            >
+              {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
+                <motion.div
+                  key={deg}
+                  style={{
+                    position: "absolute",
+                    width: "3px",
+                    borderRadius: "2px",
+                    background: agentSpeaking
+                      ? "#D4A843"
+                      : "rgba(212,168,67,0.35)",
+                    transformOrigin: "center 76px",
+                    transform: `rotate(${deg}deg) translateY(-76px)`,
+                  }}
+                  animate={
+                    agentSpeaking
+                      ? {
+                          height: [6, 20, 6, 24, 6],
+                          opacity: [0.5, 1, 0.5, 1, 0.5],
+                        }
+                      : {
+                          height: [4, 10, 4, 8, 4],
+                          opacity: [0.3, 0.6, 0.3, 0.5, 0.3],
+                        }
+                  }
+                  transition={{
+                    repeat: Infinity,
+                    duration: agentSpeaking ? 0.6 : 1.4,
+                    delay: (deg / 360) * (agentSpeaking ? 0.3 : 0.7),
+                    ease: "easeInOut",
+                  }}
+                />
+              ))}
+            </div>
+          )}
+
+          <motion.button
+            onClick={isActive ? endConversation : startConversation}
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.94 }}
+            style={{
+              width: "140px",
+              height: "140px",
+              borderRadius: "50%",
+              border: "none",
+              cursor: "pointer",
+              position: "relative",
+              background: isActive
+                ? "radial-gradient(circle at 40% 35%, rgba(232,192,96,0.25), rgba(184,156,74,0.15) 60%, rgba(138,110,42,0.1))"
+                : "radial-gradient(circle at 40% 35%, rgba(200,168,64,0.12), rgba(138,110,42,0.08) 60%, transparent)",
+              boxShadow: isActive
+                ? "0 0 0 4px rgba(212,168,67,0.35), 0 0 60px rgba(212,168,67,0.35), 0 4px 32px rgba(0,0,0,0.5)"
+                : "0 0 0 2px rgba(212,168,67,0.18), 0 4px 24px rgba(0,0,0,0.4)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "box-shadow 0.3s ease",
+              overflow: "visible",
+              padding: 0,
+              zIndex: 2,
+            }}
+            title={isActive ? "End conversation" : "Talk to AiA"}
+          >
+            {/* Active pulsing ring */}
+            {isActive && (
+              <motion.div
+                style={{
+                  position: "absolute",
+                  inset: "-12px",
+                  borderRadius: "50%",
+                  border: "2px solid rgba(212,168,67,0.5)",
+                }}
+                animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 1.5,
+                  ease: "easeOut",
+                }}
+              />
+            )}
+            {status === "connecting" ? (
+              <Loader2
+                size={44}
+                style={{ color: "#D4A843" }}
+                className="animate-spin"
+              />
+            ) : isActive ? (
+              <PhoneOff size={44} style={{ color: "#ff6b6b" }} />
+            ) : (
+              <img
+                src={MIC_ICON_URL}
+                alt="Talk to AiA"
+                style={{
+                  width: "90px",
+                  height: "90px",
+                  objectFit: "contain",
+                  filter: "drop-shadow(0 2px 12px rgba(212,168,67,0.5))",
+                  pointerEvents: "none",
+                }}
+              />
+            )}
+          </motion.button>
+        </div>
 
         {/* Status + controls */}
         <div
@@ -1033,55 +1129,6 @@ export default function TalkPage() {
             </motion.button>
           )}
         </div>
-
-        {/* Waveform */}
-        <AnimatePresence>
-          {isActive && status === "connected" && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-                height: "24px",
-              }}
-            >
-              {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-                <motion.div
-                  key={i}
-                  style={{
-                    width: "3px",
-                    borderRadius: "2px",
-                    background: agentSpeaking
-                      ? "#D4A843"
-                      : "rgba(212,168,67,0.35)",
-                  }}
-                  animate={
-                    agentSpeaking
-                      ? {
-                          height: [4, 18, 4, 22, 4],
-                          transition: {
-                            repeat: Infinity,
-                            duration: 0.7,
-                            delay: i * 0.08,
-                          },
-                        }
-                      : {
-                          height: [4, 10, 4, 8, 4],
-                          transition: {
-                            repeat: Infinity,
-                            duration: 1.2,
-                            delay: i * 0.1,
-                          },
-                        }
-                  }
-                />
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
       {/* ─── Transcript Box ──────────────────────────────────── */}
@@ -1333,130 +1380,215 @@ export default function TalkPage() {
       />
       <div
         className="min-h-screen flex flex-col"
-        style={{ background: "#03050A" }}
+        style={{ background: "#03050A", position: "relative", overflow: "hidden" }}
       >
-        <Navbar />
-
-        <main
-          className="flex-1"
+        {/* ─── Holographic Video Watermark Background ─── */}
+        <video
+          ref={videoRef}
+          src={VIDEO_URL}
+          muted
+          playsInline
+          onEnded={handleVideoEnded}
           style={{
-            paddingTop: "140px",
-            paddingBottom: "80px",
-            fontFamily: FF,
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            minWidth: "100vw",
+            minHeight: "100vh",
+            width: "auto",
+            height: "auto",
+            objectFit: "cover",
+            zIndex: 0,
+            opacity: videoPlaying ? 0.12 : 0,
+            transition: "opacity 1.5s ease-in-out",
+            pointerEvents: "none",
+            mixBlendMode: "screen",
+            filter: "saturate(0.6) brightness(1.2)",
           }}
-        >
-          <div
+        />
+        {/* Gradient overlay to keep content readable */}
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 0,
+            background:
+              "radial-gradient(ellipse at center, rgba(3,5,10,0.3) 0%, rgba(3,5,10,0.75) 70%, rgba(3,5,10,0.92) 100%)",
+            pointerEvents: "none",
+          }}
+        />
+
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <Navbar />
+
+          <main
+            className="flex-1"
             style={{
-              maxWidth: "800px",
-              margin: "0 auto",
-              padding: "0 24px",
+              paddingTop: "140px",
+              paddingBottom: "80px",
+              fontFamily: FF,
             }}
           >
-            {/* Header */}
-            <div style={{ textAlign: "center", marginBottom: "48px" }}>
-              <div className="section-pill" style={{ marginBottom: "20px" }}>
-                <span className="dot" />
-                <span>VOICE DIAGNOSTIC</span>
-              </div>
-              <h1
-                style={{
-                  fontFamily: FF,
-                  fontSize: "clamp(32px, 5vw, 48px)",
-                  fontWeight: 700,
-                  color: "var(--pearl)",
-                  lineHeight: 1.15,
-                  marginBottom: "16px",
-                }}
-              >
-                Talk to{" "}
-                <span style={{ color: "var(--gold-bright)" }}>AiA</span>
-              </h1>
-              <p
-                style={{
-                  fontFamily: FF,
-                  fontSize: "16px",
-                  color: "var(--pearl-dim)",
-                  maxWidth: "520px",
-                  margin: "0 auto",
-                  lineHeight: 1.6,
-                }}
-              >
-                {view === "verified"
-                  ? "Welcome back. AiA has your context and is ready to continue where you left off."
-                  : "AiA is our AI diagnostic agent. Start a new conversation or continue a previous one."}
-              </p>
-            </div>
-
-            {/* View-specific content */}
-            {view === "landing" && renderLanding()}
-            {view === "magic-link-sent" && renderMagicLinkSent()}
-            {view === "voice" && renderVoiceUI()}
-            {view === "verified" && (
-              <>
-                {renderVerifiedBanner()}
-                {renderPreviousTranscripts()}
-                {renderVoiceUI()}
-              </>
-            )}
-
-            {/* Phone fallback — show on voice/verified views */}
-            {(view === "voice" || view === "verified") && (
-              <p
-                style={{
-                  textAlign: "center",
-                  fontSize: "12px",
-                  color: "var(--pearl-dim)",
-                  marginTop: "20px",
-                  opacity: 0.6,
-                  lineHeight: 1.5,
-                }}
-              >
-                You can also call AiA directly at{" "}
-                <a
-                  href="tel:+18888080001"
+            <div
+              style={{
+                maxWidth: "800px",
+                margin: "0 auto",
+                padding: "0 24px",
+              }}
+            >
+              {/* Header */}
+              <div style={{ textAlign: "center", marginBottom: "48px" }}>
+                <div className="section-pill" style={{ marginBottom: "20px" }}>
+                  <span className="dot" />
+                  <span>VOICE DIAGNOSTIC</span>
+                </div>
+                <h1
                   style={{
-                    color: "var(--gold-bright)",
-                    textDecoration: "none",
-                  }}
-                >
-                  +1 (888) 808-0001
-                </a>
-              </p>
-            )}
-
-            {/* Back to landing from voice view */}
-            {view === "voice" && (
-              <div style={{ textAlign: "center", marginTop: "16px" }}>
-                <button
-                  onClick={() => setView("landing")}
-                  style={{
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    border: "1px solid rgba(212,168,67,0.15)",
-                    background: "transparent",
-                    color: "var(--pearl-dim)",
                     fontFamily: FF,
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    opacity: 0.7,
+                    fontSize: "clamp(32px, 5vw, 48px)",
+                    fontWeight: 700,
+                    color: "var(--pearl)",
+                    lineHeight: 1.15,
+                    marginBottom: "16px",
                   }}
                 >
-                  <ArrowLeft size={12} />
-                  Back to options
-                </button>
+                  Talk to{" "}
+                  <span style={{ color: "var(--gold-bright)" }}>AiA</span>
+                </h1>
+                <p
+                  style={{
+                    fontFamily: FF,
+                    fontSize: "16px",
+                    color: "var(--pearl-dim)",
+                    maxWidth: "520px",
+                    margin: "0 auto",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {view === "verified"
+                    ? "Welcome back. AiA has your context and is ready to continue where you left off."
+                    : "AiA is our AI diagnostic agent. Start a new conversation or continue a previous one."}
+                </p>
               </div>
-            )}
-          </div>
-        </main>
 
-        <Footer />
+              {/* View-specific content */}
+              {view === "landing" && renderLanding()}
+              {view === "magic-link-sent" && renderMagicLinkSent()}
+              {view === "voice" && renderVoiceUI()}
+              {view === "verified" && (
+                <>
+                  {renderVerifiedBanner()}
+                  {renderPreviousTranscripts()}
+                  {renderVoiceUI()}
+                </>
+              )}
+
+              {/* Phone fallback — show on voice/verified views */}
+              {(view === "voice" || view === "verified") && (
+                <p
+                  style={{
+                    textAlign: "center",
+                    fontSize: "12px",
+                    color: "var(--pearl-dim)",
+                    marginTop: "20px",
+                    opacity: 0.6,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  You can also call AiA directly at{" "}
+                  <a
+                    href="tel:+18888080001"
+                    style={{
+                      color: "var(--gold-bright)",
+                      textDecoration: "none",
+                    }}
+                  >
+                    +1 (888) 808-0001
+                  </a>
+                </p>
+              )}
+
+              {/* Back to landing from voice view */}
+              {view === "voice" && (
+                <div style={{ textAlign: "center", marginTop: "16px" }}>
+                  <button
+                    onClick={() => setView("landing")}
+                    style={{
+                      padding: "8px 16px",
+                      borderRadius: "8px",
+                      border: "1px solid rgba(212,168,67,0.15)",
+                      background: "transparent",
+                      color: "var(--pearl-dim)",
+                      fontFamily: FF,
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      opacity: 0.7,
+                    }}
+                  >
+                    <ArrowLeft size={12} />
+                    Back to options
+                  </button>
+                </div>
+              )}
+            </div>
+          </main>
+
+          <Footer />
+        </div>
+
+        {/* ─── Play Video button for return visitors ─── */}
+        {!isFirstVisit && !videoPlaying && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            onClick={handlePlayVideo}
+            title="Play AiA intro video"
+            style={{
+              position: "fixed",
+              bottom: "24px",
+              right: "24px",
+              zIndex: 50,
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "10px 16px",
+              borderRadius: "12px",
+              border: "1px solid rgba(212,168,67,0.18)",
+              background: "rgba(3,5,10,0.6)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              color: "rgba(200,215,230,0.5)",
+              fontFamily: FF,
+              fontSize: "12px",
+              fontWeight: 600,
+              letterSpacing: "0.04em",
+              cursor: "pointer",
+              transition: "all 0.25s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "rgba(212,168,67,0.8)";
+              e.currentTarget.style.borderColor = "rgba(212,168,67,0.35)";
+              e.currentTarget.style.background = "rgba(3,5,10,0.8)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "rgba(200,215,230,0.5)";
+              e.currentTarget.style.borderColor = "rgba(212,168,67,0.18)";
+              e.currentTarget.style.background = "rgba(3,5,10,0.6)";
+            }}
+          >
+            <Play size={14} />
+            Play Intro
+          </motion.button>
+        )}
       </div>
 
-      {/* Custom scrollbar for transcript */}
+      {/* Custom scrollbar + shine keyframes */}
       <style>{`
         .transcript-scroll::-webkit-scrollbar {
           width: 6px;
