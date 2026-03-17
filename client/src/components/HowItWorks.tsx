@@ -11,15 +11,15 @@ const PROCESS_BG = "https://private-us-east-1.manuscdn.com/sessionFile/FvSFBd374
 const steps = [
   {
     number: "01",
-    title: "AiA Learns Your Business",
-    desc: "We begin with a deep discovery session. AiA learns your goals, your history, your past attempts, your competitive landscape, and your industry dynamics. No assumptions. No templates. Pure understanding.",
+    title: "AiiA Learns Your Business",
+    desc: "We begin with a deep discovery session. AiiA learns your goals, your history, your past attempts, your competitive landscape, and your industry dynamics. No assumptions. No templates. Pure understanding.",
     detail: "Business goals · Revenue targets · Current tools · Past AI attempts · Competitive analysis · Industry benchmarks",
     color: "#00E5FF",
   },
   {
     number: "02",
-    title: "AiA Analyzes & Strategizes",
-    desc: "AiA synthesizes everything into a clear picture of where AI can create the highest leverage in your business. She identifies the exact opportunities, prioritizes by ROI, and designs your transformation roadmap.",
+    title: "AiiA Analyzes & Strategizes",
+    desc: "AiiA synthesizes everything into a clear picture of where AI can create the highest leverage in your business. She identifies the exact opportunities, prioritizes by ROI, and designs your transformation roadmap.",
     detail: "Gap analysis · Opportunity mapping · ROI prioritization · Risk assessment · Technology selection · Timeline planning",
     color: "#C9A227",
   },
@@ -32,8 +32,8 @@ const steps = [
   },
   {
     number: "04",
-    title: "AiA Hires & Manages Your AI Staff",
-    desc: "AiA assembles your complete AI workforce — the exact tools, agents, and automations your business needs. She configures, integrates, and manages them. You never have to touch a single AI tool.",
+    title: "AiiA Hires & Manages Your AI Staff",
+    desc: "AiiA assembles your complete AI workforce — the exact tools, agents, and automations your business needs. She configures, integrates, and manages them. You never have to touch a single AI tool.",
     detail: "AI agent selection · Tool integration · Workflow automation · Staff management · Quality control · Performance monitoring",
     color: "#C9A227",
   },
@@ -170,7 +170,7 @@ export default function HowItWorks() {
             <div className="w-12 h-px bg-[#C9A227]/40" />
           </div>
           <h2 className="font-cinzel text-4xl md:text-5xl font-bold text-white mb-6">
-            How AiA{" "}
+            How AiiA{" "}
             <span className="gradient-text-gold">Transforms</span>
             <br />
             Your Business

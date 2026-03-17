@@ -7,7 +7,7 @@
  *
  *   - OPERATOR  → Managed AI infrastructure (full-service, company-level)
  *   - AGENT     → AI tools for solo practitioners (independent professionals, small teams)
- *   - CORPORATE → Enterprise modular implementation packages (AiA direct)
+ *   - CORPORATE → Enterprise modular implementation packages (AiiA direct)
  *
  * After the call, ElevenLabs fires a post-call webhook to /api/webhooks/elevenlabs
  * which saves the lead and sends a follow-up email + owner notification.

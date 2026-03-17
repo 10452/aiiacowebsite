@@ -91,7 +91,7 @@ export default function MethodSection() {
             <div>
               <div className="section-pill" style={{ marginBottom: "16px", width: "fit-content" }}>
                 <span className="dot" />
-                How AiA Works
+                How AiiA Works
               </div>
               <h2 className="section-headline shimmer-headline" style={{ marginBottom: "0" }}>
                 Find. Implement. Measure. <span className="accent">Expand.</span>

@@ -86,7 +86,7 @@ export async function sendOwnerPilotBrief(params: {
     }
     const resend = new Resend(key);
     const result = await resend.emails.send({
-      from: "AiA Intelligence <team@aiiaco.com>",
+      from: "AiiA Intelligence <team@aiiaco.com>",
       replyTo: OWNER_EMAIL,
       to: [OWNER_EMAIL],
       subject,

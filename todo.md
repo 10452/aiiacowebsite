@@ -925,3 +925,12 @@ Voice assignments:
 - [x] Fixed lead confirmation email (email.ts) to use sanitizeName and handle null firstName
 - [x] Fixed magic link email to use sanitizeName and handle null firstName
 - [x] All 175 tests passing including 12 new sanitizeName tests + 2 filler word rejection tests per template
+
+## Round 109 — Brand Naming Audit (AiiA vs AiA) — COMPLETE
+- [x] Scanned entire codebase for all instances of "AiA" and "AiiA"
+- [x] Fixed 15+ files: AiiA = company, AiA = voice agent/diagnostic intelligence
+- [x] Fixed: HeroSection, Footer, DreamState, HowItWorks, MethodSection, Pricing, TeamSection, CredibilityBlock, OperationalLeaks, AdminConsolePage, ContactSection
+- [x] Fixed: email.ts, emailTemplates.ts, smsService.ts, healthMonitor.ts, healthScheduler.ts, telnyxPoller.ts, aiAgent.ts
+- [x] Fixed: tts.test.ts, health.test.ts
+- [x] Preserved AiA for all voice agent references (TalkPage, PrivacyPage, AiiAVoiceWidget, transcript labels, agent prompts)
+- [x] All 175 tests passing after renaming

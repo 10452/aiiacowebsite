@@ -94,7 +94,7 @@ async function createSipCredentials(): Promise<{ username: string; password: str
   try {
     // Create a credential connection (SIP trunk)
     const connData = await telnyxPost("/credential_connections", {
-      name: "AiACo Diagnostic Agent",
+      name: "AiiACo Diagnostic Agent",
       active: true,
       user_name: `aiia-agent-${Date.now()}`,
       password: Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2),
@@ -125,7 +125,7 @@ async function importIntoElevenLabs(
       },
       body: JSON.stringify({
         phone_number: phoneNumber,
-        label: "AiACo Diagnostic Agent",
+        label: "AiiACo Diagnostic Agent",
         sip_trunk_credentials: {
           username: sipUsername,
           password: sipPassword,

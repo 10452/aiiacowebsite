@@ -1,5 +1,5 @@
 /**
- * AiA Health Check Scheduler
+ * AiiA Health Check Scheduler
  *
  * Runs the full diagnostic chain health check every 5 minutes.
  * Alerts the owner proactively if any vital goes down.

@@ -22,7 +22,7 @@ const visions = [
   },
   {
     before: "Hiring, training, and managing an ever-growing team",
-    after: "AiA manages your AI staff — you manage your vision",
+    after: "AiiA manages your AI staff — you manage your vision",
   },
 ];
 
@@ -54,7 +54,7 @@ export default function DreamState() {
           <h2 className="font-cinzel text-4xl md:text-5xl font-bold text-white mb-6">
             See Your Business
             <br />
-            <span className="gradient-text-cyan">After AiA</span>
+            <span className="gradient-text-cyan">After AiiA</span>
           </h2>
           <p className="font-dm text-lg text-[#7A9BB5] max-w-2xl mx-auto">
             AiA doesn't just show you what's possible — she makes you feel it.
@@ -66,10 +66,10 @@ export default function DreamState() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto mb-16">
           {/* Before column header */}
           <div className="text-center pb-4 border-b border-[#0A1E35]">
-            <span className="font-rajdhani text-xs text-[#7A9BB5] tracking-widest uppercase">Before AiA</span>
+            <span className="font-rajdhani text-xs text-[#7A9BB5] tracking-widest uppercase">Before AiiA</span>
           </div>
           <div className="text-center pb-4 border-b border-[#00E5FF]/20">
-            <span className="font-rajdhani text-xs text-[#00E5FF] tracking-widest uppercase">After AiA</span>
+            <span className="font-rajdhani text-xs text-[#00E5FF] tracking-widest uppercase">After AiiA</span>
           </div>
 
           {visions.map((v, i) => (
@@ -133,14 +133,14 @@ export default function DreamState() {
           </h3>
           <p className="font-dm text-[#7A9BB5] max-w-xl mx-auto">
             You don't need to learn AI. You don't need to manage AI. You need results.
-            AiA delivers them.
+            AiiA delivers them.
           </p>
 
           <button
             onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
             className="mt-8 px-10 py-4 bg-[#C9A227] hover:bg-[#E8C84A] text-[#020B18] font-rajdhani font-700 text-sm tracking-[0.12em] uppercase rounded-lg transition-all duration-300 glow-gold hover:scale-105 active:scale-95"
           >
-            I'm Ready — Hire AiA
+            I'm Ready — Hire AiiA
           </button>
         </motion.div>
       </div>

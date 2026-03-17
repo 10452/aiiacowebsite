@@ -2,7 +2,7 @@
  * Health Monitor — Vitest Tests
  *
  * Tests for the health monitoring system that checks every vital
- * in the AiA diagnostic chain.
+ * in the AiiA diagnostic chain.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 

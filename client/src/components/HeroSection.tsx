@@ -199,7 +199,7 @@ export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () 
             </p>
 
             <p style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif", fontSize: "clamp(14px, 1.5vw, 18px)", lineHeight: 1.65, color: "rgba(200,215,230,0.82)", maxWidth: "52ch", margin: 0 }}>
-              AiA helps growing companies simplify workflows, activate dormant databases, and create clear operational visibility so leadership can move faster and teams execute without coordination drag.
+              AiiA helps growing companies simplify workflows, activate dormant databases, and create clear operational visibility so leadership can move faster and teams execute without coordination drag.
             </p>
 
             <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "10px" }}>

@@ -333,7 +333,7 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
             <iframe
               src="https://calendly.com/aiiaco?embed_type=Inline&hide_gdpr_banner=1&background_color=060B14&text_color=d2dceb&primary_color=B89C4A"
               width="100%" height="580" frameBorder="0"
-              title="Schedule a call with AiA"
+              title="Schedule a call with AiiA"
               style={{ display: "block" }}
             />
           </div>

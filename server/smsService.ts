@@ -133,7 +133,7 @@ export function normalizePhone(phone: string | null | undefined): string | null 
 
 /**
  * Generate context-aware SMS text based on message type and lead context.
- * All messages are warm, professional, and AiA-branded.
+ * All messages are warm, professional, and AiiA-branded.
  */
 export function buildSmsText(type: SmsMessageType, ctx: SmsContext): string {
   const name = ctx.firstName || "there";
@@ -263,8 +263,8 @@ export async function sendLeadSms(
   const phone = normalizePhone(ctx.phone);
   if (!phone) return { sent: false, reason: "Invalid phone number" };
 
-  // Filter out AiA's own number
-  if (phone === AIIA_PHONE) return { sent: false, reason: "Cannot SMS AiA's own number" };
+  // Filter out AiiA's own number
+  if (phone === AIIA_PHONE) return { sent: false, reason: "Cannot SMS AiiA's own number" };
 
   // Rate limit check
   const rateCheck = await checkSmsRateLimit(phone);

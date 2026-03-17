@@ -5,7 +5,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-// AiA proprietary gold icons replace Lucide icons
+// AiiA proprietary gold icons replace Lucide icons
 const AIIA_ICON_EFFICIENCY = "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-efficiency_6b72c1c5.png";
 const AIIA_ICON_TRENDING = "https://d2xsxph8kpxj0f.cloudfront.net/310419663031409823/jiUKWZNCEesKEKgdJkoZwj/aiia-icon-trending_e02fc2b1.png";
 
@@ -46,8 +46,8 @@ const plans = [
       "Monthly performance reporting",
       "Priority support & scaling",
     ],
-    cta: "Hire AiA",
-    desc: "The complete solution. AiA manages your entire AI operation so you can focus on your business.",
+    cta: "Hire AiiA",
+    desc: "The complete solution. AiiA manages your entire AI operation so you can focus on your business.",
   },
   {
     name: "Performance-Based",
@@ -173,7 +173,7 @@ export default function Pricing() {
           </div>
           <h2 className="font-cinzel text-4xl md:text-5xl font-bold text-white mb-6">
             Choose How You{" "}
-            <span className="gradient-text-gold">Work With AiA</span>
+            <span className="gradient-text-gold">Work With AiiA</span>
           </h2>
           <p className="font-dm text-lg text-[#7A9BB5] max-w-2xl mx-auto">
             Every engagement is custom-priced to your business size and scope.

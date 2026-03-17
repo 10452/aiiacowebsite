@@ -49,8 +49,8 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="AiA | Remove Operational Friction. Run Your Business Faster."
-        description="AiA helps growing companies simplify workflows, activate dormant databases, and create clear operational visibility so leadership can move faster and teams execute without coordination drag. Real estate, mortgage, commercial property, and management consulting."
+        title="AiiA | Remove Operational Friction. Run Your Business Faster."
+        description="AiiA helps growing companies simplify workflows, activate dormant databases, and create clear operational visibility so leadership can move faster and teams execute without coordination drag. Real estate, mortgage, commercial property, and management consulting."
         path="/"
         keywords="AI integration authority, enterprise AI integration, AI implementation services, managed AI integration, AI automation for business, operational AI infrastructure, AI workforce, AI director, done-for-you AI, performance-based AI, AI integration services, artificial intelligence consulting, business AI automation, AI strategy, managed AI services"
       />
