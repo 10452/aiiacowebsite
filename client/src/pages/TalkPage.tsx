@@ -36,6 +36,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import OrCallDirect from "@/components/OrCallDirect";
 import SEO from "@/seo/SEO";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -726,6 +727,7 @@ export default function TalkPage() {
             </>
           )}
         </div>
+        <OrCallDirect marginTop="12px" />
       </div>
     </div>
   );

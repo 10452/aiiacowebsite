@@ -4,6 +4,7 @@
  * Mobile: single-column cards, responsive header with icon
  */
 import { motion } from "framer-motion";
+import OrCallDirect from "@/components/OrCallDirect";
 
 const models = [
   {
@@ -188,6 +189,7 @@ export default function EngagementModels() {
               <button onClick={scrollToContact} className={model.featured ? "btn-gold" : "btn-glass"} style={{ justifyContent: "center" }}>
                 {model.featured ? "Begin Full Integration" : "Discuss This Model"}
               </button>
+              <OrCallDirect marginTop="6px" />
             </motion.div>
           ))}
         </div>

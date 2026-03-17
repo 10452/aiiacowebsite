@@ -5,6 +5,7 @@
  */
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import OrCallDirect from "@/components/OrCallDirect";
 
 // Animated counter hook — counts from 0 to target over duration ms
 function useCountUp(target: number, duration: number = 1800, delay: number = 0) {
@@ -219,6 +220,7 @@ export default function HeroSection({ onOpenQualifier }: { onOpenQualifier?: () 
                 See How It Works
               </button>
             </div>
+            <OrCallDirect center={false} marginTop="6px" />
 
             {/* Mobile KPIs — shown below CTAs on tablet/mobile */}
             <div className="hero-mobile-kpis">

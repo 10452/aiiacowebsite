@@ -4,6 +4,7 @@
  * Mobile: stacked card layout instead of table
  */
 import { motion } from "framer-motion";
+import OrCallDirect from "@/components/OrCallDirect";
 
 const comparisons = [
   {
@@ -164,6 +165,7 @@ export default function AfterUpgradeSection() {
           >
             Request Upgrade
           </button>
+          <OrCallDirect marginTop="8px" />
         </motion.div>
       </div>
     </section>

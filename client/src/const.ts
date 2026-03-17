@@ -4,6 +4,10 @@ export { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 // Set to null to fall back to Calendly booking link automatically
 export const PHONE_NUMBER: string | null = null; // Temporarily disabled — SIP routing under repair
 export const PHONE_NUMBER_DISPLAY: string | null = null; // Temporarily disabled
+
+// Direct dial number — always visible as a subtle alternative beneath CTAs
+export const DIRECT_DIAL = "888-808-0001";
+export const DIRECT_DIAL_TEL = "tel:+18888080001";
 export const CALENDLY_URL = "https://calendly.com/aiiaco";
 
 // Generate login URL at runtime so redirect URI reflects the current origin.

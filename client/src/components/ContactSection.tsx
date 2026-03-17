@@ -12,6 +12,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { trpc } from "@/lib/trpc";
 import CallNowButton from "@/components/CallNowButton";
+import OrCallDirect from "@/components/OrCallDirect";
 import { useCalendlyTracking } from "@/hooks/useCalendlyTracking";
 
 type Step = "contact" | "problem" | "booking" | "done";
@@ -500,6 +501,7 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
                       <GoldButton onClick={handleStep1} loading={step1Mutation.isPending}>
                         Continue →
                       </GoldButton>
+                      <OrCallDirect center={false} marginTop="10px" />
                     </div>
                   </motion.div>
                 )}
@@ -639,10 +641,11 @@ export default function ContactSection({ leadSource, initialOpen }: { leadSource
                         </button>
                       ))}
                     </div>
-                    <div style={{ marginTop: "16px" }}>
+                    <div style={{ marginTop: "16px", display: "flex", alignItems: "center", gap: "16px" }}>
                       <GoldButton variant="ghost" onClick={() => setStep("problem")}>
                         ← Back
                       </GoldButton>
+                      <OrCallDirect center={false} marginTop="0" />
                     </div>
                   </motion.div>
                 )}

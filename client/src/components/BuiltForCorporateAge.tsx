@@ -3,6 +3,7 @@
  * Mobile: responsive CTA card padding, stacked buttons
  */
 import { motion } from "framer-motion";
+import OrCallDirect from "@/components/OrCallDirect";
 
 const principles = [
   { title: "Diagnostic First", desc: "We do not recommend before we understand. Every engagement begins with a structured audit, not a sales pitch." },
@@ -130,6 +131,7 @@ export default function BuiltForCorporateAge() {
               Review Engagement Models
             </button>
           </div>
+          <OrCallDirect marginTop="8px" />
         </motion.div>
       </div>
     </section>
