@@ -948,3 +948,15 @@ Voice assignments:
 - [x] Add subtle "Or call 888-808-0001" text beneath booking/contact CTAs (small, muted, not prominent)
 - [x] Ensure no duplicate CTAs or layout issues
 - [x] All 175 tests passing
+
+## Round 112 — Admin Transcript Dual-Mode Viewer
+- [x] Full transcript slide-out panel with chat bubbles (AiA gold, Visitor blue)
+- [x] Live mode toggle with pulsing green indicator and 5s auto-polling
+- [x] Auto-scroll to bottom in live mode as new messages arrive
+- [x] Copy All button for full transcript text
+- [x] No maxHeight limit — full scroll through entire conversation
+- [x] Animated message entrance (fadeInUp) and panel slide-in (slideInRight)
+- [x] Last message preview in list rows + message count column
+- [x] Live session detection (created < 5min ago, no duration = still active)
+- [x] Toast notification when new transcripts arrive in live mode
+- [x] All 174 tests passing (1 transient ElevenLabs network failure unrelated)

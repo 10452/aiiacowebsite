@@ -4,7 +4,7 @@
  * Dedicated username/password auth — independent of Manus OAuth
  */
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { trpc } from "@/lib/trpc";
 import { setAdminToken, clearAdminToken } from "@/lib/adminToken";
 import { toast } from "sonner";
@@ -511,12 +511,286 @@ function AdminManagementTab({ currentUserId, currentRole }: { currentUserId: num
 
 // ─── Web Transcripts Tab ─────────────────────────────────────────────────────
 
+/** Parse transcript JSON into typed message array */
+function parseWebTranscript(jsonStr: string): Array<{ role: "user" | "ai"; text: string; timestamp?: string }> {
+  try {
+    const parsed = JSON.parse(jsonStr);
+    if (Array.isArray(parsed)) {
+      return parsed.map((m: any) => ({
+        role: m.role === "user" ? "user" as const : "ai" as const,
+        text: m.text ?? m.message ?? "",
+        timestamp: m.timestamp,
+      }));
+    }
+  } catch { /* fall through */ }
+  return [];
+}
+
+/** Format seconds to human-readable duration */
+function fmtDuration(sec: number | null | undefined): string {
+  if (!sec) return "—";
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return m > 0 ? `${m}m ${s}s` : `${s}s`;
+}
+
+/** Format timestamp string to short time */
+function fmtTime(ts?: string): string {
+  if (!ts) return "";
+  try {
+    return new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  } catch { return ""; }
+}
+
+/** Check if a transcript is "live" — created recently and no duration (still in progress) */
+function isLiveTranscript(t: any): boolean {
+  if (t.durationSeconds != null && t.durationSeconds > 0) return false;
+  const created = new Date(t.createdAt).getTime();
+  const fiveMinAgo = Date.now() - 5 * 60 * 1000;
+  return created > fiveMinAgo;
+}
+
+/** Full transcript viewer panel — slide-out overlay */
+function TranscriptPanel({ transcript: t, onClose }: { transcript: any; onClose: () => void }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const messages = parseWebTranscript(t.transcript);
+  const live = isLiveTranscript(t);
+  const [copied, setCopied] = useState(false);
+
+  const copyAll = useCallback(() => {
+    const text = messages.map(m => `${m.role === "ai" ? "AiA" : "Visitor"}: ${m.text}`).join("\n\n");
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, [messages]);
+
+  // Auto-scroll to bottom on new messages (live mode)
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages.length]);
+
+  return (
+    <div
+      style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        display: "flex", justifyContent: "flex-end",
+      }}
+    >
+      {/* Backdrop */}
+      <div
+        onClick={onClose}
+        style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}
+      />
+
+      {/* Panel */}
+      <div
+        style={{
+          position: "relative", width: "100%", maxWidth: "640px",
+          background: "#060A12", borderLeft: "1px solid rgba(184,156,74,0.15)",
+          display: "flex", flexDirection: "column", overflow: "hidden",
+          animation: "slideInRight 0.25s ease-out",
+        }}
+      >
+        {/* Header */}
+        <div style={{
+          padding: "20px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)",
+          display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px",
+        }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+              {live && (
+                <span style={{
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                  padding: "3px 10px", borderRadius: "999px", fontSize: "10px", fontWeight: 700,
+                  letterSpacing: "0.08em", textTransform: "uppercase",
+                  background: "rgba(74,222,128,0.10)", color: "rgba(74,222,128,0.90)",
+                  border: "1px solid rgba(74,222,128,0.25)", fontFamily: FF,
+                }}>
+                  <span style={{
+                    width: "6px", height: "6px", borderRadius: "50%", background: "#4ade80",
+                    boxShadow: "0 0 8px rgba(74,222,128,0.6)",
+                    animation: "pulse 1.5s ease-in-out infinite",
+                  }} />
+                  Live
+                </span>
+              )}
+              <h3 style={{ fontFamily: FFD, fontSize: "18px", fontWeight: 700, color: "rgba(255,255,255,0.92)", margin: 0 }}>
+                {t.visitorName || "Anonymous"}
+              </h3>
+            </div>
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+              {t.visitorEmail && (
+                <span style={{ fontFamily: FF, fontSize: "12px", color: "rgba(184,156,74,0.70)" }}>
+                  {t.visitorEmail}
+                </span>
+              )}
+              {t.visitorPhone && (
+                <span style={{ fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.50)" }}>
+                  {t.visitorPhone}
+                </span>
+              )}
+              <span style={{ fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.35)" }}>
+                {new Date(t.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                {" · "}
+                {new Date(t.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              </span>
+            </div>
+            <div style={{ display: "flex", gap: "16px", marginTop: "8px" }}>
+              <span style={{ fontFamily: FF, fontSize: "11px", color: "rgba(200,215,230,0.40)" }}>
+                {messages.length} messages
+              </span>
+              <span style={{ fontFamily: FF, fontSize: "11px", color: "rgba(200,215,230,0.40)" }}>
+                Duration: {fmtDuration(t.durationSeconds)}
+              </span>
+              {t.leadId && (
+                <span style={{
+                  fontFamily: FF, fontSize: "10px", fontWeight: 700,
+                  color: "rgba(80,220,150,0.80)", background: "rgba(80,220,150,0.10)",
+                  padding: "2px 8px", borderRadius: "4px",
+                }}>
+                  Lead #{t.leadId}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
+            <button
+              onClick={copyAll}
+              disabled={messages.length === 0}
+              style={{
+                fontFamily: FF, fontSize: "11px", fontWeight: 600, padding: "6px 14px",
+                borderRadius: "6px", cursor: messages.length === 0 ? "not-allowed" : "pointer",
+                border: "1px solid rgba(255,255,255,0.10)",
+                background: copied ? "rgba(74,222,128,0.12)" : "rgba(255,255,255,0.04)",
+                color: copied ? "rgba(74,222,128,0.90)" : "rgba(200,215,230,0.55)",
+                opacity: messages.length === 0 ? 0.4 : 1,
+              }}
+            >
+              {copied ? "Copied" : "Copy All"}
+            </button>
+            <button
+              onClick={onClose}
+              style={{
+                fontFamily: FF, fontSize: "18px", fontWeight: 400, padding: "4px 10px",
+                borderRadius: "6px", cursor: "pointer",
+                border: "1px solid rgba(255,255,255,0.10)",
+                background: "rgba(255,255,255,0.04)",
+                color: "rgba(200,215,230,0.55)",
+                lineHeight: 1,
+              }}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        {/* Chat bubbles */}
+        <div
+          ref={scrollRef}
+          style={{
+            flex: 1, overflowY: "auto", padding: "24px",
+            scrollBehavior: "smooth",
+          }}
+        >
+          {messages.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "60px 0" }}>
+              <p style={{ fontFamily: FF, fontSize: "13px", color: "rgba(200,215,230,0.30)" }}>
+                {live ? "Waiting for conversation to begin…" : "No messages in this transcript."}
+              </p>
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              {messages.map((msg, i) => {
+                const isAi = msg.role === "ai";
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      display: "flex", flexDirection: "column",
+                      alignItems: isAi ? "flex-start" : "flex-end",
+                      animation: "fadeInUp 0.2s ease-out",
+                    }}
+                  >
+                    {/* Speaker + timestamp */}
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+                      <span style={{
+                        fontFamily: FF, fontSize: "10px", fontWeight: 700,
+                        letterSpacing: "0.06em", textTransform: "uppercase",
+                        color: isAi ? "rgba(184,156,74,0.75)" : "rgba(120,200,255,0.75)",
+                      }}>
+                        {isAi ? "AiA" : "Visitor"}
+                      </span>
+                      {msg.timestamp && (
+                        <span style={{ fontSize: "10px", color: "rgba(200,215,230,0.25)", fontFamily: FF }}>
+                          {fmtTime(msg.timestamp)}
+                        </span>
+                      )}
+                    </div>
+                    {/* Bubble */}
+                    <div style={{
+                      maxWidth: "85%", padding: "12px 16px",
+                      borderRadius: isAi ? "2px 14px 14px 14px" : "14px 2px 14px 14px",
+                      background: isAi ? "rgba(184,156,74,0.08)" : "rgba(120,200,255,0.06)",
+                      border: `1px solid ${isAi ? "rgba(184,156,74,0.15)" : "rgba(120,200,255,0.12)"}`,
+                      fontFamily: FF, fontSize: "13px", lineHeight: 1.65,
+                      color: "rgba(200,215,230,0.88)",
+                    }}>
+                      {msg.text}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Animations */}
+      <style>{`
+        @keyframes slideInRight {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeInUp {
+          from { transform: translateY(8px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.4; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 function WebTranscriptsTab() {
-  const { data: transcripts, isLoading } = trpc.talk.listTranscripts.useQuery();
-  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [liveMode, setLiveMode] = useState(false);
+  const [viewingId, setViewingId] = useState<number | null>(null);
   const [search, setSearch] = useState("");
+  const prevCountRef = useRef(0);
+
+  // Poll every 5s in live mode, otherwise static
+  const { data: transcripts, isLoading } = trpc.talk.listTranscripts.useQuery(undefined, {
+    refetchInterval: liveMode ? 5000 : false,
+  });
 
   const all = transcripts ?? [];
+
+  // Detect new transcripts arriving in live mode
+  useEffect(() => {
+    if (liveMode && all.length > prevCountRef.current && prevCountRef.current > 0) {
+      toast.info("New transcript detected", { duration: 2000 });
+    }
+    prevCountRef.current = all.length;
+  }, [all.length, liveMode]);
+
+  const liveCount = all.filter(isLiveTranscript).length;
+
   const visible = all.filter((t: any) => {
     if (!search) return true;
     const q = search.toLowerCase();
@@ -528,23 +802,58 @@ function WebTranscriptsTab() {
     );
   });
 
-  const formatDuration = (sec: number | null) => {
-    if (!sec) return "—";
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return m > 0 ? `${m}m ${s}s` : `${s}s`;
-  };
+  const viewingTranscript = viewingId != null ? all.find((t: any) => t.id === viewingId) : null;
 
   return (
     <div>
+      {/* Header row */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px" }}>
         <div>
           <h2 style={{ fontFamily: FFD, fontSize: "20px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 4px" }}>Web Transcripts</h2>
           <p style={{ fontFamily: FF, fontSize: "13px", color: "rgba(200,215,230,0.40)", margin: 0 }}>Conversations from the /talk page.</p>
         </div>
-        <span style={{ fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.35)" }}>{all.length} total</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+          {/* Live session count */}
+          {liveCount > 0 && (
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: "6px",
+              fontFamily: FF, fontSize: "12px", fontWeight: 600,
+              color: "rgba(74,222,128,0.85)",
+            }}>
+              <span style={{
+                width: "8px", height: "8px", borderRadius: "50%", background: "#4ade80",
+                boxShadow: "0 0 8px rgba(74,222,128,0.5)",
+                animation: "pulse 1.5s ease-in-out infinite",
+              }} />
+              {liveCount} live
+            </span>
+          )}
+
+          {/* Live mode toggle */}
+          <button
+            onClick={() => setLiveMode(!liveMode)}
+            style={{
+              fontFamily: FF, fontSize: "12px", fontWeight: 600, padding: "6px 14px",
+              borderRadius: "6px", cursor: "pointer",
+              border: `1px solid ${liveMode ? "rgba(74,222,128,0.30)" : "rgba(255,255,255,0.10)"}`,
+              background: liveMode ? "rgba(74,222,128,0.08)" : "rgba(255,255,255,0.04)",
+              color: liveMode ? "rgba(74,222,128,0.90)" : "rgba(200,215,230,0.50)",
+              display: "flex", alignItems: "center", gap: "6px",
+            }}
+          >
+            <span style={{
+              width: "6px", height: "6px", borderRadius: "50%",
+              background: liveMode ? "#4ade80" : "rgba(200,215,230,0.30)",
+              transition: "background 0.2s",
+            }} />
+            {liveMode ? "Live" : "Live Mode"}
+          </button>
+
+          <span style={{ fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.35)" }}>{all.length} total</span>
+        </div>
       </div>
 
+      {/* Search */}
       <input
         style={{ ...inputStyle, maxWidth: "320px", marginBottom: "20px" }}
         placeholder="Search name, email, phone, or transcript…"
@@ -560,105 +869,114 @@ function WebTranscriptsTab() {
           <p style={{ fontFamily: FF, fontSize: "13px", color: "rgba(200,215,230,0.25)", margin: 0 }}>Transcripts from /talk page conversations will appear here.</p>
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
           {visible.map((t: any) => {
-            const isExpanded = expandedId === t.id;
+            const messages = parseWebTranscript(t.transcript);
+            const live = isLiveTranscript(t);
+            const preview = messages.length > 0
+              ? messages[messages.length - 1].text.slice(0, 80) + (messages[messages.length - 1].text.length > 80 ? "…" : "")
+              : "No messages";
+
             return (
               <div
                 key={t.id}
+                onClick={() => setViewingId(t.id)}
                 style={{
-                  background: isExpanded ? "rgba(184,156,74,0.04)" : "rgba(255,255,255,0.02)",
-                  border: `1px solid ${isExpanded ? "rgba(184,156,74,0.18)" : "rgba(255,255,255,0.06)"}`,
+                  background: live ? "rgba(74,222,128,0.03)" : "rgba(255,255,255,0.02)",
+                  border: `1px solid ${live ? "rgba(74,222,128,0.15)" : "rgba(255,255,255,0.06)"}`,
                   borderRadius: "10px",
-                  overflow: "hidden",
-                  transition: "all 0.2s ease",
+                  padding: "14px 18px",
+                  cursor: "pointer",
+                  transition: "all 0.15s ease",
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr 80px 80px 60px",
+                  alignItems: "center",
+                  gap: "12px",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = live ? "rgba(74,222,128,0.06)" : "rgba(255,255,255,0.04)";
+                  e.currentTarget.style.borderColor = live ? "rgba(74,222,128,0.25)" : "rgba(184,156,74,0.18)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = live ? "rgba(74,222,128,0.03)" : "rgba(255,255,255,0.02)";
+                  e.currentTarget.style.borderColor = live ? "rgba(74,222,128,0.15)" : "rgba(255,255,255,0.06)";
                 }}
               >
-                {/* Row header */}
-                <div
-                  onClick={() => setExpandedId(isExpanded ? null : t.id)}
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr 100px 100px 30px",
-                    alignItems: "center",
-                    padding: "14px 18px",
-                    cursor: "pointer",
-                    gap: "12px",
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.025)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-                >
-                  <div>
+                {/* Name + email */}
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    {live && (
+                      <span style={{
+                        width: "7px", height: "7px", borderRadius: "50%", background: "#4ade80",
+                        boxShadow: "0 0 6px rgba(74,222,128,0.5)",
+                        animation: "pulse 1.5s ease-in-out infinite", flexShrink: 0,
+                      }} />
+                    )}
                     <p style={{ fontFamily: FFD, fontSize: "14px", fontWeight: 700, color: "rgba(255,255,255,0.88)", margin: 0 }}>
                       {t.visitorName || "Anonymous"}
                     </p>
-                    <p style={{ fontFamily: FF, fontSize: "12px", color: "rgba(184,156,74,0.70)", margin: "2px 0 0" }}>
-                      {t.visitorEmail || "No email"}
-                    </p>
                   </div>
-                  <div>
-                    <p style={{ fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.50)", margin: 0 }}>
-                      {t.visitorPhone || "—"}
-                    </p>
-                    {t.leadId && (
-                      <span style={{ fontFamily: FF, fontSize: "10px", fontWeight: 700, color: "rgba(80,220,150,0.80)", background: "rgba(80,220,150,0.10)", padding: "1px 6px", borderRadius: "3px", marginTop: "2px", display: "inline-block" }}>
-                        Linked Lead #{t.leadId}
-                      </span>
-                    )}
-                  </div>
-                  <span style={{ fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.45)", textAlign: "center" }}>
-                    {formatDuration(t.durationSeconds)}
-                  </span>
-                  <span style={{ fontFamily: FF, fontSize: "11px", color: "rgba(200,215,230,0.35)", textAlign: "center" }}>
-                    {new Date(t.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                  </span>
-                  <span style={{ color: "rgba(200,215,230,0.30)", fontSize: "11px", textAlign: "right" }}>
-                    {isExpanded ? "▲" : "▼"}
-                  </span>
+                  <p style={{ fontFamily: FF, fontSize: "12px", color: "rgba(184,156,74,0.70)", margin: "2px 0 0" }}>
+                    {t.visitorEmail || "No email"}
+                  </p>
                 </div>
 
-                {/* Expanded transcript */}
-                {isExpanded && (
-                  <div style={{ padding: "0 18px 18px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-                    <div style={{ marginTop: "14px", maxHeight: "400px", overflowY: "auto", background: "rgba(0,0,0,0.3)", borderRadius: "8px", padding: "16px" }}>
-                      {(() => {
-                        try {
-                          const messages = JSON.parse(t.transcript);
-                          return messages.map((msg: any, i: number) => (
-                            <div key={i} style={{ marginBottom: "12px" }}>
-                              <span style={{
-                                fontFamily: FF, fontSize: "10px", fontWeight: 800, letterSpacing: "0.10em", textTransform: "uppercase",
-                                color: msg.role === "user" ? "rgba(120,200,255,0.70)" : "rgba(212,180,80,0.70)",
-                              }}>
-                                {msg.role === "user" ? "Visitor" : "AiA"}
-                              </span>
-                              {msg.timestamp && (
-                                <span style={{ fontFamily: FF, fontSize: "10px", color: "rgba(200,215,230,0.25)", marginLeft: "8px" }}>
-                                  {msg.timestamp}
-                                </span>
-                              )}
-                              <p style={{ fontFamily: FF, fontSize: "13px", color: "rgba(255,255,255,0.75)", margin: "4px 0 0", lineHeight: 1.6 }}>
-                                {msg.text}
-                              </p>
-                            </div>
-                          ));
-                        } catch {
-                          // Fallback to plain text
-                          return (
-                            <pre style={{ fontFamily: FF, fontSize: "13px", color: "rgba(255,255,255,0.70)", whiteSpace: "pre-wrap", margin: 0, lineHeight: 1.6 }}>
-                              {t.transcriptText || t.transcript}
-                            </pre>
-                          );
-                        }
-                      })()}
-                    </div>
-                  </div>
-                )}
+                {/* Last message preview */}
+                <div>
+                  <p style={{
+                    fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.45)", margin: 0,
+                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                  }}>
+                    {preview}
+                  </p>
+                  {t.leadId && (
+                    <span style={{
+                      fontFamily: FF, fontSize: "10px", fontWeight: 700,
+                      color: "rgba(80,220,150,0.80)", background: "rgba(80,220,150,0.10)",
+                      padding: "1px 6px", borderRadius: "3px", marginTop: "2px", display: "inline-block",
+                    }}>
+                      Lead #{t.leadId}
+                    </span>
+                  )}
+                </div>
+
+                {/* Message count */}
+                <span style={{ fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.40)", textAlign: "center" }}>
+                  {messages.length} msg{messages.length !== 1 ? "s" : ""}
+                </span>
+
+                {/* Duration */}
+                <span style={{ fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.40)", textAlign: "center" }}>
+                  {live ? (
+                    <span style={{ color: "rgba(74,222,128,0.75)", fontWeight: 600 }}>Active</span>
+                  ) : fmtDuration(t.durationSeconds)}
+                </span>
+
+                {/* Date */}
+                <span style={{ fontFamily: FF, fontSize: "11px", color: "rgba(200,215,230,0.35)", textAlign: "right" }}>
+                  {new Date(t.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                </span>
               </div>
             );
           })}
         </div>
       )}
+
+      {/* Full transcript slide-out panel */}
+      {viewingTranscript && (
+        <TranscriptPanel
+          transcript={viewingTranscript}
+          onClose={() => setViewingId(null)}
+        />
+      )}
+
+      {/* Shared keyframe animations */}
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.4; }
+        }
+      `}</style>
     </div>
   );
 }
