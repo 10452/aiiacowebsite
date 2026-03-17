@@ -934,3 +934,12 @@ Voice assignments:
 - [x] Fixed: tts.test.ts, health.test.ts
 - [x] Preserved AiA for all voice agent references (TalkPage, PrivacyPage, AiiAVoiceWidget, transcript labels, agent prompts)
 - [x] All 175 tests passing after renaming
+
+## Round 110 — Comprehensive Terms of Service + Internal Improvements
+- [x] Research top AI integration companies' terms pages (Palantir, DataRobot benchmarked)
+- [x] Build comprehensive /terms page — 16 sections modeled after Palantir/DataRobot enterprise standards
+- [x] Cover: scope of services, engagement terms, IP ownership, confidentiality, liability, indemnification, data handling, SLA, payment terms, termination, dispute resolution, force majeure, governing law, AI-specific disclaimers, voice recording consent
+- [x] Style consistently with existing legal pages (PrivacyPage pattern)
+- [x] Add web transcripts tab to admin console for browsing /talk page transcripts
+- [x] Inject pre-filled identity into AiA agent context via dynamicVariables + firstMessage override on /talk page
+- [x] All 175 tests passing

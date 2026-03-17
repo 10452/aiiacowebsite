@@ -268,16 +268,46 @@ export default function TalkPage() {
       setTranscript([]);
       conversationStartRef.current = new Date();
       await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Build dynamic variables for identity injection
+      const dynamicVars: Record<string, string> = {};
+      if (visitorName.trim()) dynamicVars.visitor_name = visitorName.trim();
+      if (visitorEmail.trim()) dynamicVars.visitor_email = visitorEmail.trim();
+      if (visitorPhone.trim()) dynamicVars.visitor_phone = visitorPhone.trim();
+
+      // Build overrides for personalized greeting
+      const overrides: Record<string, unknown> = {};
+      if (verifiedLead) {
+        // Returning verified lead — greet with context
+        const parts = [`Welcome back${verifiedLead.name ? `, ${verifiedLead.name}` : ""}.`];
+        if (verifiedLead.conversationSummary) {
+          parts.push(`Last time we discussed: ${verifiedLead.conversationSummary}`);
+        }
+        parts.push("How can I help you today?");
+        overrides.agent = {
+          firstMessage: parts.join(" "),
+        };
+        dynamicVars.is_returning = "true";
+        if (verifiedLead.company) dynamicVars.visitor_company = verifiedLead.company;
+        if (verifiedLead.painPoints) dynamicVars.visitor_pain_points = verifiedLead.painPoints;
+      } else if (visitorName.trim()) {
+        // New visitor with name — personalized greeting
+        overrides.agent = {
+          firstMessage: `Hi ${visitorName.trim()}, I'm AiA — your AI diagnostic intelligence. I'm here to understand your business and show you exactly where AI integration can make an impact. What industry are you in?`,
+        };
+      }
+
       await conversation.startSession({
         agentId: AGENT_ID,
         connectionType: "webrtc",
+        ...(Object.keys(dynamicVars).length > 0 && { dynamicVariables: dynamicVars }),
+        ...(Object.keys(overrides).length > 0 && { overrides }),
       });
     } catch (err) {
       console.error("Failed to start conversation:", err);
       setStatus("error");
       setTimeout(() => setStatus("idle"), 3000);
     }
-  }, [conversation]);
+  }, [conversation, visitorName, visitorEmail, visitorPhone, verifiedLead]);
 
   const endConversation = useCallback(async () => {
     await conversation.endSession();

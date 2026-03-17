@@ -509,10 +509,164 @@ function AdminManagementTab({ currentUserId, currentRole }: { currentUserId: num
   );
 }
 
+// ─── Web Transcripts Tab ─────────────────────────────────────────────────────
+
+function WebTranscriptsTab() {
+  const { data: transcripts, isLoading } = trpc.talk.listTranscripts.useQuery();
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [search, setSearch] = useState("");
+
+  const all = transcripts ?? [];
+  const visible = all.filter((t: any) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    return (
+      (t.visitorName ?? "").toLowerCase().includes(q) ||
+      (t.visitorEmail ?? "").toLowerCase().includes(q) ||
+      (t.visitorPhone ?? "").toLowerCase().includes(q) ||
+      (t.transcriptText ?? "").toLowerCase().includes(q)
+    );
+  });
+
+  const formatDuration = (sec: number | null) => {
+    if (!sec) return "—";
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return m > 0 ? `${m}m ${s}s` : `${s}s`;
+  };
+
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px" }}>
+        <div>
+          <h2 style={{ fontFamily: FFD, fontSize: "20px", fontWeight: 700, color: "rgba(255,255,255,0.90)", margin: "0 0 4px" }}>Web Transcripts</h2>
+          <p style={{ fontFamily: FF, fontSize: "13px", color: "rgba(200,215,230,0.40)", margin: 0 }}>Conversations from the /talk page.</p>
+        </div>
+        <span style={{ fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.35)" }}>{all.length} total</span>
+      </div>
+
+      <input
+        style={{ ...inputStyle, maxWidth: "320px", marginBottom: "20px" }}
+        placeholder="Search name, email, phone, or transcript…"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      {isLoading ? (
+        <p style={{ fontFamily: FF, fontSize: "13px", color: "rgba(200,215,230,0.35)" }}>Loading transcripts…</p>
+      ) : visible.length === 0 ? (
+        <div style={{ textAlign: "center", padding: "60px 0" }}>
+          <p style={{ fontFamily: FFD, fontSize: "18px", color: "rgba(255,255,255,0.30)", margin: "0 0 8px" }}>No transcripts yet</p>
+          <p style={{ fontFamily: FF, fontSize: "13px", color: "rgba(200,215,230,0.25)", margin: 0 }}>Transcripts from /talk page conversations will appear here.</p>
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          {visible.map((t: any) => {
+            const isExpanded = expandedId === t.id;
+            return (
+              <div
+                key={t.id}
+                style={{
+                  background: isExpanded ? "rgba(184,156,74,0.04)" : "rgba(255,255,255,0.02)",
+                  border: `1px solid ${isExpanded ? "rgba(184,156,74,0.18)" : "rgba(255,255,255,0.06)"}`,
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                {/* Row header */}
+                <div
+                  onClick={() => setExpandedId(isExpanded ? null : t.id)}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr 100px 100px 30px",
+                    alignItems: "center",
+                    padding: "14px 18px",
+                    cursor: "pointer",
+                    gap: "12px",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.025)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                >
+                  <div>
+                    <p style={{ fontFamily: FFD, fontSize: "14px", fontWeight: 700, color: "rgba(255,255,255,0.88)", margin: 0 }}>
+                      {t.visitorName || "Anonymous"}
+                    </p>
+                    <p style={{ fontFamily: FF, fontSize: "12px", color: "rgba(184,156,74,0.70)", margin: "2px 0 0" }}>
+                      {t.visitorEmail || "No email"}
+                    </p>
+                  </div>
+                  <div>
+                    <p style={{ fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.50)", margin: 0 }}>
+                      {t.visitorPhone || "—"}
+                    </p>
+                    {t.leadId && (
+                      <span style={{ fontFamily: FF, fontSize: "10px", fontWeight: 700, color: "rgba(80,220,150,0.80)", background: "rgba(80,220,150,0.10)", padding: "1px 6px", borderRadius: "3px", marginTop: "2px", display: "inline-block" }}>
+                        Linked Lead #{t.leadId}
+                      </span>
+                    )}
+                  </div>
+                  <span style={{ fontFamily: FF, fontSize: "12px", color: "rgba(200,215,230,0.45)", textAlign: "center" }}>
+                    {formatDuration(t.durationSeconds)}
+                  </span>
+                  <span style={{ fontFamily: FF, fontSize: "11px", color: "rgba(200,215,230,0.35)", textAlign: "center" }}>
+                    {new Date(t.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                  </span>
+                  <span style={{ color: "rgba(200,215,230,0.30)", fontSize: "11px", textAlign: "right" }}>
+                    {isExpanded ? "▲" : "▼"}
+                  </span>
+                </div>
+
+                {/* Expanded transcript */}
+                {isExpanded && (
+                  <div style={{ padding: "0 18px 18px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+                    <div style={{ marginTop: "14px", maxHeight: "400px", overflowY: "auto", background: "rgba(0,0,0,0.3)", borderRadius: "8px", padding: "16px" }}>
+                      {(() => {
+                        try {
+                          const messages = JSON.parse(t.transcript);
+                          return messages.map((msg: any, i: number) => (
+                            <div key={i} style={{ marginBottom: "12px" }}>
+                              <span style={{
+                                fontFamily: FF, fontSize: "10px", fontWeight: 800, letterSpacing: "0.10em", textTransform: "uppercase",
+                                color: msg.role === "user" ? "rgba(120,200,255,0.70)" : "rgba(212,180,80,0.70)",
+                              }}>
+                                {msg.role === "user" ? "Visitor" : "AiA"}
+                              </span>
+                              {msg.timestamp && (
+                                <span style={{ fontFamily: FF, fontSize: "10px", color: "rgba(200,215,230,0.25)", marginLeft: "8px" }}>
+                                  {msg.timestamp}
+                                </span>
+                              )}
+                              <p style={{ fontFamily: FF, fontSize: "13px", color: "rgba(255,255,255,0.75)", margin: "4px 0 0", lineHeight: 1.6 }}>
+                                {msg.text}
+                              </p>
+                            </div>
+                          ));
+                        } catch {
+                          // Fallback to plain text
+                          return (
+                            <pre style={{ fontFamily: FF, fontSize: "13px", color: "rgba(255,255,255,0.70)", whiteSpace: "pre-wrap", margin: 0, lineHeight: 1.6 }}>
+                              {t.transcriptText || t.transcript}
+                            </pre>
+                          );
+                        }
+                      })()}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─── Main Console ─────────────────────────────────────────────────────────────
 
 function Console({ adminUser }: { adminUser: { id: number; username: string; displayName: string | null; role: string } }) {
-  const [tab, setTab] = useState<"leads" | "admins">("leads");
+  const [tab, setTab] = useState<"leads" | "transcripts" | "admins">("leads");
   const [filter, setFilter] = useState<Lead["status"] | "all">("all");
   const [search, setSearch] = useState("");
   const utils = trpc.useUtils();
@@ -577,7 +731,7 @@ function Console({ adminUser }: { adminUser: { id: number; username: string; dis
       {/* Tabs */}
       <div style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 32px" }}>
         <div style={{ maxWidth: "1280px", margin: "0 auto", display: "flex", gap: "0" }}>
-          {(["leads", "admins"] as const).map((t) => (
+          {(["leads", "transcripts", "admins"] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -589,7 +743,7 @@ function Console({ adminUser }: { adminUser: { id: number; username: string; dis
                 padding: "14px 20px", cursor: "pointer", textTransform: "capitalize", letterSpacing: "0.04em",
               }}
             >
-              {t === "leads" ? `Leads (${allLeads.length})` : "Admin Users"}
+              {t === "leads" ? `Leads (${allLeads.length})` : t === "transcripts" ? "Web Transcripts" : "Admin Users"}
             </button>
           ))}
         </div>
@@ -671,6 +825,10 @@ function Console({ adminUser }: { adminUser: { id: number; username: string; dis
               </div>
             )}
           </>
+        )}
+
+        {tab === "transcripts" && (
+          <WebTranscriptsTab />
         )}
 
         {tab === "admins" && (
