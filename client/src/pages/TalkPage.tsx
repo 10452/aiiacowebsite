@@ -137,10 +137,16 @@ export default function TalkPage() {
   const transcriptEndRef = useRef<HTMLDivElement>(null);
   const entryIdRef = useRef(0);
 
+  // ─── Session ID for incremental persistence ────────────────────────
+  const sessionIdRef = useRef<string>("");
+  const incrementalTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const lastSavedLenRef = useRef(0);
+
   // ─── tRPC mutations ────────────────────────────────────────────────
   const sendMagicLink = trpc.talk.sendMagicLink.useMutation();
   const verifyMagicLink = trpc.talk.verifyMagicLink.useMutation();
   const saveTranscript = trpc.talk.saveTranscript.useMutation();
+  const upsertTranscript = trpc.talk.upsertTranscript.useMutation();
   const checkEmail = trpc.talk.checkEmail.useMutation();
 
   // ─── Check for magic link token in URL on mount ────────────────────
@@ -268,6 +274,9 @@ export default function TalkPage() {
       setStatus("connecting");
       setTranscript([]);
       conversationStartRef.current = new Date();
+      // Generate unique session ID for incremental persistence
+      sessionIdRef.current = `web_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;  
+      lastSavedLenRef.current = 0;
       await navigator.mediaDevices.getUserMedia({ audio: true });
       // Build dynamic variables for identity injection
       const dynamicVars: Record<string, string> = {};
@@ -310,50 +319,83 @@ export default function TalkPage() {
     }
   }, [conversation, visitorName, visitorEmail, visitorPhone, verifiedLead]);
 
+  // ─── Incremental save helper (called by timer and on end) ─────────
+  const doIncrementalSave = useCallback((entries: TranscriptEntry[], isFinal: boolean) => {
+    if (entries.length === 0 || !sessionIdRef.current) return;
+    // Only save if there are new messages since last save (or final)
+    if (!isFinal && entries.length === lastSavedLenRef.current) return;
+    lastSavedLenRef.current = entries.length;
+
+    const durationSeconds = conversationStartRef.current
+      ? Math.round((Date.now() - conversationStartRef.current.getTime()) / 1000)
+      : undefined;
+
+    const transcriptJson = JSON.stringify(
+      entries.map((e) => ({
+        role: e.role,
+        text: e.text,
+        timestamp: e.timestamp.toISOString(),
+      }))
+    );
+    const transcriptText = entries
+      .map((e) => `${e.role === "ai" ? "AiA" : "Visitor"}: ${e.text}`)
+      .join("\n\n");
+
+    upsertTranscript.mutate({
+      sessionId: sessionIdRef.current,
+      leadId: verifiedLead?.id,
+      visitorName: visitorName || undefined,
+      visitorEmail: visitorEmail || undefined,
+      visitorPhone: visitorPhone || undefined,
+      transcript: transcriptJson,
+      transcriptText,
+      durationSeconds,
+      isFinal,
+    });
+  }, [upsertTranscript, verifiedLead, visitorName, visitorEmail, visitorPhone]);
+
+  // ─── 30-second incremental save timer ─────────────────────────────
+  useEffect(() => {
+    if (status === "connected") {
+      incrementalTimerRef.current = setInterval(() => {
+        // Access transcript via ref-like pattern: use the latest state
+        setTranscript((prev) => {
+          if (prev.length > 0) doIncrementalSave(prev, false);
+          return prev; // no mutation, just reading
+        });
+      }, 30000);
+    } else {
+      if (incrementalTimerRef.current) {
+        clearInterval(incrementalTimerRef.current);
+        incrementalTimerRef.current = null;
+      }
+    }
+    return () => {
+      if (incrementalTimerRef.current) {
+        clearInterval(incrementalTimerRef.current);
+        incrementalTimerRef.current = null;
+      }
+    };
+  }, [status, doIncrementalSave]);
+
   const endConversation = useCallback(async () => {
+    // Stop incremental timer
+    if (incrementalTimerRef.current) {
+      clearInterval(incrementalTimerRef.current);
+      incrementalTimerRef.current = null;
+    }
     await conversation.endSession();
     setStatus("idle");
     setAgentSpeaking(false);
 
     if (transcript.length > 0) {
-      const durationSeconds = conversationStartRef.current
-        ? Math.round((Date.now() - conversationStartRef.current.getTime()) / 1000)
-        : undefined;
-
-      const transcriptJson = JSON.stringify(
-        transcript.map((e) => ({
-          role: e.role,
-          text: e.text,
-          timestamp: e.timestamp.toISOString(),
-        }))
-      );
-      const transcriptText = transcript
-        .map((e) => `${e.role === "ai" ? "AiA" : "Visitor"}: ${e.text}`)
-        .join("\n\n");
-
-      saveTranscript.mutate(
-        {
-          leadId: verifiedLead?.id,
-          visitorName: visitorName || undefined,
-          visitorEmail: visitorEmail || undefined,
-          visitorPhone: visitorPhone || undefined,
-          transcript: transcriptJson,
-          transcriptText,
-          durationSeconds,
-        },
-        {
-          onSuccess: () => {
-            toast.success("Transcript saved", {
-              description: "Your conversation has been recorded.",
-            });
-          },
-          onError: () => {
-            console.error("[Talk] Failed to save transcript");
-          },
-        }
-      );
+      // Final save with duration
+      doIncrementalSave(transcript, true);
+      toast.success("Transcript saved", {
+        description: "Your conversation has been recorded.",
+      });
     }
-  }, [conversation, transcript, verifiedLead, visitorName, visitorEmail, visitorPhone, saveTranscript]);
+  }, [conversation, transcript, doIncrementalSave]);
 
   const toggleMute = useCallback(() => {
     setIsMuted((prev) => {

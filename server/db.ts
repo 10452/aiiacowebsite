@@ -517,3 +517,20 @@ export async function getAllWebTranscripts() {
   if (!db) throw new Error("Database not available");
   return db.select().from(webTranscripts).orderBy(desc(webTranscripts.createdAt));
 }
+
+export async function getWebTranscriptBySessionId(sessionId: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const rows = await db.select().from(webTranscripts).where(eq(webTranscripts.sessionId, sessionId)).limit(1);
+  return rows[0] ?? null;
+}
+
+export async function updateWebTranscriptById(id: number, data: {
+  transcript: string;
+  transcriptText?: string | null;
+  durationSeconds?: number | null;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(webTranscripts).set(data).where(eq(webTranscripts.id, id));
+}

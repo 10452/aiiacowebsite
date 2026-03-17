@@ -16,6 +16,7 @@ import {
   getEmailEventsByLeadId, getEmailEngagementStats, getRecentEmailEvents,
   insertMagicLinkToken, getMagicLinkByToken, markMagicLinkUsed, getLeadsByEmail,
   insertWebTranscript, getWebTranscriptsByLeadId, getAllWebTranscripts,
+  getWebTranscriptBySessionId, updateWebTranscriptById,
 } from "./db";
 import crypto from "crypto";
 import { generateAndSendLeadDiagnostic } from "./leadDiagnostic";
@@ -649,6 +650,49 @@ const talkRouter = router({
     .mutation(async ({ input }) => {
       const leads = await getLeadsByEmail(input.email.toLowerCase().trim());
       return { exists: leads.length > 0 };
+    }),
+
+  /**
+   * Incremental upsert — called every 30s during an active /talk conversation.
+   * Creates the row on first call (using sessionId), updates transcript on subsequent calls.
+   */
+  upsertTranscript: publicProcedure
+    .input(z.object({
+      sessionId: z.string().min(8).max(64),
+      leadId: z.number().int().positive().optional(),
+      visitorName: z.string().max(255).optional(),
+      visitorEmail: z.string().email().max(320).optional(),
+      visitorPhone: z.string().max(64).optional(),
+      transcript: z.string().min(1).max(500000),
+      transcriptText: z.string().max(500000).optional(),
+      durationSeconds: z.number().int().min(0).optional(),
+      isFinal: z.boolean().optional(),
+    }))
+    .mutation(async ({ input }) => {
+      const existing = await getWebTranscriptBySessionId(input.sessionId);
+      if (existing) {
+        // Update existing row with latest transcript data
+        await updateWebTranscriptById(existing.id, {
+          transcript: input.transcript,
+          transcriptText: input.transcriptText ?? null,
+          durationSeconds: input.durationSeconds ?? null,
+        });
+        return { success: true, transcriptId: existing.id, created: false };
+      } else {
+        // Create new row
+        const result = await insertWebTranscript({
+          sessionId: input.sessionId,
+          leadId: input.leadId ?? null,
+          visitorName: input.visitorName ?? null,
+          visitorEmail: input.visitorEmail?.toLowerCase().trim() ?? null,
+          visitorPhone: input.visitorPhone ?? null,
+          transcript: input.transcript,
+          transcriptText: input.transcriptText ?? null,
+          durationSeconds: input.durationSeconds ?? null,
+          source: "web_talk",
+        });
+        return { success: true, transcriptId: result.insertId, created: true };
+      }
     }),
 
   /**

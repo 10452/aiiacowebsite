@@ -230,6 +230,8 @@ export const webTranscripts = mysqlTable("web_transcripts", {
   transcriptText: text("transcriptText"),
   /** Duration of the conversation in seconds */
   durationSeconds: int("durationSeconds"),
+  /** Client-generated session ID for incremental upsert during live calls */
+  sessionId: varchar("sessionId", { length: 64 }),
   /** Source: 'web_talk' for /talk page, 'web_widget' for floating widget */
   source: varchar("source", { length: 32 }).default("web_talk").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),

@@ -960,3 +960,15 @@ Voice assignments:
 - [x] Live session detection (created < 5min ago, no duration = still active)
 - [x] Toast notification when new transcripts arrive in live mode
 - [x] All 174 tests passing (1 transient ElevenLabs network failure unrelated)
+
+## Round 113 — Admin Transcript Enhancements
+- [x] Incremental live transcript persistence (upsert every 30s during active /talk calls via sessionId)
+- [x] New db helpers: getWebTranscriptBySessionId, updateWebTranscriptById
+- [x] New tRPC procedure: talk.upsertTranscript (create-or-update by sessionId)
+- [x] Schema migration: added sessionId column to web_transcripts table
+- [x] Search keyword highlighting in admin transcript slide-out panel (gold highlight marks)
+- [x] Branded PDF export button in transcript slide-out panel (AiiACo dark theme, print-to-PDF)
+- [x] escapeHtml helper for safe HTML injection in PDF template
+- [x] HighlightText component for regex-based search match highlighting
+- [x] 5 new unit tests for upsertTranscript (create, update, different session, validation, final save)
+- [x] All 180 tests passing across 14 test files

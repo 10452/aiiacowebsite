@@ -550,12 +550,47 @@ function isLiveTranscript(t: any): boolean {
   return created > fiveMinAgo;
 }
 
+/** Highlight search matches in text */
+function HighlightText({ text, query }: { text: string; query: string }) {
+  if (!query || query.length < 2) return <>{text}</>;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escaped})`, "gi");
+  const parts = text.split(regex);
+  return (
+    <>
+      {parts.map((part, i) =>
+        regex.test(part) ? (
+          <mark key={i} style={{
+            background: "rgba(184,156,74,0.35)",
+            color: "rgba(255,255,255,0.95)",
+            borderRadius: "2px",
+            padding: "0 2px",
+          }}>{part}</mark>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </>
+  );
+}
+
+/** Escape HTML special characters for safe injection */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 /** Full transcript viewer panel — slide-out overlay */
-function TranscriptPanel({ transcript: t, onClose }: { transcript: any; onClose: () => void }) {
+function TranscriptPanel({ transcript: t, onClose, searchQuery }: { transcript: any; onClose: () => void; searchQuery?: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const messages = parseWebTranscript(t.transcript);
   const live = isLiveTranscript(t);
   const [copied, setCopied] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   const copyAll = useCallback(() => {
     const text = messages.map(m => `${m.role === "ai" ? "AiA" : "Visitor"}: ${m.text}`).join("\n\n");
@@ -564,6 +599,95 @@ function TranscriptPanel({ transcript: t, onClose }: { transcript: any; onClose:
       setTimeout(() => setCopied(false), 2000);
     });
   }, [messages]);
+
+  const exportPdf = useCallback(() => {
+    if (messages.length === 0) return;
+    setExporting(true);
+    try {
+      const dateStr = new Date(t.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+      const timeStr = new Date(t.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const name = t.visitorName || "Anonymous";
+      const email = t.visitorEmail || "N/A";
+      const phone = t.visitorPhone || "N/A";
+      const duration = fmtDuration(t.durationSeconds);
+
+      // Build HTML for PDF
+      const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: #03050A; color: #C8D7E6; padding: 40px; }
+  .header { border-bottom: 2px solid rgba(184,156,74,0.30); padding-bottom: 24px; margin-bottom: 32px; }
+  .logo-row { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .logo-text { font-size: 22px; font-weight: 700; color: #B89C4A; letter-spacing: 0.04em; }
+  .subtitle { font-size: 11px; color: rgba(200,215,230,0.45); letter-spacing: 0.08em; text-transform: uppercase; }
+  h1 { font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.92); margin-bottom: 12px; }
+  .meta { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 8px; }
+  .meta-item { font-size: 12px; color: rgba(200,215,230,0.55); }
+  .meta-label { color: rgba(184,156,74,0.70); font-weight: 600; }
+  .messages { margin-top: 24px; }
+  .msg { margin-bottom: 20px; page-break-inside: avoid; }
+  .speaker { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+  .speaker-ai { color: rgba(184,156,74,0.80); }
+  .speaker-visitor { color: rgba(120,200,255,0.80); }
+  .bubble { padding: 12px 16px; border-radius: 10px; font-size: 13px; line-height: 1.65; max-width: 85%; }
+  .bubble-ai { background: rgba(184,156,74,0.08); border: 1px solid rgba(184,156,74,0.15); border-radius: 2px 14px 14px 14px; }
+  .bubble-visitor { background: rgba(120,200,255,0.06); border: 1px solid rgba(120,200,255,0.12); border-radius: 14px 2px 14px 14px; margin-left: auto; }
+  .timestamp { font-size: 10px; color: rgba(200,215,230,0.25); margin-bottom: 4px; }
+  .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; }
+  .footer p { font-size: 10px; color: rgba(200,215,230,0.30); }
+</style></head><body>
+  <div class="header">
+    <div class="logo-row">
+      <div class="logo-text">AiiACo</div>
+    </div>
+    <div class="subtitle">Conversation Transcript Report</div>
+  </div>
+  <h1>Conversation with ${escapeHtml(name)}</h1>
+  <div class="meta">
+    <div class="meta-item"><span class="meta-label">Date:</span> ${dateStr} at ${timeStr}</div>
+    <div class="meta-item"><span class="meta-label">Email:</span> ${escapeHtml(email)}</div>
+    <div class="meta-item"><span class="meta-label">Phone:</span> ${escapeHtml(phone)}</div>
+    <div class="meta-item"><span class="meta-label">Duration:</span> ${duration}</div>
+    <div class="meta-item"><span class="meta-label">Messages:</span> ${messages.length}</div>
+    ${t.leadId ? `<div class="meta-item"><span class="meta-label">Lead:</span> #${t.leadId}</div>` : ""}
+  </div>
+  <div class="messages">
+    ${messages.map(m => {
+      const isAi = m.role === "ai";
+      const ts = m.timestamp ? new Date(m.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "";
+      return `<div class="msg">
+        <div class="speaker ${isAi ? "speaker-ai" : "speaker-visitor"}">${isAi ? "AiA" : "Visitor"}</div>
+        ${ts ? `<div class="timestamp">${ts}</div>` : ""}
+        <div class="bubble ${isAi ? "bubble-ai" : "bubble-visitor"}">${escapeHtml(m.text)}</div>
+      </div>`;
+    }).join("")}
+  </div>
+  <div class="footer">
+    <p>AiiACo · AI Integration Authority for the Corporate Age</p>
+    <p>This transcript was generated from a conversation on aiiaco.com/talk</p>
+  </div>
+</body></html>`;
+
+      // Open in new window for print-to-PDF
+      const win = window.open("", "_blank");
+      if (win) {
+        win.document.write(html);
+        win.document.close();
+        // Slight delay for styles to load
+        setTimeout(() => {
+          win.print();
+          setExporting(false);
+        }, 500);
+      } else {
+        toast.error("Pop-up blocked. Please allow pop-ups for this site.");
+        setExporting(false);
+      }
+    } catch {
+      toast.error("Failed to generate PDF");
+      setExporting(false);
+    }
+  }, [messages, t]);
 
   // Auto-scroll to bottom on new messages (live mode)
   useEffect(() => {
@@ -659,6 +783,20 @@ function TranscriptPanel({ transcript: t, onClose }: { transcript: any; onClose:
 
           <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
             <button
+              onClick={exportPdf}
+              disabled={messages.length === 0 || exporting}
+              style={{
+                fontFamily: FF, fontSize: "11px", fontWeight: 600, padding: "6px 14px",
+                borderRadius: "6px", cursor: messages.length === 0 || exporting ? "not-allowed" : "pointer",
+                border: "1px solid rgba(184,156,74,0.20)",
+                background: "rgba(184,156,74,0.06)",
+                color: "rgba(184,156,74,0.80)",
+                opacity: messages.length === 0 ? 0.4 : 1,
+              }}
+            >
+              {exporting ? "Exporting…" : "Download PDF"}
+            </button>
+            <button
               onClick={copyAll}
               disabled={messages.length === 0}
               style={{
@@ -739,7 +877,7 @@ function TranscriptPanel({ transcript: t, onClose }: { transcript: any; onClose:
                       fontFamily: FF, fontSize: "13px", lineHeight: 1.65,
                       color: "rgba(200,215,230,0.88)",
                     }}>
-                      {msg.text}
+                      <HighlightText text={msg.text} query={searchQuery ?? ""} />
                     </div>
                   </div>
                 );
@@ -967,6 +1105,7 @@ function WebTranscriptsTab() {
         <TranscriptPanel
           transcript={viewingTranscript}
           onClose={() => setViewingId(null)}
+          searchQuery={search}
         />
       )}
 

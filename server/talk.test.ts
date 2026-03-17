@@ -65,6 +65,13 @@ vi.mock("./db", () => {
     getAllWebTranscripts: vi.fn().mockImplementation(async () => {
       return [...webTranscripts];
     }),
+    getWebTranscriptBySessionId: vi.fn().mockImplementation(async (sessionId: string) => {
+      return webTranscripts.find((t) => t.sessionId === sessionId) ?? null;
+    }),
+    updateWebTranscriptById: vi.fn().mockImplementation(async (id: number, data: any) => {
+      const idx = webTranscripts.findIndex((t) => t.id === id);
+      if (idx >= 0) Object.assign(webTranscripts[idx], data);
+    }),
     // Other db functions needed by the router (not under test)
     insertLead: vi.fn(),
     getAllLeads: vi.fn().mockResolvedValue([]),
@@ -326,5 +333,87 @@ describe("talk.verifyMagicLink", () => {
     await expect(
       caller.talk.verifyMagicLink({ token: "expired-token-xyz" })
     ).rejects.toThrow("expired");
+  });
+});
+
+describe("talk.upsertTranscript", () => {
+  it("creates a new transcript on first call with sessionId", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+
+    const result = await caller.talk.upsertTranscript({
+      sessionId: "web_test_session_001",
+      visitorName: "Alice Test",
+      visitorEmail: "alice@example.com",
+      transcript: JSON.stringify([
+        { role: "ai", text: "Hello!", timestamp: new Date().toISOString() },
+      ]),
+      transcriptText: "AiA: Hello!",
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.created).toBe(true);
+    expect(result.transcriptId).toBeGreaterThan(0);
+  });
+
+  it("updates existing transcript on subsequent calls with same sessionId", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+
+    // Second call with same sessionId should update
+    const result = await caller.talk.upsertTranscript({
+      sessionId: "web_test_session_001",
+      visitorName: "Alice Test",
+      visitorEmail: "alice@example.com",
+      transcript: JSON.stringify([
+        { role: "ai", text: "Hello!", timestamp: new Date().toISOString() },
+        { role: "user", text: "Hi AiA", timestamp: new Date().toISOString() },
+      ]),
+      transcriptText: "AiA: Hello!\n\nVisitor: Hi AiA",
+      durationSeconds: 30,
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.created).toBe(false);
+  });
+
+  it("creates a new transcript for a different sessionId", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+
+    const result = await caller.talk.upsertTranscript({
+      sessionId: "web_test_session_002",
+      transcript: JSON.stringify([
+        { role: "ai", text: "Welcome!", timestamp: new Date().toISOString() },
+      ]),
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.created).toBe(true);
+  });
+
+  it("rejects invalid sessionId (too short)", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+
+    await expect(
+      caller.talk.upsertTranscript({
+        sessionId: "short",
+        transcript: JSON.stringify([{ role: "ai", text: "Hi" }]),
+      })
+    ).rejects.toThrow();
+  });
+
+  it("handles final save with duration", async () => {
+    const caller = appRouter.createCaller(createPublicContext());
+
+    const result = await caller.talk.upsertTranscript({
+      sessionId: "web_test_session_003",
+      visitorName: "Bob Final",
+      transcript: JSON.stringify([
+        { role: "ai", text: "Goodbye!", timestamp: new Date().toISOString() },
+      ]),
+      durationSeconds: 120,
+      isFinal: true,
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.created).toBe(true);
   });
 });
